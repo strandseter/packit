@@ -1,12 +1,7 @@
-﻿using System;
-
-namespace Packit.Database.Migrations
+﻿namespace Packit.Database.Migrations
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
+        static void Main(){}
     }
 }
