@@ -1,38 +1,26 @@
 ﻿using Packit.Model;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using static Newtonsoft.Json.JsonConvert;
 
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
-namespace Packit.TestGui
+namespace Packit.App.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class ItemsPage : Page, INotifyPropertyChanged
     {
         static readonly Uri itemsUri = new Uri("http://localhost:52286/api/Items");
         readonly HttpClient _httpClient = new HttpClient();
 
-        public MainPage()
+        public ItemsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void ItemPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -52,7 +40,7 @@ namespace Packit.TestGui
             var json = await result.Content.ReadAsStringAsync();
             var items = DeserializeObject<Item[]>(json);
 
-            ItemListView.ItemsSource = items;
+            //ItemListView.ItemsSource = items;
         }
 
         private async void PostItem(Item item)
@@ -60,5 +48,28 @@ namespace Packit.TestGui
             var json = SerializeObject(item);
             _ = await _httpClient.PostAsync(itemsUri, new HttpStringContent(json, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
         }
+
+        
+
+
+
+
+
+
+
+
+
+        private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
+        {
+            if (Equals(storage, value))
+            {
+                return;
+            }
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+        }
+
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

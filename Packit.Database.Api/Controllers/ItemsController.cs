@@ -12,11 +12,11 @@ namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemController : ControllerBase
+    public class ItemsController : ControllerBase
     {
         private readonly PackitContext _context;
 
-        public ItemController(PackitContext context)
+        public ItemsController(PackitContext context)
         {
             _context = context;
         }
@@ -25,7 +25,7 @@ namespace Packit.Database.Api.Controllers
         [HttpGet]
         public IEnumerable<Item> GetItem()
         {
-            return _context.Item;
+            return _context.Items;
         }
 
         // GET: api/Item/5
@@ -37,7 +37,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Item.FindAsync(id);
+            var item = await _context.Items.FindAsync(id);
 
             if (item == null)
             {
@@ -91,7 +91,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Item.Add(item);
+            _context.Items.Add(item);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
@@ -106,13 +106,13 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Item.FindAsync(id);
+            var item = await _context.Items.FindAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
 
-            _context.Item.Remove(item);
+            _context.Items.Remove(item);
             await _context.SaveChangesAsync();
 
             return Ok(item);
@@ -120,7 +120,7 @@ namespace Packit.Database.Api.Controllers
 
         private bool ItemExists(int id)
         {
-            return _context.Item.Any(e => e.ItemId == id);
+            return _context.Items.Any(e => e.ItemId == id);
         }
     }
 }

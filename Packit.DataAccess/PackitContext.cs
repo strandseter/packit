@@ -7,7 +7,7 @@ namespace Packit.DataAccess
 {
     public class PackitContext : DbContext
     {
-        public DbSet<Item> Item { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         public PackitContext(DbContextOptions<PackitContext> options) : base(options) { }
 
