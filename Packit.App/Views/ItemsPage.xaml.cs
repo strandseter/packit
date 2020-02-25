@@ -40,7 +40,7 @@ namespace Packit.App.Views
             var json = await result.Content.ReadAsStringAsync();
             var items = DeserializeObject<Item[]>(json);
 
-            //ItemListView.ItemsSource = items;
+            ItemsAdaptive1.ItemsSource = items;
         }
 
         private async void PostItem(Item item)
@@ -48,16 +48,6 @@ namespace Packit.App.Views
             var json = SerializeObject(item);
             _ = await _httpClient.PostAsync(itemsUri, new HttpStringContent(json, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
         }
-
-        
-
-
-
-
-
-
-
-
 
         private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
         {
