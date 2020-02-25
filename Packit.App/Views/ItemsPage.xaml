@@ -11,7 +11,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="items">
-            <Grid Background="White" BorderBrush="Black" BorderThickness="1">
+            <Grid Background="White" BorderBrush="Black" BorderThickness="1" Width="300">
                 <Image Source="{Binding IName}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
         </DataTemplate>
