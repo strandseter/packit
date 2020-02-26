@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Packit.DataAccess;
 
 namespace Packit.Database.Migrations.Migrations
 {
     [DbContext(typeof(PackitContext))]
-    partial class PackitContextModelSnapshot : ModelSnapshot
+    [Migration("20200226161329_AddedFieldsToItem")]
+    partial class AddedFieldsToItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +28,7 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("ImageFilePath");
+                    b.Property<string>("ImageName");
 
                     b.Property<string>("Title");
 

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packit.App", "Packit.App\Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Packit.App.Core", "Packit.App.Core\Packit.App.Core.csproj", "{EA92E89D-762C-4F32-9AAC-345269996451}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packit.LocalData", "Packit.TemporaryData\Packit.LocalData.csproj", "{9586CE02-7811-4C57-9100-C5581A214D80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -206,6 +208,26 @@ Global
 		{EA92E89D-762C-4F32-9AAC-345269996451}.Release|x64.Build.0 = Release|Any CPU
 		{EA92E89D-762C-4F32-9AAC-345269996451}.Release|x86.ActiveCfg = Release|Any CPU
 		{EA92E89D-762C-4F32-9AAC-345269996451}.Release|x86.Build.0 = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|x64.Build.0 = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Debug|x86.Build.0 = Debug|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|ARM.Build.0 = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|ARM64.Build.0 = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|x64.ActiveCfg = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|x64.Build.0 = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|x86.ActiveCfg = Release|Any CPU
+		{9586CE02-7811-4C57-9100-C5581A214D80}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

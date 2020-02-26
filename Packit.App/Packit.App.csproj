@@ -145,6 +145,8 @@
     <Compile Include="Behaviors\NavigationViewHeaderBehavior.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderMode.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
+    <Compile Include="Interfaces\IWindowNavigateable.cs" />
+    <Compile Include="TemporaryStorageHandler.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultActivationHandler.cs" />
     <Compile Include="Services\NavigationService.cs" />
@@ -156,6 +158,9 @@
     </Compile>
     <Compile Include="Views\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewEditItemPage.xaml.cs">
+      <DependentUpon>NewEditItemPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +201,10 @@
     <Page Include="Views\NavigationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NewEditItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
