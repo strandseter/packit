@@ -17,7 +17,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
+    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}" >
 
         <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
             <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
 
             <TextBox Grid.Row="0" TextWrapping="Wrap" PlaceholderText="Search" Margin="10,10,10,10"/>
 
-            <Controls:AdaptiveGridView x:Name="ItemsAdaptive1" Grid.Row="1"/>
+            <Controls:AdaptiveGridView x:Name="ItemsAdaptive1" Grid.Row="1" ItemHeight="150" DesiredWidth="400"/>
 
             <Grid Grid.Row="2" ColumnSpacing="5" Margin="10,10,10,10">
                 <Grid.ColumnDefinitions>

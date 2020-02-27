@@ -8,6 +8,7 @@ namespace Packit.Model
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageFilePath { get; set; }
+        public User User { get; set; }
 
         public override string ToString()
         {

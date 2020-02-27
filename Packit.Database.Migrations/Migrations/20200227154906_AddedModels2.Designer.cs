@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Packit.DataAccess;
 
 namespace Packit.Database.Migrations.Migrations
 {
     [DbContext(typeof(PackitContext))]
-    partial class PackitContextModelSnapshot : ModelSnapshot
+    [Migration("20200227154906_AddedModels2")]
+    partial class AddedModels2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,15 +31,11 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("ImageFilePath");
 
-                    b.Property<int?>("PackingListId");
-
                     b.Property<string>("Title");
 
                     b.Property<int?>("UserId");
 
                     b.HasKey("ItemId");
-
-                    b.HasIndex("PackingListId");
 
                     b.HasIndex("UserId");
 
@@ -52,6 +50,8 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("ItemId");
+
                     b.Property<string>("Title");
 
                     b.Property<int?>("TripId");
@@ -59,6 +59,8 @@ namespace Packit.Database.Migrations.Migrations
                     b.Property<int?>("UserId");
 
                     b.HasKey("PackingListId");
+
+                    b.HasIndex("ItemId");
 
                     b.HasIndex("TripId");
 
@@ -75,13 +77,9 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<int?>("PackingListId");
 
-                    b.Property<int?>("UserId");
-
                     b.HasKey("SharedPackingListId");
 
                     b.HasIndex("PackingListId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("SharedPackingLists");
                 });
@@ -134,10 +132,6 @@ namespace Packit.Database.Migrations.Migrations
 
             modelBuilder.Entity("Packit.Model.Item", b =>
                 {
-                    b.HasOne("Packit.Model.PackingList")
-                        .WithMany("Items")
-                        .HasForeignKey("PackingListId");
-
                     b.HasOne("Packit.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -145,6 +139,10 @@ namespace Packit.Database.Migrations.Migrations
 
             modelBuilder.Entity("Packit.Model.PackingList", b =>
                 {
+                    b.HasOne("Packit.Model.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId");
+
                     b.HasOne("Packit.Model.Trip")
                         .WithMany("PackingLists")
                         .HasForeignKey("TripId");
@@ -159,10 +157,6 @@ namespace Packit.Database.Migrations.Migrations
                     b.HasOne("Packit.Model.PackingList", "PackingList")
                         .WithMany()
                         .HasForeignKey("PackingListId");
-
-                    b.HasOne("Packit.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Packit.Model.Trip", b =>

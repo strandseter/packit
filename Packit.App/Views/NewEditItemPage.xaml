@@ -21,7 +21,7 @@
         </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
 
-    <Grid x:Name="ContentArea" Margin="150,0,150,0">
+    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
             <Grid.RowDefinitions>
@@ -35,7 +35,7 @@
             <TextBox Grid.Row="0" TextWrapping="Wrap" PlaceholderText="Title" Margin="10,10,10,10"/>
             <TextBox Grid.Row="1" TextWrapping="Wrap" PlaceholderText="Description" Margin="10,10,10,10"/>
 
-            <Button Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="300" MaxHeight="80" Content="Add image" FontSize="15"></Button>
+            <Button Click="AddImageButton_Click" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="300" MaxHeight="80" Content="Add image" FontSize="15"></Button>
 
             <Image Grid.Row="3"></Image>
 
