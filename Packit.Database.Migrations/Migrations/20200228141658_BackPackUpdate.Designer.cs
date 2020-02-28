@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Packit.DataAccess;
 
 namespace Packit.Database.Migrations.Migrations
 {
     [DbContext(typeof(PackitContext))]
-    partial class PackitContextModelSnapshot : ModelSnapshot
+    [Migration("20200228141658_BackPackUpdate")]
+    partial class BackPackUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,26 +31,17 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("Title");
 
+                    b.Property<int?>("TripId");
+
                     b.Property<int?>("UserId");
 
                     b.HasKey("BackpackId");
 
+                    b.HasIndex("TripId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Backpacks");
-                });
-
-            modelBuilder.Entity("Packit.Model.BackpackTrip", b =>
-                {
-                    b.Property<int>("BackpackId");
-
-                    b.Property<int>("TripId");
-
-                    b.HasKey("BackpackId", "TripId");
-
-                    b.HasIndex("TripId");
-
-                    b.ToTable("BackpackTrip");
                 });
 
             modelBuilder.Entity("Packit.Model.Item", b =>
@@ -152,22 +145,13 @@ namespace Packit.Database.Migrations.Migrations
 
             modelBuilder.Entity("Packit.Model.Backpack", b =>
                 {
+                    b.HasOne("Packit.Model.Trip")
+                        .WithMany("Backpacks")
+                        .HasForeignKey("TripId");
+
                     b.HasOne("Packit.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Packit.Model.BackpackTrip", b =>
-                {
-                    b.HasOne("Packit.Model.Backpack", "Backpack")
-                        .WithMany("Trips")
-                        .HasForeignKey("BackpackId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Packit.Model.Trip", "Trip")
-                        .WithMany("Backpacks")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Packit.Model.Item", b =>

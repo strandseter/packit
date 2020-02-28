@@ -10,8 +10,12 @@ namespace Packit.DataAccess
         public DbSet<Item> Items { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Trip> Trips { get; set; }
-        public DbSet<PackingList> PackingLists { get; set; }
-        public DbSet<SharedPackingList> SharedPackingLists { get; set; }
+        public DbSet<Backpack> Backpacks { get; set; }
+
+        public DbSet<SharedBackpack> SharedBackpacks { get; set; }
+
+        public DbSet<ItemBackpack> ItemBackpack { get; set; }
+        public DbSet<BackpackTrip> BackpackTrip { get; set; } 
 
         public PackitContext(DbContextOptions<PackitContext> options) : base(options) { }
 
@@ -31,11 +35,38 @@ namespace Packit.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<PackingList>()
-            //    .HasMany(p => p.Items);
-
-            //modelBuilder.Entity<Trip>()
-            //    .HasMany(t => t.PackingLists);
+            ConfigureManyToManyItemBackpack(modelBuilder);
+            ConfigureManyToManyBackpackTrip(modelBuilder);
         }
+
+        private void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
+
+        {
+            modelBuilder.Entity<ItemBackpack>()
+                .HasKey(ib => new { ib.ItemId, ib.BackpackId });
+            modelBuilder.Entity<ItemBackpack>()
+                .HasOne(ib => ib.Item)
+                .WithMany(i => i.Backpacks)
+                .HasForeignKey(ib => ib.ItemId);
+            modelBuilder.Entity<ItemBackpack>()
+                .HasOne(ib => ib.Backpack)
+                .WithMany(i => i.Items)
+                .HasForeignKey(ib => ib.BackpackId);
+        }
+
+        private void ConfigureManyToManyBackpackTrip(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BackpackTrip>()
+                .HasKey(bt => new { bt.BackpackId, bt.TripId });
+            modelBuilder.Entity<BackpackTrip>()
+                .HasOne(bt => bt.Backpack)
+                .WithMany(b => b.Trips)
+                .HasForeignKey(bt => bt.BackpackId);
+            modelBuilder.Entity<BackpackTrip>()
+                .HasOne(bt => bt.Trip)
+                .WithMany(t => t.Backpacks)
+                .HasForeignKey(bt => bt.TripId);
+        }
+
     }
 }

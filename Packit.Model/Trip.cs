@@ -13,11 +13,11 @@ namespace Packit.Model
         public DateTime DepatureDate { get; set; }
         public string ImageFileName { get; set; }
         public User User { get; set; }
-        public virtual ICollection<PackingList> PackingLists { get; set; }
+        public virtual ICollection<BackpackTrip> Backpacks { get;}
 
         public Trip()
         {
-            PackingLists = new List<PackingList>();
+            Backpacks = new List<BackpackTrip>();
         }
 
         public override string ToString()

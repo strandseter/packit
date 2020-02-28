@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class SharedPackingList
+    public class SharedBackpack
     {
-        public int SharedPackingListId { get; set; }
-        public PackingList PackingList { get; set; }
+        public int SharedBackpackId { get; set; }
+        public Backpack Backpack { get; set; }
         public User User { get; set; }
     }
 }
