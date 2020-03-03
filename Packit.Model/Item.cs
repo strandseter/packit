@@ -3,16 +3,15 @@ using System.Collections.Generic;
 
 namespace Packit.Model
 {
-    public class Item
+    public class Item : BaseInformation
     {
         public int ItemId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string ImageFilePath { get; set; }
-        public User User { get; set; }
         public virtual ICollection<ItemBackpack> Backpacks { get; }
 
-        public Item()
+        public Item() { }
+
+        public Item(string title, string description, string imageStringName, User user)
+            :base(title, description, imageStringName, user)
         {
             Backpacks = new List<ItemBackpack>();
         }

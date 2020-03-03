@@ -41,9 +41,9 @@ namespace Packit.TestGui
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var item = new Item() { Title = "Yeet" };
-            PostItem(item);
-            LoadItems();
+            ////var item = new Item() { Title = "Yeet" };
+            //PostItem(item);
+            //LoadItems();
         }
 
         private async void LoadItems()

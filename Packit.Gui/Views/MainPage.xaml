@@ -9,6 +9,30 @@
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState>
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="1300"/>
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="TitleText.FontSize" Value="100"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <Grid
+            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="12*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="TitleText" Text="Test" Grid.Row="0" TextAlignment="Center" FontSize="50">
+                </TextBlock>
+            </Grid>
             <!--
                 The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
                 Place your content here.

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Packit.DataAccess;
 
 namespace Packit.Database.Migrations.Migrations
 {
     [DbContext(typeof(PackitContext))]
-    partial class PackitContextModelSnapshot : ModelSnapshot
+    [Migration("20200303164141_testing")]
+    partial class testing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,7 +157,7 @@ namespace Packit.Database.Migrations.Migrations
             modelBuilder.Entity("Packit.Model.Backpack", b =>
                 {
                     b.HasOne("Packit.Model.User", "User")
-                        .WithMany("Backpacks")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 
@@ -175,7 +177,7 @@ namespace Packit.Database.Migrations.Migrations
             modelBuilder.Entity("Packit.Model.Item", b =>
                 {
                     b.HasOne("Packit.Model.User", "User")
-                        .WithMany("Items")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 
@@ -206,7 +208,7 @@ namespace Packit.Database.Migrations.Migrations
             modelBuilder.Entity("Packit.Model.Trip", b =>
                 {
                     b.HasOne("Packit.Model.User", "User")
-                        .WithMany("Trips")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618

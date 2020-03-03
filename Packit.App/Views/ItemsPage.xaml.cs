@@ -67,23 +67,9 @@ namespace Packit.App.Views
         private async void PostItem(Item item)
         {
             var json = SerializeObject(item);
+            _ = await httpClient.PostAsync(itemsUri, new HttpStringContent(json, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
+          
 
-            try
-            {
-                _ = await httpClient.PostAsync(itemsUri, new HttpStringContent(json, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
-            }
-            catch (ArgumentNullException ex)
-            {
-
-            }
-            catch(InvalidOperationException ex)
-            {
-
-            }
-            catch(Exception ex)
-            {
-
-            }
         }
 
         private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)

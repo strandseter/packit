@@ -39,8 +39,13 @@ namespace Packit.Gui
 
         private ActivationService CreateActivationService()
         {
-            return new ActivationService(this, typeof(Views.MainPage), new Lazy<UIElement>(CreateShell));
+            return new ActivationService(this, typeof(Views.LoginPage));
         }
+
+        //private ActivationService CreateActivationService()
+        //{
+        //    return new ActivationService(this, typeof(Views.LoginPage), new Lazy<UIElement>(CreateShell));
+        //}
 
         private UIElement CreateShell()
         {
