@@ -78,7 +78,6 @@ namespace Packit.Database.Api.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 

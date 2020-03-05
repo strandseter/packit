@@ -26,7 +26,7 @@ namespace Packit.DataAccess
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
             {
                 DataSource = "(localdb)\\MSSQLLocalDB",
-                InitialCatalog = "Packit.Local.Database",
+                InitialCatalog = "Packit.DatabaseV2",
                 IntegratedSecurity = true
             };
 

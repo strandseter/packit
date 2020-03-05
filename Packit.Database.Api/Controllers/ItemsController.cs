@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,14 +22,14 @@ namespace Packit.Database.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Item
+        // GET: api/Items
         [HttpGet]
         public IEnumerable<Item> GetItem()
         {
             return _context.Items;
         }
 
-        // GET: api/Item/5
+        // GET: api/Items/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItem([FromRoute] int id)
         {
@@ -47,7 +48,7 @@ namespace Packit.Database.Api.Controllers
             return Ok(item);
         }
 
-        // PUT: api/Item/5
+        // PUT: api/Items/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item)
         {
@@ -82,7 +83,7 @@ namespace Packit.Database.Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Item
+        // POST: api/Items
         [HttpPost]
         public async Task<IActionResult> PostItem([FromBody] Item item)
         {
@@ -97,7 +98,7 @@ namespace Packit.Database.Api.Controllers
             return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
         }
 
-        // DELETE: api/Item/5
+        // DELETE: api/Items/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem([FromRoute] int id)
         {
@@ -118,9 +119,53 @@ namespace Packit.Database.Api.Controllers
             return Ok(item);
         }
 
+        // PUT: api/items/1/backpacks/2
+        [HttpPut("{itemId}/backpacks/{backpackId}")]
+        public Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
+        {
+            return AddManyToMany<ItemBackpack>(itemId, backpackId, _context.ItemBackpack, "GetItemBackpack");
+        }
+
+        private async Task<IActionResult> AddManyToMany<T>(int id1, int id2, DbSet<T> list, string message) where T : class, IManyToManyJoinable
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var obj = (T)Activator.CreateInstance(typeof(T));
+
+            obj.Id1(id1);
+            obj.Id2(id2);
+
+            list.Add(obj);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(message, new { id1, id2 }, obj);
+        }
+
+
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.ItemId == id);
+        }
+
+        private bool ItemBackpackExists(int itemId, int backpackId)
+        {
+            return _context.ItemBackpack.Any(ib => ib.ItemId == itemId && ib.BackpackId == backpackId);
+        }
+
+        private void Gsdjkfh()
+        {
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
+
+            //if (ItemBackpackExists(itemId, backpackId))
+            //    return NoContent();
+
+            //var itemBackpack = new ItemBackpack() { ItemId = itemId, BackpackId = backpackId };
+            //_context.ItemBackpack.Add(itemBackpack);
+            //await _context.SaveChangesAsync();
+
+            //return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
         }
     }
 }

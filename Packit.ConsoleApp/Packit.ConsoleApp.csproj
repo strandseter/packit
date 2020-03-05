@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Packit.DataAccess\Packit.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace Packit.Database.Migrations
 {
-    class Program
+    public class Program
     {
         static void Main(){}
     }
