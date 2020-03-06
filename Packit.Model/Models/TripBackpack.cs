@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class BackpackTrip : IManyToManyJoinable
+    public class BackpackTrip : IManyToManyAble
     {
         public virtual int BackpackId { get; set; }
         public virtual Backpack Backpack {get; set; }
@@ -19,6 +19,16 @@ namespace Packit.Model
         public void Id2(int id)
         {
             TripId = id;
+        }
+
+        public int Id1()
+        {
+            return BackpackId;
+        }
+
+        public int Id2()
+        {
+            return TripId;
         }
     }
 }

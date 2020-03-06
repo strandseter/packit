@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public interface IManyToManyJoinable
+    public interface IDatabaseExistable
     {
-        void Id1(int id);
-        void Id2(int id);
+        int Id();
     }
 }

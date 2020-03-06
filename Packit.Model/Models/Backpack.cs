@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class Backpack : BaseInformation
+    public class Backpack : BaseInformation, IDatabaseExistable
     {
         public int BackpackId { get; set; }
         public virtual ICollection<ItemBackpack> Items { get;}
@@ -21,6 +21,11 @@ namespace Packit.Model
         public override string ToString()
         {
             return $"{Title}, {BackpackId}";
+        }
+
+        public int Id()
+        {
+            return BackpackId;
         }
     }
 }

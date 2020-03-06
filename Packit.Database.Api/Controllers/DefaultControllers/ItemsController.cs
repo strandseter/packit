@@ -7,19 +7,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
+using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : ControllerBase
+    public class ItemsController : Abstractions.ApiController
     {
-        private readonly PackitContext _context;
-
         public ItemsController(PackitContext context)
+            :base(context)
         {
-            _context = context;
         }
 
         // GET: api/Items
@@ -38,7 +37,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Items.FindAsync(id);
+            var item = await _context.Items.FindAsync(id).ConfigureAwait(false);
 
             if (item == null)
             {
@@ -57,7 +56,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != item.ItemId)
+            if (id != item?.ItemId)
             {
                 return BadRequest();
             }
@@ -66,7 +65,7 @@ namespace Packit.Database.Api.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(false);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -93,9 +92,9 @@ namespace Packit.Database.Api.Controllers
             }
 
             _context.Items.Add(item);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
-            return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
+            return CreatedAtAction("GetItem", new { id = item?.ItemId }, item);
         }
 
         // DELETE: api/Items/5
@@ -107,14 +106,14 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Items.FindAsync(id);
+            var item = await _context.Items.FindAsync(id).ConfigureAwait(false);
             if (item == null)
             {
                 return NotFound();
             }
 
             _context.Items.Remove(item);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return Ok(item);
         }
@@ -123,49 +122,12 @@ namespace Packit.Database.Api.Controllers
         [HttpPut("{itemId}/backpacks/{backpackId}")]
         public Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
         {
-            return AddManyToMany<ItemBackpack>(itemId, backpackId, _context.ItemBackpack, "GetItemBackpack");
+            return AddManyToMany(itemId, backpackId, _context.ItemBackpack, "GetItemBackpack");
         }
 
-        private async Task<IActionResult> AddManyToMany<T>(int id1, int id2, DbSet<T> list, string message) where T : class, IManyToManyJoinable
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var obj = (T)Activator.CreateInstance(typeof(T));
-
-            obj.Id1(id1);
-            obj.Id2(id2);
-
-            list.Add(obj);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(message, new { id1, id2 }, obj);
-        }
-
-
-        private bool ItemExists(int id)
+        private bool ItemExists(int id) //Abstract this
         {
             return _context.Items.Any(e => e.ItemId == id);
-        }
-
-        private bool ItemBackpackExists(int itemId, int backpackId)
-        {
-            return _context.ItemBackpack.Any(ib => ib.ItemId == itemId && ib.BackpackId == backpackId);
-        }
-
-        private void Gsdjkfh()
-        {
-            //if (!ModelState.IsValid)
-            //    return BadRequest(ModelState);
-
-            //if (ItemBackpackExists(itemId, backpackId))
-            //    return NoContent();
-
-            //var itemBackpack = new ItemBackpack() { ItemId = itemId, BackpackId = backpackId };
-            //_context.ItemBackpack.Add(itemBackpack);
-            //await _context.SaveChangesAsync();
-
-            //return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
         }
     }
 }

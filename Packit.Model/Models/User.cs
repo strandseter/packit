@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class User
+    public class User : IDatabaseExistable
     {
         public int UserId { get; set; }
         public string FirstName { get; set; }
@@ -33,6 +33,11 @@ namespace Packit.Model
         public override string ToString()
         {
             return $"{FirstName} {LastName}, {UserId}";
+        }
+
+        public int Id()
+        {
+            return UserId;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class Trip : BaseInformation
+    public class Trip : BaseInformation, IDatabaseExistable
     {
         public int TripId { get; set; }
         public string Destination { get; set; }
@@ -22,6 +22,11 @@ namespace Packit.Model
         public override string ToString()
         {
             return $"{Title}, ";
+        }
+
+        public int Id()
+        {
+            return TripId;
         }
     }
 }

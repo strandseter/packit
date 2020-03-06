@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Packit.Model
 {
-    public class Item : BaseInformation
+    public class Item : BaseInformation, IDatabaseExistable
     {
         public int ItemId { get; set; }
         public virtual ICollection<ItemBackpack> Backpacks { get; }
@@ -19,6 +19,11 @@ namespace Packit.Model
         public override string ToString()
         {
             return $"{Title} {ItemId}";
+        }
+
+        public int Id()
+        {
+            return ItemId;
         }
     }
 }
