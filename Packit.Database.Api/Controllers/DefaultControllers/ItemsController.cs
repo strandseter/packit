@@ -14,7 +14,7 @@ namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : Abstractions.ApiController
+    public class ItemsController : ApiController
     {
         public ItemsController(PackitContext context)
             :base(context)

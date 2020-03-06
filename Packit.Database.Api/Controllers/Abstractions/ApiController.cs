@@ -11,7 +11,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
 {
     public abstract class ApiController : ControllerBase
     {
-        protected readonly PackitContext _context;
+        protected readonly PackitContext _context; //???
 
         public ApiController(PackitContext context)
         {
@@ -31,7 +31,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
             obj.Id1(id1);
             obj.Id2(id2);
 
-            dbset.Add(obj);
+            dbset?.Add(obj);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return CreatedAtAction(message, new { id1, id2 }, obj);
