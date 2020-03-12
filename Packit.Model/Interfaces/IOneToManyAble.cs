@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public interface IDatabaseExistable
+    public interface IOneToManyAble
     {
         int Id();
     }

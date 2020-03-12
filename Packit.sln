@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Packit.Gui.Core", "Packit.G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Packit.Image.Api", "Packit.Image.Api\Packit.Image.Api.csproj", "{5F8D57A4-CED9-4086-8BFB-E22684F0A392}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packit.Database.Api.v2", "Packit.Database.Api.v2\Packit.Database.Api.v2.csproj", "{D32A5C42-B2D7-412D-83F1-E76193793EF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -275,6 +277,26 @@ Global
 		{5F8D57A4-CED9-4086-8BFB-E22684F0A392}.Release|x64.Build.0 = Release|Any CPU
 		{5F8D57A4-CED9-4086-8BFB-E22684F0A392}.Release|x86.ActiveCfg = Release|Any CPU
 		{5F8D57A4-CED9-4086-8BFB-E22684F0A392}.Release|x86.Build.0 = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|x64.Build.0 = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Debug|x86.Build.0 = Debug|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|ARM.Build.0 = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|ARM64.Build.0 = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|x64.ActiveCfg = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|x64.Build.0 = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|x86.ActiveCfg = Release|Any CPU
+		{D32A5C42-B2D7-412D-83F1-E76193793EF9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

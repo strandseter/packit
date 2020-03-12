@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class User : IDatabaseExistable
+    public class User : IOneToManyAble
     {
         public int UserId { get; set; }
+        public string IdentityId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
@@ -16,7 +17,14 @@ namespace Packit.Model
         public virtual ICollection<Backpack> Backpacks { get;}
         public virtual ICollection<Trip> Trips { get; }
 
-        public User() { }
+        public User() 
+        {
+            Items = new List<Item>();
+            Backpacks = new List<Backpack>();
+            Trips = new List<Trip>();
+
+            IdentityId = Guid.NewGuid().ToString();
+        }
 
         public User(string firstName, string lastName, DateTime dateOfBirth, string email, string hashedPassword)
         {

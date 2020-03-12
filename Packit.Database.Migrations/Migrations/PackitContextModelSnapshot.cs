@@ -145,6 +145,8 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("HashedPassword");
 
+                    b.Property<string>("IdentityId");
+
                     b.Property<string>("LastName");
 
                     b.HasKey("UserId");

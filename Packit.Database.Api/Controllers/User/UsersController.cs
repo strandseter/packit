@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
+using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ApiController
     {
-        private readonly PackitContext _context;
-
         public UsersController(PackitContext context)
-        {
-            _context = context;
-        }
+            : base(context) { }
 
         // GET: api/Users
         [HttpGet]
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users;
+            return Context.Users;
         }
 
         // GET: api/Users/5
@@ -37,7 +36,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await Context.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -61,11 +60,11 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            Context.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -90,8 +89,13 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            //var tokenhandler = new JwtSecurityTokenHandler();
+            //var key = Encoding.ASCII.GetBytes()
+
+            Context.Users.Add(user);
+            await Context.SaveChangesAsync();
+
+            //var token = tokenHandler.Create
 
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
@@ -105,21 +109,21 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await Context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            Context.Users.Remove(user);
+            await Context.SaveChangesAsync();
 
             return Ok(user);
         }
 
         private bool UserExists(int id)
         {
-            return _context.Users.Any(e => e.UserId == id);
+            return Context.Users.Any(e => e.UserId == id);
         }
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
@@ -20,6 +21,10 @@
     <ProjectReference Include="..\Packit.DataAccess\Packit.DataAccess.csproj" />
     <ProjectReference Include="..\Packit.Database.Migrations\Packit.Database.Migrations.csproj" />
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Authentication\" />
   </ItemGroup>
 
 </Project>

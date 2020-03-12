@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
+using System.Web.Http.Filters;
 
 namespace Packit.Database.Api.Controllers
 {
@@ -25,7 +26,22 @@ namespace Packit.Database.Api.Controllers
         [HttpGet]
         public IEnumerable<Item> GetItem()
         {
-            return _context.Items;
+            return Context.Items;
+        }
+
+
+        [HttpGet]
+        [Route("User/{id}")]
+        public IEnumerable<Item> GetUserItems([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+                BadRequest(ModelState);
+
+            var useritems = Context.Users.FirstOrDefault(u => u.UserId == id)?.Items;
+
+            var items = Context.Items.Where(i => i.User.UserId == id);
+
+            return items;
         }
 
         // GET: api/Items/5
@@ -37,7 +53,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Items.FindAsync(id).ConfigureAwait(false);
+            var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
 
             if (item == null)
             {
@@ -61,11 +77,11 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(item).State = EntityState.Modified;
+            Context.Entry(item).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                await Context.SaveChangesAsync().ConfigureAwait(false);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -91,8 +107,8 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Items.Add(item);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            Context.Items.Add(item);
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return CreatedAtAction("GetItem", new { id = item?.ItemId }, item);
         }
@@ -106,28 +122,29 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _context.Items.FindAsync(id).ConfigureAwait(false);
+            var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
             if (item == null)
             {
                 return NotFound();
             }
 
-            _context.Items.Remove(item);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            Context.Items.Remove(item);
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return Ok(item);
         }
 
+
         // PUT: api/items/1/backpacks/2
         [HttpPut("{itemId}/backpacks/{backpackId}")]
-        public Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
+        public async Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
         {
-            return AddManyToMany(itemId, backpackId, _context.ItemBackpack, "GetItemBackpack");
+            return await AddManyToMany(itemId, backpackId, Context.ItemBackpack, "GetItemBackpack").ConfigureAwait(false);
         }
 
         private bool ItemExists(int id) //Abstract this
         {
-            return _context.Items.Any(e => e.ItemId == id);
+            return Context.Items.Any(e => e.ItemId == id);
         }
     }
 }

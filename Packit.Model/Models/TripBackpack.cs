@@ -11,22 +11,22 @@ namespace Packit.Model
         public virtual int TripId { get; set; }
         public virtual Trip Trip { get; set; }
 
-        public void Id1(int id)
+        public void SetLeftId(int id)
         {
             BackpackId = id;
         }
 
-        public void Id2(int id)
+        public void SetRightId(int id)
         {
             TripId = id;
         }
 
-        public int Id1()
+        public int GetLeftId()
         {
             return BackpackId;
         }
 
-        public int Id2()
+        public int GetRightId()
         {
             return TripId;
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class SharedBackpack : IDatabaseExistable
+    public class SharedBackpack : IOneToManyAble
     {
         public int SharedBackpackId { get; set; }
         public Backpack Backpack { get; set; }

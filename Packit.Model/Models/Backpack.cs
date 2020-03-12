@@ -4,13 +4,17 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class Backpack : BaseInformation, IDatabaseExistable
+    public class Backpack : BaseInformation, IOneToManyAble
     {
         public int BackpackId { get; set; }
         public virtual ICollection<ItemBackpack> Items { get;}
         public virtual ICollection<BackpackTrip> Trips { get; }
 
-        public Backpack() { }
+        public Backpack() 
+        {
+            Items = new List<ItemBackpack>();
+            Trips = new List<BackpackTrip>();
+        }
 
         public Backpack(string title, string description, string imageStringName, User user)
             : base(title, description, imageStringName, user)

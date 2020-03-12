@@ -6,26 +6,25 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
+using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BackpacksController : ControllerBase
+    public class BackpacksController : ApiController
     {
-        private readonly PackitContext _context;
-
         public BackpacksController(PackitContext context)
+            :base(context)
         {
-            _context = context;
         }
 
         // GET: api/Backpacks
         [HttpGet]
         public IEnumerable<Backpack> GetBackpacks()
         {
-            return _context.Backpacks;
+            return Context.Backpacks;
         }
 
         // GET: api/Backpacks/5
@@ -37,7 +36,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var backpack = await _context.Backpacks.FindAsync(id);
+            var backpack = await Context.Backpacks.FindAsync(id).ConfigureAwait(false);
 
             if (backpack == null)
             {
@@ -61,11 +60,11 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(backpack).State = EntityState.Modified;
+            Context.Entry(backpack).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync().ConfigureAwait(false);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -91,8 +90,8 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Backpacks.Add(backpack);
-            await _context.SaveChangesAsync();
+            Context.Backpacks.Add(backpack);
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return CreatedAtAction("GetBackpack", new { id = backpack.BackpackId }, backpack);
         }
@@ -106,21 +105,31 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var backpack = await _context.Backpacks.FindAsync(id);
+            var backpack = await Context.Backpacks.FindAsync(id).ConfigureAwait(false);
             if (backpack == null)
             {
                 return NotFound();
             }
 
-            _context.Backpacks.Remove(backpack);
-            await _context.SaveChangesAsync();
+            Context.Backpacks.Remove(backpack);
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return Ok(backpack);
         }
 
+        // GET: api/Backpacks/5/items
+        [HttpGet("{id}/items")]
+        public async Task<IActionResult> QueryItemsInBackpack<T>([FromRoute] int id)
+        {
+            var items = Context.Items.Include(i => i).Where(i => i.ItemId == id);
+
+            return Ok(items);
+        }
+
+
         private bool BackpackExists(int id)
         {
-            return _context.Backpacks.Any(e => e.BackpackId == id);
+            return Context.Backpacks.Any(e => e.BackpackId == id);
         }
     }
 }
