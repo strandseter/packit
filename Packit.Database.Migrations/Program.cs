@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Model;
+using System;
 using System.Linq;
 
 namespace Packit.Database.Migrations
@@ -10,9 +11,10 @@ namespace Packit.Database.Migrations
         static void Main()
         {
 
-            RefreshData();
+            //RefreshData();
             //GenerateData();
             //DeleteAll();
+            QueryUserItems();
         }
 
         public static void GenerateData()
@@ -79,6 +81,20 @@ namespace Packit.Database.Migrations
                 db.SaveChanges();
             }
         }
+
+        public static void QueryUserItems()
+        {
+            using (var db = new PackitContext())
+            {
+                var user = db.Users.FirstOrDefault(u => u.UserId == 18);
+
+                var items = db.Items.Where(i => i.user == user);
+
+                foreach (Item item in items)
+                    Console.WriteLine(item);
+            }
+        }
+
 
         public static void DeleteAll()
         {

@@ -33,7 +33,9 @@ namespace Packit.Database.Api.Controllers
         [Route("user/{id}")]
         public IEnumerable<Item>GetUserItems([FromRoute] string id)
         {
-            var items = Context.Users.FirstOrDefault(u => u.IdentityId == id)?.Items;
+            var user = Context.Users.FirstOrDefault(u => u.UserId == 18);
+
+            var items = Context.Items.Where(i => i.user == user);
 
             return items;
         }
