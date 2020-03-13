@@ -37,6 +37,7 @@ namespace Packit.DataAccess
         {
             ConfigureManyToManyItemBackpack(modelBuilder);
             ConfigureManyToManyBackpackTrip(modelBuilder);
+            //ConfigureOneToOneBackpackSharedBackpack(modelBuilder);
             //ConfigureOneToManyUserItems(modelBuilder);
             //ConfigureOneToManyUserBackpacks(modelBuilder);
             //ConfigureOneToManyUserTrips(modelBuilder);
@@ -70,6 +71,13 @@ namespace Packit.DataAccess
                 .HasForeignKey(bt => bt.TripId);
         }
 
+        //private void ConfigureOneToOneBackpackSharedBackpack(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Backpack>()
+        //        .HasOne(b => b.SharedBackpack)
+        //        .WithOne(s => s.Backpack)
+        //        .HasForeignKey<SharedBackpack>(s => s.Backpack);
+        //}
         //private void ConfigureOneToManyUserItems(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<User>()

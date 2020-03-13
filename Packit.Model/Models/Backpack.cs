@@ -7,6 +7,7 @@ namespace Packit.Model
     public class Backpack : BaseInformation, IOneToManyAble
     {
         public int BackpackId { get; set; }
+        public SharedBackpack SharedBackpack { get; set; }
         public virtual ICollection<ItemBackpack> Items { get; set; }
         public virtual ICollection<BackpackTrip> Trips { get; set; }
 
