@@ -73,6 +73,9 @@ namespace Packit.Database.Migrations
                 var bt3 = new BackpackTrip { BackpackId = backpack3.BackpackId, TripId = trip2.TripId };
                 db.BackpackTrip.AddRange(bt1, bt2, bt3);
 
+                var sb = new SharedBackpack { Backpack = backpack1};
+                db.Add(sb);
+
                 db.SaveChanges();
             }
         }
