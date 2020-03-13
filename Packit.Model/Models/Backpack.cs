@@ -8,6 +8,7 @@ namespace Packit.Model
     {
         public int BackpackId { get; set; }
         public SharedBackpack SharedBackpack { get; set; }
+        public User User { get; set; }
         public virtual ICollection<ItemBackpack> Items { get; set; }
         public virtual ICollection<BackpackTrip> Trips { get; set; }
 

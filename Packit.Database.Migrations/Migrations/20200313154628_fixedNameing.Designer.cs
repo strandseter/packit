@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Packit.DataAccess;
 
 namespace Packit.Database.Migrations.Migrations
 {
     [DbContext(typeof(PackitContext))]
-    partial class PackitContextModelSnapshot : ModelSnapshot
+    [Migration("20200313154628_fixedNameing")]
+    partial class fixedNameing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +155,7 @@ namespace Packit.Database.Migrations.Migrations
 
             modelBuilder.Entity("Packit.Model.Backpack", b =>
                 {
-                    b.HasOne("Packit.Model.User", "User")
+                    b.HasOne("Packit.Model.User")
                         .WithMany("Backpacks")
                         .HasForeignKey("UserId");
                 });
@@ -201,7 +203,7 @@ namespace Packit.Database.Migrations.Migrations
 
             modelBuilder.Entity("Packit.Model.Trip", b =>
                 {
-                    b.HasOne("Packit.Model.User", "user")
+                    b.HasOne("Packit.Model.User")
                         .WithMany("Trips")
                         .HasForeignKey("UserId");
                 });

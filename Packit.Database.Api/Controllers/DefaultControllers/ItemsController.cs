@@ -31,13 +31,11 @@ namespace Packit.Database.Api.Controllers
 
         [HttpGet]
         [Route("user/{id}")]
-        public IEnumerable<Item>GetUserItems([FromRoute] string id)
+        public async Task<IEnumerable<Item>> GetUserItems([FromRoute] string id)
         {
-            var user = Context.Users.FirstOrDefault(u => u.UserId == 18);
+            var itemsQuery = Context.Items.Where(i => i.User.IdentityId == id);
 
-            var items = Context.Items.Where(i => i.user == user);
-
-            return items;
+            return await itemsQuery.ToListAsync().ConfigureAwait(false);
         }
 
         // GET: api/Items/5

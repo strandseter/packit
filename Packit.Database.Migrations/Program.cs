@@ -11,10 +11,10 @@ namespace Packit.Database.Migrations
         static void Main()
         {
 
-            //RefreshData();
+            RefreshData();
             //GenerateData();
             //DeleteAll();
-            QueryUserItems();
+            //QueryUserItems();
         }
 
         public static void GenerateData()
@@ -88,7 +88,7 @@ namespace Packit.Database.Migrations
             {
                 var user = db.Users.FirstOrDefault(u => u.UserId == 18);
 
-                var items = db.Items.Where(i => i.user == user);
+                var items = db.Items.Where(i => i.User == user);
 
                 foreach (Item item in items)
                     Console.WriteLine(item);
