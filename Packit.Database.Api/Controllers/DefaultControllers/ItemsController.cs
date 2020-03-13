@@ -29,17 +29,11 @@ namespace Packit.Database.Api.Controllers
             return Context.Items;
         }
 
-
         [HttpGet]
-        [Route("User/{id}")]
-        public IEnumerable<Item> GetUserItems([FromRoute] int id)
+        [Route("user/{id}")]
+        public IEnumerable<Item>GetUserItems([FromRoute] string id)
         {
-            if (!ModelState.IsValid)
-                BadRequest(ModelState);
-
-            var useritems = Context.Users.FirstOrDefault(u => u.UserId == id)?.Items;
-
-            var items = Context.Items.Where(i => i.User.UserId == id);
+            var items = Context.Users.FirstOrDefault(u => u.IdentityId == id)?.Items;
 
             return items;
         }

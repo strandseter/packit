@@ -119,13 +119,19 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Backpacks/5/items
         [HttpGet("{id}/items")]
-        public async Task<IActionResult> QueryItemsInBackpack<T>([FromRoute] int id)
+        public  IEnumerable<Item> QueryItemsInBackpack<T>([FromRoute] int id)
         {
             var items = Context.Items.Include(i => i).Where(i => i.ItemId == id);
 
-            return Ok(items);
+            return items;
         }
 
+        //// PUT: api/items/1/backpacks/2
+        //[HttpPut("{itemId}/backpacks/{backpackId}")]
+        //public async Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
+        //{
+        //    return await AddManyToMany(itemId, backpackId, Context.ItemBackpack, "GetItemBackpack").ConfigureAwait(false);
+        //}
 
         private bool BackpackExists(int id)
         {

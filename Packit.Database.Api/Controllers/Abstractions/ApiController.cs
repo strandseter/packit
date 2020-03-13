@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Model;
+using Packit.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +40,19 @@ namespace Packit.Database.Api.Controllers.Abstractions
             return CreatedAtAction(message, new { left, right }, obj);
         }
 
-
-
-        //public async Task<IActionResult> QueryOneToMany<T>(int id, DbSet<T> dbset) where T : class
+        //Not working
+        //protected IEnumerable<T1> GetOneToMany<T1, T2>(string id, DbSet<T1> dbset1, DbSet<T2> dbset2) where T1 : class, IManyTable  where T2 : class, IOneTable
         //{
+        //    if (!ModelState.IsValid)
+        //        BadRequest(ModelState);
 
-        //    return Ok();
+        //    //var one = dbset2.Where(o => o.GetIdentityId() == id).FirstOrDefault();
+
+        //    //var test = dbset2;
+
+        //    var many = dbset1.Where(i => i.GetForeignObject().GetIdentityId() == id);
+
+        //    return many;
         //}
 
         private bool ObjRelationExists<T>(int id1, int id2, DbSet<T> dbset) where T : class, IManyToManyAble

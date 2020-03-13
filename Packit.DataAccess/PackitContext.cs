@@ -37,9 +37,9 @@ namespace Packit.DataAccess
         {
             ConfigureManyToManyItemBackpack(modelBuilder);
             ConfigureManyToManyBackpackTrip(modelBuilder);
-            ConfigureOneToManyUserItems(modelBuilder);
-            ConfigureOneToManyUserBackpacks(modelBuilder);
-            ConfigureOneToManyUserTrips(modelBuilder);
+            //ConfigureOneToManyUserItems(modelBuilder);
+            //ConfigureOneToManyUserBackpacks(modelBuilder);
+            //ConfigureOneToManyUserTrips(modelBuilder);
         }
 
         private void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
@@ -70,25 +70,25 @@ namespace Packit.DataAccess
                 .HasForeignKey(bt => bt.TripId);
         }
 
-        private void ConfigureOneToManyUserItems(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Items)
-                .WithOne(i => i.User);
-        }
+        //private void ConfigureOneToManyUserItems(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<User>()
+        //        .HasMany(u => u.Items)
+        //        .WithOne(i => i.User);
+        //}
 
-        private void ConfigureOneToManyUserBackpacks(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Backpacks)
-                .WithOne(b => b.User);
-        }
+        //private void ConfigureOneToManyUserBackpacks(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<User>()
+        //        .HasMany(u => u.Backpacks)
+        //        .WithOne(b => b.User);
+        //}
 
-        private void ConfigureOneToManyUserTrips(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Trips)
-                .WithOne(t => t.User);
-        }
+        //private void ConfigureOneToManyUserTrips(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<User>()
+        //        .HasMany(u => u.Trips)
+        //        .WithOne(t => t.User);
+        //}
     }
 }

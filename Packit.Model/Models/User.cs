@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Packit.Model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Packit.Model
 {
-    public class User : IOneToManyAble
+    public class User : IOneTable
     {
         public int UserId { get; set; }
         public string IdentityId { get; set; }
@@ -13,16 +14,12 @@ namespace Packit.Model
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public string HashedPassword { get; set; }
-        public virtual ICollection<Item> Items { get;}
-        public virtual ICollection<Backpack> Backpacks { get;}
-        public virtual ICollection<Trip> Trips { get; }
+        public virtual ICollection<Item> Items { get; set; }
+        public virtual ICollection<Backpack> Backpacks { get; set; }
+        public virtual ICollection<Trip> Trips { get; set; }
 
         public User() 
         {
-            Items = new List<Item>();
-            Backpacks = new List<Backpack>();
-            Trips = new List<Trip>();
-
             IdentityId = Guid.NewGuid().ToString();
         }
 
@@ -33,9 +30,6 @@ namespace Packit.Model
             DateOfBirth = dateOfBirth;
             Email = email;
             HashedPassword = hashedPassword;
-            Items = new List<Item>();
-            Backpacks = new List<Backpack>();
-            Trips = new List<Trip>();
         }
 
         public override string ToString()
@@ -43,7 +37,12 @@ namespace Packit.Model
             return $"{FirstName} {LastName}, {UserId}";
         }
 
-        public int Id()
+        public string GetIdentityId()
+        {
+            return IdentityId;
+        }
+
+        public int GetPrimaryId()
         {
             return UserId;
         }

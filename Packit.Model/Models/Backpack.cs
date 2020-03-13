@@ -12,15 +12,11 @@ namespace Packit.Model
 
         public Backpack() 
         {
-            Items = new List<ItemBackpack>();
-            Trips = new List<BackpackTrip>();
         }
 
-        public Backpack(string title, string description, string imageStringName, User user)
-            : base(title, description, imageStringName, user)
+        public Backpack(string title, string description, string imageStringName)
+            : base(title, description, imageStringName)
         {
-            Items = new List<ItemBackpack>();
-            Trips = new List<BackpackTrip>();
         }
         public override string ToString()
         {

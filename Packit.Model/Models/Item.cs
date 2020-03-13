@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Packit.Model.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace Packit.Model
 {
-    public class Item : BaseInformation, IOneToManyAble
+    public class Item : BaseInformation, IManyTable
     {
         public int ItemId { get; set; }
         public virtual ICollection<ItemBackpack> Backpacks { get; }
@@ -13,8 +14,8 @@ namespace Packit.Model
             Backpacks = new List<ItemBackpack>();
         }
 
-        public Item(string title, string description, string imageStringName, User user)
-            :base(title, description, imageStringName, user)
+        public Item(string title, string description, string imageStringName)
+            :base(title, description, imageStringName)
         {
             Backpacks = new List<ItemBackpack>();
         }
@@ -27,6 +28,11 @@ namespace Packit.Model
         public int Id()
         {
             return ItemId;
+        }
+
+        public IOneTable GetForeignObject()
+        {
+            return null;
         }
     }
 }
