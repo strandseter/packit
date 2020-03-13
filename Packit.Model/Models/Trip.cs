@@ -9,7 +9,7 @@ namespace Packit.Model
         public int TripId { get; set; }
         public string Destination { get; set; }
         public DateTime DepatureDate { get; set; }
-        public virtual ICollection<BackpackTrip> Backpacks { get;}
+        public virtual ICollection<BackpackTrip> Backpacks { get; set; }
 
         public Trip() 
         {

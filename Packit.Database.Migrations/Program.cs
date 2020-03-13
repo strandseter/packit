@@ -9,18 +9,9 @@ namespace Packit.Database.Migrations
     {
         static void Main()
         {
-   
-            //using (var db = new PackitContext())
-            //{
-            //    var user = new User() { FirstName = "aaaa", LastName = "sdsdf", DateOfBirth = new System.DateTime(), Email = "and.strands@gmail.com", HashedPassword = "sddsfsdf" };
 
-            //    db.Users.Add(user);
-
-            //    db.Items.Add(new Item() { Title = "222", Description = "dfdfsddsfsdfsdfsdf", ImageStringName = "sdfdsff", User = user });
-
-            //    db.SaveChanges();
-            //}
-
+            RefreshData();
+            //GenerateData();
             //DeleteAll();
         }
 
@@ -47,15 +38,42 @@ namespace Packit.Database.Migrations
                 user1.Items.Add(item1);
                 user1.Items.Add(item2);
                 user1.Items.Add(item3);
-
-
-                //user2.Items.Add()
+                user2.Items.Add(item4);
+                user2.Items.Add(item5);
+                user2.Items.Add(item6);
+                user2.Items.Add(item7);
+                user2.Items.Add(item8);
+                user2.Items.Add(item9);
 
                 var backpack1 = new Backpack { Title = "Home", Description = "Using this backpack when going home", ImageStringName = "image.png"};
                 var backpack2 = new Backpack { Title = "Cottage", Description = "Using this backpack when going to my cottage", ImageStringName = "image.png"};
+                var backpack3 = new Backpack { Title = "Beach", Description = "Using this backpack when going to the beach", ImageStringName = "image.png"};
+                db.Backpacks.AddRange(backpack1, backpack2, backpack3);
 
-                var itembackpack1 = new ItemBackpack { ItemId = item1.ItemId, BackpackId = backpack1.BackpackId };
-               
+                user1.Backpacks.Add(backpack1);
+                user1.Backpacks.Add(backpack2);
+                user2.Backpacks.Add(backpack3);
+
+                var trip1 = new Trip { Title = "Summer vacation", Description = "My summer vactaion", ImageStringName = "image.png" };
+                var trip2 = new Trip { Title = "Winter vacation", Description = "My winter vactaion", ImageStringName = "image.png" };
+                var trip3 = new Trip { Title = "Easter vacation", Description = "My easter vactaion", ImageStringName = "image.png" };
+                db.Trips.AddRange(trip1, trip2, trip3);
+
+                user1.Trips.Add(trip1);
+                user2.Trips.Add(trip2);
+                user2.Trips.Add(trip3);
+
+                var ib1 = new ItemBackpack { ItemId = item1.ItemId, BackpackId = backpack1.BackpackId };
+                var ib2 = new ItemBackpack { ItemId = item2.ItemId, BackpackId = backpack1.BackpackId };
+                var ib3 = new ItemBackpack { ItemId = item4.ItemId, BackpackId = backpack3.BackpackId };
+                db.ItemBackpack.AddRange(ib1, ib2, ib3);
+
+                var bt1 = new BackpackTrip { BackpackId = backpack1.BackpackId, TripId = trip1.TripId };
+                var bt2 = new BackpackTrip { BackpackId = backpack2.BackpackId, TripId = trip1.TripId };
+                var bt3 = new BackpackTrip { BackpackId = backpack3.BackpackId, TripId = trip2.TripId };
+                db.BackpackTrip.AddRange(bt1, bt2, bt3);
+
+                db.SaveChanges();
             }
         }
 
@@ -81,6 +99,12 @@ namespace Packit.Database.Migrations
 
                 db.SaveChanges();
             }
+        }
+
+        public static void RefreshData()
+        {
+            DeleteAll();
+            GenerateData();
         }
     }
 }

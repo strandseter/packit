@@ -20,6 +20,10 @@ namespace Packit.Model
 
         public User() 
         {
+            Items = new List<Item>();
+            Backpacks = new List<Backpack>();
+            Trips = new List<Trip>();
+
             IdentityId = Guid.NewGuid().ToString();
         }
 
@@ -30,6 +34,9 @@ namespace Packit.Model
             DateOfBirth = dateOfBirth;
             Email = email;
             HashedPassword = hashedPassword;
+            Items = new List<Item>();
+            Backpacks = new List<Backpack>();
+            Trips = new List<Trip>();
         }
 
         public override string ToString()
