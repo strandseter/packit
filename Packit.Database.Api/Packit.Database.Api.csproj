@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Authentication\" />
-  </ItemGroup>
-
 </Project>

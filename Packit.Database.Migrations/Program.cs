@@ -21,10 +21,11 @@ namespace Packit.Database.Migrations
         {
             using (var db = new PackitContext())
             {
+                var admin = new User { FirstName = "admin", LastName = "admin", DateOfBirth = new System.DateTime(), Email = "admin", HashedPassword = "admin" };
                 var user1 = new User { FirstName = "Anders", LastName = "Strandseter", DateOfBirth = new System.DateTime(), Email = "and.strands@gmail.com", HashedPassword = "dffgdfgghrtyurtgffdg" };
                 var user2 = new User { FirstName = "Ola", LastName = "Nordmann", DateOfBirth = new System.DateTime(), Email = "ola.nor@gmail.com", HashedPassword = "fghfghfjtrydfgdfgsdsf" };
                 var user3 = new User { FirstName = "Kari", LastName = "Nordmann", DateOfBirth = new System.DateTime(), Email = "kari.nor@gmail.com", HashedPassword = "dfgdfhdfhthdfgdsfgregrethfdg" };
-                db.Users.AddRange(user1, user2, user3);
+                db.Users.AddRange(user1, user2, user3, admin);
 
                 var item1 = new Item { Title = "Phonecharger", Description = "This is a phonecharger", ImageStringName = "image.png"};
                 var item2 = new Item { Title = "Jacket", Description = "This is a jacket", ImageStringName = "image.png"};

@@ -8,12 +8,12 @@ namespace Packit.Model
     public class User : IOneTable
     {
         public int UserId { get; set; }
-        public string IdentityId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public string HashedPassword { get; set; }
+        public string JwtToken { get; set; }
         public virtual ICollection<Item> Items { get; set; }
         public virtual ICollection<Backpack> Backpacks { get; set; }
         public virtual ICollection<Trip> Trips { get; set; }
@@ -23,8 +23,6 @@ namespace Packit.Model
             Items = new List<Item>();
             Backpacks = new List<Backpack>();
             Trips = new List<Trip>();
-
-            IdentityId = Guid.NewGuid().ToString();
         }
 
         public User(string firstName, string lastName, DateTime dateOfBirth, string email, string hashedPassword)
@@ -46,7 +44,7 @@ namespace Packit.Model
 
         public string GetIdentityId()
         {
-            return IdentityId;
+            return JwtToken;
         }
 
         public int GetPrimaryId()

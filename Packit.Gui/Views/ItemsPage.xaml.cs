@@ -38,13 +38,13 @@ namespace Packit.Gui.Views
 
         private  void ItemPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var user = new User();
-            ObservableCollection<Item> items = new ObservableCollection<Item>();
-            items.Add(new Item("Test", "test", "test", user));
-            items.Add(new Item("Test", "test", "test", user));
-            items.Add(new Item("Test", "test", "test", user));
-            items.Add(new Item("Test", "test", "test", user));
-            items.Add(new Item("Test", "test", "test", user));
+            //var user = new User();
+            //ObservableCollection<Item> items = new ObservableCollection<Item>();
+            //items.Add(new Item("Test", "test", "test", user));
+            //items.Add(new Item("Test", "test", "test", user));
+            //items.Add(new Item("Test", "test", "test", user));
+            //items.Add(new Item("Test", "test", "test", user));
+            //items.Add(new Item("Test", "test", "test", user));
 
             //await LoadItems().ConfigureAwait(true);
 

@@ -3,22 +3,42 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
+using Packit.Database.Api.Authentication;
 using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ApiController
     {
-        public UsersController(PackitContext context)
-            : base(context) { }
+        private IUserService AuthenticationService;
+
+        public UsersController(PackitContext context, IUserService authenticationService)
+            : base(context) 
+        {
+            AuthenticationService = authenticationService;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody]User userInput)
+        {
+            var user = AuthenticationService.Authenticate(userInput.Email, userInput.HashedPassword);
+
+            if (user == null)
+                return BadRequest(); //TODO: Better message
+
+            return Ok(user);
+        }
 
         // GET: api/Users
         [HttpGet]

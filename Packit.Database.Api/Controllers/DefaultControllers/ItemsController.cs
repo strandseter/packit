@@ -31,9 +31,9 @@ namespace Packit.Database.Api.Controllers
 
         [HttpGet]
         [Route("user/{id}")]
-        public async Task<IEnumerable<Item>> GetUserItems([FromRoute] string id)
+        public async Task<IEnumerable<Item>> GetUserItems([FromRoute] string token)
         {
-            var itemsQuery = Context.Items.Where(i => i.User.IdentityId == id);
+            var itemsQuery = Context.Items.Where(i => i.User.JwtToken == token);
 
             return await itemsQuery.ToListAsync().ConfigureAwait(false);
         }
