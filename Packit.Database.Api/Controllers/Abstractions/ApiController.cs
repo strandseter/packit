@@ -20,7 +20,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
     public abstract class PackitApiController : ControllerBase
     {
         protected PackitContext Context { get; set; } //???
-        protected  string Token { get; set; }
+        protected string Token { get; set; }
         protected IHttpContextAccessor HttpContextAccessor { get; set; }
         protected IAuthenticationService AuthenticationService { get; set; } //???
 
