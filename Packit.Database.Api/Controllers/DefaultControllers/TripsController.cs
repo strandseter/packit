@@ -2,30 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
+using Packit.Database.Api.Authentication;
+using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TripsController : ControllerBase
+    public class TripsController : PackitApiController
     {
-        private readonly PackitContext _context;
-
-        public TripsController(PackitContext context)
+        public TripsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+            :base(context, authenticationService, httpContextAccessor)
         {
-            _context = context;
         }
 
         // GET: api/Trips
         [HttpGet]
         public IEnumerable<Trip> GetTrips()
         {
-            return _context.Trips;
+            return Context.Trips;
         }
 
         // GET: api/Trips/5
@@ -37,7 +39,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await Context.Trips.FindAsync(id).ConfigureAwait(false);
 
             if (trip == null)
             {
@@ -56,16 +58,16 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != trip.TripId)
+            if (id != trip?.TripId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(trip).State = EntityState.Modified;
+            Context.Entry(trip).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync().ConfigureAwait(false);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -91,10 +93,10 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Trips.Add(trip);
-            await _context.SaveChangesAsync();
+            Context.Trips.Add(trip);
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
-            return CreatedAtAction("GetTrip", new { id = trip.TripId }, trip);
+            return CreatedAtAction("GetTrip", new { id = trip?.TripId }, trip);
         }
 
         // DELETE: api/Trips/5
@@ -106,21 +108,21 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await Context.Trips.FindAsync(id).ConfigureAwait(false);
             if (trip == null)
             {
                 return NotFound();
             }
 
-            _context.Trips.Remove(trip);
-            await _context.SaveChangesAsync();
+            Context.Trips.Remove(trip);
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return Ok(trip);
         }
 
         private bool TripExists(int id)
         {
-            return _context.Trips.Any(e => e.TripId == id);
+            return Context.Trips.Any(e => e.TripId == id);
         }
     }
 }

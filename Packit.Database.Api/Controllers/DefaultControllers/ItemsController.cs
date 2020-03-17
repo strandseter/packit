@@ -10,15 +10,18 @@ using Packit.DataAccess;
 using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
 using System.Web.Http.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Packit.Database.Api.Authentication;
+using Microsoft.AspNetCore.Http;
 
 namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : ApiController
+    public class ItemsController : PackitApiController
     {
-        public ItemsController(PackitContext context)
-            :base(context)
+        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+            :base(context, authenticationService, httpContextAccessor)
         {
         }
 
@@ -26,14 +29,14 @@ namespace Packit.Database.Api.Controllers
         [HttpGet]
         public IEnumerable<Item> GetItem()
         {
-            return Context.Items;
+            return Context.Items.Where(i => UserIsAuthorized(i.User));
         }
 
         [HttpGet]
-        [Route("user/{id}")]
-        public async Task<IEnumerable<Item>> GetUserItems([FromRoute] string token)
+        [Route("user")]
+        public async Task<IEnumerable<Item>> GetUserItems()
         {
-            var itemsQuery = Context.Items.Where(i => i.User.JwtToken == token);
+            var itemsQuery = Context.Items.Where(i => UserIsAuthorized(i.User));
 
             return await itemsQuery.ToListAsync().ConfigureAwait(false);
         }
@@ -128,7 +131,6 @@ namespace Packit.Database.Api.Controllers
             return Ok(item);
         }
 
-
         // PUT: api/items/1/backpacks/2
         [HttpPut("{itemId}/backpacks/{backpackId}")]
         public async Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
@@ -136,7 +138,7 @@ namespace Packit.Database.Api.Controllers
             return await AddManyToMany(itemId, backpackId, Context.ItemBackpack, "GetItemBackpack").ConfigureAwait(false);
         }
 
-        private bool ItemExists(int id) //Abstract this
+        private bool ItemExists(int id)
         {
             return Context.Items.Any(e => e.ItemId == id);
         }

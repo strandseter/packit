@@ -15,24 +15,20 @@ using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ApiController
+    public class UsersController : PackitApiController
     {
-        private IUserService AuthenticationService;
-
-        public UsersController(PackitContext context, IUserService authenticationService)
-            : base(context) 
+        public UsersController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+            : base(context, authenticationService, httpContextAccessor) 
         {
-            AuthenticationService = authenticationService;
         }
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]User userInput)
         {
-            var user = AuthenticationService.Authenticate(userInput.Email, userInput.HashedPassword);
+            var user = AuthenticationService.Authenticate(userInput?.Email, userInput?.HashedPassword);
 
             if (user == null)
                 return BadRequest(); //TODO: Better message
@@ -56,7 +52,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await Context.Users.FindAsync(id);
+            var user = await Context.Users.FindAsync(id).ConfigureAwait(false);
 
             if (user == null)
             {
@@ -75,7 +71,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != user.UserId)
+            if (id != user?.UserId)
             {
                 return BadRequest();
             }
@@ -84,7 +80,7 @@ namespace Packit.Database.Api.Controllers
 
             try
             {
-                await Context.SaveChangesAsync();
+                await Context.SaveChangesAsync().ConfigureAwait(false);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -100,24 +96,18 @@ namespace Packit.Database.Api.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
         // POST: api/Users
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
-
-            //var tokenhandler = new JwtSecurityTokenHandler();
-            //var key = Encoding.ASCII.GetBytes()
 
             Context.Users.Add(user);
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
-            //var token = tokenHandler.Create
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction("GetUser", new { id = user?.UserId }, user);
         }
 
         // DELETE: api/Users/5
@@ -125,18 +115,17 @@ namespace Packit.Database.Api.Controllers
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            var user = await Context.Users.FindAsync(id);
+            var user = await Context.Users.FindAsync(id).ConfigureAwait(false);
+
             if (user == null)
             {
                 return NotFound();
             }
 
             Context.Users.Remove(user);
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return Ok(user);
         }

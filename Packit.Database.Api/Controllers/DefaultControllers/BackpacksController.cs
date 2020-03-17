@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
+using Packit.Database.Api.Authentication;
 using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
 
@@ -13,10 +16,10 @@ namespace Packit.Database.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BackpacksController : ApiController
+    public class BackpacksController : PackitApiController
     {
-        public BackpacksController(PackitContext context)
-            :base(context)
+        public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+            :base(context, authenticationService, httpContextAccessor)
         {
         }
 
@@ -55,7 +58,7 @@ namespace Packit.Database.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != backpack.BackpackId)
+            if (id != backpack?.BackpackId)
             {
                 return BadRequest();
             }
@@ -93,7 +96,7 @@ namespace Packit.Database.Api.Controllers
             Context.Backpacks.Add(backpack);
             await Context.SaveChangesAsync().ConfigureAwait(false);
 
-            return CreatedAtAction("GetBackpack", new { id = backpack.BackpackId }, backpack);
+            return CreatedAtAction("GetBackpack", new { id = backpack?.BackpackId }, backpack);
         }
 
         // DELETE: api/Backpacks/5
@@ -126,12 +129,10 @@ namespace Packit.Database.Api.Controllers
             return items;
         }
 
-        //// PUT: api/items/1/backpacks/2
-        //[HttpPut("{itemId}/backpacks/{backpackId}")]
-        //public async Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
-        //{
-        //    return await AddManyToMany(itemId, backpackId, Context.ItemBackpack, "GetItemBackpack").ConfigureAwait(false);
-        //}
+        public async Task<IActionResult> AddBackpackToTrip([FromRoute] int backpackId, [FromRoute] int tripId)
+        {
+            return await AddManyToMany(backpackId, tripId, Context.BackpackTrip, "GetBackpackTrip").ConfigureAwait(false);
+        }
 
         private bool BackpackExists(int id)
         {

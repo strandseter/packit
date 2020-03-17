@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Authentication
 {
-    public class AuthenticationService : IUserService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly AppSettings AppSettings;
 
         public AuthenticationService(IOptions<AppSettings> appSettings)
         {
-            AppSettings = appSettings.Value;
+            AppSettings = appSettings?.Value;
         }
 
         public User Authenticate(string email, string hashedPassword)

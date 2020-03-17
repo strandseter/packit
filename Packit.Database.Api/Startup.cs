@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -56,7 +57,9 @@ namespace Packit.Database.Api
                 };
             });
 
-            services.AddScoped<IUserService, AuthenticationService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Not good, but I was told that this is not a security course
             var connection = @"Server=(localdb)\MSSQLLocalDB;Database=Packit.Local.Database;Trusted_Connection=True;ConnectRetryCount=0";

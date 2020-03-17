@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Authentication
 {
-    public interface IUserService
+    public interface IAuthenticationService
     {
         User Authenticate(string email, string hashedPassword);
         IEnumerable<User> GetAll();
