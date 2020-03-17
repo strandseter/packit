@@ -30,7 +30,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
             AuthenticationService = authenticationService;
             HttpContextAccessor = httpContextAccessor;
 
-             SetUserToken(httpContextAccessor);
+            SetUserToken(httpContextAccessor);
         }
 
         protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToManyAble
