@@ -30,7 +30,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
             AuthenticationService = authenticationService;
             HttpContextAccessor = httpContextAccessor;
 
-            SetUserToken(httpContextAccessor);
+            SetUserToken();
         }
 
         protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToManyAble
@@ -57,9 +57,9 @@ namespace Packit.Database.Api.Controllers.Abstractions
             return dbset.Any(e => e.GetLeftId() == id1 && e.GetRightId() == id2);
         }
 
-        private void SetUserToken(IHttpContextAccessor accessor)
+        private void SetUserToken()
         {
-            Token = accessor?.HttpContext.Request.Headers["Authorization"];
+            Token = HttpContextAccessor?.HttpContext.Request.Headers["Authorization"];
 
             if (Token != null)
                 Token = Token.Replace("Bearer ", "", StringComparison.CurrentCulture);
