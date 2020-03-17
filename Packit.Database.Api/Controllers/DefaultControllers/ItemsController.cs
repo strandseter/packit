@@ -32,15 +32,6 @@ namespace Packit.Database.Api.Controllers
             return Context.Items.Where(i => UserIsAuthorized(i.User));
         }
 
-        [HttpGet]
-        [Route("user")]
-        public async Task<IEnumerable<Item>> GetUserItems()
-        {
-            var itemsQuery = Context.Items.Where(i => UserIsAuthorized(i.User));
-
-            return await itemsQuery.ToListAsync().ConfigureAwait(false);
-        }
-
         // GET: api/Items/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItem([FromRoute] int id)
