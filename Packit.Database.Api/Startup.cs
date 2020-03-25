@@ -61,6 +61,8 @@ namespace Packit.Database.Api
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddScoped<IRelationMapper, RelationMapper>();
+
             //Not good, but I was told that this is not a security course
             var connection = @"Server=(localdb)\MSSQLLocalDB;Database=Packit.Local.Database;Trusted_Connection=True;ConnectRetryCount=0";
            

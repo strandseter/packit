@@ -20,9 +20,12 @@ namespace Packit.Database.Api.Controllers
     [ApiController]
     public class ItemsController : PackitApiController
     {
-        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+        public IRelationMapper RelationMapper { get; set; }
+
+        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper)
             :base(context, authenticationService, httpContextAccessor)
         {
+            RelationMapper = relationMapper;
         }
 
         // GET: api/Items
@@ -122,8 +125,45 @@ namespace Packit.Database.Api.Controllers
         [HttpPut("{itemId}/backpacks/{backpackId}")]
         public async Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
         {
-            return await AddManyToMany(itemId, backpackId, Context.ItemBackpack, "GetItemBackpack").ConfigureAwait(false);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (RelationMapper.ObjRelationExists(itemId, backpackId, Context.ItemBackpack))
+                return BadRequest();
+
+            var itemBackpack = (ItemBackpack)RelationMapper.CreateManyToMany<ItemBackpack>(itemId, backpackId);
+
+            await Context.ItemBackpack.AddAsync(itemBackpack).ConfigureAwait(false);
+
+            await Context.SaveChangesAsync().ConfigureAwait(false);
+
+            return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
         }
+
+
+        //protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToManyAble
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    if (ObjRelationExists(left, right, dbset))
+        //        return NoContent();
+
+        //    var obj = (T)Activator.CreateInstance(typeof(T));
+        //    obj.SetLeftId(left);
+        //    obj.SetRightId(right);
+
+        //    dbset?.Add(obj);
+
+        //    await Context.SaveChangesAsync().ConfigureAwait(false);
+
+        //    return CreatedAtAction(message, new { left, right }, obj);
+        //}
+
+        //private bool ObjRelationExists<T>(int id1, int id2, DbSet<T> dbset) where T : class, IManyToManyAble
+        //{
+        //    return dbset.Any(e => e.GetLeftId() == id1 && e.GetRightId() == id2);
+        //}
 
         private bool ItemExists(int id)
         {
