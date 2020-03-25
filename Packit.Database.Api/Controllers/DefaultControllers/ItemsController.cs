@@ -60,7 +60,8 @@ namespace Packit.Database.Api.Controllers
             if (id != item?.ItemId)
                 return BadRequest();
 
-            if()
+            if (!UserIsAuthorized(item.User))
+                return Unauthorized();
 
             Context.Entry(item).State = EntityState.Modified;
 
@@ -88,9 +89,7 @@ namespace Packit.Database.Api.Controllers
         public async Task<IActionResult> PostItem([FromBody] Item item)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             Context.Items.Add(item);
             await Context.SaveChangesAsync().ConfigureAwait(false);
@@ -103,15 +102,15 @@ namespace Packit.Database.Api.Controllers
         public async Task<IActionResult> DeleteItem([FromRoute] int id)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
+
             if (item == null)
-            {
                 return NotFound();
-            }
+
+            if (!UserIsAuthorized(item.User))
+                return Unauthorized();
 
             Context.Items.Remove(item);
             await Context.SaveChangesAsync().ConfigureAwait(false);
