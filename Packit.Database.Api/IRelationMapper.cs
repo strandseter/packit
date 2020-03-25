@@ -10,8 +10,8 @@ namespace Packit.Database.Api
 {
     public interface IRelationMapper
     {
-        object CreateManyToMany<T>(int left, int right) where T : IManyToManyAble;
-        bool ObjRelationExists<T>(int left, int right, DbSet<T> dbset) where T : class, IManyToManyAble;
+        object CreateManyToMany<T>(int left, int right) where T : IManyToMany;
+        bool ObjRelationExists<T>(int left, int right, DbSet<T> dbset) where T : class, IManyToMany;
     }
 
     //protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToManyAble

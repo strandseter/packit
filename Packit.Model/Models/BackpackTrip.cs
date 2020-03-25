@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class BackpackTrip : IManyToManyAble
+    public class BackpackTrip : IManyToMany
     {
         public virtual int BackpackId { get; set; }
         public virtual Backpack Backpack {get; set; }

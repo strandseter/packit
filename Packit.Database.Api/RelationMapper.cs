@@ -11,7 +11,7 @@ namespace Packit.Database.Api
 {
     public class RelationMapper : IRelationMapper
     {
-        public object CreateManyToMany<T> (int left, int right) where T : IManyToManyAble
+        public object CreateManyToMany<T> (int left, int right) where T : IManyToMany
         {
             var obj = (T)Activator.CreateInstance(typeof(T));
             obj.SetLeftId(left);
@@ -20,7 +20,7 @@ namespace Packit.Database.Api
             return obj;
         }
 
-        public bool ObjRelationExists<T>(int left, int right, DbSet<T> dbset) where T : class, IManyToManyAble
+        public bool ObjRelationExists<T>(int left, int right, DbSet<T> dbset) where T : class, IManyToMany
         {
             return dbset.Any(e => e.GetLeftId() == left && e.GetRightId() == right);
         }

@@ -33,7 +33,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
             SetUserToken();
         }
 
-        protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToManyAble
+        protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToMany
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -52,7 +52,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
             return CreatedAtAction(message, new { left, right }, obj);
         }
 
-        private bool ObjRelationExists<T>(int id1, int id2, DbSet<T> dbset) where T : class, IManyToManyAble
+        private bool ObjRelationExists<T>(int id1, int id2, DbSet<T> dbset) where T : class, IManyToMany
         {
             return dbset.Any(e => e.GetLeftId() == id1 && e.GetRightId() == id2);
         }
