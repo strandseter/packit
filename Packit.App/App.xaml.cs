@@ -1,16 +1,18 @@
 ﻿using System;
 
+using Packit.App.Core.Helpers;
+using Packit.App.Core.Services;
 using Packit.App.Services;
-using Packit.Model;
+
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using System.Net.Http;
-using Newtonsoft.Json;
 
 namespace Packit.App
 {
     public sealed partial class App : Application
     {
+        private IdentityService IdentityService => Singleton<IdentityService>.Instance;
+
         private Lazy<ActivationService> _activationService;
 
         private ActivationService ActivationService
@@ -24,6 +26,7 @@ namespace Packit.App
 
             // Deferred execution until used. Check https://msdn.microsoft.com/library/dd642331(v=vs.110).aspx for further info on Lazy<T> class.
             _activationService = new Lazy<ActivationService>(CreateActivationService);
+            //IdentityService.LoggedOut += OnLoggedOut;
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
@@ -41,12 +44,18 @@ namespace Packit.App
 
         private ActivationService CreateActivationService()
         {
-            return new ActivationService(this, typeof(Views.HomePage), new Lazy<UIElement>(CreateShell));
+            return new ActivationService(this, typeof(Views.MainPage), new Lazy<UIElement>(CreateShell));
         }
 
         private UIElement CreateShell()
         {
             return new Views.ShellPage();
+        }
+
+        private async void OnLoggedOut(object sender, EventArgs e)
+        {
+            ActivationService.SetShell(new Lazy<UIElement>(CreateShell));
+            await ActivationService.RedirectLoginPageAsync();
         }
     }
 }

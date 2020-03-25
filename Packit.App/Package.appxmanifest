@@ -8,11 +8,11 @@
   IgnorableNamespaces="uap mp genTemplate">
 
   <Identity
-    Name="23E81D10-C91A-4A54-A86E-AE654ED774AB"
+    Name="820D9A93-A4F2-4A15-85CF-8333F463E2CF"
     Publisher="CN=ander"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="23E81D10-C91A-4A54-A86E-AE654ED774AB" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="820D9A93-A4F2-4A15-85CF-8333F463E2CF" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Packit.App</DisplayName>
@@ -48,6 +48,7 @@
   </Applications>
 
   <Capabilities>
+    <Capability Name="internetClientServer" />
     <Capability Name="internetClient" />
   </Capabilities>
 
@@ -56,7 +57,7 @@
     <genTemplate:Item Name="wizardVersion" Version="v3.5.19310.1" />
     <genTemplate:Item Name="templatesVersion" Version="v3.5.19310.1" />
     <genTemplate:Item Name="projectType" Value="SplitView" />
-    <genTemplate:Item Name="framework" Value="CodeBehind" />
+    <genTemplate:Item Name="framework" Value="MVVMBasic" />
     <genTemplate:Item Name="platform" Value="Uwp" />
   </genTemplate:Metadata>
 </Package>

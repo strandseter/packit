@@ -39,7 +39,7 @@ namespace Packit.Gui
 
         private ActivationService CreateActivationService()
         {
-            return new ActivationService(this, typeof(Views.LoginPage));
+            return new ActivationService(this, typeof(Views.ItemsPage));
         }
 
         //private ActivationService CreateActivationService()

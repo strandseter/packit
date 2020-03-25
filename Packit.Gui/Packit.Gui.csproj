@@ -247,10 +247,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Packit.Gui.Core\Packit.Gui.Core.csproj">
-      <Project>{40952067-28D8-4548-84AB-29BD895D70D7}</Project>
-      <Name>Packit.Gui.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj">
       <Project>{7afd05f6-34aa-40c7-9b83-428081f13911}</Project>
       <Name>Packit.Model</Name>
