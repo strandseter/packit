@@ -78,6 +78,7 @@ namespace Packit.DataAccess
         //        .WithOne(s => s.Backpack)
         //        .HasForeignKey<SharedBackpack>(s => s.Backpack);
         //}
+
         //private void ConfigureOneToManyUserItems(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<User>()
