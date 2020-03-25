@@ -37,16 +37,15 @@ namespace Packit.Database.Api.Controllers
         public async Task<IActionResult> GetItem([FromRoute] int id)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
 
             if (item == null)
-            {
                 return NotFound();
-            }
+
+            if (!UserIsAuthorized(item.User))
+                return Unauthorized();
 
             return Ok(item);
         }
@@ -56,14 +55,12 @@ namespace Packit.Database.Api.Controllers
         public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             if (id != item?.ItemId)
-            {
                 return BadRequest();
-            }
+
+            if()
 
             Context.Entry(item).State = EntityState.Modified;
 
