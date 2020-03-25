@@ -140,31 +140,6 @@ namespace Packit.Database.Api.Controllers
             return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
         }
 
-
-        //protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToManyAble
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-
-        //    if (ObjRelationExists(left, right, dbset))
-        //        return NoContent();
-
-        //    var obj = (T)Activator.CreateInstance(typeof(T));
-        //    obj.SetLeftId(left);
-        //    obj.SetRightId(right);
-
-        //    dbset?.Add(obj);
-
-        //    await Context.SaveChangesAsync().ConfigureAwait(false);
-
-        //    return CreatedAtAction(message, new { left, right }, obj);
-        //}
-
-        //private bool ObjRelationExists<T>(int id1, int id2, DbSet<T> dbset) where T : class, IManyToManyAble
-        //{
-        //    return dbset.Any(e => e.GetLeftId() == id1 && e.GetRightId() == id2);
-        //}
-
         private bool ItemExists(int id)
         {
             return Context.Items.Any(e => e.ItemId == id);
