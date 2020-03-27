@@ -33,12 +33,7 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Items
         [HttpGet]
-        public IEnumerable<Item> GetItem()
-        {
-            //return Context.Items.Where(i => UserIsAuthorized(i.User));
-
-            return _repository.GetAll();
-        }
+        public IEnumerable<Item> GetItem() => _repository.GetAll();
 
         // GET: api/Items/5
         [HttpGet("{id}")]
@@ -47,15 +42,7 @@ namespace Packit.Database.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
-
-            if (item == null)
-                return NotFound();
-
-            if (!UserIsAuthorized(item.User))
-                return Unauthorized();
-
-            return Ok(item);
+            return await _repository.GetById(id).ConfigureAwait(false);
         }
 
         // PUT: api/Items/5
@@ -65,31 +52,7 @@ namespace Packit.Database.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != item?.ItemId)
-                return BadRequest();
-
-            if (!UserIsAuthorized(item.User))
-                return Unauthorized();
-
-            Context.Entry(item).State = EntityState.Modified;
-
-            try
-            {
-                await Context.SaveChangesAsync().ConfigureAwait(false);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return await _repository.Update(id, item).ConfigureAwait(false);
         }
 
         // POST: api/Items
@@ -99,10 +62,7 @@ namespace Packit.Database.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            Context.Items.Add(item);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return CreatedAtAction("GetItem", new { id = item?.ItemId }, item);
+            return await _repository.Create(item, "GetItem").ConfigureAwait(false); //TODO: Fix analyzer warning
         }
 
         // DELETE: api/Items/5
@@ -112,18 +72,19 @@ namespace Packit.Database.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
+            return await _repository.Delete(id).ConfigureAwait(false);
+            //var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
 
-            if (item == null)
-                return NotFound();
+            //if (item == null)
+            //    return NotFound();
 
-            if (!UserIsAuthorized(item.User))
-                return Unauthorized();
+            //if (!UserIsAuthorized(item.User))
+            //    return Unauthorized();
 
-            Context.Items.Remove(item);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
+            //Context.Items.Remove(item);
+            //await Context.SaveChangesAsync().ConfigureAwait(false);
 
-            return Ok(item);
+            //return Ok(item);
         }
 
         private bool ItemExists(int id)
