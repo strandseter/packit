@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Packit.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Packit.Model
 {
-    public class Trip : BaseInformation, IOneToManyAble
+    public class Trip : BaseInformation, IOneToManyAble, IDatabase
     {
         public int TripId { get; set; }
         public string Destination { get; set; }
@@ -21,14 +22,10 @@ namespace Packit.Model
         {
         }
 
-        public override string ToString()
-        {
-            return $"{Title}, ";
-        }
+        public override string ToString() => $"{Title}, ";
 
-        public int Id()
-        {
-            return TripId;
-        }
+        public int Id() => TripId;
+
+        public int GetId() => TripId;
     }
 }

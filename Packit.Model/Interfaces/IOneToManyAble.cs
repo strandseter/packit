@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public interface IOneToManyAble
+    public interface IOneToManyAble //TODO: Fix naming, interface and method
     {
         int Id();
     }

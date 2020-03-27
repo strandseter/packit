@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Interfaces
 {
-    public interface IItemRepository : IGenericRepository<Item>
+    public interface IBackpackRepository : IGenericRepository<Backpack>
     {
     }
 }

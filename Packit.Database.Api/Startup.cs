@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
 using Packit.Database.Api.GenericRepository;
+using Packit.Database.Api.Repository.Classes;
 using Packit.Database.Api.Repository.Interfaces;
 
 namespace Packit.Database.Api
@@ -103,6 +104,8 @@ namespace Packit.Database.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IRelationMapper, RelationMapper>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            //services.AddScoped<IBackpackRepository, BackpackRepository>();
+            //services.AddScoped<ITripRepository, TripRepository>();
         }
 
         private void ConfigureDatabaseConnection(IServiceCollection services)
