@@ -17,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
+using Packit.Database.Api.GenericRepository;
+using Packit.Database.Api.Repository.Interfaces;
 
 namespace Packit.Database.Api
 {
@@ -60,6 +62,7 @@ namespace Packit.Database.Api
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IRelationMapper, RelationMapper>();
+            services.AddScoped<IItemRepository, ItemRepository>();
 
             //Not good, but I was told that this is not a security course
             var connection = @"Server=(localdb)\MSSQLLocalDB;Database=Packit.Local.Database;Trusted_Connection=True;ConnectRetryCount=0";

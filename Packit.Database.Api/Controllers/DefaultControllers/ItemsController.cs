@@ -13,6 +13,7 @@ using System.Web.Http.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Packit.Database.Api.Authentication;
 using Microsoft.AspNetCore.Http;
+using Packit.Database.Api.Repository.Interfaces;
 
 namespace Packit.Database.Api.Controllers
 {
@@ -21,18 +22,22 @@ namespace Packit.Database.Api.Controllers
     public class ItemsController : PackitApiController
     {
         public IRelationMapper RelationMapper { get; set; }
+        private readonly IItemRepository _repository;
 
-        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper)
+        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper, IItemRepository repository )
             :base(context, authenticationService, httpContextAccessor)
         {
             RelationMapper = relationMapper;
+            _repository = repository;
         }
 
         // GET: api/Items
         [HttpGet]
         public IEnumerable<Item> GetItem()
         {
-            return Context.Items.Where(i => UserIsAuthorized(i.User));
+            //return Context.Items.Where(i => UserIsAuthorized(i.User));
+
+            return _repository.GetAll();
         }
 
         // GET: api/Items/5

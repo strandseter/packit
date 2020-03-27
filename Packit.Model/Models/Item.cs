@@ -1,10 +1,12 @@
-﻿using Packit.Model.Interfaces;
+﻿
+using Packit.Model.Interfaces;
+using Packit.Model.Models;
 using System;
 using System.Collections.Generic;
 
 namespace Packit.Model
 {
-    public class Item : BaseInformation, IManyTable
+    public class Item : BaseInformation, IDatabase
     {
         public int ItemId { get; set; }
         public User User { get; set; }
@@ -26,14 +28,9 @@ namespace Packit.Model
             return $"{Title} {ItemId}";
         }
 
-        public int Id()
+        public int GetId()
         {
             return ItemId;
-        }
-
-        public IOneTable GetForeignObject()
-        {
-            return null;
         }
     }
 }
