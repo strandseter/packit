@@ -121,25 +121,6 @@ namespace Packit.Database.Api.Controllers
             return Ok(item);
         }
 
-        // PUT: api/items/1/backpacks/2
-        [HttpPut("{itemId}/backpacks/{backpackId}")]
-        public async Task<IActionResult> AddItemToBackpack([FromRoute] int itemId, [FromRoute] int backpackId)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (RelationMapper.ObjRelationExists(itemId, backpackId, Context.ItemBackpack))
-                return BadRequest();
-
-            var itemBackpack = (ItemBackpack)RelationMapper.CreateManyToMany<ItemBackpack>(itemId, backpackId);
-
-            await Context.ItemBackpack.AddAsync(itemBackpack).ConfigureAwait(false);
-
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
-        }
-
         private bool ItemExists(int id)
         {
             return Context.Items.Any(e => e.ItemId == id);

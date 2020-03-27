@@ -58,9 +58,7 @@ namespace Packit.Database.Api
             });
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddScoped<IRelationMapper, RelationMapper>();
 
             //Not good, but I was told that this is not a security course
@@ -68,6 +66,8 @@ namespace Packit.Database.Api
            
             services.AddDbContext<PackitContext>(options => 
                 options.UseSqlServer(connection));
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,12 +92,15 @@ namespace Packit.Database.Api
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            //app.UseMvc();/* I have tried this*/
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

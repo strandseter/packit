@@ -18,9 +18,12 @@ namespace Packit.Database.Api.Controllers
     [ApiController]
     public class BackpacksController : PackitApiController
     {
-        public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+        public IRelationMapper RelationMapper { get; set; }
+
+        public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper)
             :base(context, authenticationService, httpContextAccessor)
         {
+            RelationMapper = relationMapper;
         }
 
         // GET: api/Backpacks
@@ -120,18 +123,33 @@ namespace Packit.Database.Api.Controllers
             return Ok(backpack);
         }
 
-        // GET: api/Backpacks/5/items
-        [HttpGet("{id}/items")]
-        public  IEnumerable<Item> QueryItemsInBackpack<T>([FromRoute] int id)
+        // PUT: api/backpacks/3/items6
+        [HttpPut]
+        [Route("{backpackId}/items/{itemId}")]
+        public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId)
         {
-            var items = Context.Items.Include(i => i).Where(i => i.ItemId == id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return items;
+            if (RelationMapper.ObjRelationExists(itemId, backpackId, Context.ItemBackpack))
+                return BadRequest();
+
+            var itemBackpack = (ItemBackpack)RelationMapper.CreateManyToMany<ItemBackpack>(itemId, backpackId);
+
+            await Context.ItemBackpack.AddAsync(itemBackpack).ConfigureAwait(false);
+            await Context.SaveChangesAsync().ConfigureAwait(false);
+
+            return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
         }
 
-        public async Task<IActionResult> AddBackpackToTrip([FromRoute] int backpackId, [FromRoute] int tripId)
+        // GET: api/backpacks/5/items
+        [HttpGet] //TODO: Fix route
+        [Route("{backpackId}/items")]
+        public  IEnumerable<Item> GetItemsInBackpack([FromRoute] int backpackId)
         {
-            return await AddManyToMany(backpackId, tripId, Context.BackpackTrip, "GetBackpackTrip").ConfigureAwait(false);
+            var items = Context.Items.Include(i => i).Where(i => i.ItemId == backpackId);
+
+            return items;
         }
 
         private bool BackpackExists(int id)
