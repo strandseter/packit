@@ -36,41 +36,9 @@ namespace Packit.Database.Api
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(a =>
-            {
-                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(a =>
-            {
-                a.RequireHttpsMetadata = false;
-                a.SaveToken = true;
-                a.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
-
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IRelationMapper, RelationMapper>();
-            services.AddScoped<IItemRepository, ItemRepository>();
-
-            //Not good, but I was told that this is not a security course
-            var connection = @"Server=(localdb)\MSSQLLocalDB;Database=Packit.Local.Database;Trusted_Connection=True;ConnectRetryCount=0";
-           
-            services.AddDbContext<PackitContext>(options => 
-                options.UseSqlServer(connection));
-
-
+            ConfigureAuthentication(services);
+            ConfigureInjections(services);
+            ConfigureDatabaseConnection(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,8 +63,6 @@ namespace Packit.Database.Api
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            //app.UseMvc();/* I have tried this*/
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -104,6 +70,49 @@ namespace Packit.Database.Api
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+        }
+
+        private void ConfigureAuthentication(IServiceCollection services)
+        {
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(a =>
+            {
+                a.RequireHttpsMetadata = false;
+                a.SaveToken = true;
+                a.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+        }
+
+        private void ConfigureInjections(IServiceCollection services)
+        {
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IRelationMapper, RelationMapper>();
+            services.AddScoped<IItemRepository, ItemRepository>();
+        }
+
+        private void ConfigureDatabaseConnection(IServiceCollection services)
+        {
+            //Not good, but I was told that this is not a security course
+            var connection = @"Server=(localdb)\MSSQLLocalDB;Database=Packit.Local.Database;Trusted_Connection=True;ConnectRetryCount=0";
+
+            services.AddDbContext<PackitContext>(options =>
+                options.UseSqlServer(connection));
         }
     }
 }
