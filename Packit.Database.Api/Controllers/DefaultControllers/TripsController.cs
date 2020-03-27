@@ -18,9 +18,12 @@ namespace Packit.Database.Api.Controllers
     [ApiController]
     public class TripsController : PackitApiController
     {
-        public TripsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+        public IRelationMapper RelationMapper { get; set; }
+
+        public TripsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper)
             :base(context, authenticationService, httpContextAccessor)
         {
+            RelationMapper = relationMapper;
         }
 
         // GET: api/Trips

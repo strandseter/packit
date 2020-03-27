@@ -120,9 +120,9 @@ namespace Packit.Database.Api.Controllers
             return Ok(backpack);
         }
 
-        // PUT: api/backpacks/3/items6
+        // PUT: api/backpacks/3/items/6/delete
         [HttpPut]
-        [Route("{backpackId}/items/{itemId}/add")]
+        [Route("{backpackId}/items/{itemId}/create")]
         public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId)
         {
             if (!ModelState.IsValid)
@@ -142,8 +142,9 @@ namespace Packit.Database.Api.Controllers
             return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
         }
 
+        // DELETE: api/backpacks/5/items/7/delete
         [HttpDelete]
-        [Route("{backpackId}/items/{itemId}/remove")]
+        [Route("{backpackId}/items/{itemId}/delete")]
         public async Task<IActionResult> DeleteItemFromBackpack([FromRoute] int backpackId, [FromRoute] int itemid)
         {
             if (!ModelState.IsValid)
@@ -160,7 +161,6 @@ namespace Packit.Database.Api.Controllers
             await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return Ok(itemBackpack);
-
         }
 
         // GET: api/backpacks/5/items
@@ -179,15 +179,8 @@ namespace Packit.Database.Api.Controllers
             return Ok(items);
         }
 
-        //public bool ObjRelationExists<T>(int left, int right, DbSet<T> dbset) where T : class, IManyToMany
-        //{
-        //    return dbset.Any(e => e.GetLeftId() == left && e.GetRightId() == right);
-        //}
-
         private bool ItemBackpackExists(int itemId, int backpackId) => Context.ItemBackpack.Any(ib => ib.ItemId == itemId && ib.BackpackId == backpackId);
-
         private bool BackpackExists(int id) => Context.Backpacks.Any(e => e.BackpackId == id);
-
         private bool ItemExists(int id) => Context.Items.Any(i => i.ItemId == id);
     }
 }
