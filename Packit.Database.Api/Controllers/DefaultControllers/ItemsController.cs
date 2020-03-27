@@ -21,13 +21,13 @@ namespace Packit.Database.Api.Controllers
     [ApiController]
     public class ItemsController : PackitApiController
     {
-        public IRelationMapper RelationMapper { get; set; }
+        private readonly IRelationMapper _relationMapper;
         private readonly IItemRepository _repository;
 
         public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper, IItemRepository repository )
             :base(context, authenticationService, httpContextAccessor)
         {
-            RelationMapper = relationMapper;
+            _relationMapper = relationMapper;
             _repository = repository;
         }
 
@@ -37,30 +37,18 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Items/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem([FromRoute] int id)
-        {
-            return await _repository.GetById(id).ConfigureAwait(false);
-        }
+        public async Task<IActionResult> GetItem([FromRoute] int id) => await _repository.GetById(id).ConfigureAwait(false);
 
         // PUT: api/Items/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item)
-        {
-            return await _repository.Update(id, item).ConfigureAwait(false);
-        }
+        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item) => await _repository.Update(id, item).ConfigureAwait(false);
 
         // POST: api/Items
         [HttpPost]
-        public async Task<IActionResult> PostItem([FromBody] Item item)
-        {
-            return await _repository.Create(item, "GetItem").ConfigureAwait(false); //TODO: Fix analyzer warning
-        }
+        public async Task<IActionResult> PostItem([FromBody] Item item) => await _repository.Create(item, "GetItem").ConfigureAwait(false); //TODO: Fix analyzer warning
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem([FromRoute] int id)
-        {
-            return await _repository.Delete(id).ConfigureAwait(false);
-        }
+        public async Task<IActionResult> DeleteItem([FromRoute] int id) => await _repository.Delete(id).ConfigureAwait(false);
     }
 }
