@@ -39,9 +39,6 @@ namespace Packit.Database.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItem([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             return await _repository.GetById(id).ConfigureAwait(false);
         }
 
@@ -49,9 +46,6 @@ namespace Packit.Database.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             return await _repository.Update(id, item).ConfigureAwait(false);
         }
 
@@ -59,9 +53,6 @@ namespace Packit.Database.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> PostItem([FromBody] Item item)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             return await _repository.Create(item, "GetItem").ConfigureAwait(false); //TODO: Fix analyzer warning
         }
 
@@ -69,27 +60,7 @@ namespace Packit.Database.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             return await _repository.Delete(id).ConfigureAwait(false);
-            //var item = await Context.Items.FindAsync(id).ConfigureAwait(false);
-
-            //if (item == null)
-            //    return NotFound();
-
-            //if (!UserIsAuthorized(item.User))
-            //    return Unauthorized();
-
-            //Context.Items.Remove(item);
-            //await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            //return Ok(item);
-        }
-
-        private bool ItemExists(int id)
-        {
-            return Context.Items.Any(e => e.ItemId == id);
         }
     }
 }

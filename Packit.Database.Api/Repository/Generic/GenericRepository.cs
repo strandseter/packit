@@ -20,6 +20,9 @@ namespace Packit.Database.Api.GenericRepository
 
         public async Task<IActionResult> Create(T entity, string message)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             await _context.Set<T>().AddAsync(entity).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
@@ -28,6 +31,9 @@ namespace Packit.Database.Api.GenericRepository
 
         public async Task<IActionResult> Delete(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
 
             if (entity == null)
@@ -46,6 +52,9 @@ namespace Packit.Database.Api.GenericRepository
 
         public async Task<IActionResult> GetById(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
 
             if (entity == null)
@@ -56,6 +65,9 @@ namespace Packit.Database.Api.GenericRepository
 
         public async Task<IActionResult> Update(int id, T entity)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (id != entity?.GetId())
                 return BadRequest();
 
