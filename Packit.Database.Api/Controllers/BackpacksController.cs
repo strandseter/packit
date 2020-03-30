@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
 using Packit.Database.Api.Controllers.Abstractions;
+using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
@@ -19,106 +20,34 @@ namespace Packit.Database.Api.Controllers
     public class BackpacksController : PackitApiController
     {
         public IRelationMapper RelationMapper { get; set; }
+        private readonly IBackpackRepository _repository;
 
-        public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper)
+        public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper, IBackpackRepository repository)
             :base(context, authenticationService, httpContextAccessor)
         {
             RelationMapper = relationMapper;
+            _repository = repository;
         }
 
         // GET: api/Backpacks
         [HttpGet]
-        public IEnumerable<Backpack> GetBackpacks() => Context.Backpacks;
+        public IEnumerable<Backpack> GetBackpacks() => _repository.GetAll();
 
         // GET: api/Backpacks/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBackpack([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var backpack = await Context.Backpacks.FindAsync(id).ConfigureAwait(false);
-
-            if (backpack == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(backpack);
-        }
+        public async Task<IActionResult> GetBackpack([FromRoute] int id) => await _repository.GetById(id).ConfigureAwait(false);
 
         // PUT: api/Backpacks/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBackpack([FromRoute] int id, [FromBody] Backpack backpack)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != backpack?.BackpackId)
-            {
-                return BadRequest();
-            }
-
-            Context.Entry(backpack).State = EntityState.Modified;
-
-            try
-            {
-                await Context.SaveChangesAsync().ConfigureAwait(false);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BackpackExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        public async Task<IActionResult> PutBackpack([FromRoute] int id, [FromBody] Backpack backpack) => await _repository.Update(id, backpack).ConfigureAwait(false);
 
         // POST: api/Backpacks
         [HttpPost]
-        public async Task<IActionResult> PostBackpack([FromBody] Backpack backpack)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            Context.Backpacks.Add(backpack);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return CreatedAtAction("GetBackpack", new { id = backpack?.BackpackId }, backpack);
-        }
+        public async Task<IActionResult> PostBackpack([FromBody] Backpack backpack) => await _repository.Create(backpack, "GetBackpack").ConfigureAwait(false);
 
         // DELETE: api/Backpacks/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBackpack([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var backpack = await Context.Backpacks.FindAsync(id).ConfigureAwait(false);
-            if (backpack == null)
-            {
-                return NotFound();
-            }
-
-            Context.Backpacks.Remove(backpack);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return Ok(backpack);
-        }
+        public async Task<IActionResult> DeleteBackpack([FromRoute] int id) => await _repository.Delete(id).ConfigureAwait(false);
 
         // PUT: api/backpacks/3/items/6/delete
         [HttpPut]

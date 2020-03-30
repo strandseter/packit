@@ -104,7 +104,7 @@ namespace Packit.Database.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IRelationMapper, RelationMapper>();
             services.AddScoped<IItemRepository, ItemRepository>();
-            //services.AddScoped<IBackpackRepository, BackpackRepository>();
+            services.AddScoped<IBackpackRepository, BackpackRepository>();
             //services.AddScoped<ITripRepository, TripRepository>();
         }
 
