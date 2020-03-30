@@ -67,9 +67,10 @@ namespace Packit.Database.Api.Repository.Generic
 
             if (entity == null) return NotFound();
 
-            var idList = Context.Set<T3>().Where(e => e.GetLeftId() == leftId);
+            var id = Context.Set<T3>().Include(e => e.GetLeftId());
 
-            var entities = Context.Set<T1>().Where()
+
+            var entities = Context.Set<T1>().Where(e => e.GetId)
         }
 
         private bool EntityRelationExists(int leftId, int rightId) => Context.Set<T3>().Any(e => e.GetLeftId() == leftId && e.GetRightId() == rightId);
