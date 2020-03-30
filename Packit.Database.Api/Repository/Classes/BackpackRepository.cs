@@ -1,5 +1,7 @@
-﻿using Packit.DataAccess;
+﻿using Microsoft.AspNetCore.Mvc;
+using Packit.DataAccess;
 using Packit.Database.Api.GenericRepository;
+using Packit.Database.Api.Repository.Generic;
 using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Classes
 {
-    public class BackpackRepository : GenericRepository<Backpack>, IBackpackRepository
+    public class BackpackRepository : GenericManyToManyRepository<Backpack>, IBackpackRepository
     {
         public BackpackRepository(PackitContext context)
             :base(context)

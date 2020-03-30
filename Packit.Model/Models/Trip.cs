@@ -1,6 +1,8 @@
 ﻿using Packit.Model.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Packit.Model
@@ -15,11 +17,13 @@ namespace Packit.Model
 
         public Trip() 
         {
+            Backpacks = new List<BackpackTrip>();
         }
 
         public Trip(string title, string description, string imageStringName)
            : base(title, description, imageStringName)
         {
+            Backpacks = new List<BackpackTrip>();
         }
 
         public override string ToString() => $"{Title}, ";

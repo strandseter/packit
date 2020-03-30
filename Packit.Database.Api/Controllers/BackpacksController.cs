@@ -76,6 +76,7 @@ namespace Packit.Database.Api.Controllers
         [Route("{backpackId}/items/{itemId}/delete")]
         public async Task<IActionResult> DeleteItemFromBackpack([FromRoute] int backpackId, [FromRoute] int itemid)
         {
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 

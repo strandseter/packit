@@ -1,0 +1,77 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Packit.DataAccess;
+using Packit.Database.Api.GenericRepository;
+using Packit.Model;
+using Packit.Model.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Packit.Database.Api.Repository.Generic
+{
+    public class GenericManyToManyRepository<T1, T2, T3> : GenericRepository<T1>, IGenericManyToManyRepository<T1> where T1 : class, IDatabase where  T2 : class, IDatabase where T3 : class, IManyToMany //TODO: Move IManyToMany to anotehr project
+    {
+        public GenericManyToManyRepository(PackitContext context)
+            :base(context)
+        {
+        }
+
+        public async Task<IActionResult> CreateManyToMany(string message, int leftId, int rightId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!EntityExists(leftId) || !EntityExists(rightId))
+                return NotFound();
+
+            if (EntityRelationExists(leftId, rightId))
+                return BadRequest();
+
+            var entity = (T3)Activator.CreateInstance(typeof(T3));
+            entity.SetLeftId(leftId);
+            entity.SetRightId(rightId);
+
+            await Context.Set<T3>().AddAsync(entity).ConfigureAwait(false);
+
+            await SaveChanges(); //TODO: Suppress??
+
+            return CreatedAtAction(message, new { leftId, rightId }, entity);
+        }
+
+        public async Task<IActionResult> DeleteManyToMany(int leftId, int rightId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!EntityExists(leftId) || !EntityExists(rightId))
+                return NotFound();
+
+            if (!EntityRelationExists(leftId, rightId))
+                return NotFound();
+
+            var entity = await Context.Set<T3>().FirstOrDefaultAsync(e => e.GetLeftId() == leftId && e.GetRightId() == rightId).ConfigureAwait(false);
+            Context.Set<T3>().Remove(entity);
+
+            await SaveChanges(); //TODO: Suppress??
+
+            return Ok(entity);
+        }
+
+        public async Task<IActionResult> GetManyToManyLeft(int leftId) //TODO: Rename?
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var entity = await Context.Set<T1>().FindAsync(id).ConfigureAwait(false);
+
+            if (entity == null) return NotFound();
+
+            var idList = Context.Set<T3>().Where(e => e.GetLeftId() == leftId);
+
+            var entities = Context.Set<T1>().Where()
+        }
+
+        private bool EntityRelationExists(int leftId, int rightId) => Context.Set<T3>().Any(e => e.GetLeftId() == leftId && e.GetRightId() == rightId);
+    }
+}

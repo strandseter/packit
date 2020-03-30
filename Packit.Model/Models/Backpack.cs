@@ -1,5 +1,6 @@
 ﻿using Packit.Model.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,11 +16,15 @@ namespace Packit.Model
 
         public Backpack() 
         {
+            Items = new List<ItemBackpack>();
+            Trips = new List<BackpackTrip>();
         }
 
         public Backpack(string title, string description, string imageStringName)
             : base(title, description, imageStringName)
         {
+            Items = new List<ItemBackpack>();
+            Trips = new List<BackpackTrip>();
         }
 
         public override string ToString() => $"{Title}, {BackpackId}";
@@ -27,5 +32,10 @@ namespace Packit.Model
         public int Id() => BackpackId;
 
         public int GetId() => BackpackId;
+
+        public IList GetEntities()
+        {
+            return (IList)Items;
+        }
     }
 }

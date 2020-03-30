@@ -11,11 +11,11 @@ namespace Packit.Database.Api.GenericRepository
 {
     public class GenericRepository<T> : ControllerBase, IGenericRepository<T> where T : class, IDatabase
     {
-        private readonly PackitContext _context;
+        protected PackitContext Context { get;}
 
         public GenericRepository(PackitContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         public async Task<IActionResult> Create(T entity, string message)
@@ -23,8 +23,9 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _context.Set<T>().AddAsync(entity).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await Context.Set<T>().AddAsync(entity).ConfigureAwait(false);
+
+            await SaveChanges(); //TODO: Suppress??
 
             return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
         }
@@ -34,20 +35,21 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
+            var entity = await Context.Set<T>().FindAsync(id).ConfigureAwait(false);
 
             if (entity == null)
                 return NotFound();
 
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            Context.Set<T>().Remove(entity);
+
+            await SaveChanges(); //TODO: Suppress??
 
             return Ok(entity);
         }
 
         public IQueryable<T> GetAll()
         {
-            return _context.Set<T>();
+            return Context.Set<T>();
         }
 
         public async Task<IActionResult> GetById(int id)
@@ -55,7 +57,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
+            var entity = await Context.Set<T>().FindAsync(id).ConfigureAwait(false);
 
             if (entity == null)
                 return NotFound();
@@ -71,11 +73,11 @@ namespace Packit.Database.Api.GenericRepository
             if (id != entity?.GetId())
                 return BadRequest();
 
-            _context.Set<T>().Update(entity).State = EntityState.Modified; //TODO: Entry()? Instead of Update()
+            Context.Set<T>().Update(entity).State = EntityState.Modified; //TODO: Entry()? Instead of Update()
 
             try
             {
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                await SaveChanges(); //TODO: Suppress??
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -88,9 +90,7 @@ namespace Packit.Database.Api.GenericRepository
             return NoContent();
         }
 
-        private bool EntityExists(int id)
-        {
-            return _context.Set<T>().Any(e => e.GetId() == id);
-        }
+        protected bool EntityExists(int id) => Context.Set<T>().Any(e => e.GetId() == id);
+        protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 }

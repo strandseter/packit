@@ -1,4 +1,5 @@
 ﻿using Packit.Database.Api.GenericRepository;
+using Packit.Database.Api.Repository.Generic;
 using Packit.Model;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Interfaces
 {
-    public interface IBackpackRepository : IGenericRepository<Backpack>
+    public interface IBackpackRepository : IGenericRepository<Backpack>, IGenericManyToManyRepository<Backpack>
     {
     }
 }
