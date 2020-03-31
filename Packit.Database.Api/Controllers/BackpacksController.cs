@@ -52,65 +52,16 @@ namespace Packit.Database.Api.Controllers
         // PUT: api/backpacks/3/items/6/delete
         [HttpPut]
         [Route("{backpackId}/items/{itemId}/create")]
-        public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (!BackpackExists(backpackId) || !ItemExists(itemId))
-                return NotFound();
-
-            if (ItemBackpackExists(itemId, backpackId))
-                return BadRequest();
-
-            var itemBackpack = (ItemBackpack)RelationMapper.CreateManyToMany<ItemBackpack>(itemId, backpackId);
-
-            await Context.ItemBackpack.AddAsync(itemBackpack).ConfigureAwait(false);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return CreatedAtAction("GetItemBackpack", new { itemId, backpackId }, itemBackpack);
-        }
+        public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await _repository.CreateManyToMany("GetItemBackpack", itemId, backpackId).ConfigureAwait(false);
 
         // DELETE: api/backpacks/5/items/7/delete
         [HttpDelete]
         [Route("{backpackId}/items/{itemId}/delete")]
-        public async Task<IActionResult> DeleteItemFromBackpack([FromRoute] int backpackId, [FromRoute] int itemid)
-        {
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (!BackpackExists(backpackId) || !ItemExists(itemid))
-                return NotFound();
-
-            if (!ItemBackpackExists(itemid, backpackId))
-                return NotFound();
-
-            var itemBackpack = await Context.ItemBackpack.FirstOrDefaultAsync(ib => ib.ItemId == itemid && ib.BackpackId == backpackId).ConfigureAwait(false);
-            Context.ItemBackpack.Remove(itemBackpack);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return Ok(itemBackpack);
-        }
+        public async Task<IActionResult> DeleteItemFromBackpack([FromRoute] int backpackId, [FromRoute] int itemid) => await _repository.DeleteManyToMany(itemid, backpackId).ConfigureAwait(false);
 
         // GET: api/backpacks/5/items
         [HttpGet]
         [Route("{backpackId}/items")]
-        public async Task<IActionResult> GetItemsInBackpack([FromRoute] int backpackId)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var backpack = await Context.Backpacks.FindAsync(backpackId).ConfigureAwait(false);
-
-            if (backpack == null) return NotFound();
-
-            var items = Context.Items.Where(i => i.Backpacks.Any(b => b.BackpackId == backpackId));
-
-            return Ok(items);
-        }
-
-        private bool ItemBackpackExists(int itemId, int backpackId) => Context.ItemBackpack.Any(ib => ib.ItemId == itemId && ib.BackpackId == backpackId);
-        private bool BackpackExists(int id) => Context.Backpacks.Any(e => e.BackpackId == id);
-        private bool ItemExists(int id) => Context.Items.Any(i => i.ItemId == id);
+        public async Task<IActionResult> GetItemsInBackpack([FromRoute] int backpackId) => await _repository.GetManyToMany(backpackId).ConfigureAwait(false);
     }
 }

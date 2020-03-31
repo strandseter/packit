@@ -10,5 +10,6 @@ namespace Packit.Database.Api.Repository.Interfaces
 {
     public interface IBackpackRepository : IGenericRepository<Backpack>, IGenericManyToManyRepository<Backpack>
     {
+        void Test();
     }
 }

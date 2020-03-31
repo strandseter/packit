@@ -23,7 +23,7 @@ namespace Packit.Database.Api.Repository.Generic
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!EntityExists(leftId) || !EntityExists(rightId))
+            if (!await EntityExists<T2>(leftId) || !await EntityExists<T1>(rightId))
                 return NotFound();
 
             if (EntityRelationExists(leftId, rightId))
@@ -45,7 +45,7 @@ namespace Packit.Database.Api.Repository.Generic
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!EntityExists(leftId) || !EntityExists(rightId))
+            if (!await EntityExists<T2>(leftId) || !await EntityExists<T1>(rightId))
                 return NotFound();
 
             if (!EntityRelationExists(leftId, rightId))
@@ -59,21 +59,23 @@ namespace Packit.Database.Api.Repository.Generic
             return Ok(entity);
         }
 
-        public async Task<IActionResult> GetManyToManyLeft(int leftId) //TODO: Rename?
+        public async Task<IActionResult> GetManyToMany(int id) //TODO: Rename?
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) 
+                return BadRequest(ModelState);
 
             var entity = await Context.Set<T1>().FindAsync(id).ConfigureAwait(false);
 
-            if (entity == null) return NotFound();
+            if (entity == null) 
+                return NotFound();
 
-            var entityIds = Context.Set<T3>().Include(e => e.GetRightId()).Where(e => e.GetLeftId() == leftId);
+            var manyEntities = Context.Set<T3>().Where(e => e.GetRightId() == id);
 
-            sdfgdfgdf
+            var entities = Context.Set<T2>()
+                            .Where(e => manyEntities
+                            .Any(e2 => e2.GetLeftId() == e.GetId()));
 
-            var entities = Context.Set<T2>().Where(e => e.GetId() == );
-
-            foreach
+            return Ok(entities);
         }
 
         private bool EntityRelationExists(int leftId, int rightId) => Context.Set<T3>().Any(e => e.GetLeftId() == leftId && e.GetRightId() == rightId);

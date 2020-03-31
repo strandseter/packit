@@ -81,7 +81,7 @@ namespace Packit.Database.Api.GenericRepository
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EntityExists(id))
+                if (!await EntityExists<T>(id))
                     return NotFound();
                 else
                     throw;
@@ -90,7 +90,8 @@ namespace Packit.Database.Api.GenericRepository
             return NoContent();
         }
 
-        protected bool EntityExists(int id) => Context.Set<T>().Any(e => e.GetId() == id);
+        protected async Task<bool> EntityExists<Tentity>(int id) where Tentity : class, IDatabase => await Context.Set<Tentity>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
+
         protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 }
