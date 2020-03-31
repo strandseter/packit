@@ -12,16 +12,9 @@ namespace Packit.Model
         public virtual Backpack Backpack { get; set; }
 
         public void SetLeftId(int id) => ItemId = id;
-
         public int GetLeftId() => ItemId;
-
         public void SetRightId(int id) => BackpackId = id;
-
         public int GetRightId() => BackpackId;
-
-        public override string ToString()
-        {
-            return $"LeftId: {ItemId}, RightId: {BackpackId}";
-        }
+        public override string ToString() => $"LeftId: {ItemId}, RightId: {BackpackId}";
     }
 }

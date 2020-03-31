@@ -7,12 +7,11 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class Trip : BaseInformation, IOneToManyAble, IDatabase
+    public class Trip : BaseInformation, IDatabase
     {
         public int TripId { get; set; }
         public string Destination { get; set; }
         public DateTime DepatureDate { get; set; }
-        public User user { get; set; }
         public virtual ICollection<BackpackTrip> Backpacks { get; set; }
 
         public Trip() 
@@ -20,16 +19,13 @@ namespace Packit.Model
             Backpacks = new List<BackpackTrip>();
         }
 
-        public Trip(string title, string description, string imageStringName)
-           : base(title, description, imageStringName)
+        public Trip(string title, string description, string imageStringName, User user)
+           : base(title, description, imageStringName, user)
         {
             Backpacks = new List<BackpackTrip>();
         }
 
         public override string ToString() => $"{Title}, ";
-
-        public int Id() => TripId;
-
         public int GetId() => TripId;
     }
 }

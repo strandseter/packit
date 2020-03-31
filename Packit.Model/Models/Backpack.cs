@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Packit.Model
 {
-    public class Backpack : BaseInformation, IOneToManyAble, IDatabase
+    public class Backpack : BaseInformation, IDatabase
     {
         public int BackpackId { get; set; }
         public SharedBackpack SharedBackpack { get; set; }
@@ -20,22 +20,14 @@ namespace Packit.Model
             Trips = new List<BackpackTrip>();
         }
 
-        public Backpack(string title, string description, string imageStringName)
-            : base(title, description, imageStringName)
+        public Backpack(string title, string description, string imageStringName, User user)
+            : base(title, description, imageStringName, user)
         {
             Items = new List<ItemBackpack>();
             Trips = new List<BackpackTrip>();
         }
 
         public override string ToString() => $"{Title}, {BackpackId}";
-
-        public int Id() => BackpackId;
-
         public int GetId() => BackpackId;
-
-        public IList GetEntities()
-        {
-            return (IList)Items;
-        }
     }
 }
