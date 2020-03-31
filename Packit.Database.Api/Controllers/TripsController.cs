@@ -49,5 +49,19 @@ namespace Packit.Database.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrip([FromRoute] int id) => await _repository.Delete(id).ConfigureAwait(false);
 
+        // PUT: api/trips/3/backpacks/4
+        [HttpPut]
+        [Route("{tripId}/backpacks/{backpackId}/create")]
+        public async Task<IActionResult> PutBackpackToTrip([FromRoute] int tripId, [FromRoute] int backpackId) => await _repository.CreateManyToMany("GetBackpackTrip", backpackId, tripId).ConfigureAwait(false);
+
+        // DELETE: api/trips/3/backpacks/7/delete
+        [HttpDelete]
+        [Route("{tripId}/backpacks/{backpackId}/delete")]
+        public async Task<IActionResult> DeleteBackpackFromTrip([FromRoute] int tripId, [FromRoute] int backpackId) => await _repository.DeleteManyToMany(backpackId, tripId).ConfigureAwait(false);
+
+        // GET: api/trips/4/backpacks
+        [HttpGet]
+        [Route("{tripId}/backpacks")]
+        public async Task<IActionResult> GetBackpacksInTrip([FromRoute] int tripId) => await _repository.GetManyToMany(tripId).ConfigureAwait(false);
     }
 }
