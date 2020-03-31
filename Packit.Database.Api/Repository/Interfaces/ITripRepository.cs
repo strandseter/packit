@@ -10,6 +10,6 @@ namespace Packit.Database.Api.Repository.Interfaces
 {
     public interface ITripRepository : IGenericRepository<Trip>, IGenericManyToManyRepository<Trip>
     {
-        //Declare methods that are possible to make generic here.
+        //Declare methods that are not possible to make generic here.
     }
 }

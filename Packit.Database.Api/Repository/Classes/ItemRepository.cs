@@ -14,7 +14,8 @@ namespace Packit.Database.Api
         public ItemRepository(PackitContext context)
             :base(context)
         {
-
         }
+
+        //Implement methods that are not possible to make generic here.
     }
 }

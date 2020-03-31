@@ -17,6 +17,6 @@ namespace Packit.Database.Api.Repository.Classes
         {
         }
 
-        //Implement methods that are possible to make generic here.
+        //Implement methods that are not possible to make generic here.
     }
 }
