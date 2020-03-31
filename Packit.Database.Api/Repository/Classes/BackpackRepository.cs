@@ -18,9 +18,6 @@ namespace Packit.Database.Api.Repository.Classes
         {
         }
 
-        public void Test()
-        {
-
-        }
+        //Implement methods that are possible to make generic here.
     }
 }
