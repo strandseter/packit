@@ -19,13 +19,11 @@ namespace Packit.Database.Api.Controllers
     [ApiController]
     public class BackpacksController : PackitApiController
     {
-        public IRelationMapper RelationMapper { get; set; }
         private readonly IBackpackRepository _repository;
 
-        public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper, IBackpackRepository repository)
+        public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IBackpackRepository repository)
             :base(context, authenticationService, httpContextAccessor)
         {
-            RelationMapper = relationMapper;
             _repository = repository;
         }
 

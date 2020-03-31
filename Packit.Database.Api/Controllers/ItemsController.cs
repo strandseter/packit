@@ -21,13 +21,11 @@ namespace Packit.Database.Api.Controllers
     [ApiController]
     public class ItemsController : PackitApiController
     {
-        private readonly IRelationMapper _relationMapper;
         private readonly IItemRepository _repository;
 
-        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper, IItemRepository repository )
+        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IItemRepository repository )
             :base(context, authenticationService, httpContextAccessor)
         {
-            _relationMapper = relationMapper;
             _repository = repository;
         }
 

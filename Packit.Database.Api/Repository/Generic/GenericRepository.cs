@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Filters;
 
 namespace Packit.Database.Api.GenericRepository
 {
@@ -91,7 +92,6 @@ namespace Packit.Database.Api.GenericRepository
         }
 
         protected async Task<bool> EntityExists<Tentity>(int id) where Tentity : class, IDatabase => await Context.Set<Tentity>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
-
         protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 }

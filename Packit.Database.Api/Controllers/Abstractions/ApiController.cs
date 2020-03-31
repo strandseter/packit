@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
 using Packit.Model;
-using Packit.Model.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;

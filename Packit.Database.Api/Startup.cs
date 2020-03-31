@@ -102,7 +102,6 @@ namespace Packit.Database.Api
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IRelationMapper, RelationMapper>();
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IBackpackRepository, BackpackRepository>();
             services.AddScoped<ITripRepository, TripRepository>();
