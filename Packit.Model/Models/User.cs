@@ -1,11 +1,11 @@
-﻿using Packit.Model.Interfaces;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Packit.Model
 {
-    public class User : IOneTable
+    public class User
     {
         public int UserId { get; set; }
         public string FirstName { get; set; }
