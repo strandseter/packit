@@ -33,30 +33,6 @@ namespace Packit.Database.Api.Controllers.Abstractions
             SetUserToken();
         }
 
-        protected async Task<IActionResult> AddManyToMany<T>(int left, int right, DbSet<T> dbset, string message) where T : class, IManyToMany
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (ObjRelationExists(left, right, dbset))
-                return NoContent();
-
-            var obj = (T)Activator.CreateInstance(typeof(T));
-            obj.SetLeftId(left);
-            obj.SetRightId(right);
-
-            dbset?.Add(obj);
-
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return CreatedAtAction(message, new { left, right }, obj);
-        }
-
-        private bool ObjRelationExists<T>(int id1, int id2, DbSet<T> dbset) where T : class, IManyToMany
-        {
-            return dbset.Any(e => e.GetLeftId() == id1 && e.GetRightId() == id2);
-        }
-
         private void SetUserToken()
         {
             Token = HttpContextAccessor?.HttpContext.Request.Headers["Authorization"];
@@ -65,9 +41,6 @@ namespace Packit.Database.Api.Controllers.Abstractions
                 Token = Token.Replace("Bearer ", "", StringComparison.CurrentCulture);
         }
 
-        protected bool UserIsAuthorized(User user)
-        {
-            return user?.JwtToken == Token;
-        }
+        protected bool UserIsAuthorized(User user) => user?.JwtToken == Token;
     }
 }

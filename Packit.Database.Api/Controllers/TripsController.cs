@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
 using Packit.Database.Api.Controllers.Abstractions;
+using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
@@ -19,113 +20,34 @@ namespace Packit.Database.Api.Controllers
     public class TripsController : PackitApiController
     {
         public IRelationMapper RelationMapper { get; set; }
+        private readonly ITripRepository _repository;
 
-        public TripsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper)
+        public TripsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IRelationMapper relationMapper, ITripRepository repository)
             :base(context, authenticationService, httpContextAccessor)
         {
             RelationMapper = relationMapper;
+            _repository = repository;
         }
 
         // GET: api/Trips
         [HttpGet]
-        public IEnumerable<Trip> GetTrips()
-        {
-            return Context.Trips;
-        }
+        public IEnumerable<Trip> GetTrips() => _repository.GetAll();
 
         // GET: api/Trips/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTrip([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var trip = await Context.Trips.FindAsync(id).ConfigureAwait(false);
-
-            if (trip == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(trip);
-        }
+        public async Task<IActionResult> GetTrip([FromRoute] int id) => await _repository.GetById(id).ConfigureAwait(false);
 
         // PUT: api/Trips/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTrip([FromRoute] int id, [FromBody] Trip trip)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != trip?.TripId)
-            {
-                return BadRequest();
-            }
-
-            Context.Entry(trip).State = EntityState.Modified;
-
-            try
-            {
-                await Context.SaveChangesAsync().ConfigureAwait(false);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TripExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        public async Task<IActionResult> PutTrip([FromRoute] int id, [FromBody] Trip trip) => await _repository.Update(id, trip).ConfigureAwait(false);
 
         // POST: api/Trips
         [HttpPost]
-        public async Task<IActionResult> PostTrip([FromBody] Trip trip)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            Context.Trips.Add(trip);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return CreatedAtAction("GetTrip", new { id = trip?.TripId }, trip);
-        }
+        public async Task<IActionResult> PostTrip([FromBody] Trip trip) => await _repository.Create(trip, "GetTrip").ConfigureAwait(false);
 
         // DELETE: api/Trips/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTrip([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        public async Task<IActionResult> DeleteTrip([FromRoute] int id) => await _repository.Delete(id).ConfigureAwait(false);
 
-            var trip = await Context.Trips.FindAsync(id).ConfigureAwait(false);
-            if (trip == null)
-            {
-                return NotFound();
-            }
-
-            Context.Trips.Remove(trip);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return Ok(trip);
-        }
-
-        private bool TripExists(int id)
-        {
-            return Context.Trips.Any(e => e.TripId == id);
-        }
     }
 }

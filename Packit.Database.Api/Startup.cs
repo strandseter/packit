@@ -105,7 +105,7 @@ namespace Packit.Database.Api
             services.AddScoped<IRelationMapper, RelationMapper>();
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IBackpackRepository, BackpackRepository>();
-            //services.AddScoped<ITripRepository, TripRepository>();
+            services.AddScoped<ITripRepository, TripRepository>();
         }
 
         private void ConfigureDatabaseConnection(IServiceCollection services)
