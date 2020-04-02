@@ -17,6 +17,7 @@ namespace Packit.Image.Api.Controllers
             this.host = host;
         }
 
+        //Code from Øyvinds example.
         [Route("{name}", Name = "GetImageByName")]
         public ActionResult Get(string name)
         {
@@ -32,6 +33,7 @@ namespace Packit.Image.Api.Controllers
             return File(image, $"image/{extension}");
         }
 
+        //Code from Øyvinds example.
         [HttpPost]
         public async Task<IActionResult> Post()
         {
