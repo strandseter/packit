@@ -51,6 +51,21 @@ namespace Packit.Image.Api.Controllers
                 return BadRequest();
         }
 
+        [Route("{name}", Name = "GetImageByName")]
+        [HttpDelete]
+        public IActionResult Delete(string name)
+        {
+            string imagePath = GetImagePath();
+            string fileName = $"{imagePath}\\{name}";
+
+            if (!System.IO.File.Exists(fileName))
+                return NotFound();
+
+            System.IO.File.Delete($"{fileName}");
+
+            return Ok();
+        }
+
         private string GetImagePath()
         {
             var path = $"{host.WebRootPath}\\uploads";
