@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Packit.Image.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class ImagesController : ControllerBase
     {
         private readonly IHostingEnvironment host;

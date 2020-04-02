@@ -13,11 +13,17 @@ namespace Packit.Database.Api.GenericRepository
     public class GenericRepository<T> : ControllerBase, IGenericRepository<T> where T : class, IDatabase
     {
         protected PackitContext Context { get;}
+        private string token = "";
 
         public GenericRepository(PackitContext context)
         {
             Context = context;
         }
+
+        //public DbSet<T> UserAuthorizedEntities(string token)
+        //{
+        //    return Context.Set<T>().Where(e => e.User.JwtToken == token);
+        //}
 
         public async Task<IActionResult> Create(T entity, string message)
         {
