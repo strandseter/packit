@@ -41,6 +41,9 @@ namespace Packit.Database.Api.GenericRepository
             if (entity == null)
                 return NotFound();
 
+            if (entity.User.UserId != userId)
+                return NotFound();
+
             Context.Set<T>().Remove(entity);
 
             await SaveChanges(); //TODO: Suppress??
@@ -50,7 +53,7 @@ namespace Packit.Database.Api.GenericRepository
 
         public IQueryable<T> GetAll(int? userId)
         {
-            return Context.Set<T>();
+            return Context.Set<T>().Where(e => e.User.UserId == userId);
         }
 
         public async Task<IActionResult> GetById(int id, int? userId)
@@ -58,9 +61,12 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var entity = await Context.Set<T>().FindAsync(id).ConfigureAwait(false);
+            var entity = await Context.Set<T>().Where(e => e.User.UserId == userId).FirstOrDefaultAsync();
 
-            if (entity == null)
+            if (entity == null || userId == null)
+                return NotFound();
+
+            if (entity.User.UserId != userId)
                 return NotFound();
 
             return Ok(entity);
@@ -71,10 +77,13 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            if (entity.User.UserId != userId)
+                return NotFound();
+
             if (id != entity?.GetId())
                 return BadRequest();
 
-            Context.Set<T>().Update(entity).State = EntityState.Modified; //TODO: Entry()? Instead of Update()
+            Context.Set<T>().Update(entity).State = EntityState.Modified;
 
             try
             {
