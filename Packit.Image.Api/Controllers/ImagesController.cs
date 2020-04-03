@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Packit.Image.Api.Controllers
 
         //Code from Øyvinds example.
         [Route("{name}", Name = "GetImageByName")]
-        public ActionResult Get(string name)
+        public IActionResult Get(string name)
         {
             string imagePath = GetImagePath();
             string fileName = $"{imagePath}\\{name}";
@@ -27,10 +28,41 @@ namespace Packit.Image.Api.Controllers
             if (!System.IO.File.Exists(fileName))
                 return NotFound();
 
-            var image = System.IO.File.ReadAllBytes(fileName);
+            try
+            {
+                var image = System.IO.File.ReadAllBytes(fileName);
 
-            string extension = new System.IO.FileInfo(fileName).Extension.Substring(1);
-            return File(image, $"image/{extension}");
+                string extension = new FileInfo(fileName).Extension.Substring(1);
+                return File(image, $"image/{extension}");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (PathTooLongException ex)
+            {
+                return StatusCode(414, ex.Message);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
+            catch (FileNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (NotSupportedException ex)
+            {
+                return StatusCode(415, ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         //Code from Øyvinds example.
@@ -41,13 +73,41 @@ namespace Packit.Image.Api.Controllers
 
             if (file != null && file.Length > 0)
             {
-                string fileName = System.IO.Path.GetFileName(file.FileName);
-                string imagePath = GetImagePath();
+                try
+                {
+                    string fileName = Path.GetFileName(file.FileName);
+                    string imagePath = GetImagePath();
 
-                using (var outStream = System.IO.File.Create($"{imagePath}\\{fileName}"))
-                    await file.CopyToAsync(outStream);
+                    using (var outStream = System.IO.File.Create($"{imagePath}\\{fileName}"))
+                        await file.CopyToAsync(outStream);
 
-                return CreatedAtRoute("GetImageByName", new { name = fileName }, null);
+                    return CreatedAtRoute("GetImageByName", new { name = fileName }, null);
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return Unauthorized();
+                }
+                catch (PathTooLongException ex)
+                {
+                    return StatusCode(414, ex.Message);
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    return NotFound(ex.Message);
+                }
+                catch (NotSupportedException ex)
+                {
+                    return StatusCode(415, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, ex.Message);
+                }
+                
             }
             else
                 return BadRequest();
@@ -63,17 +123,44 @@ namespace Packit.Image.Api.Controllers
             if (!System.IO.File.Exists(fileName))
                 return NotFound();
 
-            System.IO.File.Delete($"{fileName}");
+            try
+            {
+                System.IO.File.Delete($"{fileName}");
 
-            return Ok();
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (PathTooLongException ex)
+            {
+                return StatusCode(414, ex.Message);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
+            catch (NotSupportedException ex)
+            {
+                return StatusCode(415, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         private string GetImagePath()
         {
             var path = $"{host.WebRootPath}\\uploads";
 
-            if (!System.IO.Directory.Exists(path))
-                System.IO.Directory.CreateDirectory(path);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
 
             return path;
         }
