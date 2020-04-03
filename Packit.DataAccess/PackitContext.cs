@@ -43,6 +43,7 @@ namespace Packit.DataAccess
             //ConfigureOneToManyUserTrips(modelBuilder);
         }
 
+
         private void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
         {
             modelBuilder.Entity<ItemBackpack>()

@@ -36,12 +36,9 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = await Context.Set<T>().FindAsync(id).ConfigureAwait(false);
+            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
 
             if (entity == null)
-                return NotFound();
-
-            if (entity.User.UserId != userId)
                 return NotFound();
 
             Context.Set<T>().Remove(entity);
@@ -61,12 +58,9 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var entity = await Context.Set<T>().Where(e => e.User.UserId == userId).FirstOrDefaultAsync();
+            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
 
-            if (entity == null || userId == null)
-                return NotFound();
-
-            if (entity.User.UserId != userId)
+            if (entity == null)
                 return NotFound();
 
             return Ok(entity);
@@ -77,8 +71,6 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (entity.User.UserId != userId)
-                return NotFound();
 
             if (id != entity?.GetId())
                 return BadRequest();
