@@ -18,7 +18,7 @@ namespace Packit.Image.Api.Controllers
             this.host = host;
         }
 
-        //Code from Øyvinds example.
+        //Inspired by Øyvinds example.
         [Route("{name}", Name = "GetImageByName")]
         public IActionResult Get(string name)
         {
@@ -65,7 +65,7 @@ namespace Packit.Image.Api.Controllers
             }
         }
 
-        //Code from Øyvinds example.
+        //Inspired by Øyvinds example.
         [HttpPost]
         public async Task<IActionResult> Post()
         {
