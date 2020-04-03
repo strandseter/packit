@@ -29,15 +29,15 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Backpacks
         [HttpGet]
-        public IEnumerable<Backpack> GetBackpacks() => _repository.GetAll();
+        public IEnumerable<Backpack> GetBackpacks() => _repository.GetAll(CurrentUserId());
 
         // GET: api/Backpacks/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBackpack([FromRoute] int id) => await _repository.GetById(id).ConfigureAwait(false);
+        public async Task<IActionResult> GetBackpack([FromRoute] int id) => await _repository.GetById(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/Backpacks/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBackpack([FromRoute] int id, [FromBody] Backpack backpack) => await _repository.Update(id, backpack).ConfigureAwait(false);
+        public async Task<IActionResult> PutBackpack([FromRoute] int id, [FromBody] Backpack backpack) => await _repository.Update(id, backpack, CurrentUserId()).ConfigureAwait(false);
 
         // POST: api/Backpacks
         [HttpPost]
@@ -45,7 +45,7 @@ namespace Packit.Database.Api.Controllers
 
         // DELETE: api/Backpacks/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBackpack([FromRoute] int id) => await _repository.Delete(id).ConfigureAwait(false);
+        public async Task<IActionResult> DeleteBackpack([FromRoute] int id) => await _repository.Delete(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/backpacks/3/items/6/create
         [HttpPut]

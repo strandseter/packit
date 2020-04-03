@@ -13,17 +13,11 @@ namespace Packit.Database.Api.GenericRepository
     public class GenericRepository<T> : ControllerBase, IGenericRepository<T> where T : class, IDatabase
     {
         protected PackitContext Context { get;}
-        private string token = "";
 
         public GenericRepository(PackitContext context)
         {
             Context = context;
         }
-
-        //public DbSet<T> UserAuthorizedEntities(string token)
-        //{
-        //    return Context.Set<T>().Where(e => e.User.JwtToken == token);
-        //}
 
         public async Task<IActionResult> Create(T entity, string message)
         {
@@ -37,7 +31,7 @@ namespace Packit.Database.Api.GenericRepository
             return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, int? userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -54,12 +48,12 @@ namespace Packit.Database.Api.GenericRepository
             return Ok(entity);
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAll(int? userId)
         {
             return Context.Set<T>();
         }
 
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int id, int? userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -72,7 +66,7 @@ namespace Packit.Database.Api.GenericRepository
             return Ok(entity);
         }
 
-        public async Task<IActionResult> Update(int id, T entity)
+        public async Task<IActionResult> Update(int id, T entity, int? userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

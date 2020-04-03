@@ -31,15 +31,15 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Items
         [HttpGet]
-        public IEnumerable<Item> GetItem() => _repository.GetAll();
+        public IEnumerable<Item> GetItem() => _repository.GetAll(CurrentUserId());
 
         // GET: api/Items/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem([FromRoute] int id) => await _repository.GetById(id).ConfigureAwait(false);
+        public async Task<IActionResult> GetItem([FromRoute] int id) => await _repository.GetById(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/Items/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item) => await _repository.Update(id, item).ConfigureAwait(false);
+        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item) => await _repository.Update(id, item, CurrentUserId()).ConfigureAwait(false);
 
         // POST: api/Items
         [HttpPost]
@@ -47,6 +47,6 @@ namespace Packit.Database.Api.Controllers
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem([FromRoute] int id) => await _repository.Delete(id).ConfigureAwait(false);
+        public async Task<IActionResult> DeleteItem([FromRoute] int id) => await _repository.Delete(id, CurrentUserId()).ConfigureAwait(false);
     }
 }

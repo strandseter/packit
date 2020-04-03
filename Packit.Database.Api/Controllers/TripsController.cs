@@ -29,15 +29,15 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Trips
         [HttpGet]
-        public IEnumerable<Trip> GetTrips() => _repository.GetAll();
+        public IEnumerable<Trip> GetTrips() => _repository.GetAll(CurrentUserId());
 
         // GET: api/Trips/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTrip([FromRoute] int id) => await _repository.GetById(id).ConfigureAwait(false);
+        public async Task<IActionResult> GetTrip([FromRoute] int id) => await _repository.GetById(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/Trips/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTrip([FromRoute] int id, [FromBody] Trip trip) => await _repository.Update(id, trip).ConfigureAwait(false);
+        public async Task<IActionResult> PutTrip([FromRoute] int id, [FromBody] Trip trip) => await _repository.Update(id, trip, CurrentUserId()).ConfigureAwait(false);
 
         // POST: api/Trips
         [HttpPost]
@@ -45,7 +45,7 @@ namespace Packit.Database.Api.Controllers
 
         // DELETE: api/Trips/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTrip([FromRoute] int id) => await _repository.Delete(id).ConfigureAwait(false);
+        public async Task<IActionResult> DeleteTrip([FromRoute] int id) => await _repository.Delete(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/trips/3/backpacks/4
         [HttpPut]
