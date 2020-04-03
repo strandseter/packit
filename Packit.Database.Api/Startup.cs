@@ -34,10 +34,11 @@ namespace Packit.Database.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureAuthentication(services);
+
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            ConfigureAuthentication(services);
             ConfigureInjections(services);
             ConfigureDatabaseConnection(services);
         }

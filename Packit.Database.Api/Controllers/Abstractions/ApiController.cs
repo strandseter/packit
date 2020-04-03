@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
 using Packit.Model;
@@ -19,7 +20,6 @@ namespace Packit.Database.Api.Controllers.Abstractions
     public abstract class PackitApiController : ControllerBase
     {
         protected PackitContext Context { get; set; } //???
-        protected string Token { get; set; }
         protected IHttpContextAccessor HttpContextAccessor { get; set; }
         protected IAuthenticationService AuthenticationService { get; set; } //???
 
@@ -28,18 +28,18 @@ namespace Packit.Database.Api.Controllers.Abstractions
             Context = context;
             AuthenticationService = authenticationService;
             HttpContextAccessor = httpContextAccessor;
-
-            SetUserToken();
         }
 
-        private void SetUserToken()
+        protected int? CurrentUserId()
         {
-            Token = HttpContextAccessor?.HttpContext.Request.Headers["Authorization"];
+            var idClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("id", StringComparison.InvariantCultureIgnoreCase));
 
-            if (Token != null)
-                Token = Token.Replace("Bearer ", "", StringComparison.CurrentCulture);
+            bool parse = int.TryParse(idClaim.Value, out int id);
+
+            if (parse)
+                return int.Parse(idClaim.Value);
+
+            return null;
         }
-
-        protected bool UserIsAuthorized(User user) => user?.JwtToken == Token;
     }
 }

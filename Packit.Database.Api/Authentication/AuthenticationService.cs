@@ -37,7 +37,8 @@ namespace Packit.Database.Api.Authentication
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserId.ToString())
+                    new Claim(ClaimTypes.Name, user.UserId.ToString()),
+                    new Claim("id", user.UserId.ToString())
                 }),
                     Expires = DateTime.UtcNow.AddDays(1), //TODO: Change days??
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
