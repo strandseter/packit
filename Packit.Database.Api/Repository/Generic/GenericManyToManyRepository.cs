@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Generic
 {
-    public class GenericManyToManyRepository<T1, T2, T3> : GenericRepository<T1>, IGenericManyToManyRepository<T1> where T1 : class, IDatabase where  T2 : class, IDatabase where T3 : class, IManyToMany //TODO: Move IManyToMany to anotehr project
+    public class GenericManyToManyRepository<T1, T2, T3> : GenericRepository<T1>, IGenericManyToManyRepository<T1>  where T1 : class, IDatabase 
+                                                                                                                    where  T2 : class, IDatabase 
+                                                                                                                    where T3 : class, IManyToMany //TODO: Move IManyToMany to another project
     {
         public GenericManyToManyRepository(PackitContext context)
             :base(context)
@@ -33,9 +35,9 @@ namespace Packit.Database.Api.Repository.Generic
             entity.SetLeftId(leftId);
             entity.SetRightId(rightId);
 
-            await Context.Set<T3>().AddAsync(entity).ConfigureAwait(false);
+            await Context.Set<T3>().AddAsync(entity);
 
-            await SaveChanges(); //TODO: Suppress??
+            await SaveChanges();
 
             return CreatedAtAction(message, new { leftId, rightId }, entity);
         }
@@ -51,20 +53,20 @@ namespace Packit.Database.Api.Repository.Generic
             if (!EntityRelationExists(leftId, rightId))
                 return NotFound();
 
-            var entity = await Context.Set<T3>().FirstOrDefaultAsync(e => e.GetLeftId() == leftId && e.GetRightId() == rightId).ConfigureAwait(false);
+            var entity = await Context.Set<T3>().FirstOrDefaultAsync(e => e.GetLeftId() == leftId && e.GetRightId() == rightId);
             Context.Set<T3>().Remove(entity);
 
-            await SaveChanges(); //TODO: Suppress??
+            await SaveChanges();
 
             return Ok(entity);
         }
 
-        public async Task<IActionResult> GetManyToMany(int id) //TODO: Rename?
+        public async Task<IActionResult> GetManyToMany(int id)
         {
             if (!ModelState.IsValid) 
                 return BadRequest(ModelState);
 
-            var entity = await Context.Set<T1>().FindAsync(id).ConfigureAwait(false);
+            var entity = await Context.Set<T1>().FindAsync(id);
 
             if (entity == null) 
                 return NotFound();

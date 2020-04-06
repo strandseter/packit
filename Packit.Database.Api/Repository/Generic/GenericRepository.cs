@@ -24,9 +24,9 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await Context.Set<T>().AddAsync(entity).ConfigureAwait(false);
+            await Context.Set<T>().AddAsync(entity);
 
-            await SaveChanges(); //TODO: Suppress??
+            await SaveChanges();
 
             return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
         }
@@ -43,7 +43,7 @@ namespace Packit.Database.Api.GenericRepository
 
             Context.Set<T>().Remove(entity);
 
-            await SaveChanges(); //TODO: Suppress??
+            await SaveChanges();
 
             return Ok(entity);
         }
@@ -71,6 +71,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            //var tester = entity.User.UserId;
 
             if (id != entity?.GetId())
                 return BadRequest();
@@ -79,7 +80,7 @@ namespace Packit.Database.Api.GenericRepository
 
             try
             {
-                await SaveChanges(); //TODO: Suppress??
+                await SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {

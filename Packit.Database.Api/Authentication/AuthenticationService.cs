@@ -40,7 +40,7 @@ namespace Packit.Database.Api.Authentication
                     new Claim(ClaimTypes.Name, user.UserId.ToString()),
                     new Claim("id", user.UserId.ToString())
                 }),
-                    Expires = DateTime.UtcNow.AddDays(1), //TODO: Change days??
+                    Expires = DateTime.UtcNow.AddDays(300),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
 
