@@ -33,6 +33,5 @@
       <Event Name="ItemInvoked" Dynamic="Required"/>
     </Type>
 
-    <Namespace Name="System.Configuration" Serialize="Required PublicAndInternal" />
   </Application>
 </Directives>

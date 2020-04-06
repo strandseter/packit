@@ -4,11 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-using Packit.App.Core.Helpers;
-using Packit.App.Core.Services;
 using Packit.App.Helpers;
 using Packit.App.Services;
-using Packit.App.Views;
 
 using Windows.System;
 using Windows.UI.Xaml.Controls;
@@ -30,12 +27,6 @@ namespace Packit.App.ViewModels
         private WinUI.NavigationViewItem _selected;
         private ICommand _loadedCommand;
         private ICommand _itemInvokedCommand;
-        private ICommand _userProfileCommand;
-        private UserViewModel _user;
-
-        private IdentityService IdentityService => Singleton<IdentityService>.Instance;
-
-        private UserDataService UserDataService => Singleton<UserDataService>.Instance;
 
         public bool IsBackEnabled
         {
@@ -53,14 +44,6 @@ namespace Packit.App.ViewModels
 
         public ICommand ItemInvokedCommand => _itemInvokedCommand ?? (_itemInvokedCommand = new RelayCommand<WinUI.NavigationViewItemInvokedEventArgs>(OnItemInvoked));
 
-        public ICommand UserProfileCommand => _userProfileCommand ?? (_userProfileCommand = new RelayCommand(OnUserProfile));
-
-        public UserViewModel User
-        {
-            get { return _user; }
-            set { Set(ref _user, value); }
-        }
-
         public ShellViewModel()
         {
         }
@@ -73,8 +56,6 @@ namespace Packit.App.ViewModels
             NavigationService.NavigationFailed += Frame_NavigationFailed;
             NavigationService.Navigated += Frame_Navigated;
             _navigationView.BackRequested += OnBackRequested;
-            IdentityService.LoggedOut += OnLoggedOut;
-            UserDataService.UserDataUpdated += OnUserDataUpdated;
         }
 
         private async void OnLoaded()
@@ -83,36 +64,11 @@ namespace Packit.App.ViewModels
             // More info on tracking issue https://github.com/Microsoft/microsoft-ui-xaml/issues/8
             _keyboardAccelerators.Add(_altLeftKeyboardAccelerator);
             _keyboardAccelerators.Add(_backKeyboardAccelerator);
-            User = await UserDataService.GetUserAsync();
-        }
-
-        private void OnUserDataUpdated(object sender, UserViewModel userData)
-        {
-            User = userData;
-        }
-
-        private void OnLoggedOut(object sender, EventArgs e)
-        {
-            NavigationService.NavigationFailed -= Frame_NavigationFailed;
-            NavigationService.Navigated -= Frame_Navigated;
-            _navigationView.BackRequested -= OnBackRequested;
-            UserDataService.UserDataUpdated -= OnUserDataUpdated;
-            IdentityService.LoggedOut -= OnLoggedOut;
-        }
-
-        private void OnUserProfile()
-        {
-            NavigationService.Navigate<SettingsPage>();
+            await Task.CompletedTask;
         }
 
         private void OnItemInvoked(WinUI.NavigationViewItemInvokedEventArgs args)
         {
-            if (args.IsSettingsInvoked)
-            {
-                NavigationService.Navigate(typeof(SettingsPage));
-                return;
-            }
-
             var item = _navigationView.MenuItems
                             .OfType<WinUI.NavigationViewItem>()
                             .First(menuItem => (string)menuItem.Content == (string)args.InvokedItem);
@@ -133,12 +89,6 @@ namespace Packit.App.ViewModels
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             IsBackEnabled = NavigationService.CanGoBack;
-            if (e.SourcePageType == typeof(SettingsPage))
-            {
-                Selected = _navigationView.SettingsItem as WinUI.NavigationViewItem;
-                return;
-            }
-
             Selected = _navigationView.MenuItems
                             .OfType<WinUI.NavigationViewItem>()
                             .FirstOrDefault(menuItem => IsMenuItemForPageType(menuItem, e.SourcePageType));

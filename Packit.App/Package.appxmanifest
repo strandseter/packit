@@ -8,11 +8,11 @@
   IgnorableNamespaces="uap mp genTemplate">
 
   <Identity
-    Name="820D9A93-A4F2-4A15-85CF-8333F463E2CF"
+    Name="33CD2AA9-5C35-4FF6-B8D4-4E8E0A49687B"
     Publisher="CN=ander"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="820D9A93-A4F2-4A15-85CF-8333F463E2CF" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="33CD2AA9-5C35-4FF6-B8D4-4E8E0A49687B" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Packit.App</DisplayName>
@@ -48,7 +48,6 @@
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClientServer" />
     <Capability Name="internetClient" />
   </Capabilities>
 
