@@ -7,6 +7,7 @@ namespace Packit.Model
     public class Item : BaseInformation, IDatabase
     {
         public int ItemId { get; set; }
+
         public virtual ICollection<ItemBackpack> Backpacks { get; set;}
 
         public Item()

@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Generic
 {
-    public class GenericManyToManyRepository<T1, T2, T3> : GenericRepository<T1>, IGenericManyToManyRepository<T1>  where T1 : class, IDatabase 
-                                                                                                                    where  T2 : class, IDatabase 
-                                                                                                                    where T3 : class, IManyToMany //TODO: Move IManyToMany to another project
+    public class GenericManyToManyRepository<T1, T2, T3> : GenericRepository<T1>, IGenericManyToManyRepository<T1> where T1 : class, IDatabase 
+                                                                                                                   where T2 : class, IDatabase 
+                                                                                                                   where T3 : class, IManyToMany //TODO: Move IManyToMany to another project
     {
         public GenericManyToManyRepository(PackitContext context)
             :base(context)

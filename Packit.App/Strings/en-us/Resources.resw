@@ -127,6 +127,34 @@
   </data>
   <data name="Shell_Main.Content" xml:space="preserve">
     <value>Main</value>
-    <comment>Navigation view item name for Main</comment>
+    <comment>Navigation view item name for Home page</comment>
+  </data>
+  <data name="Shell_Backpacks.Content" xml:space="preserve">
+    <value>Backpacks</value>
+    <comment>Navigation view item name for Backpacks page</comment>
+  </data>
+  <data name="Shell_Items.Content" xml:space="preserve">
+    <value>Items</value>
+    <comment>Navigation view item name for Items page</comment>
+  </data>
+  <data name="Shell_Profile.Content" xml:space="preserve">
+    <value>Profile</value>
+    <comment>Navigation view item name for Profile page</comment>
+  </data>
+  <data name="Shell_Scanner.Content" xml:space="preserve">
+    <value>Scanner</value>
+    <comment>Navigation view item name for Scanner page</comment>
+  </data>
+  <data name="Shell_Trips.Content" xml:space="preserve">
+    <value>Trips</value>
+    <comment>Navigation view item name for Trips page</comment>
+  </data>
+  <data name="Shell_Blank.Content" xml:space="preserve">
+    <value>Blank</value>
+    <comment>Navigation view item name for Blank</comment>
+  </data>
+  <data name="Shell_Items.Content" xml:space="preserve">
+    <value>Items</value>
+    <comment>Navigation view item name for Items</comment>
   </data>
 </root>
