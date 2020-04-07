@@ -33,11 +33,39 @@
             Edit String/en-US/Resources.resw: Add a menu item title for each page
             -->
             <winui:NavigationViewItem x:Uid="Shell_Main" Icon="Home" helpers:NavHelper.NavigateTo="views:MainPage" />
-            <winui:NavigationViewItem x:Uid="Shell_Items" Icon="Home" helpers:NavHelper.NavigateTo="views:ItemsPage" />
-            <winui:NavigationViewItem x:Uid="Shell_Backpacks" Icon="Home" helpers:NavHelper.NavigateTo="views:MainPage" />
-            <winui:NavigationViewItem x:Uid="Shell_Trips" Icon="Home" helpers:NavHelper.NavigateTo="views:MainPage" />
-            <winui:NavigationViewItem x:Uid="Shell_Scanner" Icon="Home" helpers:NavHelper.NavigateTo="views:MainPage"/>
+            
+            <winui:NavigationViewItem x:Uid="Shell_Items" helpers:NavHelper.NavigateTo="views:ItemsPage">
+                <winui:NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE975;"/>
+                </winui:NavigationViewItem.Icon>
+            </winui:NavigationViewItem>
+            
+            <winui:NavigationViewItem x:Uid="Shell_Backpacks" helpers:NavHelper.NavigateTo="views:MainPage">
+                <winui:NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72E;"/>
+                </winui:NavigationViewItem.Icon>
+            </winui:NavigationViewItem>
+
+            <winui:NavigationViewItem x:Uid="Shell_Trips" helpers:NavHelper.NavigateTo="views:MainPage">
+                <winui:NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE787;"/>
+                </winui:NavigationViewItem.Icon>
+            </winui:NavigationViewItem>
+            
+            <winui:NavigationViewItem x:Uid="Shell_Scanner" helpers:NavHelper.NavigateTo="views:MainPage">
+                <winui:NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEE6F;"/>
+                </winui:NavigationViewItem.Icon>
+            </winui:NavigationViewItem>
+            
+            <winui:NavigationViewItem x:Uid="Shell_Browse" helpers:NavHelper.NavigateTo="views:MainPage">
+                <winui:NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE774;"/>
+                </winui:NavigationViewItem.Icon>
+            </winui:NavigationViewItem>
+            
             <winui:NavigationViewItem x:Uid="Shell_Profile" Icon="Contact" helpers:NavHelper.NavigateTo="views:MainPage"/>
+            
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior

@@ -135,7 +135,7 @@
   </data>
   <data name="Shell_Items.Content" xml:space="preserve">
     <value>Items</value>
-    <comment>Navigation view item name for Items page</comment>
+    <comment>Navigation view item name for Items</comment>
   </data>
   <data name="Shell_Profile.Content" xml:space="preserve">
     <value>Profile</value>
@@ -153,8 +153,7 @@
     <value>Blank</value>
     <comment>Navigation view item name for Blank</comment>
   </data>
-  <data name="Shell_Items.Content" xml:space="preserve">
-    <value>Items</value>
-    <comment>Navigation view item name for Items</comment>
+  <data name="Shell_Browse.Content" xml:space="preserve">
+    <value>Browse Backpacks</value>
   </data>
 </root>

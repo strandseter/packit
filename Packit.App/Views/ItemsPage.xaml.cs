@@ -13,6 +13,13 @@ namespace Packit.App.Views
         public ItemsPage()
         {
             InitializeComponent();
+
+            Loaded += ItemsPage_LoadedAsync;
+        }
+
+        private async void ItemsPage_LoadedAsync(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            await ViewModel.LoadItemsAsync();
         }
     }
 }
