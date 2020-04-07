@@ -9,8 +9,9 @@ namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        public ObservableCollection<Item> Items { get; set; } = new ObservableCollection<Item>();
-        private Items itemsDataAccess = new Items();
+        public ObservableCollection<Item> Items { get;} = new ObservableCollection<Item>();
+
+        private readonly IGenericDataAccess<Item> itemsDataAccess = new GenericDataAccess<Item>();
 
         public ItemsViewModel()
         {
@@ -18,9 +19,17 @@ namespace Packit.App.ViewModels
 
         internal async Task LoadItemsAsync()
         {
-            var items = await itemsDataAccess.GetItemsAsync();
-            foreach (Item i in items)
-                Items.Add(i);
+            try
+            {
+                var items = await itemsDataAccess.GetAll("items");
+                foreach (Item i in items)
+                    Items.Add(i);
+            }
+            catch(Exception ex)
+            {
+                //Display error to user
+            }
+            
         }
     }
 }

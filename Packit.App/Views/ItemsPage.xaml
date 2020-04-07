@@ -4,15 +4,26 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Packit.Model"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.
-            -->
+            <ListView x:Name="lvItems" ItemsSource="{x:Bind ViewModel.Items}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Item">
+                        <StackPanel Orientation="Vertical" Margin="15">
+                            <StackPanel Spacing="10" Orientation="Horizontal">
+                                <TextBlock
+                                FontSize="50"
+                                Text="{x:Bind Title}"
+                                Style="{StaticResource TitleTextBlockStyle}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </Page>

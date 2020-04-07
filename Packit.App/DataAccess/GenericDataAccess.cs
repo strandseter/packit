@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,9 @@ namespace Packit.App.DataAccess
     public class GenericDataAccess<T> : IGenericDataAccess<T> where T : IDatabase
     {
         readonly HttpClient _httpClient = new HttpClient();
-        static readonly Uri baseUri = new Uri("http://localhost:52586/api");
+        static readonly Uri baseUri = new Uri("http://localhost:52286/api");
+
+        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjIiLCJpZCI6IjMwMjIiLCJuYmYiOjE1ODYxNzkyODksImV4cCI6MTYxMjA5OTI4OSwiaWF0IjoxNTg2MTc5Mjg5fQ.oWdw9HHqqjbbBCeJ4GQTCBjS6zfpTbsYbdj6_npMvh4";
 
         public async Task<bool> Add(T entity, string uriExtension)
         {
@@ -39,7 +42,7 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public Task<bool> Edit(T entity, int id, string uriExtension)
+        public Task<bool> Edit(T entity, string uriExtension)
         {
             throw new NotImplementedException();
         }
@@ -47,6 +50,9 @@ namespace Packit.App.DataAccess
         public async Task<T[]> GetAll(string uriExtension)
         {
             var uri = new Uri($"{baseUri}/{uriExtension}");
+
+            //TODO: Remove dummy token
+            //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await _httpClient.GetAsync(uri);
             string json = await result.Content.ReadAsStringAsync();
