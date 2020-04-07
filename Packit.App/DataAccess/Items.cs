@@ -12,7 +12,7 @@ namespace Packit.App.DataAccess
     public class Items
     {
         readonly HttpClient _httpClient = new HttpClient();
-        static readonly Uri itemsBaseUri = new Uri("http://localhost:52586/api/courses"); //TODO: Replace URI
+        static readonly Uri itemsBaseUri = new Uri("http://localhost:52586/api/items"); //TODO: Replace URI
 
         public async Task<Item[]> GetItemsAsync()
         {

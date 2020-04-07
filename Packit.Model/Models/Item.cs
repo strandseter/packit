@@ -23,5 +23,6 @@ namespace Packit.Model
 
         public override string ToString() => $"{Title} {ItemId}";
         public int GetId() => ItemId;
+        public void SetId(int id) => ItemId = id;
     }
 }
