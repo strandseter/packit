@@ -33,7 +33,7 @@ namespace Packit.App.DataAccess
                             await stream.CopyToAsync(memStream);
                             memStream.Position = 0;
 
-                            bitmap.SetSource(memStream.AsRandomAccessStream());
+                            await bitmap.SetSourceAsync(memStream.AsRandomAccessStream());
                         }
                     }
                 }

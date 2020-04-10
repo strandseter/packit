@@ -22,7 +22,7 @@ namespace Packit.App.DataAccess
         readonly HttpClient _httpClient = new HttpClient();
         static readonly Uri baseUri = new Uri("http://localhost:52286/api");
 
-        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjIiLCJpZCI6IjMwMjIiLCJuYmYiOjE1ODYxNzkyODksImV4cCI6MTYxMjA5OTI4OSwiaWF0IjoxNTg2MTc5Mjg5fQ.oWdw9HHqqjbbBCeJ4GQTCBjS6zfpTbsYbdj6_npMvh4";
+        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjEiLCJpZCI6IjMwMjEiLCJuYmYiOjE1ODY1MjY3NTQsImV4cCI6MTYxMjQ0Njc1NCwiaWF0IjoxNTg2NTI2NzU0fQ.gtDuKFaebHR6W8KPY7STOEGM3IFSfzk_0X_tTuzjFgw";
 
         public async Task<bool> Add(T entity, string parameter)
         {

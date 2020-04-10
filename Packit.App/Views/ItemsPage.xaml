@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:app="using:Packit.App"
     xmlns:model="using:Packit.Model"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
@@ -16,28 +17,22 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
-            <ListView Grid.Column="0" x:Name="lvItems" ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}">
+            <ListView Grid.Column="0" x:Name="lvItems" ItemsSource="{x:Bind ViewModel.ItemImageLinks, Mode=OneWay}">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Item">
+                    <DataTemplate x:DataType="app:ItemImageLink">
                         <StackPanel Orientation="Vertical" Margin="15">
                             <StackPanel Spacing="10" Orientation="Horizontal">
                                 <TextBlock
                                 FontSize="50"
-                                Text="{x:Bind Title}"
+                                Text="{x:Bind Item.Title }"
                                 Style="{StaticResource TitleTextBlockStyle}"/>
                             </StackPanel>
+                            <Image Width="50"
+                                   x:Name="Image"
+                                       Height="50"
+                                       Source="{x:Bind Image, Mode=OneWay}"
+                                       Stretch="UniformToFill" />
                         </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-            <ListView Grid.Column="1" x:Name="lvImages" ItemsSource="{x:Bind ViewModel.Images, Mode=OneWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="BitmapImage">
-                        <Image Width="50"
-                            Height="50"
-                            Source="{x:Bind }"
-                            Stretch="UniformToFill" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

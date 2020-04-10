@@ -19,7 +19,7 @@ namespace Packit.App.Views
 
         private async void ItemsPage_LoadedAsync(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            await ViewModel.LoadItemsAsync();
+            await ViewModel.LoadData();
         }
     }
 }

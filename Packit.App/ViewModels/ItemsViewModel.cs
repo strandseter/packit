@@ -11,8 +11,7 @@ namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        public ObservableCollection<Item> Items { get;} = new ObservableCollection<Item>();
-        public ObservableCollection<BitmapImage> Images { get; } = new ObservableCollection<BitmapImage>();
+        public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
 
         private readonly IItems itemsDataAccess = new Items();
 
@@ -22,31 +21,24 @@ namespace Packit.App.ViewModels
         {
         }
 
-        internal async Task LoadItemsAsync()
+        internal async Task LoadData()
         {
-            try
-            {
-                var items = await itemsDataAccess.GetAll("items");
+            await LoadItemsAsync();
+            await LoadImages();
+        }
 
-                foreach (Item i in items)
-                    Items.Add(i);
+        private async Task LoadItemsAsync()
+        {
+            var items = await itemsDataAccess.GetAll("items");
 
-                await LoadImages();
-            }
-            catch(Exception ex)
-            {
-                //Display error to user
-            }
+            foreach (Item i in items)
+                ItemImageLinks.Add(new ItemImageLink() { Item = i});             
         }
 
         private async Task LoadImages()
         {
-            foreach(Item i in Items)
-            {
-                var image = await imagesDataAccess.GetImage(i.ImageStringName);
-                Images.Add(image);
-            }
+            foreach (ItemImageLink iml in ItemImageLinks)
+                iml.Image = await imagesDataAccess.GetImage(iml.Item.ImageStringName);
         }
-
     }
 }
