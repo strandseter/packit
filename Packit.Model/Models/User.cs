@@ -25,15 +25,5 @@ namespace Packit.Model
         {
             return $"{FirstName} {LastName}, {UserId}";
         }
-
-        public string GetIdentityId()
-        {
-            return JwtToken;
-        }
-
-        public int GetPrimaryId()
-        {
-            return UserId;
-        }
     }
 }
