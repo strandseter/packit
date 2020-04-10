@@ -14,7 +14,9 @@ namespace Packit.App.ViewModels
         public ObservableCollection<Item> Items { get;} = new ObservableCollection<Item>();
         public ObservableCollection<BitmapImage> Images { get; } = new ObservableCollection<BitmapImage>();
 
-        private readonly IGenericDataAccess<Item> itemsDataAccess = new GenericDataAccess<Item>();
+        private readonly IItems itemsDataAccess = new Items();
+
+        private readonly Images imagesDataAccess = new Images();
 
         public ItemsViewModel()
         {
@@ -41,7 +43,7 @@ namespace Packit.App.ViewModels
         {
             foreach(Item i in Items)
             {
-                var image = await itemsDataAccess.GetImage(i.ImageStringName);
+                var image = await imagesDataAccess.GetImage(i.ImageStringName);
                 Images.Add(image);
             }
         }

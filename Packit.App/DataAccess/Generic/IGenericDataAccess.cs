@@ -13,6 +13,5 @@ namespace Packit.App.DataAccess
         Task<bool> Edit(T entity, string uriExtension);
         Task<bool> Delete(T entity, string uriExtension);
         Task<T[]> GetAll(string uriExtension);
-        Task<BitmapImage> GetImage(string imageStringName);
     }
 }

@@ -67,37 +67,5 @@ namespace Packit.App.DataAccess
 
             return entities;
         }
-
-        public async Task<BitmapImage> GetImage(string imageStringName)
-        {
-            var uri = new Uri("http://localhost:61813/api/Images/hnd.jpg");
-
-            BitmapImage bitmap = new BitmapImage();
-
-            try
-            {
-                HttpResponseMessage response = await _httpClient.GetAsync(uri);
-
-                if (response != null && response.StatusCode == HttpStatusCode.OK)
-                {
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    {
-                        using (var memStream = new MemoryStream())
-                        {
-                            await stream.CopyToAsync(memStream);
-                            memStream.Position = 0;
-
-                            bitmap.SetSource(memStream.AsRandomAccessStream());
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            return bitmap;
-        }
     }
 }
