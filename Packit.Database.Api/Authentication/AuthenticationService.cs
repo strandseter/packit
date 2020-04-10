@@ -44,10 +44,6 @@ namespace Packit.Database.Api.Authentication
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
 
-                user.JwtToken = handler.WriteToken(handler.CreateToken(descriptor));
-
-                db.SaveChanges();
-
                 user.HashedPassword = null;
 
                 return user;
