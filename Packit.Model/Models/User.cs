@@ -13,27 +13,12 @@ namespace Packit.Model
         public string Email { get; set; }
         public string HashedPassword { get; set; }
         public string JwtToken { get; set; }
-        public virtual ICollection<Item> Items { get; set; }
-        public virtual ICollection<Backpack> Backpacks { get; set; }
-        public virtual ICollection<Trip> Trips { get; set; }
+        public virtual ICollection<Item> Items { get; } = new List<Item>();
+        public virtual ICollection<Backpack> Backpacks { get; } = new List<Backpack>();
+        public virtual ICollection<Trip> Trips { get; } = new List<Trip>();
 
         public User() 
         {
-            Items = new List<Item>();
-            Backpacks = new List<Backpack>();
-            Trips = new List<Trip>();
-        }
-
-        public User(string firstName, string lastName, DateTime dateOfBirth, string email, string hashedPassword)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            DateOfBirth = dateOfBirth;
-            Email = email;
-            HashedPassword = hashedPassword;
-            Items = new List<Item>();
-            Backpacks = new List<Backpack>();
-            Trips = new List<Trip>();
         }
 
         public override string ToString()

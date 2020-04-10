@@ -8,17 +8,10 @@ namespace Packit.Model
     {
         public int ItemId { get; set; }
 
-        public virtual ICollection<ItemBackpack> Backpacks { get; set;}
+        public virtual ICollection<ItemBackpack> Backpacks { get; } = new List<ItemBackpack>();
 
         public Item()
         {
-            Backpacks = new List<ItemBackpack>();
-        }
-
-        public Item(string title, string description, string imageStringName, User user)
-            :base(title, description, imageStringName, user)
-        {
-            Backpacks = new List<ItemBackpack>();
         }
 
         public override string ToString() => $"{Title} {ItemId}";

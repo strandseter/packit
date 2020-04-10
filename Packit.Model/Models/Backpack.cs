@@ -7,20 +7,11 @@ namespace Packit.Model
     {
         public int BackpackId { get; set; }
         public SharedBackpack SharedBackpack { get; set; }
-        public virtual ICollection<ItemBackpack> Items { get; set; }
-        public virtual ICollection<BackpackTrip> Trips { get; set; }
+        public virtual ICollection<ItemBackpack> Items { get; } = new List<ItemBackpack>();
+        public virtual ICollection<BackpackTrip> Trips { get; } = new List<BackpackTrip>();
 
         public Backpack() 
         {
-            Items = new List<ItemBackpack>();
-            Trips = new List<BackpackTrip>();
-        }
-
-        public Backpack(string title, string description, string imageStringName, User user)
-            : base(title, description, imageStringName, user)
-        {
-            Items = new List<ItemBackpack>();
-            Trips = new List<BackpackTrip>();
         }
 
         public override string ToString() => $"{Title}, {BackpackId}";

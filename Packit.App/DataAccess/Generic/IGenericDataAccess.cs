@@ -9,9 +9,9 @@ namespace Packit.App.DataAccess
 {
     public interface IGenericDataAccess<T>
     {
-        Task<bool> Add(T entity, string uriExtension);
-        Task<bool> Edit(T entity, string uriExtension);
-        Task<bool> Delete(T entity, string uriExtension);
-        Task<T[]> GetAll(string uriExtension);
+        Task<bool> Add(T entity, string parameter);
+        Task<bool> Edit(T entity, string parameter);
+        Task<bool> Delete(T entity, string parameter);
+        Task<T[]> GetAll(string parameter);
     }
 }

@@ -24,9 +24,9 @@ namespace Packit.App.DataAccess
 
         private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjIiLCJpZCI6IjMwMjIiLCJuYmYiOjE1ODYxNzkyODksImV4cCI6MTYxMjA5OTI4OSwiaWF0IjoxNTg2MTc5Mjg5fQ.oWdw9HHqqjbbBCeJ4GQTCBjS6zfpTbsYbdj6_npMvh4";
 
-        public async Task<bool> Add(T entity, string uriExtension)
+        public async Task<bool> Add(T entity, string parameter)
         {
-            var uri = new Uri($"{baseUri}/{uriExtension}");
+            var uri = new Uri($"{baseUri}/{parameter}");
 
             string json = JsonConvert.SerializeObject(entity);
             HttpResponseMessage result = await _httpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
@@ -40,23 +40,23 @@ namespace Packit.App.DataAccess
             return true;
         }
 
-        public async Task<bool> Delete(T entity, string uriExtension)
+        public async Task<bool> Delete(T entity, string parameter)
         {
-            var uri = new Uri($"{baseUri}/{uriExtension}/{entity.GetId()}");
+            var uri = new Uri($"{baseUri}/{parameter}/{entity.GetId()}");
 
             HttpResponseMessage result = await _httpClient.DeleteAsync(uri);
 
             return result.IsSuccessStatusCode;
         }
 
-        public Task<bool> Edit(T entity, string uriExtension)
+        public Task<bool> Edit(T entity, string parameter)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<T[]> GetAll(string uriExtension)
+        public async Task<T[]> GetAll(string parameter)
         {
-            var uri = new Uri($"{baseUri}/{uriExtension}");
+            var uri = new Uri($"{baseUri}/{parameter}");
 
             //TODO: Remove dummy token
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
