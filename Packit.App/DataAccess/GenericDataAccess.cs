@@ -2,11 +2,18 @@
 using Packit.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.DataAccess
 {
@@ -52,13 +59,45 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{uriExtension}");
 
             //TODO: Remove dummy token
-            //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await _httpClient.GetAsync(uri);
             string json = await result.Content.ReadAsStringAsync();
             T[] entities = JsonConvert.DeserializeObject<T[]>(json);
 
             return entities;
+        }
+
+        public async Task<BitmapImage> GetImage(string imageStringName)
+        {
+            var uri = new Uri("http://localhost:61813/api/Images/hnd.jpg");
+
+            BitmapImage bitmap = new BitmapImage();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(uri);
+
+                if (response != null && response.StatusCode == HttpStatusCode.OK)
+                {
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        using (var memStream = new MemoryStream())
+                        {
+                            await stream.CopyToAsync(memStream);
+                            memStream.Position = 0;
+
+                            bitmap.SetSource(memStream.AsRandomAccessStream());
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return bitmap;
         }
     }
 }

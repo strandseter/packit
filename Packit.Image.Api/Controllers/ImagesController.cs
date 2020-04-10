@@ -33,6 +33,7 @@ namespace Packit.Image.Api.Controllers
                 var image = System.IO.File.ReadAllBytes(fileName);
 
                 string extension = new FileInfo(fileName).Extension.Substring(1);
+
                 return File(image, $"image/{extension}");
             }
             catch (ArgumentException ex)

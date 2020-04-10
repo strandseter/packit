@@ -10,7 +10,13 @@
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <ListView x:Name="lvItems" ItemsSource="{x:Bind ViewModel.Items}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView Grid.Column="0" x:Name="lvItems" ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:Item">
                         <StackPanel Orientation="Vertical" Margin="15">
@@ -21,6 +27,17 @@
                                 Style="{StaticResource TitleTextBlockStyle}"/>
                             </StackPanel>
                         </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView Grid.Column="1" x:Name="lvImages" ItemsSource="{x:Bind ViewModel.Images, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="BitmapImage">
+                        <Image Width="50"
+                            Height="50"
+                            Source="{x:Bind }"
+                            Stretch="UniformToFill" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
