@@ -37,11 +37,14 @@ namespace Packit.Database.Api.Authentication
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim(ClaimTypes.Name, user.UserId.ToString()),
                     new Claim("id", user.UserId.ToString())
                 }),
                     Expires = DateTime.UtcNow.AddDays(300),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
+
+                user.JwtToken = handler.WriteToken(handler.CreateToken(descriptor));
 
                 user.HashedPassword = null;
 

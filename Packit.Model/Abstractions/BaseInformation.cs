@@ -1,9 +1,12 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Packit.Model
 {
     public abstract class BaseInformation
     {
+        [Required]
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageStringName { get; set; }
