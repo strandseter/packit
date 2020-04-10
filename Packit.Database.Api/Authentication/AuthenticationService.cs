@@ -48,19 +48,5 @@ namespace Packit.Database.Api.Authentication
                 return user;
             }
         }
-
-        //TODO: Fix to async
-        public IEnumerable<User> GetAll()
-        {
-            using (var db = new PackitContext())
-            {
-                var users = db.Users;
-
-                foreach(User user in users)
-                    user.HashedPassword = null;
-
-                return users;
-            }
-        }
     }
 }
