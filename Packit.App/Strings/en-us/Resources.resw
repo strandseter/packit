@@ -156,4 +156,7 @@
   <data name="Shell_Browse.Content" xml:space="preserve">
     <value>Browse Backpacks</value>
   </data>
+  <data name="Items_Search.Content" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

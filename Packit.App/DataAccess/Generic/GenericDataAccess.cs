@@ -13,7 +13,7 @@ namespace Packit.App.DataAccess
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri("http://localhost:52286/api");
 
-        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjEiLCJpZCI6IjMwMjEiLCJuYmYiOjE1ODY1MjY3NTQsImV4cCI6MTYxMjQ0Njc1NCwiaWF0IjoxNTg2NTI2NzU0fQ.gtDuKFaebHR6W8KPY7STOEGM3IFSfzk_0X_tTuzjFgw";
+        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjIiLCJpZCI6IjMwMjIiLCJuYmYiOjE1ODYxNzkyODksImV4cCI6MTYxMjA5OTI4OSwiaWF0IjoxNTg2MTc5Mjg5fQ.oWdw9HHqqjbbBCeJ4GQTCBjS6zfpTbsYbdj6_npMvh4";
 
         public async Task<bool> Add(T entity, string parameter)
         {
@@ -34,6 +34,7 @@ namespace Packit.App.DataAccess
         public async Task<bool> Delete(T entity, string parameter)
         {
             var uri = new Uri($"{baseUri}/{parameter}/{entity.GetId()}/delete");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.DeleteAsync(uri);
 
@@ -43,20 +44,17 @@ namespace Packit.App.DataAccess
         public async Task<bool> Edit(T entity, string parameter)
         {
             var uri = new Uri($"{baseUri}/{parameter}/{entity.GetId()}");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             string json = JsonConvert.SerializeObject(entity);
             HttpResponseMessage result = await httpClient.PutAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
 
-            if (!result.IsSuccessStatusCode) return false;
-
-            return true;
+            return result.IsSuccessStatusCode;
         }
 
         public async Task<T[]> GetAll(string parameter)
         {
             var uri = new Uri($"{baseUri}/{parameter}");
-
-            //TODO: Remove dummy token
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.GetAsync(uri);

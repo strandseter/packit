@@ -71,8 +71,6 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //var tester = entity.User.UserId;
-
             if (id != entity?.GetId())
                 return BadRequest();
 
@@ -92,7 +90,7 @@ namespace Packit.Database.Api.GenericRepository
 
             return NoContent();
         }
-
+        //TODO: Fix type?
         protected async Task<bool> EntityExists<Tentity>(int id) where Tentity : class, IDatabase => await Context.Set<Tentity>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
         protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }
