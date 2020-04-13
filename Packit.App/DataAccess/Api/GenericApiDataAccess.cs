@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public class GenericDataAccess<T> : IGenericDataAccess<T> where T : IDatabase
+    public class GenericApiDataAccess<T> : IDataAccess<T> where T : IDatabase
     {
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri("http://localhost:52286/api");
 
         private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjIiLCJpZCI6IjMwMjIiLCJuYmYiOjE1ODYxNzkyODksImV4cCI6MTYxMjA5OTI4OSwiaWF0IjoxNTg2MTc5Mjg5fQ.oWdw9HHqqjbbBCeJ4GQTCBjS6zfpTbsYbdj6_npMvh4";
 
-        public async Task<bool> Add(T entity, string parameter)
+        public async Task<bool> Add(T entity)
         {
-            var uri = new Uri($"{baseUri}/{parameter}/create");
+            var uri = new Uri($"{baseUri}/{typeof(T).Name}s/create");
 
             string json = JsonConvert.SerializeObject(entity);
             HttpResponseMessage result = await httpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
@@ -31,9 +31,9 @@ namespace Packit.App.DataAccess
             return true;
         }
 
-        public async Task<bool> Delete(T entity, string parameter)
+        public async Task<bool> Delete(T entity)
         {
-            var uri = new Uri($"{baseUri}/{nameof(T)}s/{entity.GetId()}");
+            var uri = new Uri($"{baseUri}/{typeof(T).Name}s/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.DeleteAsync(uri);
@@ -41,9 +41,9 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> Edit(T entity, string parameter)
+        public async Task<bool> Edit(T entity)
         {
-            var uri = new Uri($"{baseUri}/{parameter}/{entity.GetId()}");
+            var uri = new Uri($"{baseUri}/{typeof(T).Name}s/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             string json = JsonConvert.SerializeObject(entity);
@@ -52,9 +52,9 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<T[]> GetAll(string parameter)
+        public async Task<T[]> GetAll()
         {
-            var uri = new Uri($"{baseUri}/{parameter}");
+            var uri = new Uri($"{baseUri}/{typeof(T).Name}s");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.GetAsync(uri);

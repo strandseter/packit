@@ -7,12 +7,13 @@ using Packit.App.DataAccess;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Windows.Input;
+using Packit.App.Factory;
 
 namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        private readonly IItems itemsDataAccess = new Items();
+        private readonly IDataAccess<Item> itemsDataAccess = new DataAccessFactory<Item>().Create();
 
         private readonly Images imagesDataAccess = new Images();
 
@@ -27,7 +28,7 @@ namespace Packit.App.ViewModels
         {
             DeleteCommand = new RelayCommand<ItemImageLink>(async itemImageLink =>
                                                             {
-                                                                if (await itemsDataAccess.Delete((Item)itemImageLink.Item, "items") && await imagesDataAccess.DeleteImage(itemImageLink.Item.ImageStringName))
+                                                                if (await itemsDataAccess.Delete((Item)itemImageLink.Item) && await imagesDataAccess.DeleteImage(itemImageLink.Item.ImageStringName))
                                                                     ItemImageLinks.Remove(itemImageLink);
                                                             }, itemImageLink => itemImageLink != null);
         }
@@ -40,7 +41,7 @@ namespace Packit.App.ViewModels
 
         private async Task LoadItemsAsync()
         {
-            var items = await itemsDataAccess.GetAll("items");
+            var items = await itemsDataAccess.GetAll();
 
             foreach (Item i in items)
                 ItemImageLinks.Add(new ItemImageLink() { Item = i});             
