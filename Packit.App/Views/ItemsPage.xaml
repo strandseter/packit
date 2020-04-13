@@ -37,10 +37,14 @@
                 </Grid.ColumnDefinitions>
 
                 <SearchBox Grid.Column="2" Margin="5,5,2.5,5" FocusOnKeyboardInput="true" VerticalAlignment="Center"/>
-
+                
             </Grid>
-            
-            <GridView Grid.Row="1" x:Name="lvItems" ItemsSource="{x:Bind ViewModel.ItemImageLinks, Mode=OneWay}">
+
+            <GridView Grid.Row="1"
+                      x:Name="gvItems"
+                      DataContext="{x:Bind ViewModel}"
+                      ItemsSource="{x:Bind ViewModel.ItemImageLinks, Mode=OneWay}"
+                      SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="app:ItemImageLink">
                         <StackPanel Orientation="Vertical" Margin="15">
@@ -68,19 +72,19 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Margin="5,0,0,5" >
+                <Button Grid.Column="0" Command="{x:Bind ViewModel.AddCommand}" Margin="5,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>
                         <TextBlock>Add</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Grid.Column="1" Margin="0,0,0,5" >
+                <Button Grid.Column="1" Command="{x:Bind ViewModel.EditCommand}" Margin="0,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Edit"/>
                         <TextBlock>Edit</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Grid.Column="2" Margin="0,0,5,5" >
+                <Button Grid.Column="2" Command="{x:Bind ViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,5,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Delete"/>
                         <TextBlock>Delete</TextBlock>

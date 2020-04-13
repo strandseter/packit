@@ -33,7 +33,7 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> Delete(T entity, string parameter)
         {
-            var uri = new Uri($"{baseUri}/{parameter}/{entity.GetId()}/delete");
+            var uri = new Uri($"{baseUri}/{nameof(T)}s/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.DeleteAsync(uri);

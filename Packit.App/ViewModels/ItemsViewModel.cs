@@ -6,19 +6,30 @@ using Packit.Model;
 using Packit.App.DataAccess;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Windows.Input;
 
 namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
-
         private readonly IItems itemsDataAccess = new Items();
 
         private readonly Images imagesDataAccess = new Images();
 
+        public ICommand DeleteCommand { get; set; }
+        public ICommand AddCommand { get; set; }
+        public ICommand EditCommand { get; set; }
+
+        public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
+        public ItemImageLink SelectedItem { get; set; }
+
         public ItemsViewModel()
         {
+            DeleteCommand = new RelayCommand<ItemImageLink>(async itemImageLink =>
+                                                            {
+                                                                if (await itemsDataAccess.Delete((Item)itemImageLink.Item, "items") && await imagesDataAccess.DeleteImage(itemImageLink.Item.ImageStringName))
+                                                                    ItemImageLinks.Remove(itemImageLink);
+                                                            }, itemImageLink => itemImageLink != null);
         }
 
         internal async Task LoadData()

@@ -12,17 +12,17 @@ namespace Packit.App.DataAccess
 {
     public class Images
     {
-        private readonly HttpClient _httpClient = new HttpClient();
-        private static readonly Uri _baseUri = new Uri("http://localhost:61813/api/Images/");
+        private readonly HttpClient httpClient = new HttpClient();
+        private static readonly Uri baseUri = new Uri("http://localhost:61813/api/Images/");
 
         public async Task<BitmapImage> GetImage(string imageStringName)
         {
-            var uri = new Uri($"{_baseUri}{imageStringName}");
+            var uri = new Uri($"{baseUri}{imageStringName}");
 
             BitmapImage bitmap = new BitmapImage();
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync(uri);
+                HttpResponseMessage response = await httpClient.GetAsync(uri);
 
                 if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {
@@ -44,6 +44,15 @@ namespace Packit.App.DataAccess
             }
 
             return bitmap;
+        }
+
+        public async Task<bool> DeleteImage(string imageName)
+        {
+            var uri = new Uri($"{baseUri}{imageName}");
+
+            HttpResponseMessage result = await httpClient.DeleteAsync(uri);
+
+            return result.IsSuccessStatusCode;
         }
     }
 }
