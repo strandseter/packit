@@ -159,4 +159,8 @@
   <data name="Items_Search.Content" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="Shell_Backpacks.Content" xml:space="preserve">
+    <value>Backpacks</value>
+    <comment>Navigation view item name for Backpacks</comment>
+  </data>
 </root>

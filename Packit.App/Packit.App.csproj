@@ -162,9 +162,13 @@
     <Compile Include="Activation\DefaultActivationHandler.cs" />
     <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="ViewModels\BackpacksViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="Views\BackpacksPage.xaml.cs">
+      <DependentUpon>BackpacksPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ItemsPage.xaml.cs">
       <DependentUpon>ItemsPage.xaml</DependentUpon>
     </Compile>
@@ -201,6 +205,10 @@
     <Page Include="Styles\TextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BackpacksPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ItemsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
