@@ -1,17 +1,13 @@
 ﻿using Packit.App.DataAccess;
 using Packit.Model.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Networking.Connectivity;
 
 namespace Packit.App.Factory
 {
-    public class DataAccessFactory<T> where T : IDatabase
+    public class BasicDataAccessFactory<T> where T : IDatabase
     {
-        public IDataAccess<T> Create() => IsConnected() ? new GenericApiDataAccess<T>() : (IDataAccess<T>)new GenericLocalDataAccess<T>();
+        public IBasicDataAccessApi<T> Create() => IsConnected() ? new BasicDataAccessApi<T>() : (IBasicDataAccessApi<T>)new BasicDataAccessLocal<T>();
 
         private bool IsConnected()
         {
@@ -20,7 +16,6 @@ namespace Packit.App.Factory
             foreach(var con in connections)
             {
                 if (con == null) continue;
-
                 if (con.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess) return true;
             }
             return false;

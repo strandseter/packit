@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public interface IItems : IDataAccess<Item>
+    public interface IItems : IBasicDataAccessApi<Item>
     {
         //Declare methods that are not possible to make generic here.
     }

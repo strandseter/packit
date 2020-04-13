@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public class ItemsApi : GenericApiDataAccess<Item>, IItems
+    public class ItemsApi : BasicDataAccessApi<Item>, IItems
     {
         //Implement methods that are not possible to make generic here.
     }

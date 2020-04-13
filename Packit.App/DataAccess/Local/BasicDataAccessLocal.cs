@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public class GenericLocalDataAccess<T> : IDataAccess<T> where T : IDatabase
+    public class BasicDataAccessLocal<T> : IBasicDataAccessApi<T> where T : IDatabase
     {
         public Task<bool> Add(T entity)
         {

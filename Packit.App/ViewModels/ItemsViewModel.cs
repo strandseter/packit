@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Packit.App.Helpers;
 using Packit.Model;
 using Packit.App.DataAccess;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 using System.Windows.Input;
 using Packit.App.Factory;
 
@@ -13,7 +11,7 @@ namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        private readonly IDataAccess<Item> itemsDataAccess = new DataAccessFactory<Item>().Create();
+        private readonly IBasicDataAccessApi<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
 
         private readonly Images imagesDataAccess = new Images();
 
