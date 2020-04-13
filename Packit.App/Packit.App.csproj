@@ -141,7 +141,7 @@
     <Compile Include="Activation\ActivationHandler.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderBehavior.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderMode.cs" />
-    <Compile Include="DataAccess\Api\BasicDataAccessApi.cs" />
+    <Compile Include="DataAccess\Api\BasicDataAccessHttp.cs" />
     <Compile Include="DataAccess\IRelationDataAccess.cs" />
     <Compile Include="DataAccess\IBasicDataAccess.cs" />
     <Compile Include="DataAccess\IItems.cs" />
@@ -149,8 +149,10 @@
     <Compile Include="DataAccess\Api\ItemsApi.cs" />
     <Compile Include="DataAccess\Local\ItemsLocal.cs" />
     <Compile Include="DataAccess\Local\BasicDataAccessLocal.cs" />
-    <Compile Include="DataAccess\RelationDataAccessApi.cs" />
-    <Compile Include="Factory\BasicDataAccessFactory.cs" />
+    <Compile Include="DataAccess\Api\RelationDataAccessHttp.cs" />
+    <Compile Include="DataAccess\Local\RelationDataAccessLocal.cs" />
+    <Compile Include="Factories\BasicDataAccessFactory.cs" />
+    <Compile Include="Factories\RelationDataAccessFactory.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\Observable.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="DataLinks\ItemImageLink.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultActivationHandler.cs" />
+    <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

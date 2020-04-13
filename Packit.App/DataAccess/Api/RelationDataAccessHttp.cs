@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public class RelationDataAccessApi<T1, T2> : IRelationDataAccess<T1, T2>
+    public class RelationDataAccessHttp<T1, T2> : IRelationDataAccess<T1, T2>
     {
         readonly HttpClient httpClient = new HttpClient();
         static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T1).Name}s");
