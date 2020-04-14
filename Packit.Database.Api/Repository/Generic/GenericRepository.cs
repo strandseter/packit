@@ -82,7 +82,7 @@ namespace Packit.Database.Api.GenericRepository
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityExists<T>(id))
+                if (!await EntityExists(id))
                     return NotFound();
                 else
                     throw;
@@ -90,8 +90,8 @@ namespace Packit.Database.Api.GenericRepository
 
             return NoContent();
         }
-        //TODO: Fix type?
-        protected async Task<bool> EntityExists<Tentity>(int id) where Tentity : class, IDatabase => await Context.Set<Tentity>().AnyAsync(e => e.Id == id).ConfigureAwait(false);
-        protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
+
+        protected async Task<bool> EntityExists(int id) => await Context.Set<T>().AnyAsync(e => e.Id == id);
+        protected async Task SaveChanges() => await Context.SaveChangesAsync();
     }
 }
