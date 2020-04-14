@@ -75,7 +75,7 @@ namespace Packit.Database.Api.Repository.Generic
 
             var entities = Context.Set<T2>()
                             .Where(e => manyEntities
-                            .Any(e2 => e2.GetLeftId() == e.GetId()));
+                            .Any(e2 => e2.GetLeftId() == e.Id));
 
             return Ok(entities);
         }

@@ -28,7 +28,7 @@ namespace Packit.Database.Api.GenericRepository
 
             await SaveChanges();
 
-            return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
+            return CreatedAtAction(message, new { id = entity?.Id }, entity);
         }
 
         public async Task<IActionResult> Delete(int id, int? userId)
@@ -36,7 +36,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
+            var entity = await Context.Set<T>().Where(e => e.Id == id && e.User.UserId == userId).FirstOrDefaultAsync();
 
             if (entity == null)
                 return NotFound();
@@ -58,7 +58,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
+            var entity = await Context.Set<T>().Where(e => e.Id == id && e.User.UserId == userId).FirstOrDefaultAsync();
 
             if (entity == null)
                 return NotFound();
@@ -71,7 +71,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != entity?.GetId())
+            if (id != entity?.Id)
                 return BadRequest();
 
             Context.Set<T>().Update(entity).State = EntityState.Modified;
@@ -91,7 +91,7 @@ namespace Packit.Database.Api.GenericRepository
             return NoContent();
         }
         //TODO: Fix type?
-        protected async Task<bool> EntityExists<Tentity>(int id) where Tentity : class, IDatabase => await Context.Set<Tentity>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
+        protected async Task<bool> EntityExists<Tentity>(int id) where Tentity : class, IDatabase => await Context.Set<Tentity>().AnyAsync(e => e.Id == id).ConfigureAwait(false);
         protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 }

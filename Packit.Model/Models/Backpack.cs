@@ -14,8 +14,7 @@ namespace Packit.Model
         {
         }
 
+        public int Id { get => BackpackId; set => BackpackId = value; }
         public override string ToString() => $"{Title}, {BackpackId}";
-        public int GetId() => BackpackId;
-        public void SetId(int id) => BackpackId = id;
     }
 }

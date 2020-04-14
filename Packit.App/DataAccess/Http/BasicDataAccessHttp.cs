@@ -26,14 +26,14 @@ namespace Packit.App.DataAccess
 
             json = await result.Content.ReadAsStringAsync();
             var returnedEntity = JsonConvert.DeserializeObject<T>(json);
-            entity.SetId(returnedEntity.GetId());
+            entity.Id = returnedEntity.Id;
 
             return true;
         }
 
         public async Task<bool> Delete(T entity)
         {
-            var uri = new Uri($"{baseUri}/{entity.GetId()}");
+            var uri = new Uri($"{baseUri}/{entity.Id}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.DeleteAsync(uri);
@@ -43,7 +43,7 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> Edit(T entity)
         {
-            var uri = new Uri($"{baseUri}/{entity.GetId()}");
+            var uri = new Uri($"{baseUri}/{entity.Id}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             string json = JsonConvert.SerializeObject(entity);
