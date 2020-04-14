@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public class BasicDataAccessLocal<T> : IBasicDataAccessHttp<T> where T : IDatabase
+    public class BasicDataAccessLocal<T> : IBasicDataAccess<T> where T : IDatabase
     {
         public Task<bool> AddAsync(T entity)
         {

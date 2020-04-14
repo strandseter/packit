@@ -16,15 +16,14 @@ namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        private readonly IBasicDataAccessHttp<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().CreateBasicDataAccess();
+        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().CreateBasicDataAccess();
+
         private readonly Images imagesDataAccess = new Images();
 
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
-
         public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
-        public ItemImageLink SelectedItem { get; set; }
 
         public ItemsViewModel()
         {

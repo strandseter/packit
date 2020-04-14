@@ -20,22 +20,8 @@ namespace Packit.App
             executeDelegate = execute;
             canExecuteDelegate = () => { return true; };
         }
-        public NoParameterRelayCommand(Action execute, Func<bool> canExecute)
-        {
-            executeDelegate = execute;
-            canExecuteDelegate = canExecute;
-        }
 
-        public bool CanExecute(object parameter)
-        {
-            return canExecuteDelegate();
-        }
-        public void Execute(object parameter)
-        {
-            if (executeDelegate != null)
-            {
-                executeDelegate();
-            }
-        }
+        public bool CanExecute(object parameter) => canExecuteDelegate();
+        public void Execute(object parameter) => executeDelegate?.Invoke();
     }
 }

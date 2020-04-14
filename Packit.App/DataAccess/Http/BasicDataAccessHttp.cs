@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public class BasicDataAccessHttp<T> : IBasicDataAccessHttp<T> where T : IDatabase
+    public class BasicDataAccessHttp<T> : IBasicDataAccess<T> where T : IDatabase
     {
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T).Name}s");

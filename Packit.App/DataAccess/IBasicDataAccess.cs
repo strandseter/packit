@@ -2,7 +2,7 @@
 
 namespace Packit.App.DataAccess
 {
-    public interface IBasicDataAccessHttp<T>
+    public interface IBasicDataAccess<T>
     {
         Task<bool> AddAsync(T entity);
         Task<bool> EditAsync(T entity);
