@@ -141,15 +141,15 @@
     <Compile Include="Activation\ActivationHandler.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderBehavior.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderMode.cs" />
-    <Compile Include="DataAccess\Api\BasicDataAccessHttp.cs" />
+    <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
     <Compile Include="DataAccess\IRelationDataAccess.cs" />
     <Compile Include="DataAccess\IBasicDataAccess.cs" />
     <Compile Include="DataAccess\IItems.cs" />
-    <Compile Include="DataAccess\Images.cs" />
-    <Compile Include="DataAccess\Api\ItemsApi.cs" />
+    <Compile Include="DataAccess\Http\Images.cs" />
+    <Compile Include="DataAccess\Http\ItemsApi.cs" />
     <Compile Include="DataAccess\Local\ItemsLocal.cs" />
     <Compile Include="DataAccess\Local\BasicDataAccessLocal.cs" />
-    <Compile Include="DataAccess\Api\RelationDataAccessHttp.cs" />
+    <Compile Include="DataAccess\Http\RelationDataAccessHttp.cs" />
     <Compile Include="DataAccess\Local\RelationDataAccessLocal.cs" />
     <Compile Include="Factories\BasicDataAccessFactory.cs" />
     <Compile Include="Factories\RelationDataAccessFactory.cs" />
@@ -163,11 +163,15 @@
     <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ViewModels\BackpacksViewModel.cs" />
+    <Compile Include="ViewModels\EditViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\BackpacksPage.xaml.cs">
       <DependentUpon>BackpacksPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditPage.xaml.cs">
+      <DependentUpon>EditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemsPage.xaml.cs">
       <DependentUpon>ItemsPage.xaml</DependentUpon>
@@ -207,6 +211,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BackpacksPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
