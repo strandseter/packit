@@ -15,7 +15,16 @@ namespace Packit.Model
         {
         }
 
-        public int Id { get => TripId; set => TripId = value; }
+        public int GetId()
+        {
+            return TripId;
+        }
+
+        public void SetId(int value)
+        {
+            TripId = value;
+        }
+
         public override string ToString() => $"{Title}, ";
     }
 }

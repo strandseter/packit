@@ -2,8 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Model.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Filters;
 
 namespace Packit.Database.Api.GenericRepository
 {
@@ -25,7 +28,7 @@ namespace Packit.Database.Api.GenericRepository
 
             await SaveChanges();
 
-            return CreatedAtAction(message, new { id = entity?.Id }, entity);
+            return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
         }
 
         public async Task<IActionResult> Delete(int id, int? userId)
@@ -33,7 +36,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = await Context.Set<T>().Where(e => e.Id == id && e.User.UserId == userId).FirstOrDefaultAsync();
+            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
 
             if (entity == null)
                 return NotFound();
@@ -55,7 +58,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var entity = await Context.Set<T>().Where(e => e.Id == id && e.User.UserId == userId).FirstOrDefaultAsync();
+            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
 
             if (entity == null)
                 return NotFound();
@@ -68,7 +71,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != entity?.Id)
+            if (id != entity?.GetId())
                 return BadRequest();
 
             Context.Set<T>().Update(entity).State = EntityState.Modified;
@@ -88,7 +91,8 @@ namespace Packit.Database.Api.GenericRepository
             return NoContent();
         }
 
-        protected async Task<bool> EntityExists(int id) => await Context.Set<T>().AnyAsync(e => e.Id == id);
-        protected async Task SaveChanges() => await Context.SaveChangesAsync();
+        //TODO: Fix type?
+        protected async Task<bool> EntityExists(int id) => await Context.Set<T>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
+        protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 }

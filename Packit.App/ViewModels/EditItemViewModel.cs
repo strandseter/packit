@@ -4,9 +4,9 @@ using Packit.App.Helpers;
 
 namespace Packit.App.ViewModels
 {
-    public class EditViewModel : Observable
+    public class EditItemViewModel : Observable
     {
-        public EditViewModel()
+        public EditItemViewModel()
         {
         }
     }

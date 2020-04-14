@@ -25,7 +25,7 @@ namespace Packit.Database.Api.Repository.Generic
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await EntityExists<T2>(leftId) || !await EntityExists<T1>(rightId))
+            if (!await EntityExists(leftId) || !await EntityExists(rightId))
                 return NotFound();
 
             if (EntityRelationExists(leftId, rightId))
@@ -47,7 +47,7 @@ namespace Packit.Database.Api.Repository.Generic
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await EntityExists<T2>(leftId) || !await EntityExists<T1>(rightId))
+            if (!await EntityExists(leftId) || !await EntityExists(rightId))
                 return NotFound();
 
             if (!EntityRelationExists(leftId, rightId))
@@ -75,7 +75,7 @@ namespace Packit.Database.Api.Repository.Generic
 
             var entities = Context.Set<T2>()
                             .Where(e => manyEntities
-                            .Any(e2 => e2.GetLeftId() == e.Id));
+                            .Any(e2 => e2.GetLeftId() == e.GetId()));
 
             return Ok(entities);
         }

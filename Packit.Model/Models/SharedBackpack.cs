@@ -9,6 +9,14 @@ namespace Packit.Model
         public Backpack Backpack { get; set; }
         public User User { get; set; }
 
-        public int Id { get => SharedBackpackId; set => SharedBackpackId = value; }
+        public int GetId()
+        {
+            return SharedBackpackId;
+        }
+
+        public void SetId(int value)
+        {
+            SharedBackpackId = value;
+        }
     }
 }

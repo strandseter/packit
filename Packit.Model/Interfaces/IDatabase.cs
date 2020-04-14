@@ -3,7 +3,9 @@ namespace Packit.Model.Models
 {
     public interface IDatabase
     {
-        int Id { get; set; }
+        int GetId();
+        void SetId(int value);
+
         User User { get; set; }
     }
 }
