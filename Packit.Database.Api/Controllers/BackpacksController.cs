@@ -33,33 +33,33 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Backpacks/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBackpack([FromRoute] int id) => await _repository.GetById(id, CurrentUserId()).ConfigureAwait(false);
+        public async Task<IActionResult> GetBackpack([FromRoute] int id) => await _repository.GetByIdAsync(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/Backpacks/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBackpack([FromRoute] int id, [FromBody] Backpack backpack) => await _repository.Update(id, backpack, CurrentUserId()).ConfigureAwait(false);
+        public async Task<IActionResult> PutBackpack([FromRoute] int id, [FromBody] Backpack backpack) => await _repository.UpdateAsync(id, backpack, CurrentUserId()).ConfigureAwait(false);
 
         // POST: api/Backpacks
         [HttpPost]
-        public async Task<IActionResult> PostBackpack([FromBody] Backpack backpack) => await _repository.Create(backpack, "GetBackpack").ConfigureAwait(false);
+        public async Task<IActionResult> PostBackpack([FromBody] Backpack backpack) => await _repository.CreateAsync(backpack, "GetBackpack").ConfigureAwait(false);
 
         // DELETE: api/Backpacks/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBackpack([FromRoute] int id) => await _repository.Delete(id, CurrentUserId()).ConfigureAwait(false);
+        public async Task<IActionResult> DeleteBackpack([FromRoute] int id) => await _repository.DeleteAsync(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/backpacks/3/items/6/create
         [HttpPut]
         [Route("{backpackId}/items/{itemId}/create")]
-        public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await _repository.CreateManyToMany("GetItemBackpack", itemId, backpackId).ConfigureAwait(false);
+        public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await _repository.CreateManyToManyAsync("GetItemBackpack", itemId, backpackId).ConfigureAwait(false);
 
         // DELETE: api/backpacks/5/items/7/delete
         [HttpDelete]
         [Route("{backpackId}/items/{itemId}/delete")]
-        public async Task<IActionResult> DeleteItemFromBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await _repository.DeleteManyToMany(itemId, backpackId).ConfigureAwait(false);
+        public async Task<IActionResult> DeleteItemFromBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await _repository.DeleteManyToManyAsync(itemId, backpackId).ConfigureAwait(false);
 
         // GET: api/backpacks/5/items
         [HttpGet]
         [Route("{backpackId}/items")]
-        public async Task<IActionResult> GetItemsInBackpack([FromRoute] int backpackId) => await _repository.GetManyToMany(backpackId).ConfigureAwait(false);
+        public async Task<IActionResult> GetItemsInBackpack([FromRoute] int backpackId) => await _repository.GetManyToManyAsync(backpackId).ConfigureAwait(false);
     }
 }

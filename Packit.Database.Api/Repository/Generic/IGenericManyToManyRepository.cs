@@ -8,8 +8,8 @@ namespace Packit.Database.Api.Repository.Generic
 {
     public interface IGenericManyToManyRepository<T>
     {
-        Task<IActionResult> CreateManyToMany(string message, int leftId, int rightId);
-        Task<IActionResult> GetManyToMany(int id);
-        Task<IActionResult> DeleteManyToMany(int leftId, int rightId);
+        Task<IActionResult> CreateManyToManyAsync(string message, int leftId, int rightId);
+        Task<IActionResult> GetManyToManyAsync(int id);
+        Task<IActionResult> DeleteManyToManyAsync(int leftId, int rightId);
     }
 }

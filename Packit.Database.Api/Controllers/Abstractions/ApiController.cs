@@ -34,8 +34,6 @@ namespace Packit.Database.Api.Controllers.Abstractions
         {
             var idClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("id", StringComparison.InvariantCultureIgnoreCase));
 
-            //bool parse = int.TryParse(idClaim.Value, out int id);
-
             if (int.TryParse(idClaim.Value, out int id))
                 return id;
 

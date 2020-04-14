@@ -20,12 +20,12 @@ namespace Packit.Database.Api.Repository.Generic
         {
         }
 
-        public async Task<IActionResult> CreateManyToMany(string message, int leftId, int rightId)
+        public async Task<IActionResult> CreateManyToManyAsync(string message, int leftId, int rightId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await EntityExists(leftId) || !await EntityExists(rightId))
+            if (!await EntityExistsAsync(leftId) || !await EntityExistsAsync(rightId))
                 return NotFound();
 
             if (EntityRelationExists(leftId, rightId))
@@ -37,17 +37,17 @@ namespace Packit.Database.Api.Repository.Generic
 
             await Context.Set<T3>().AddAsync(entity);
 
-            await SaveChanges();
+            await SaveChangesAsync();
 
             return CreatedAtAction(message, new { leftId, rightId }, entity);
         }
 
-        public async Task<IActionResult> DeleteManyToMany(int leftId, int rightId)
+        public async Task<IActionResult> DeleteManyToManyAsync(int leftId, int rightId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await EntityExists(leftId) || !await EntityExists(rightId))
+            if (!await EntityExistsAsync(leftId) || !await EntityExistsAsync(rightId))
                 return NotFound();
 
             if (!EntityRelationExists(leftId, rightId))
@@ -56,12 +56,12 @@ namespace Packit.Database.Api.Repository.Generic
             var entity = await Context.Set<T3>().FirstOrDefaultAsync(e => e.GetLeftId() == leftId && e.GetRightId() == rightId);
             Context.Set<T3>().Remove(entity);
 
-            await SaveChanges();
+            await SaveChangesAsync();
 
             return Ok(entity);
         }
 
-        public async Task<IActionResult> GetManyToMany(int id)
+        public async Task<IActionResult> GetManyToManyAsync(int id)
         {
             if (!ModelState.IsValid) 
                 return BadRequest(ModelState);

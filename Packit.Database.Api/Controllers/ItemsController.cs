@@ -35,18 +35,18 @@ namespace Packit.Database.Api.Controllers
 
         // GET: api/Items/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem([FromRoute] int id) => await _repository.GetById(id, CurrentUserId()).ConfigureAwait(false);
+        public async Task<IActionResult> GetItem([FromRoute] int id) => await _repository.GetByIdAsync(id, CurrentUserId()).ConfigureAwait(false);
 
         // PUT: api/Items/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item) => await _repository.Update(id, item, CurrentUserId()).ConfigureAwait(false);
+        public async Task<IActionResult> PutItem([FromRoute] int id, [FromBody] Item item) => await _repository.UpdateAsync(id, item, CurrentUserId()).ConfigureAwait(false);
 
         // POST: api/Items
         [HttpPost]
-        public async Task<IActionResult> PostItem([FromBody] Item item) => await _repository.Create(item, "GetItem").ConfigureAwait(false); //TODO: Fix analyzer warning
+        public async Task<IActionResult> PostItem([FromBody] Item item) => await _repository.CreateAsync(item, "GetItem").ConfigureAwait(false); //TODO: Fix analyzer warning
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem([FromRoute] int id) => await _repository.Delete(id, CurrentUserId()).ConfigureAwait(false);
+        public async Task<IActionResult> DeleteItem([FromRoute] int id) => await _repository.DeleteAsync(id, CurrentUserId()).ConfigureAwait(false);
     }
 }

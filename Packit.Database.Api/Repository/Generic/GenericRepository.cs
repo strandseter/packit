@@ -19,19 +19,19 @@ namespace Packit.Database.Api.GenericRepository
             Context = context;
         }
 
-        public async Task<IActionResult> Create(T entity, string message)
+        public async Task<IActionResult> CreateAsync(T entity, string message)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             await Context.Set<T>().AddAsync(entity);
 
-            await SaveChanges();
+            await SaveChangesAsync();
 
             return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
         }
 
-        public async Task<IActionResult> Delete(int id, int? userId)
+        public async Task<IActionResult> DeleteAsync(int id, int? userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -43,7 +43,7 @@ namespace Packit.Database.Api.GenericRepository
 
             Context.Set<T>().Remove(entity);
 
-            await SaveChanges();
+            await SaveChangesAsync();
 
             return Ok(entity);
         }
@@ -53,7 +53,7 @@ namespace Packit.Database.Api.GenericRepository
             return Context.Set<T>().Where(e => e.User.UserId == userId);
         }
 
-        public async Task<IActionResult> GetById(int id, int? userId)
+        public async Task<IActionResult> GetByIdAsync(int id, int? userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -66,7 +66,7 @@ namespace Packit.Database.Api.GenericRepository
             return Ok(entity);
         }
 
-        public async Task<IActionResult> Update(int id, T entity, int? userId)
+        public async Task<IActionResult> UpdateAsync(int id, T entity, int? userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -78,11 +78,11 @@ namespace Packit.Database.Api.GenericRepository
 
             try
             {
-                await SaveChanges();
+                await SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await EntityExists(id))
+                if (!await EntityExistsAsync(id))
                     return NotFound();
                 else
                     throw;
@@ -91,7 +91,7 @@ namespace Packit.Database.Api.GenericRepository
             return NoContent();
         }
 
-        protected async Task<bool> EntityExists(int id) => await Context.Set<T>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
-        protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
+        protected async Task<bool> EntityExistsAsync(int id) => await Context.Set<T>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
+        protected async Task SaveChangesAsync() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 }
