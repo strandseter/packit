@@ -12,7 +12,7 @@ namespace Packit.App.DataAccess
         readonly HttpClient httpClient = new HttpClient();
         static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T1).Name}s");
 
-        public async Task<bool> AddEntityToEntity(int leftId, int rightId, string param1, string param2)
+        public async Task<bool> AddEntityToEntityAsync(int leftId, int rightId, string param1, string param2)
         {
             var uri = new Uri($"{baseUri}/{leftId}/{param1}/{rightId}/{param2}");
 
@@ -21,7 +21,7 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteEntityFromEntity(int leftId, int rightId, string param1, string param2)
+        public async Task<bool> DeleteEntityFromEntityAsync(int leftId, int rightId, string param1, string param2)
         {
             var uri = new Uri($"{baseUri}/{leftId}/{param1}/{rightId}/{param2}");
 
@@ -30,7 +30,7 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<T2[]> GetEntitiesInEntity(int id, string param)
+        public async Task<T2[]> GetEntitiesInEntityAsync(int id, string param)
         {
             var uri = new Uri($"{baseUri}/{id}/{param}");
 

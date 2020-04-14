@@ -78,7 +78,7 @@
                         <TextBlock>Add</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Grid.Column="1" Click="Edit_Clicked" Command="{x:Bind ViewModel.EditCommand}" Margin="0,0,0,5" >
+                <Button Grid.Column="1" Command="{x:Bind ViewModel.EditCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Edit"/>
                         <TextBlock>Edit</TextBlock>

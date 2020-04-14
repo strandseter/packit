@@ -15,7 +15,7 @@ namespace Packit.App.DataAccess
 
         private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjIiLCJpZCI6IjMwMjIiLCJuYmYiOjE1ODYxNzkyODksImV4cCI6MTYxMjA5OTI4OSwiaWF0IjoxNTg2MTc5Mjg5fQ.oWdw9HHqqjbbBCeJ4GQTCBjS6zfpTbsYbdj6_npMvh4";
 
-        public async Task<bool> Add(T entity)
+        public async Task<bool> AddAsync(T entity)
         {
             var uri = new Uri($"{baseUri}/create");
 
@@ -31,7 +31,7 @@ namespace Packit.App.DataAccess
             return true;
         }
 
-        public async Task<bool> Delete(T entity)
+        public async Task<bool> DeleteAsync(T entity)
         {
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
@@ -41,7 +41,7 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> Edit(T entity)
+        public async Task<bool> EditAsync(T entity)
         {
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
@@ -52,7 +52,7 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<T[]> GetAll()
+        public async Task<T[]> GetAllAsync()
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 

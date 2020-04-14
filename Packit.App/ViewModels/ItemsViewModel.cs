@@ -9,6 +9,8 @@ using Packit.App.Factory;
 using Packit.App.Services;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls;
+using System.Collections;
+using Packit.App.Views;
 
 namespace Packit.App.ViewModels
 {
@@ -28,37 +30,39 @@ namespace Packit.App.ViewModels
         {
             DeleteCommand = new RelayCommand<ItemImageLink>(async itemImageLink =>
                                                             {
-                                                                if (await itemsDataAccess.Delete((Item)itemImageLink.Item) && await imagesDataAccess.DeleteImage(itemImageLink.Item.ImageStringName))
+                                                                if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName))
                                                                     ItemImageLinks.Remove(itemImageLink);
                                                             }, itemImageLink => itemImageLink != null);
 
-            //EditCommand = new RelayCommand<NavigationViewItemInvokedEventArgs>(OnItemInvoked)); >/*ItemImageLink>(itemImageLink => */
-                                                            //{
-                                                            //   NavigationService.Navigate<EditPage>(itemImageLink);
-                                                            //}, itemImageLink => itemImageLink != null);
+            EditCommand = new RelayCommand<ItemImageLink>(itemImageLink =>
+                                                            {
+                                                                NavigationService.Navigate(typeof(EditItemPage), itemImageLink);
+                                                            }, itemImageLink => itemImageLink != null);
+
+            AddCommand = new NoParameterRelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
         }
 
         internal async Task LoadData()
         {
             await LoadItemsAsync();
-            await LoadImages();
+            await LoadImagesAsync();
         }
 
         private async Task LoadItemsAsync()
         {
-            var items = await itemsDataAccess.GetAll();
+            var items = await itemsDataAccess.GetAllAsync();
 
             foreach (Item i in items)
                 ItemImageLinks.Add(new ItemImageLink() { Item = i });
         }
 
-        private async Task LoadImages()
+        private async Task LoadImagesAsync()
         {
             if (!InternetConnectionService.IsConnected())
                 return;
 
             foreach (ItemImageLink iml in ItemImageLinks)
-                iml.Image = await imagesDataAccess.GetImage(iml.Item.ImageStringName);
+                iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName);
         }
     }
 }

@@ -91,7 +91,6 @@ namespace Packit.Database.Api.GenericRepository
             return NoContent();
         }
 
-        //TODO: Fix type?
         protected async Task<bool> EntityExists(int id) => await Context.Set<T>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
         protected async Task SaveChanges() => await Context.SaveChangesAsync().ConfigureAwait(false);
     }

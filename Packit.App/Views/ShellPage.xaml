@@ -66,6 +66,7 @@
             
             <winui:NavigationViewItem x:Uid="Shell_Profile" Icon="Contact" helpers:NavHelper.NavigateTo="views:MainPage"/>
             
+            <winui:NavigationViewItem x:Uid="Shell_NewItem" Icon="Document" helpers:NavHelper.NavigateTo="views:NewItemPage" />
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior

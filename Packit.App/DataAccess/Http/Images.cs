@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -15,7 +12,7 @@ namespace Packit.App.DataAccess
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri("http://localhost:61813/api/Images/");
 
-        public async Task<BitmapImage> GetImage(string imageStringName)
+        public async Task<BitmapImage> GetImageAsync(string imageStringName)
         {
             var uri = new Uri($"{baseUri}{imageStringName}");
 
@@ -46,7 +43,7 @@ namespace Packit.App.DataAccess
             return bitmap;
         }
 
-        public async Task<bool> DeleteImage(string imageName)
+        public async Task<bool> DeleteImageAsync(string imageName)
         {
             var uri = new Uri($"{baseUri}{imageName}");
 

@@ -4,9 +4,9 @@ namespace Packit.App.DataAccess
 {
     public interface IBasicDataAccessHttp<T>
     {
-        Task<bool> Add(T entity);
-        Task<bool> Edit(T entity);
-        Task<bool> Delete(T entity);
-        Task<T[]> GetAll();
+        Task<bool> AddAsync(T entity);
+        Task<bool> EditAsync(T entity);
+        Task<bool> DeleteAsync(T entity);
+        Task<T[]> GetAllAsync();
     }
 }

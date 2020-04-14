@@ -33,7 +33,5 @@ namespace Packit.App.Views
                 DialogService.CouldNotLoadDataUknown(ex);
             }
         }
-
-        public void Edit_Clicked(object sender, RoutedEventArgs e) => NavigationService.Navigate<EditItemPage>(ViewModel.SelectedItem);
     }
 }

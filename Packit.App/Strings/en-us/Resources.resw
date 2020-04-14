@@ -167,4 +167,8 @@
     <value>Edit</value>
     <comment>Navigation view item name for Edit</comment>
   </data>
+  <data name="Shell_NewItem.Content" xml:space="preserve">
+    <value>NewItem</value>
+    <comment>Navigation view item name for NewItem</comment>
+  </data>
 </root>
