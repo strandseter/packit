@@ -17,9 +17,10 @@ namespace Packit.App.ViewModels
     public class ItemsViewModel : Observable
     {
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().CreateBasicDataAccess();
-
+        private ICommand loadedCommand;
         private readonly Images imagesDataAccess = new Images();
 
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
@@ -38,10 +39,10 @@ namespace Packit.App.ViewModels
                                                                 NavigationService.Navigate(typeof(EditItemPage), itemImageLink);
                                                             }, itemImageLink => itemImageLink != null);
 
-            AddCommand = new NoParameterRelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
+            AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
         }
 
-        internal async Task LoadData()
+        private async void LoadData()
         {
             await LoadItemsAsync();
             await LoadImagesAsync();
@@ -57,9 +58,6 @@ namespace Packit.App.ViewModels
 
         private async Task LoadImagesAsync()
         {
-            if (!InternetConnectionService.IsConnected())
-                return;
-
             foreach (ItemImageLink iml in ItemImageLinks)
                 iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName);
         }

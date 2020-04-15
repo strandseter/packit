@@ -7,6 +7,7 @@ namespace Packit.App
     public class ItemImageLink : INotifyPropertyChanged
     {
         private BitmapImage image;
+        private Item item;
 
         public BitmapImage Image
         {
@@ -19,7 +20,16 @@ namespace Packit.App
             }
         }
 
-        public Item Item { get; set; }
+        public Item Item
+        {
+            get => item;
+            set
+            {
+                if (value == item) return;
+                item = value;
+                OnPropertyChanged(nameof(Item));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

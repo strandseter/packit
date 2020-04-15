@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Packit.App.Services;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -14,9 +15,13 @@ namespace Packit.App.DataAccess
 
         public async Task<BitmapImage> GetImageAsync(string imageStringName)
         {
+            if (!InternetConnectionService.IsConnected())
+                return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
+
             var uri = new Uri($"{baseUri}{imageStringName}");
 
             BitmapImage bitmap = new BitmapImage();
+
             try
             {
                 HttpResponseMessage response = await httpClient.GetAsync(uri);

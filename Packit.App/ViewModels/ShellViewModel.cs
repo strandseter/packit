@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 using Packit.App.Helpers;
 using Packit.App.Services;
-
+using Packit.App.Views;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;

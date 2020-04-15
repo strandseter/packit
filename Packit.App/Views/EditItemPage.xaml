@@ -26,22 +26,22 @@
                 <RowDefinition Height="2.5*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Item" FontSize="50" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.ItemImageLink.Item.Title}" FontSize="50" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
             <StackPanel Grid.Row="1" Margin="20,0,20,0">
                 <TextBlock x:Uid="Title_Title" Text="" FontSize="30" Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBox />
+                <TextBox Text="{x:Bind ViewModel.ItemImageLink.Item.Title, Mode=TwoWay}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Margin="20,0,20,0">
                 <TextBlock x:Uid="Title_Description" FontSize="30" Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBox Height="100"/>
+                <TextBox Text="{x:Bind ViewModel.ItemImageLink.Item.Description, Mode=TwoWay}" Height="100"/>
             </StackPanel>
 
             <StackPanel Grid.Row="3" Margin="20,0,20,0">
                 <TextBlock x:Uid="Title_Image" FontSize="30" Style="{StaticResource TitleTextBlockStyle}"/>
 
-                <Image />
+                <Image Source="{x:Bind ViewModel.ItemImageLink.Image, Mode=TwoWay}" Stretch="None" Height="200" Width="300"/>
             </StackPanel>
             
             
@@ -60,7 +60,7 @@
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Column="1" Grid.Row="1" Margin="5">
+                <Button Grid.Column="1" Command="{x:Bind ViewModel.DeviceCommand}" Grid.Row="1" Margin="5">
                     <StackPanel>
                         <SymbolIcon Symbol="Pictures"/>
                         <TextBlock x:Uid="Button_Device"/>
@@ -85,13 +85,13 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Margin="5,0,0,5" >
+                <Button Grid.Column="0" Command="{x:Bind ViewModel.SaveCommand}" CommandParameter="{x:Bind ViewModel.ItemImageLink}" Margin="5,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Save"/>
                         <TextBlock x:Uid="Button_Save"/>
                     </StackPanel>
                 </Button>
-                <Button Grid.Column="1" Margin="0,0,0,5" >
+                <Button Grid.Column="1" Command="{x:Bind ViewModel.CancelCommand}" Margin="0,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Cancel"/>
                         <TextBlock x:Uid="Button_Cancel"/>
@@ -100,7 +100,7 @@
                 <Button Grid.Column="2" Margin="0,0,5,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Delete"/>
-                        <TextBlock x:Uid="Button_Device"/>
+                        <TextBlock x:Uid="Button_Delete"/>
                     </StackPanel>
                 </Button>
             </Grid>

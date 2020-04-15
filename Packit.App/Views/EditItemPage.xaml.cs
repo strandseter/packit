@@ -15,11 +15,13 @@ namespace Packit.App.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            //var parm = e.Parameter;
+            //parm = null;
+
             base.OnNavigatedTo(e);
-
-            var obj = e.Parameter;
-
-            
+            ViewModel.Initialize(e?.Parameter as ItemImageLink);
         }
+
+
     }
 }
