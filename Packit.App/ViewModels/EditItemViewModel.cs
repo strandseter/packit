@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
@@ -8,6 +9,7 @@ using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Model;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.ViewModels
 {
@@ -33,22 +35,24 @@ namespace Packit.App.ViewModels
                                                             if (await itemsDataAccess.EditAsync(param.Item))
                                                                 NavigationService.Navigate(typeof(ItemsPage));
                                                         });
+
             DeviceCommand = new RelayCommand(async () =>
-                                                        {
-                                                            try
-                                                            {
-                                                                if(await imagesDataAccess.AddImageAsync(await FilePickerService.GetFileFromDeviceAsync()))
-                                                                    DialogService.ImageUploaded();
-                                                            }
-                                                            catch (FormatException ex)
-                                                            {
-                                                                DialogService.UnsoppurtedFileFormat(ex);
-                                                            }
-                                                            catch (Exception ex)
-                                                            {
-                                                                DialogService.CouldNotLoadDataUknown(ex);
-                                                            }
-                                                        });
+                                            {
+                                                    var image = await FilePickerService.GetImageFromDevice();
+
+                                                    if (image == null)
+                                                        return;
+
+                                                    ItemImageLink.Image = image;                                                
+                                            });
+            
+
+
+
+
+
+
+            
         }
 
         public void Initialize(ItemImageLink itemImageLink) => this.ItemImageLink = itemImageLink;

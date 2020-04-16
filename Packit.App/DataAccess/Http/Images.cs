@@ -30,19 +30,23 @@ namespace Packit.App.DataAccess
             {
                 HttpResponseMessage response = await httpClient.GetAsync(uri);
 
-                if (response != null && response.StatusCode == HttpStatusCode.OK)
-                {
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    {
-                        using (var memStream = new MemoryStream())
-                        {
-                            await stream.CopyToAsync(memStream);
-                            memStream.Position = 0;
+                if (response == null || response.StatusCode != HttpStatusCode.OK)
+                    return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
 
-                            await bitmap.SetSourceAsync(memStream.AsRandomAccessStream());
-                        }
-                    }
-                }
+                bitmap.UriSource = uri;
+
+                //TODO: Use?
+                    //using (var stream = await response.Content.ReadAsStreamAsync())
+                    //{
+                    //    using (var memStream = new MemoryStream())
+                    //    {
+                    //        await stream.CopyToAsync(memStream);
+                    //        memStream.Position = 0;
+
+                    //        await bitmap.SetSourceAsync(memStream.AsRandomAccessStream());
+                    //    }
+                    //}
+                
             }
             catch (Exception)
             {
@@ -52,7 +56,7 @@ namespace Packit.App.DataAccess
             return bitmap;
         }
 
-        public async Task<bool> AddImageAsync(StorageFile file)
+        public async Task<bool> AddImageAsync(StorageFile file, string imageName)
         {
             byte[] fileBytes;
 
@@ -66,11 +70,22 @@ namespace Packit.App.DataAccess
                 }
             }
 
+
+
+            //Byte[] buffer = null;
+            //if (stream != null && stream.Length > 0)
+            //{
+            //    using (BinaryReader br = new BinaryReader(stream))
+            //    {
+            //        buffer = br.ReadBytes((Int32)stream.Length);
+            //    }
+            //}
+
             using (var form = new MultipartFormDataContent())
             {
                 using (var stream = new StreamContent(new MemoryStream(fileBytes)))
                 {
-                    form.Add(stream, "imagekey", "Sheet1.png");
+                    form.Add(stream, imageName, file.Name);
 
                     var response = await httpClient.PostAsync(baseUri, form);
 

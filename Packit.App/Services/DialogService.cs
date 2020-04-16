@@ -22,14 +22,15 @@ namespace Packit.App.Services
             await Dialog("Unsupported file format", $"{ex?.GetType()}", "Ok").ShowAsync();
         }
 
+
+
         public static async void ImageUploaded()
         {
-            MessageDialog md = new MessageDialog("Lorem ipsum dolor sit amet", "Message Dialog Title");
-            var t = md.ShowAsync();
+            //MessageDialog md = new MessageDialog("Lorem ipsum dolor sit amet", "Message Dialog Title");
+            //var t = md.ShowAsync();
+            await Dialog("Test", "er", "df").ShowAsync();
 
             await Task.Delay(TimeSpan.FromSeconds(2));
-
-            t.Cancel();
         }
 
         private static ContentDialog Dialog(string title, string content, string closeBtnText)
