@@ -19,7 +19,7 @@ namespace Packit.Database.Api.GenericRepository
             Context = context;
         }
 
-        public async Task<IActionResult> CreateAsync(T entity, string message)
+        public async Task<IActionResult> CreateAsync(T entity, string message, int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -31,7 +31,7 @@ namespace Packit.Database.Api.GenericRepository
             return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
         }
 
-        public async Task<IActionResult> DeleteAsync(int id, int? userId)
+        public async Task<IActionResult> DeleteAsync(int id, int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,12 +48,12 @@ namespace Packit.Database.Api.GenericRepository
             return Ok(entity);
         }
 
-        public IQueryable<T> GetAll(int? userId)
+        public IQueryable<T> GetAll(int userId)
         {
             return Context.Set<T>().Where(e => e.User.UserId == userId);
         }
 
-        public async Task<IActionResult> GetByIdAsync(int id, int? userId)
+        public async Task<IActionResult> GetByIdAsync(int id, int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -66,7 +66,7 @@ namespace Packit.Database.Api.GenericRepository
             return Ok(entity);
         }
 
-        public async Task<IActionResult> UpdateAsync(int id, T entity, int? userId)
+        public async Task<IActionResult> UpdateAsync(int id, T entity, int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

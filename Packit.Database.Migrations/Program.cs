@@ -83,18 +83,18 @@ namespace Packit.Database.Migrations
             }
         }
 
-        public static void QueryUserItems()
-        {
-            using (var db = new PackitContext())
-            {
-                var user = db.Users.FirstOrDefault(u => u.UserId == 18);
+        //public static void QueryUserItems()
+        //{
+        //    using (var db = new PackitContext())
+        //    {
+        //        var user = db.Users.FirstOrDefault(u => u.UserId == 18);
 
-                var items = db.Items.Where(i => i.User == user);
+        //        var items = db.Items.Where(i => i.User == user);
 
-                foreach (Item item in items)
-                    Console.WriteLine(item);
-            }
-        }
+        //        foreach (Item item in items)
+        //            Console.WriteLine(item);
+        //    }
+        //}
 
 
         public static void DeleteAll()

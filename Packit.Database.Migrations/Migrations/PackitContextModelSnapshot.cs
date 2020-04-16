@@ -29,8 +29,7 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("ImageStringName");
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.Property<int?>("UserId");
 
@@ -64,8 +63,7 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("ImageStringName");
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.Property<int?>("UserId");
 
@@ -97,14 +95,10 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<int>("BackpackId");
 
-                    b.Property<int?>("UserId");
-
                     b.HasKey("SharedBackpackId");
 
                     b.HasIndex("BackpackId")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("SharedBackpacks");
                 });
@@ -123,8 +117,7 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<string>("ImageStringName");
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.Property<int?>("UserId");
 
@@ -143,17 +136,13 @@ namespace Packit.Database.Migrations.Migrations
 
                     b.Property<DateTime>("DateOfBirth");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired();
+                    b.Property<string>("FirstName");
 
-                    b.Property<string>("HashedPassword")
-                        .IsRequired();
+                    b.Property<string>("HashedPassword");
 
-                    b.Property<string>("LastName")
-                        .IsRequired();
+                    b.Property<string>("LastName");
 
                     b.HasKey("UserId");
 
@@ -164,7 +153,8 @@ namespace Packit.Database.Migrations.Migrations
                 {
                     b.HasOne("Packit.Model.User", "User")
                         .WithMany("Backpacks")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Packit.Model.BackpackTrip", b =>
@@ -172,19 +162,20 @@ namespace Packit.Database.Migrations.Migrations
                     b.HasOne("Packit.Model.Backpack", "Backpack")
                         .WithMany("Trips")
                         .HasForeignKey("BackpackId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Packit.Model.Trip", "Trip")
                         .WithMany("Backpacks")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Packit.Model.Item", b =>
                 {
                     b.HasOne("Packit.Model.User", "User")
                         .WithMany("Items")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Packit.Model.ItemBackpack", b =>
@@ -192,12 +183,12 @@ namespace Packit.Database.Migrations.Migrations
                     b.HasOne("Packit.Model.Backpack", "Backpack")
                         .WithMany("Items")
                         .HasForeignKey("BackpackId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Packit.Model.Item", "Item")
                         .WithMany("Backpacks")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Packit.Model.SharedBackpack", b =>
@@ -205,18 +196,15 @@ namespace Packit.Database.Migrations.Migrations
                     b.HasOne("Packit.Model.Backpack", "Backpack")
                         .WithOne("SharedBackpack")
                         .HasForeignKey("Packit.Model.SharedBackpack", "BackpackId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Packit.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Packit.Model.Trip", b =>
                 {
                     b.HasOne("Packit.Model.User", "User")
                         .WithMany("Trips")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

@@ -7,24 +7,37 @@ namespace Packit.App.Services
 {
     public static class DialogService
     {
-        public static async void CouldNotLoadDataConnection(Exception ex)
+        internal static async void CouldNotLoadDataConnection(Exception ex)
         {
             await Dialog("Could not load data", $"Check connection and try again.\n{ex?.GetType()}", "Ok").ShowAsync();
         }
 
-        public static async void CouldNotLoadDataUknown(Exception ex)
+        internal static async void CouldNotLoadDataUknown(Exception ex)
         {
             await Dialog("Something unknown went wrong", $"Try again.\n{ex?.GetType()}", "Ok").ShowAsync();
         }
 
-        public static async void UnsoppurtedFileFormat(Exception ex)
+        internal static async void UnsoppurtedFileFormat(Exception ex)
         {
             await Dialog("Unsupported file format", $"{ex?.GetType()}", "Ok").ShowAsync();
         }
 
+        internal static async void CouldNotSaveChanges(Exception ex)
+        {
+            await Dialog("Could not save changes", $"{ex.GetType()}", "Ok").ShowAsync();
+        }
 
+        internal static async void CouldNotSaveChanges()
+        {
+            await Dialog("Could not save changes", "Try again", "Ok").ShowAsync();
+        }
 
-        public static async void ImageUploaded()
+        internal static async void UnknownErrorOccurred(Exception ex)
+        {
+            await Dialog("Unknown error occurred", $"{ex.GetType()}", "Ok").ShowAsync();
+        }
+
+        internal static async void ImageUploaded()
         {
             //MessageDialog md = new MessageDialog("Lorem ipsum dolor sit amet", "Message Dialog Title");
             //var t = md.ShowAsync();
@@ -42,5 +55,7 @@ namespace Packit.App.Services
                 CloseButtonText = closeBtnText
             };
         }
+
+        
     }
 }

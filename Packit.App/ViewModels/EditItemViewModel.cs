@@ -8,6 +8,7 @@ using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Model;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -17,6 +18,8 @@ namespace Packit.App.ViewModels
     {
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().CreateBasicDataAccess();
         private readonly Images imagesDataAccess = new Images();
+        private StorageFile localImage;
+
         private ItemImageLink EditedItemImageLink { get; set; }
         public ItemImageLink ItemImageLink { get; set;}
         
@@ -32,29 +35,41 @@ namespace Packit.App.ViewModels
 
             SaveCommand = new RelayCommand<ItemImageLink>(async param =>
                                                         {
-                                                            if (await itemsDataAccess.EditAsync(param.Item))
-                                                                NavigationService.Navigate(typeof(ItemsPage));
+                                                            if (localImage is null)
+                                                                return;
+
+                                                            try
+                                                            {
+                                                                ItemImageLink.Item.ImageStringName = localImage.Name;
+
+                                                                if (await itemsDataAccess.UpdateAsync(param.Item) && await imagesDataAccess.AddImageAsync(localImage, "image"))
+                                                                    NavigationService.Navigate(typeof(ItemsPage));
+                                                                else
+                                                                    DialogService.CouldNotSaveChanges();
+                                                            }
+                                                            catch(HttpRequestException ex)
+                                                            {
+                                                                DialogService.CouldNotSaveChanges(ex);
+                                                            }
+                                                            catch(Exception ex)
+                                                            {
+                                                                DialogService.UnknownErrorOccurred(ex);
+                                                            }
                                                         });
 
             DeviceCommand = new RelayCommand(async () =>
                                             {
-                                                    var image = await FilePickerService.GetImageFromDevice();
+                                                localImage = await FileService.GetImageFromDevice();
 
-                                                    if (image == null)
-                                                        return;
+                                                if (localImage is null)
+                                                    return;
 
-                                                    ItemImageLink.Image = image;                                                
+                                                ItemImageLink.Image = await FileService.StorageFileToBitmapImageAsync(localImage);
                                             });
-            
-
-
-
-
-
-
-            
         }
 
-        public void Initialize(ItemImageLink itemImageLink) => this.ItemImageLink = itemImageLink;
+        public void Initialize(ItemImageLink itemImageLink) => ItemImageLink = itemImageLink;
+
+        
     }
 }

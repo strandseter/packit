@@ -58,6 +58,9 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> AddImageAsync(StorageFile file, string imageName)
         {
+            if (file == null)
+                return false;
+
             byte[] fileBytes;
 
             using (var stream = await file?.OpenReadAsync())
@@ -69,17 +72,6 @@ namespace Packit.App.DataAccess
                     reader.ReadBytes(fileBytes);
                 }
             }
-
-
-
-            //Byte[] buffer = null;
-            //if (stream != null && stream.Length > 0)
-            //{
-            //    using (BinaryReader br = new BinaryReader(stream))
-            //    {
-            //        buffer = br.ReadBytes((Int32)stream.Length);
-            //    }
-            //}
 
             using (var form = new MultipartFormDataContent())
             {

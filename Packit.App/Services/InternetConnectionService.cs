@@ -14,7 +14,7 @@ namespace Packit.App.Services
                 if (con == null) continue;
                 if (con.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess) return true;
             }
-            return false;
+            return true;
         }
     }
 }

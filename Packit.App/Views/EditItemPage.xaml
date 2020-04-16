@@ -30,7 +30,7 @@
 
             <StackPanel Grid.Row="1" Margin="20,0,20,0">
                 <TextBlock x:Uid="Title_Title" Text="" FontSize="30" Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBox Text="{x:Bind ViewModel.ItemImageLink.Item.Title, Mode=TwoWay}"/>
+                <TextBox Text="{x:Bind ViewModel.ItemImageLink.Item.Title, Mode=OneWay}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Margin="20,0,20,0">

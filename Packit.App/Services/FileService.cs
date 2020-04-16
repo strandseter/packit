@@ -9,9 +9,9 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.Services
 {
-    public static class FilePickerService
+    public static class FileService
     {
-        public static async Task<BitmapImage> GetImageFromDevice()
+        public static async Task<StorageFile> GetImageFromDevice()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker
             {
@@ -24,12 +24,18 @@ namespace Packit.App.Services
 
             StorageFile file = await picker.PickSingleFileAsync();
 
-            if (file == null)
+            if (file is null)
                 return null;
 
-            using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read))
+            return file;
+        }
+
+        public static async Task<BitmapImage> StorageFileToBitmapImageAsync(StorageFile storageFile)
+        {
+            using (IRandomAccessStream fileStream = await storageFile?.OpenAsync(FileAccessMode.Read))
             {
                 BitmapImage bitmapImage = new BitmapImage();
+
                 await bitmapImage.SetSourceAsync(fileStream);
                 return bitmapImage;
             }

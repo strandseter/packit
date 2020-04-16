@@ -6,7 +6,6 @@ namespace Packit.Model
 {
     public abstract class BaseInformation
     {
-        [Required]
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageStringName { get; set; }
@@ -14,12 +13,11 @@ namespace Packit.Model
 
         public BaseInformation() { }
 
-        public BaseInformation(string title, string description, string imageStringName, User user)
+        public BaseInformation(string title, string description, string imageStringName, int userId)
         {
             Title = title;
             Description = description;
             ImageStringName = imageStringName;
-            User = user;
         }
     }
 }

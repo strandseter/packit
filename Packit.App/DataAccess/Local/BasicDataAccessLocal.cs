@@ -19,7 +19,7 @@ namespace Packit.App.DataAccess
             throw new NotImplementedException();
         }
 
-        public Task<bool> EditAsync(T entity)
+        public Task<bool> UpdateAsync(T entity)
         {
             throw new NotImplementedException();
         }

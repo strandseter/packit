@@ -2,21 +2,11 @@
 
 namespace Packit.Model
 {
-    public class SharedBackpack : IDatabase
+    public class SharedBackpack
     {
         public int SharedBackpackId { get; set; }
         public int BackpackId { get; set; }
         public Backpack Backpack { get; set; }
-        public User User { get; set; }
 
-        public int GetId()
-        {
-            return SharedBackpackId;
-        }
-
-        public void SetId(int value)
-        {
-            SharedBackpackId = value;
-        }
     }
 }

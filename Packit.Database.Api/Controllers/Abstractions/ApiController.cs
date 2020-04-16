@@ -19,25 +19,27 @@ namespace Packit.Database.Api.Controllers.Abstractions
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public abstract class PackitApiController : ControllerBase
     {
-        protected PackitContext Context { get; set; } //???
+        protected PackitContext Context { get; set; }
         protected IHttpContextAccessor HttpContextAccessor { get; set; }
-        protected IAuthenticationService AuthenticationService { get; set; } //???
+        protected IAuthenticationService AuthenticationService { get; set; }
 
         public PackitApiController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
         {
             Context = context;
             AuthenticationService = authenticationService;
             HttpContextAccessor = httpContextAccessor;
+
         }
 
-        protected int? CurrentUserId()
+        protected int CurrentUserId()
         {
-            var idClaim = User.Claims.FirstOrDefault(x => x.Type.Equals("id", StringComparison.InvariantCultureIgnoreCase));
+            var idClaim = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("id", StringComparison.InvariantCultureIgnoreCase)).Value);
 
-            if (int.TryParse(idClaim.Value, out int id))
-                return id;
+   
+            //if (int.TryParse(idClaim.Value, out int outId))
+            //    id = outId;
 
-            return null;
+            return idClaim;
         }
     }
 }

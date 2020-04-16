@@ -13,7 +13,7 @@ namespace Packit.App.DataAccess
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T).Name}s");
 
-        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMwMjIiLCJpZCI6IjMwMjIiLCJuYmYiOjE1ODYxNzkyODksImV4cCI6MTYxMjA5OTI4OSwiaWF0IjoxNTg2MTc5Mjg5fQ.oWdw9HHqqjbbBCeJ4GQTCBjS6zfpTbsYbdj6_npMvh4";
+        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjgiLCJpZCI6IjgiLCJuYmYiOjE1ODcwNjU1NTQsImV4cCI6MTYxMjk4NTU1NCwiaWF0IjoxNTg3MDY1NTU0fQ.SxlDElBO_S0lQaV8DRRpvyEny5yjU6C9wWXaIQUJ4B8";
 
         public async Task<bool> AddAsync(T entity)
         {
@@ -41,7 +41,7 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> EditAsync(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);

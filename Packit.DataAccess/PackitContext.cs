@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using Packit.Model;
 using System;
+using System.Linq;
 
 namespace Packit.DataAccess
 {
@@ -23,26 +24,56 @@ namespace Packit.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
+            SqlConnectionStringBuilder builderLocal = new SqlConnectionStringBuilder
             {
                 DataSource = "(localdb)\\MSSQLLocalDB",
                 InitialCatalog = "Packit.DatabaseV2",
                 IntegratedSecurity = true
             };
 
-            optionsBuilder.UseSqlServer(builder.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
+
+            SqlConnectionStringBuilder builderDonau = new SqlConnectionStringBuilder
+            {
+                DataSource = "Donau.hiof.no",
+                InitialCatalog = "andersbs",
+                UserID = "andersbs",
+                Password = "FVCsrT9r",
+                ConnectTimeout = 30,
+                Encrypt = false,
+                TrustServerCertificate = false,
+                MultiSubnetFailover = false,
+                IntegratedSecurity = false
+            };
+
+            optionsBuilder.UseSqlServer(builderDonau.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            foreach (var foreignkey in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignkey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            
+            //modelBuilder.Entity<User>().HasMany(i => i.Items).WithRequired().WillCascadeOnDelete(false);
+
             ConfigureManyToManyItemBackpack(modelBuilder);
             ConfigureManyToManyBackpackTrip(modelBuilder);
             //ConfigureOneToOneBackpackSharedBackpack(modelBuilder);
             //ConfigureOneToManyUserItems(modelBuilder);
             //ConfigureOneToManyUserBackpacks(modelBuilder);
             //ConfigureOneToManyUserTrips(modelBuilder);
-        }
 
+            //modelBuilder.Entity<Item>()
+            //    .HasOne(i => i.User).WithMany(u => u.Items)
+            //        .HasForeignKey(i => i.UserId)
+            //        .OnDelete(DeleteBehavior.Cascade);
+
+        }
 
         private void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
         {
@@ -70,6 +101,21 @@ namespace Packit.DataAccess
                 .HasOne(bt => bt.Trip)
                 .WithMany(t => t.Backpacks)
                 .HasForeignKey(bt => bt.TripId);
+
+
+            //modelBuilder.Entity<Backpack>().HasOne(b => b.User).WithMany(u => u.Backpacks)
+            //    .HasForeignKey(b => b.UserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<Trip>().HasOne(t => t.User).WithMany(u => u.Trips)
+            //    .HasForeignKey(t => t.UserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<Trip>().HasOne(t => t.User).WithMany(u => u.Trips)
+            //    .HasForeignKey(t => t.UserId)
+            //.OnDelete(DeleteBehavior.Restrict);
+
+
         }
 
         //private void ConfigureOneToOneBackpackSharedBackpack(ModelBuilder modelBuilder)
