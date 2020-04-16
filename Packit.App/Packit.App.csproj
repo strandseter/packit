@@ -161,6 +161,7 @@
     <Compile Include="Helpers\NoParameterRelayCommand.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultActivationHandler.cs" />
+    <Compile Include="Services\FilePickerService.cs" />
     <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\DialogService.cs" />

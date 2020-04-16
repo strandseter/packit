@@ -1,9 +1,13 @@
 ﻿using Packit.App.Services;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.DataAccess
@@ -46,6 +50,33 @@ namespace Packit.App.DataAccess
             }
 
             return bitmap;
+        }
+
+        public async Task<bool> AddImageAsync(StorageFile file)
+        {
+            byte[] fileBytes;
+
+            using (var stream = await file?.OpenReadAsync())
+            {
+                fileBytes = new byte[stream.Size];
+                using (var reader = new DataReader(stream))
+                {
+                    await reader.LoadAsync((uint)stream.Size);
+                    reader.ReadBytes(fileBytes);
+                }
+            }
+
+            using (var form = new MultipartFormDataContent())
+            {
+                using (var stream = new StreamContent(new MemoryStream(fileBytes)))
+                {
+                    form.Add(stream, "imagekey", "Sheet1.png");
+
+                    var response = await httpClient.PostAsync(baseUri, form);
+
+                    return response.IsSuccessStatusCode;
+                }
+            }
         }
 
         public async Task<bool> DeleteImageAsync(string imageName)

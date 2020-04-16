@@ -19,6 +19,7 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().CreateBasicDataAccess();
         private ICommand loadedCommand;
         private readonly Images imagesDataAccess = new Images();
+        private Lazy<Task<ItemImageLink[]>> itemImageLinks;
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
         public ICommand EditCommand { get; set; }
@@ -26,8 +27,20 @@ namespace Packit.App.ViewModels
         public ICommand AddCommand { get; set; }
         public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
 
+
+
         public ItemsViewModel()
         {
+
+            //itemImageLinks = new Lazy<Task<ItemImageLink[]>>(() => Task.Run(async () =>
+            //{
+
+            //    return await itemsDataAccess.GetAllAsync()
+            //        .Select(item => new ItemImageLink() { Item = item })
+            //        .ToArray();
+            //}));
+
+
             DeleteCommand = new RelayCommand<ItemImageLink>(async itemImageLink =>
                                                             {
                                                                 if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName))
