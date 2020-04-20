@@ -26,32 +26,12 @@ namespace Packit.App.DataAccess
 
             BitmapImage bitmap = new BitmapImage();
 
-            try
-            {
-                HttpResponseMessage response = await httpClient.GetAsync(uri);
+            HttpResponseMessage response = await httpClient.GetAsync(uri);
 
-                if (response == null || response.StatusCode != HttpStatusCode.OK)
-                    return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
+            if (response == null || !response.IsSuccessStatusCode)
+                return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
 
-                bitmap.UriSource = uri;
-
-                //TODO: Use?
-                    //using (var stream = await response.Content.ReadAsStreamAsync())
-                    //{
-                    //    using (var memStream = new MemoryStream())
-                    //    {
-                    //        await stream.CopyToAsync(memStream);
-                    //        memStream.Position = 0;
-
-                    //        await bitmap.SetSourceAsync(memStream.AsRandomAccessStream());
-                    //    }
-                    //}
-                
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            bitmap.UriSource = uri;
 
             return bitmap;
         }
@@ -61,17 +41,7 @@ namespace Packit.App.DataAccess
             if (file == null)
                 return false;
 
-            byte[] fileBytes;
-
-            using (var stream = await file?.OpenReadAsync())
-            {
-                fileBytes = new byte[stream.Size];
-                using (var reader = new DataReader(stream))
-                {
-                    await reader.LoadAsync((uint)stream.Size);
-                    reader.ReadBytes(fileBytes);
-                }
-            }
+            byte[] fileBytes = await FileToBytesAsync(file);
 
             using (var form = new MultipartFormDataContent())
             {
@@ -93,6 +63,22 @@ namespace Packit.App.DataAccess
             HttpResponseMessage result = await httpClient.DeleteAsync(uri);
 
             return result.IsSuccessStatusCode;
+        }
+
+        private async Task<byte[]> FileToBytesAsync(StorageFile file)
+        {
+            byte[] fileBytes;
+
+            using (var stream = await file?.OpenReadAsync())
+            {
+                fileBytes = new byte[stream.Size];
+                using (var reader = new DataReader(stream))
+                {
+                    await reader.LoadAsync((uint)stream.Size);
+                    reader.ReadBytes(fileBytes);
+                }
+            }
+            return fileBytes;
         }
     }
 }

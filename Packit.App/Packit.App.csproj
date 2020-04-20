@@ -146,7 +146,6 @@
     <Compile Include="DataAccess\IBasicDataAccess.cs" />
     <Compile Include="DataAccess\IItems.cs" />
     <Compile Include="DataAccess\Http\Images.cs" />
-    <Compile Include="DataAccess\Http\ItemsApi.cs" />
     <Compile Include="DataAccess\Local\ItemsLocal.cs" />
     <Compile Include="DataAccess\Local\BasicDataAccessLocal.cs" />
     <Compile Include="DataAccess\Http\RelationDataAccessHttp.cs" />
