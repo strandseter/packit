@@ -6,6 +6,7 @@ namespace Packit.Model
     public class Backpack : BaseInformation
     {
         public int BackpackId { get; set; }
+        public bool IsShared { get; set; }
         public virtual ICollection<ItemBackpack> Items { get; } = new List<ItemBackpack>();
         public virtual ICollection<BackpackTrip> Trips { get; } = new List<BackpackTrip>();
 
