@@ -31,7 +31,7 @@ namespace Packit.Database.Api.Controllers
             var user = AuthenticationService.Authenticate(userInput?.Email, userInput?.HashedPassword);
 
             if (user == null)
-                return NotFound(); //TODO: Better message
+                return NotFound();
 
             return Ok(user);
         }

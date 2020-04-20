@@ -19,8 +19,6 @@ namespace Packit.App.Services
                 SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary
             };
             picker.FileTypeFilter.Add(".jpg");
-            picker.FileTypeFilter.Add(".jpeg");
-            picker.FileTypeFilter.Add(".png");
 
             StorageFile file = await picker.PickSingleFileAsync();
 

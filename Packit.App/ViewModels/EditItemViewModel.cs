@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -35,15 +36,20 @@ namespace Packit.App.ViewModels
 
             SaveCommand = new RelayCommand<ItemImageLink>(async param =>
                                                         {
-                                                            if (localImage is null)
-                                                                return;
+                                                            //if (localImage is null)
+                                                            //    return;
 
                                                             try
                                                             {
-                                                                ItemImageLink.Item.ImageStringName = localImage.Name;
+                                                                var newImageName = $"image{ItemImageLink.Item.ItemId}{Path.GetExtension(localImage.Name)}";
+                                                                ItemImageLink.Item.ImageStringName = newImageName;
 
-                                                                if (await itemsDataAccess.UpdateAsync(param.Item) && await imagesDataAccess.AddImageAsync(localImage, "image"))
+                                                                if (await itemsDataAccess.UpdateAsync(param.Item) && await imagesDataAccess.AddImageAsync(localImage, newImageName))
+                                                                {
+                                                                    ItemImageLink.Image = await imagesDataAccess.GetImageAsync(newImageName);
                                                                     NavigationService.Navigate(typeof(ItemsPage));
+                                                                }
+                                                                    
                                                                 else
                                                                     DialogService.CouldNotSaveChanges();
                                                             }

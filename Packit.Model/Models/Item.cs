@@ -12,6 +12,7 @@ namespace Packit.Model
 
         public Item()
         {
+            ImageStringName = $"image{ItemId}";
         }
 
         public int GetId()

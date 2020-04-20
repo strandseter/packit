@@ -13,7 +13,7 @@ namespace Packit.Model
 
         public BaseInformation() { }
 
-        public BaseInformation(string title, string description, string imageStringName, int userId)
+        public BaseInformation(string title, string description, string imageStringName)
         {
             Title = title;
             Description = description;

@@ -77,7 +77,7 @@ namespace Packit.App.DataAccess
             {
                 using (var stream = new StreamContent(new MemoryStream(fileBytes)))
                 {
-                    form.Add(stream, imageName, file.Name);
+                    form.Add(stream, imageName, imageName);
 
                     var response = await httpClient.PostAsync(baseUri, form);
 

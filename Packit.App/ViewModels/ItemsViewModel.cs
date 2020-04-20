@@ -27,8 +27,6 @@ namespace Packit.App.ViewModels
         public ICommand AddCommand { get; set; }
         public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
 
-
-
         public ItemsViewModel()
         {
 
