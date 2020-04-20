@@ -1,6 +1,4 @@
-﻿
-
-using Packit.Model.Models;
+﻿using Packit.Model.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Packit.Model

@@ -2,6 +2,7 @@
 using Packit.Database.Api.Repository.Generic;
 using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
+using System.Linq;
 
 namespace Packit.Database.Api.Repository.Classes
 {
@@ -12,6 +13,11 @@ namespace Packit.Database.Api.Repository.Classes
         {
         }
 
-        //Implement methods that are not possible to make generic here.
+        //Implement type specific methods here.
+
+        public IQueryable<Backpack> GetSharedBackpacks()
+        {
+            return Context.Backpacks.Where(b => b.IsShared);
+        }
     }
 }

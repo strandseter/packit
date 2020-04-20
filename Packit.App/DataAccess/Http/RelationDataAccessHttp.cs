@@ -1,13 +1,11 @@
-﻿
-using Newtonsoft.Json;
-using Packit.Model.Models;
+﻿using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
-    public class RelationDataAccessHttp<T1, T2> : IRelationDataAccess<T1, T2> where T1 : class, new() where T2 : class, new()
+    public class RelationDataAccessHttp<T1, T2> : IRelationDataAccess<T1, T2>
     {
         readonly HttpClient httpClient = new HttpClient();
         static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T1).Name}s");
