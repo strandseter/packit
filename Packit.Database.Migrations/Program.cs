@@ -11,8 +11,8 @@ namespace Packit.Database.Migrations
         static void Main()
         {
 
-            RefreshData();
-            //GenerateData();
+            //RefreshData();
+            GenerateData();
             //DeleteAll();
             //QueryUserItems();
         }
@@ -76,9 +76,6 @@ namespace Packit.Database.Migrations
                 var bt3 = new BackpackTrip { BackpackId = backpack3.BackpackId, TripId = trip2.TripId };
                 db.BackpackTrip.AddRange(bt1, bt2, bt3);
 
-                var sb = new SharedBackpack { Backpack = backpack1};
-                db.Add(sb);
-
                 db.SaveChanges();
             }
         }
@@ -114,8 +111,6 @@ namespace Packit.Database.Migrations
                     db.Trips.Remove(o);
                 foreach (User o in db.Users)
                     db.Users.Remove(o);
-                foreach (SharedBackpack o in db.SharedBackpacks)
-                    db.SharedBackpacks.Remove(o);
 
                 db.SaveChanges();
             }

@@ -1,15 +1,16 @@
 ﻿
 
+using Packit.Model.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Packit.Model
 {
-    public abstract class BaseInformation
+    public abstract class BaseInformation : IDatabase
     {
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageStringName { get; set; }
-        public User User { get; set; }
+        public int UserId { get; set; }
 
         public BaseInformation() { }
 
@@ -19,5 +20,9 @@ namespace Packit.Model
             Description = description;
             ImageStringName = imageStringName;
         }
+
+        public int GetUserId() => UserId;
+        public abstract int GetId();
+        public abstract void SetId(int value);
     }
 }

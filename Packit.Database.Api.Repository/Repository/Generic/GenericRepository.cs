@@ -33,7 +33,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
+            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.GetUserId() == userId).FirstOrDefaultAsync();
 
             if (entity == null)
                 return NotFound();
@@ -47,7 +47,7 @@ namespace Packit.Database.Api.GenericRepository
 
         public IQueryable<T> GetAll(int userId)
         {
-            return Context.Set<T>().Where(e => e.User.UserId == userId);
+            return Context.Set<T>().Where(e => e.GetUserId() == userId);
         }
 
         public async Task<IActionResult> GetByIdAsync(int id, int userId)
@@ -55,7 +55,7 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.User.UserId == userId).FirstOrDefaultAsync();
+            var entity = await Context.Set<T>().Where(e => e.GetId() == id && e.GetUserId() == userId).FirstOrDefaultAsync();
 
             if (entity == null)
                 return NotFound();
@@ -88,7 +88,7 @@ namespace Packit.Database.Api.GenericRepository
             return NoContent();
         }
 
-        protected async Task<bool> EntityExistsAsync(int id) => await Context.Set<T>().AnyAsync(e => e.GetId() == id).ConfigureAwait(false);
-        protected async Task SaveChangesAsync() => await Context.SaveChangesAsync().ConfigureAwait(false);
+        protected async Task<bool> EntityExistsAsync(int id) => await Context.Set<T>().AnyAsync(e => e.GetId() == id);
+        protected async Task SaveChangesAsync() => await Context.SaveChangesAsync();
     }
 }

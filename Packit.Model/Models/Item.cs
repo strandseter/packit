@@ -15,16 +15,21 @@ namespace Packit.Model
             ImageStringName = $"image{ItemId}";
         }
 
-        public int GetId()
+        public override int GetId()
         {
             return ItemId;
         }
 
-        public void SetId(int value)
+        public override void SetId(int value)
         {
             ItemId = value;
         }
 
         public override string ToString() => $"{Title} {ItemId}";
+
+        public int GetUserId()
+        {
+            return UserId;
+        }
     }
 }

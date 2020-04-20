@@ -14,12 +14,13 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Packit.DataAccess\Packit.DataAccess.csproj" />
+    <ProjectReference Include="..\Packit.Database.Api.Repository\Packit.Database.Api.Repository.csproj" />
     <ProjectReference Include="..\Packit.Database.Migrations\Packit.Database.Migrations.csproj" />
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj" />
   </ItemGroup>

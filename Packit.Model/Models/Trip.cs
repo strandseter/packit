@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Packit.Model
 {
-    public class Trip : BaseInformation, IDatabase
+    public class Trip : BaseInformation
     {
         public int TripId { get; set; }
         public string Destination { get; set; }
@@ -15,12 +15,12 @@ namespace Packit.Model
         {
         }
 
-        public int GetId()
+        public override int GetId()
         {
             return TripId;
         }
 
-        public void SetId(int value)
+        public override void SetId(int value)
         {
             TripId = value;
         }

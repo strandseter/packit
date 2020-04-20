@@ -13,8 +13,6 @@ namespace Packit.DataAccess
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Backpack> Backpacks { get; set; }
 
-        public DbSet<SharedBackpack> SharedBackpacks { get; set; }
-
         public DbSet<ItemBackpack> ItemBackpack { get; set; }
         public DbSet<BackpackTrip> BackpackTrip { get; set; } 
 

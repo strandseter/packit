@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Packit.DataAccess;
 
 namespace Packit.DataAccess.Migrations
 {
     [DbContext(typeof(PackitContext))]
-    partial class PackitContextModelSnapshot : ModelSnapshot
+    [Migration("20200420094852_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,7 @@ namespace Packit.DataAccess.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("BackpackId");
 
@@ -65,7 +67,7 @@ namespace Packit.DataAccess.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("ItemId");
 
@@ -103,7 +105,7 @@ namespace Packit.DataAccess.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("TripId");
 
@@ -135,7 +137,7 @@ namespace Packit.DataAccess.Migrations
 
             modelBuilder.Entity("Packit.Model.Backpack", b =>
                 {
-                    b.HasOne("Packit.Model.User")
+                    b.HasOne("Packit.Model.User", "User")
                         .WithMany("Backpacks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -156,7 +158,7 @@ namespace Packit.DataAccess.Migrations
 
             modelBuilder.Entity("Packit.Model.Item", b =>
                 {
-                    b.HasOne("Packit.Model.User")
+                    b.HasOne("Packit.Model.User", "User")
                         .WithMany("Items")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -177,7 +179,7 @@ namespace Packit.DataAccess.Migrations
 
             modelBuilder.Entity("Packit.Model.Trip", b =>
                 {
-                    b.HasOne("Packit.Model.User")
+                    b.HasOne("Packit.Model.User", "User")
                         .WithMany("Trips")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
