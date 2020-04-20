@@ -20,7 +20,7 @@ namespace Packit.Database.Api.Controllers.Abstractions
     public abstract class PackitApiController : ControllerBase
     {
         protected PackitContext Context { get; set; }
-        protected IHttpContextAccessor HttpContextAccessor { get; set; }
+        protected IHttpContextAccessor HttpContextAccessor { get; set; } //TODO: Remove?
         protected IAuthenticationService AuthenticationService { get; set; }
 
         public PackitApiController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
@@ -28,7 +28,6 @@ namespace Packit.Database.Api.Controllers.Abstractions
             Context = context;
             AuthenticationService = authenticationService;
             HttpContextAccessor = httpContextAccessor;
-
         }
 
         protected int CurrentUserId()
