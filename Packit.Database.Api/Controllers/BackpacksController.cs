@@ -17,10 +17,7 @@ namespace Packit.Database.Api.Controllers
         private readonly IBackpackRepository repository;
 
         public BackpacksController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IBackpackRepository repository)
-            :base(context, authenticationService, httpContextAccessor)
-        {
-            this.repository = repository;
-        }
+            : base(context, authenticationService, httpContextAccessor) => this.repository = repository;
 
         // GET: api/backpacks
         [HttpGet]
@@ -30,9 +27,24 @@ namespace Packit.Database.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBackpack([FromRoute] int id) => await repository.GetByIdAsync(id, CurrentUserId());
 
+        // GET: api/backpacks/shared
+        [HttpGet]
+        [Route("shared")]
+        public IEnumerable<Backpack> GetSharedBackpacks() => repository.GetSharedBackpacks();
+
+        // GET: api/backpacks/5/items
+        [HttpGet]
+        [Route("{backpackId}/items")]
+        public async Task<IActionResult> GetItemsInBackpack([FromRoute] int backpackId) => await repository.GetManyToManyAsync(backpackId);
+
         // PUT: api/backpacks/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBackpack([FromRoute] int id, [FromBody] Backpack backpack) => await repository.UpdateAsync(id, backpack, CurrentUserId());
+
+        // PUT: api/backpacks/3/items/6/create
+        [HttpPut]
+        [Route("{backpackId}/items/{itemId}/create")]
+        public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await repository.CreateManyToManyAsync("GetItemBackpack", itemId, backpackId);
 
         // POST: api/backpacks
         [HttpPost]
@@ -42,24 +54,9 @@ namespace Packit.Database.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBackpack([FromRoute] int id) => await repository.DeleteAsync(id, CurrentUserId());
 
-        // GET: api/backpacks/shared
-        [HttpGet]
-        [Route("shared")]
-        public IEnumerable<Backpack> GetSharedBackpacks() => repository.GetSharedBackpacks();
-
-        // PUT: api/backpacks/3/items/6/create
-        [HttpPut]
-        [Route("{backpackId}/items/{itemId}/create")]
-        public async Task<IActionResult> PutItemToBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await repository.CreateManyToManyAsync("GetItemBackpack", itemId, backpackId);
-
         // DELETE: api/backpacks/5/items/7/delete
         [HttpDelete]
         [Route("{backpackId}/items/{itemId}/delete")]
         public async Task<IActionResult> DeleteItemFromBackpack([FromRoute] int backpackId, [FromRoute] int itemId) => await repository.DeleteManyToManyAsync(itemId, backpackId);
-
-        // GET: api/backpacks/5/items
-        [HttpGet]
-        [Route("{backpackId}/items")]
-        public async Task<IActionResult> GetItemsInBackpack([FromRoute] int backpackId) => await repository.GetManyToManyAsync(backpackId);
     }
 }

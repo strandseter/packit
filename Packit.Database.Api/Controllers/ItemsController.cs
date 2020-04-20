@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Database.Api.Controllers.Abstractions;
 using Packit.Model;
-using System.Web.Http.Filters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Packit.Database.Api.Authentication;
 using Microsoft.AspNetCore.Http;
 using Packit.Database.Api.Repository.Interfaces;
@@ -23,11 +16,8 @@ namespace Packit.Database.Api.Controllers
     {
         private readonly IItemRepository repository;
 
-        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IItemRepository repository )
-            :base(context, authenticationService, httpContextAccessor)
-        {
-            this.repository = repository;
-        }
+        public ItemsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, IItemRepository repository)
+            : base(context, authenticationService, httpContextAccessor) => this.repository = repository;
 
         // GET: api/Items
         [HttpGet]
