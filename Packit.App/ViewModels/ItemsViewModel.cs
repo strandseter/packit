@@ -5,7 +5,7 @@ using Packit.App.Helpers;
 using Packit.Model;
 using Packit.App.DataAccess;
 using System.Windows.Input;
-using Packit.App.Factory;
+using Packit.App.Factories;
 using Packit.App.Services;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls;
@@ -16,7 +16,7 @@ namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().CreateBasicDataAccess();
+        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private ICommand loadedCommand;
         private readonly Images imagesDataAccess = new Images();
         private Lazy<Task<ItemImageLink[]>> itemImageLinks;

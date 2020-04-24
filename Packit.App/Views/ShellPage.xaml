@@ -46,7 +46,7 @@
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
-            <winui:NavigationViewItem x:Uid="Shell_Trips" helpers:NavHelper.NavigateTo="views:MainPage">
+            <winui:NavigationViewItem x:Uid="Shell_Trips" helpers:NavHelper.NavigateTo="views:TripsPage">
                 <winui:NavigationViewItem.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE787;"/>
                 </winui:NavigationViewItem.Icon>
@@ -66,6 +66,7 @@
             
             <winui:NavigationViewItem x:Uid="Shell_Profile" Icon="Contact" helpers:NavHelper.NavigateTo="views:MainPage"/>
             
+            <winui:NavigationViewItem x:Uid="Shell_Trips" Icon="Document" helpers:NavHelper.NavigateTo="views:TripsPage" />
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior

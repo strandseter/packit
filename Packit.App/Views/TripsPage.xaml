@@ -1,0 +1,61 @@
+﻿<Page
+    x:Class="Packit.App.Views.TripsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:views="using:Packit.App.Views"
+    xmlns:model="using:Packit.Model"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:links="using:Packit.App.DataLinks"
+    Style="{StaticResource PageStyle}"
+    mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
+        <Grid
+            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+
+            <ListView x:Name="lvParent" ItemsSource="{x:Bind ViewModel.TripBackpackItems}" HorizontalAlignment="Stretch">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="links:TripBackpackItemLinkOld">
+
+                        <StackPanel HorizontalAlignment="Stretch">
+                            <controls:Expander Header="{x:Bind Trip.Title, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                <ListView x:Name="lvChild" ItemsSource="{x:Bind BackpackItems }" HorizontalAlignment="Stretch">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="links:BackpackItemLinkOld">
+
+                                            <StackPanel>
+                                                <TextBlock Text="{x:Bind Backpack.Title, Mode=TwoWay}" FontSize="20" HorizontalAlignment="Stretch"></TextBlock>
+
+                                                <ListView x:Name="lvBaby" ItemsSource="{x:Bind Items}" HorizontalAlignment="Stretch">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate x:DataType="model:Item">
+                                                            <TextBlock Text="{x:Bind Title, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                            </StackPanel>
+
+
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </controls:Expander>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
+
+    

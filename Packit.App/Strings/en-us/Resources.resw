@@ -191,4 +191,8 @@
   <data name="Title_Title.Text" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="Shell_Trips.Content" xml:space="preserve">
+    <value>Trips</value>
+    <comment>Navigation view item name for Trips</comment>
+  </data>
 </root>

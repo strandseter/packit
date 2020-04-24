@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
-using Packit.App.Factory;
+using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
@@ -17,7 +17,7 @@ namespace Packit.App.ViewModels
 {
     public class EditItemViewModel : Observable
     {
-        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().CreateBasicDataAccess();
+        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly Images imagesDataAccess = new Images();
         private StorageFile localImage;
 
