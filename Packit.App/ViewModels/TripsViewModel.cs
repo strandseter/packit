@@ -43,8 +43,6 @@ namespace Packit.App.ViewModels
             await LoadDataAsyncBlah();
         }
 
-
-
         //TODO: Refactor
         private async Task LoadData2()
         {

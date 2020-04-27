@@ -187,9 +187,6 @@
     <Compile Include="Views\ItemsPage.xaml.cs">
       <DependentUpon>ItemsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ListviewDropdownControl.xaml.cs">
-      <DependentUpon>ListviewDropdownControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -239,10 +236,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ItemsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ListviewDropdownControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

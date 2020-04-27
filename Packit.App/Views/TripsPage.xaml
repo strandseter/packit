@@ -19,27 +19,40 @@
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
+    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}" >
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
-            <ListView x:Name="lvParent" ItemsSource="{x:Bind ViewModel.TripBackpackItems}" HorizontalAlignment="Stretch">
+            <ListView x:Name="lvParent" ItemsSource="{x:Bind ViewModel.TripBackpackItems}" SelectionMode="None">
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="links:TripBackpackItemLinkOld">
 
-                        <StackPanel HorizontalAlignment="Stretch">
-                            <controls:Expander Header="{x:Bind Trip.Title, Mode=TwoWay}" HorizontalAlignment="Stretch">
-                                <ListView x:Name="lvChild" ItemsSource="{x:Bind BackpackItems }" HorizontalAlignment="Stretch">
-                                    <ListView.ItemTemplate>
+                            <controls:Expander Header="{x:Bind Trip.Title, Mode=TwoWay}" FontSize="40" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                                <GridView x:Name="gvChild" ItemsSource="{x:Bind BackpackItems }">
+
+                                    <GridView.ItemContainerStyle>
+                                        <Style TargetType="GridViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        </Style>
+                                    </GridView.ItemContainerStyle>
+
+                                    <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="links:BackpackItemLinkOld">
 
                                             <StackPanel>
-                                                <TextBlock Text="{x:Bind Backpack.Title, Mode=TwoWay}" FontSize="20" HorizontalAlignment="Stretch"></TextBlock>
+                                                <TextBlock Text="{x:Bind Backpack.Title, Mode=TwoWay}" FontSize="20"></TextBlock>
 
-                                                <ListView x:Name="lvBaby" ItemsSource="{x:Bind Items}" HorizontalAlignment="Stretch">
+                                                <ListView x:Name="gvBaby" ItemsSource="{x:Bind Items}">
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate x:DataType="model:Item">
-                                                            <TextBlock Text="{x:Bind Title, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                                                            <TextBlock Text="{x:Bind Title, Mode=TwoWay}"/>
                                                         </DataTemplate>
                                                     </ListView.ItemTemplate>
                                                 </ListView>
@@ -47,10 +60,9 @@
 
 
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </GridView.ItemTemplate>
+                                </GridView>
                             </controls:Expander>
-                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
