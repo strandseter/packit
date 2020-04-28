@@ -4,15 +4,72 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:link="using:Packit.App.DataLinks"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Page.Resources>
+        
+        <DataTemplate x:Name="ImageOverlayTemplate" x:DataType="link:TripBackpackItemLink">
+            <Grid>
+                <Image Source="{x:Bind Image, Mode=OneWay}"
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <StackPanel Orientation="Vertical" Height="100" VerticalAlignment="Bottom" Padding="5,1,5,1" 
+                    Background="LightGray" Opacity=".80">
+                    <TextBlock Text="{x:Bind Trip.Title}" FontSize="20" Foreground="Black"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock FontSize="15" Text="{x:Bind Trip.Description}" Style="{ThemeResource CaptionTextBlockStyle}" 
+                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+                        <TextBlock FontSize="15" Text="{x:Bind BackpackItems.Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
+                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+                        <TextBlock FontSize="15" Text="{x:Bind .Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
+                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        
+    </Page.Resources>
+
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.
-            -->
+
+            <controls:AdaptiveGridView
+                OneRowModeEnabled="False"
+                x:Name="StyledGrid"
+                SelectionMode="Single"
+                IsItemClickEnabled="True"
+                DesiredWidth="300"
+                ItemTemplate="{StaticResource ImageOverlayTemplate}"
+                ItemsSource="{x:Bind ViewModel.TripBackpackItemLinks}">
+
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Margin" Value="5, 5, 5, 5"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid" 
+                           Orientation="Horizontal"
+                            MaximumRowsOrColumns="5" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </controls:AdaptiveGridView>
+
         </Grid>
     </Grid>
 </Page>

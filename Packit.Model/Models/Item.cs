@@ -7,6 +7,7 @@ namespace Packit.Model
     public class Item : BaseInformation, IDatabase
     {
         public int ItemId { get; set; }
+        public bool IsChecked { get; set; }
 
         public virtual ICollection<ItemBackpack> Backpacks { get; } = new List<ItemBackpack>();
 

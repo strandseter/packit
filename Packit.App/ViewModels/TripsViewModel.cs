@@ -17,7 +17,7 @@ namespace Packit.App.ViewModels
 
         private IRelationDataAccess<Trip, Backpack> backpacsDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
 
-        private IRelationDataAccess<Backpack, Model.Item> itemsDataAccess = new RelationDataAccessFactory<Backpack, Model.Item>().Create();
+        private IRelationDataAccess<Backpack, Item> itemsDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
 
         private readonly Images imagesDataAccess = new Images();
 
