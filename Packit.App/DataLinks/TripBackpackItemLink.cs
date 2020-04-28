@@ -1,13 +1,23 @@
 ﻿using Packit.Model;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.DataLinks
 {
-    public class ItemImageLink : INotifyPropertyChanged
+    public class TripBackpackItemLink : INotifyPropertyChanged
     {
+        public Trip Trip { get; set; }
         private BitmapImage image;
-        private Item item;
+
+        public ObservableCollection<BackpackItemLink> BackpackItems { get; } = new ObservableCollection<BackpackItemLink>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public BitmapImage Image
         {
@@ -19,19 +29,6 @@ namespace Packit.App.DataLinks
                 OnPropertyChanged(nameof(Image));
             }
         }
-
-        public Item Item
-        {
-            get => item;
-            set
-            {
-                if (value == item) return;
-                item = value;
-                OnPropertyChanged(nameof(Item));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

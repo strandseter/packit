@@ -195,4 +195,8 @@
     <value>Trips</value>
     <comment>Navigation view item name for Trips</comment>
   </data>
+  <data name="Shell_TripsMain.Content" xml:space="preserve">
+    <value>TripsMain</value>
+    <comment>Navigation view item name for TripsMain</comment>
+  </data>
 </root>

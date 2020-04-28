@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:app="using:Packit.App"
+    xmlns:link="using:Packit.App.DataLinks"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     Style="{StaticResource PageStyle}"
@@ -54,7 +55,7 @@
                       ItemsSource="{x:Bind ViewModel.ItemImageLinks, Mode=OneWay}"
                       SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
                 <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="app:ItemImageLink">
+                    <DataTemplate x:DataType="link:ItemImageLink">
                         <StackPanel Orientation="Vertical" Margin="15">
                             <StackPanel Spacing="10" Orientation="Horizontal">
                                 <TextBlock
@@ -62,11 +63,13 @@
                                 Text="{x:Bind Item.Title }"
                                 Style="{StaticResource TitleTextBlockStyle}"/>
                             </StackPanel>
-                            <Image Width="50"
-                                   x:Name="Image"
-                                       Height="50"
-                                       Source="{x:Bind Image, Mode=OneWay}"
-                                       Stretch="UniformToFill" />
+                            <Ellipse Height="200" Width="200">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{x:Bind Image, Mode=OneWay}">
+
+                                    </ImageBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>

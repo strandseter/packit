@@ -7,19 +7,16 @@ using Packit.App.DataAccess;
 using System.Windows.Input;
 using Packit.App.Factories;
 using Packit.App.Services;
-using Microsoft.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls;
-using System.Collections;
 using Packit.App.Views;
+using Packit.App.DataLinks;
 
 namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
+        private readonly IBasicDataAccess<Model.Item> itemsDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
         private ICommand loadedCommand;
         private readonly Images imagesDataAccess = new Images();
-        private Lazy<Task<ItemImageLink[]>> itemImageLinks;
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
         public ICommand EditCommand { get; set; }
@@ -29,16 +26,6 @@ namespace Packit.App.ViewModels
 
         public ItemsViewModel()
         {
-
-            //itemImageLinks = new Lazy<Task<ItemImageLink[]>>(() => Task.Run(async () =>
-            //{
-
-            //    return await itemsDataAccess.GetAllAsync()
-            //        .Select(item => new ItemImageLink() { Item = item })
-            //        .ToArray();
-            //}));
-
-
             DeleteCommand = new RelayCommand<ItemImageLink>(async itemImageLink =>
                                                             {
                                                                 if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName))
@@ -63,7 +50,7 @@ namespace Packit.App.ViewModels
         {
             var items = await itemsDataAccess.GetAllAsync();
 
-            foreach (Item i in items)
+            foreach (Model.Item i in items)
                 ItemImageLinks.Add(new ItemImageLink() { Item = i });
         }
 

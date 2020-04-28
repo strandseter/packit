@@ -1,10 +1,8 @@
 ﻿using Packit.App.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -36,10 +34,12 @@ namespace Packit.App.DataAccess
             return bitmap;
         }
 
-        public async Task<bool> AddImageAsync(StorageFile file, string imageName)
+        public async Task<bool> AddImageAsync(StorageFile file)
         {
             if (file == null)
                 return false;
+
+            var imageName = $"{RandomString(10)}{Path.GetExtension(file.Name)}";
 
             byte[] fileBytes = await FileToBytesAsync(file);
 
@@ -79,6 +79,15 @@ namespace Packit.App.DataAccess
                 }
             }
             return fileBytes;
+        }
+
+        public static string RandomString(int length)
+        {
+            var random = new Random();
+
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
+using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
@@ -41,12 +42,8 @@ namespace Packit.App.ViewModels
 
                                                             try
                                                             {
-                                                                var newImageName = $"image{ItemImageLink.Item.ItemId}{Path.GetExtension(localImage.Name)}";
-                                                                ItemImageLink.Item.ImageStringName = newImageName;
-
-                                                                if (await itemsDataAccess.UpdateAsync(param.Item) && await imagesDataAccess.AddImageAsync(localImage, newImageName))
+                                                                if (await itemsDataAccess.UpdateAsync(param.Item) && await imagesDataAccess.AddImageAsync(localImage))
                                                                 {
-                                                                    ItemImageLink.Image = await imagesDataAccess.GetImageAsync(newImageName);
                                                                     NavigationService.Navigate(typeof(ItemsPage));
                                                                 }
                                                                     
@@ -75,7 +72,5 @@ namespace Packit.App.ViewModels
         }
 
         public void Initialize(ItemImageLink itemImageLink) => ItemImageLink = itemImageLink;
-
-        
     }
 }

@@ -11,6 +11,6 @@ namespace Packit.App.DataLinks
     public class BackpackItemLink
     {
         public Backpack Backpack { get; set; }
-        public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
+        public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
     }
 }
