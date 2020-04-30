@@ -130,11 +130,11 @@
     <comment>Navigation view item name for Home page</comment>
   </data>
   <data name="Shell_Backpacks.Content" xml:space="preserve">
-    <value>Backpacks</value>
+    <value>All Backpacks</value>
     <comment>Navigation view item name for Backpacks</comment>
   </data>
   <data name="Shell_Items.Content" xml:space="preserve">
-    <value>Items</value>
+    <value>All Items</value>
     <comment>Navigation view item name for Items</comment>
   </data>
   <data name="Shell_Profile.Content" xml:space="preserve">
@@ -147,7 +147,7 @@
   </data>
   <data name="Shell_Trips.Content" xml:space="preserve">
     <value>Trips</value>
-    <comment>Navigation view item name for Trips page</comment>
+    <comment>Navigation view item name for Trips</comment>
   </data>
   <data name="Shell_Blank.Content" xml:space="preserve">
     <value>Blank</value>
@@ -191,10 +191,6 @@
   <data name="Title_Title.Text" xml:space="preserve">
     <value>Title</value>
   </data>
-  <data name="Shell_Trips.Content" xml:space="preserve">
-    <value>Trips</value>
-    <comment>Navigation view item name for Trips</comment>
-  </data>
   <data name="Shell_TripsMain.Content" xml:space="preserve">
     <value>TripsMain</value>
     <comment>Navigation view item name for TripsMain</comment>
@@ -202,5 +198,8 @@
   <data name="Shell_DetailTrip.Content" xml:space="preserve">
     <value>DetailTrip</value>
     <comment>Navigation view item name for DetailTrip</comment>
+  </data>
+  <data name="Shell_LogOut.Content" xml:space="preserve">
+    <value>Log out</value>
   </data>
 </root>

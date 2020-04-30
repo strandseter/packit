@@ -47,7 +47,7 @@ namespace Packit.App.ViewModels
             var trips = await tripsDataAccess.GetAllAsync();
 
             foreach (Trip t in trips)
-                TripBackpackItemLinks.Add(new TripBackpackItemLink() { Trip = t, ViewModel = this });
+                TripBackpackItemLinks.Add(new TripBackpackItemLink() { Trip = t });
 
             foreach (TripBackpackItemLink tbil in TripBackpackItemLinks)
             {
