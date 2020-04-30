@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:link="using:Packit.App.DataLinks"
+    xmlns:viewmodel="using:Packit.App.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     Style="{StaticResource PageStyle}"
@@ -18,8 +19,8 @@
     </i:Interaction.Behaviors>
 
     <Page.Resources>
-        
-        <DataTemplate x:Name="ImageOverlayTemplate" x:DataType="link:TripBackpackItemLink">
+
+        <DataTemplate x:Name="TripGridTemplate" x:DataType="link:TripBackpackItemLink">
             <Grid>
                 <Image Source="{x:Bind Image, Mode=OneWay}"
                        Stretch="UniformToFill"
@@ -33,7 +34,7 @@
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
                         <TextBlock FontSize="15" Text="{x:Bind BackpackItems.Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
-                        <TextBlock FontSize="15" Text="{x:Bind .Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
+                        <TextBlock FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" 
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
                     </StackPanel>
                 </StackPanel>
@@ -43,21 +44,22 @@
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+        <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
             <controls:AdaptiveGridView
+                x:Name="gvTrips"
                 OneRowModeEnabled="False"
-                x:Name="StyledGrid"
                 SelectionMode="Single"
-                IsItemClickEnabled="True"
                 DesiredWidth="300"
-                ItemTemplate="{StaticResource ImageOverlayTemplate}"
+                IsItemClickEnabled="True"
+                ItemClickCommand="{x:Bind ViewModel.TripDetailCommand}"
+                ItemTemplate="{StaticResource TripGridTemplate}"
                 ItemsSource="{x:Bind ViewModel.TripBackpackItemLinks}">
 
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
                         <Setter Property="Margin" Value="5, 5, 5, 5"/>
+                        <Setter Property="MaxWidth" Value="700"/>
                     </Style>
                 </GridView.ItemContainerStyle>
 
@@ -65,9 +67,10 @@
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid x:Name="MaxItemsWrapGrid" 
                            Orientation="Horizontal"
-                            MaximumRowsOrColumns="5" />
+                           MaximumRowsOrColumns="5"/>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
+                
             </controls:AdaptiveGridView>
 
         </Grid>

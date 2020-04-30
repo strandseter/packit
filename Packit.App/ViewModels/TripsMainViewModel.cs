@@ -6,7 +6,11 @@ using Packit.App.DataAccess;
 using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
+using Packit.App.Services;
+using Packit.App.Views;
 using Packit.Model;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace Packit.App.ViewModels
 {
@@ -18,13 +22,19 @@ namespace Packit.App.ViewModels
         private IRelationDataAccess<Trip, Backpack> backpacsDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private IRelationDataAccess<Backpack, Item> itemsDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
 
+        public TripBackpackItemLink SelectedItem { get; set; }
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadDataAsync));
+        public ICommand TripDetailCommand { get; set; }
 
         public ObservableCollection<TripBackpackItemLink> TripBackpackItemLinks { get; } = new ObservableCollection<TripBackpackItemLink>();
 
         public TripsMainViewModel()
         {
-        }
+            TripDetailCommand = new RelayCommand<TripBackpackItemLink>(param =>
+            {
+                NavigationService.Navigate(typeof(DetailTripPage), param);
+            });
+    }
 
         private async void LoadDataAsync()
         {
@@ -37,7 +47,7 @@ namespace Packit.App.ViewModels
             var trips = await tripsDataAccess.GetAllAsync();
 
             foreach (Trip t in trips)
-                TripBackpackItemLinks.Add(new TripBackpackItemLink() { Trip = t });
+                TripBackpackItemLinks.Add(new TripBackpackItemLink() { Trip = t, ViewModel = this });
 
             foreach (TripBackpackItemLink tbil in TripBackpackItemLinks)
             {
@@ -62,6 +72,11 @@ namespace Packit.App.ViewModels
         {
             foreach (TripBackpackItemLink tbil in TripBackpackItemLinks)
                 tbil.Image = await imagesDataAccess.GetImageAsync(tbil.Trip.ImageStringName);
+        }
+
+        internal void GridViewClicked(object sender, ItemClickEventArgs e)
+        {
+            NavigationService.Navigate(typeof(DetailTripPage), SelectedItem);
         }
     }
 }

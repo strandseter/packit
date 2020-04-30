@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packit.App", "Packit.App\Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Packit.App.Core", "Packit.App.Core\Packit.App.Core.csproj", "{3D3AAD4F-0121-4FFD-BD5D-A2D3710A72BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packit.Database.Api.Repository", "Packit.Database.Api.Repository\Packit.Database.Api.Repository.csproj", "{09AC2033-4A96-43B4-99DF-5270D3D8B74F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Packit.Database.Api.Repository", "Packit.Database.Api.Repository\Packit.Database.Api.Repository.csproj", "{09AC2033-4A96-43B4-99DF-5270D3D8B74F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

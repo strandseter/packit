@@ -18,7 +18,7 @@ namespace Packit.App.DataAccess
         public async Task<BitmapImage> GetImageAsync(string imageStringName)
         {
             if (!InternetConnectionService.IsConnected())
-                return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
+                return new BitmapImage(new Uri("ms-appx:///Assets/generictrip.jpg"));
 
             var uri = new Uri($"{baseUri}{imageStringName}");
 
@@ -27,7 +27,7 @@ namespace Packit.App.DataAccess
             HttpResponseMessage response = await httpClient.GetAsync(uri);
 
             if (response == null || !response.IsSuccessStatusCode)
-                return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
+                return new BitmapImage(new Uri("ms-appx:///Assets/generictrip.jpg"));
 
             bitmap.UriSource = uri;
 

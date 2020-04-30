@@ -1,7 +1,7 @@
 ﻿using System;
 
 using Packit.App.ViewModels;
-
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Packit.App.Views
@@ -13,6 +13,11 @@ namespace Packit.App.Views
         public TripsMainPage()
         {
             InitializeComponent();
+        }
+
+        public void EntityListClick(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

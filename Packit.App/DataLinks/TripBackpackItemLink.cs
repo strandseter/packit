@@ -1,4 +1,5 @@
-﻿using Packit.Model;
+﻿using Packit.App.ViewModels;
+using Packit.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,8 @@ namespace Packit.App.DataLinks
     {
         public Trip Trip { get; set; }
         private BitmapImage image;
-
+        
+        public TripsMainViewModel ViewModel { get; set; }
         public ObservableCollection<BackpackItemLink> BackpackItems { get; } = new ObservableCollection<BackpackItemLink>();
 
         public event PropertyChangedEventHandler PropertyChanged;

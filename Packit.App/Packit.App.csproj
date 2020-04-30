@@ -170,6 +170,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="ViewModels\BackpacksViewModel.cs" />
+    <Compile Include="ViewModels\DetailTripViewModel.cs" />
     <Compile Include="ViewModels\EditItemViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -179,6 +180,9 @@
     <Compile Include="ViewModels\TripsViewModel.cs" />
     <Compile Include="Views\BackpacksPage.xaml.cs">
       <DependentUpon>BackpacksPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DetailTripPage.xaml.cs">
+      <DependentUpon>DetailTripPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditItemPage.xaml.cs">
       <DependentUpon>EditItemPage.xaml</DependentUpon>
@@ -233,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\DetailTripPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\EditItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -271,6 +279,7 @@
     <Compile Include="Helpers\ResourceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\generictrip.jpg" />
     <Content Include="Assets\grey.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
