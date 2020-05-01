@@ -19,7 +19,7 @@ namespace Packit.App.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.Initialize(e?.Parameter as TripBackpackItemLink);
+            ViewModel.InitializeAsync(e?.Parameter as TripBackpackItemLink);
         }
     }
 }

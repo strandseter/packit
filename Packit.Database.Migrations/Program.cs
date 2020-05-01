@@ -12,7 +12,7 @@ namespace Packit.Database.Migrations
         {
 
             //RefreshData();
-            GenerateData();
+            //GenerateData();
             //DeleteAll();
             //QueryUserItems();
         }

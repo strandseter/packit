@@ -16,7 +16,7 @@ namespace Packit.App.ViewModels
     {
         private readonly IBasicDataAccess<Model.Item> itemsDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
         private ICommand loadedCommand;
-        private readonly Images imagesDataAccess = new Images();
+        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
         public ICommand EditCommand { get; set; }

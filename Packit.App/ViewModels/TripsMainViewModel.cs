@@ -17,7 +17,7 @@ namespace Packit.App.ViewModels
     public class TripsMainViewModel : Observable
     {
         private IBasicDataAccess<Trip> tripsDataAccess = new BasicDataAccessFactory<Trip>().Create();
-        private readonly Images imagesDataAccess = new Images();
+        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private ICommand loadedCommand;
         private IRelationDataAccess<Trip, Backpack> backpacsDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private IRelationDataAccess<Backpack, Item> itemsDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();

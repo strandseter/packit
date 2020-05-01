@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.DataAccess
 {
-    public class Images
+    public class ImagesDataAccess
     {
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri("http://localhost:61813/api/Images/");

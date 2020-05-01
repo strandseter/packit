@@ -19,7 +19,7 @@ namespace Packit.App.ViewModels
 
         private IRelationDataAccess<Backpack, Item> itemsDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
 
-        private readonly Images imagesDataAccess = new Images();
+        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
 
         private ICommand loadedCommand;
 

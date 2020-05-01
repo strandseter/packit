@@ -19,7 +19,7 @@ namespace Packit.App.ViewModels
     public class EditItemViewModel : Observable
     {
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
-        private readonly Images imagesDataAccess = new Images();
+        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private StorageFile localImage;
 
         private ItemImageLink EditedItemImageLink { get; set; }
