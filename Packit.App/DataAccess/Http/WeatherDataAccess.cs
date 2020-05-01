@@ -32,14 +32,14 @@ namespace Packit.App.DataAccess.Http
 
             var weather = JsonConvert.DeserializeObject<Weather>(json);
 
-            var weather = new Weather()
-            {
-                City = weatherData["name"].ToObject<string>(),
-                Type = weatherData["weather"]["main"].Value<string>("main"),
-                //TypeDescription = weatherData["weather"]["description"].ToObject<string>(),
-                //KelvinTemperatureActual = weatherData["main"]["temp"].ToObject<double>(),
-                //KelvinTemperatureFeelsLike = weatherData["main"]["feels_like"].ToObject<double>()
-            };
+            //var weather = new Weather()
+            //{
+            //    City = weatherData["name"].ToObject<string>(),
+            //    Type = weatherData["weather"]["main"].Value<string>("main"),
+            //    //TypeDescription = weatherData["weather"]["description"].ToObject<string>(),
+            //    //KelvinTemperatureActual = weatherData["main"]["temp"].ToObject<double>(),
+            //    //KelvinTemperatureFeelsLike = weatherData["main"]["feels_like"].ToObject<double>()
+            //};
 
 
             return weather;
