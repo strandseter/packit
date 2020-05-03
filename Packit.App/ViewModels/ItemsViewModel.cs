@@ -14,7 +14,7 @@ namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : Observable
     {
-        private readonly IBasicDataAccess<Model.Item> itemsDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
+        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private ICommand loadedCommand;
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
 

@@ -3,24 +3,30 @@ using Packit.App.DataLinks;
 using Packit.App.Helpers;
 using Packit.App.DataAccess.Http;
 using Packit.App.ThirdPartyApiModels;
+using Packit.App.ThirdPartyApiModels.Openweathermap;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Packit.App.ViewModels
 {
     public class DetailTripViewModel : Observable
     {
-        private WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
+        private readonly WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
+        private ICommand loadedCommand;
+
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
 
         public TripBackpackItemLink Trip { get; set; }
-        public Weather Weather { get; set; }
 
         public DetailTripViewModel()
         {
         }
 
-        public async System.Threading.Tasks.Task InitializeAsync(TripBackpackItemLink trip)
+        private async void LoadData()
         {
-            Trip = trip;
-            await weatherDataAccess.GetCurrentWeatherAsync("oslo");
+            Trip.WeatherReport = await weatherDataAccess.GetCurrentWeatherReportAsync(Trip.Trip.Destination);
         }
+
+        public void InitializeAsync(TripBackpackItemLink trip) => Trip = trip;
     }
 }

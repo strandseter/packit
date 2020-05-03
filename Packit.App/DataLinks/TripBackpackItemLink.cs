@@ -1,4 +1,5 @@
-﻿using Packit.App.ViewModels;
+﻿using Packit.App.ThirdPartyApiModels.Openweathermap;
+using Packit.App.ViewModels;
 using Packit.Model;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,11 @@ namespace Packit.App.DataLinks
 {
     public class TripBackpackItemLink : INotifyPropertyChanged
     {
-        public Trip Trip { get; set; }
         private BitmapImage image;
-        
-        public TripsMainViewModel ViewModel { get; set; }
-        public ObservableCollection<BackpackItemLink> BackpackItems { get; } = new ObservableCollection<BackpackItemLink>();
+        private WeatherReport weatherReport;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public Trip Trip { get; set; }
+        public ObservableCollection<BackpackItemLink> BackpackItems { get; } = new ObservableCollection<BackpackItemLink>();
 
         public BitmapImage Image
         {
@@ -31,6 +30,19 @@ namespace Packit.App.DataLinks
                 OnPropertyChanged(nameof(Image));
             }
         }
+
+        public WeatherReport WeatherReport
+        {
+            get => weatherReport;
+            set
+            {
+                if (value == weatherReport) return;
+                weatherReport = value;
+                OnPropertyChanged(nameof(WeatherReport));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

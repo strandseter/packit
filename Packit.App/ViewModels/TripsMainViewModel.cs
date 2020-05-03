@@ -17,10 +17,10 @@ namespace Packit.App.ViewModels
     public class TripsMainViewModel : Observable
     {
         private IBasicDataAccess<Trip> tripsDataAccess = new BasicDataAccessFactory<Trip>().Create();
-        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
-        private ICommand loadedCommand;
         private IRelationDataAccess<Trip, Backpack> backpacsDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private IRelationDataAccess<Backpack, Item> itemsDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
+        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
+        private ICommand loadedCommand;
 
         public TripBackpackItemLink SelectedItem { get; set; }
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadDataAsync));
@@ -38,8 +38,21 @@ namespace Packit.App.ViewModels
 
         private async void LoadDataAsync()
         {
-            await LoadTripsAsync();
+            await LoadAllAsync();
             await LoadTripImagesAsync();
+        }
+
+        private async Task LoadAllAsync()
+        {
+            await LoadTripsAsync();
+
+            foreach (TripBackpackItemLink tbil in TripBackpackItemLinks)
+            {
+                await LoadBackpacksAsync(tbil);
+
+                foreach (BackpackItemLink bil in tbil.BackpackItems)
+                    await LoadItemsAsync(bil);
+            }
         }
 
         private async Task LoadTripsAsync()
@@ -48,35 +61,33 @@ namespace Packit.App.ViewModels
 
             foreach (Trip t in trips)
                 TripBackpackItemLinks.Add(new TripBackpackItemLink() { Trip = t });
+        }
 
-            foreach (TripBackpackItemLink tbil in TripBackpackItemLinks)
-            {
-                var backpacks = await backpacsDataAccess.GetEntitiesInEntityAsync(tbil.Trip.TripId, "backpacks");
+        private async Task LoadBackpacksAsync(TripBackpackItemLink tbil)
+        {
+            var backpacks = await backpacsDataAccess.GetEntitiesInEntityAsync(tbil.Trip.TripId, "backpacks");
 
-                foreach (Backpack b in backpacks)
-                    tbil.BackpackItems.Add(new BackpackItemLink() { Backpack = b });
+            foreach (Backpack b in backpacks)
+                tbil.BackpackItems.Add(new BackpackItemLink() { Backpack = b });
+        }
 
-                foreach (BackpackItemLink bil in tbil.BackpackItems)
-                {
-                    var items = await itemsDataAccess.GetEntitiesInEntityAsync(bil.Backpack.BackpackId, "items");
+        private async Task LoadItemsAsync(BackpackItemLink bil)
+        {
+            var items = await itemsDataAccess.GetEntitiesInEntityAsync(bil.Backpack.BackpackId, "items");
 
-                    foreach (Item i in items)
-                    {
-                        bil.ItemImageLinks.Add(new ItemImageLink() { Item = i });
-                    }
-                }
-            }
+            foreach (Item i in items)
+                bil.ItemImageLinks.Add(new ItemImageLink() { Item = i });
+        }
+
+        private async Task LoadItemImagesAsync()
+        {
+
         }
 
         private async Task LoadTripImagesAsync()
         {
             foreach (TripBackpackItemLink tbil in TripBackpackItemLinks)
                 tbil.Image = await imagesDataAccess.GetImageAsync(tbil.Trip.ImageStringName);
-        }
-
-        internal void GridViewClicked(object sender, ItemClickEventArgs e)
-        {
-            NavigationService.Navigate(typeof(DetailTripPage), SelectedItem);
         }
     }
 }

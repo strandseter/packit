@@ -6,8 +6,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:datalinks="using:Packit.App.DataLinks"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:thirdpartymodel="using:Packit.App.ThirdPartyApiModels.Openweathermap"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Page.Resources>
         <DataTemplate x:Key="TripGridTemplate" x:DataType="datalinks:ItemImageLink">
@@ -133,11 +142,10 @@
                 </ListView>
             </StackPanel>
 
-            
         </Grid>
 
         <Grid x:Name="SecondGrid" Grid.Column="1" Grid.Row="0">
-            <TextBlock Text="TEST"/>
+            <TextBlock Text="{x:Bind ViewModel.Trip.WeatherReport.City, Mode=OneWay}"/>
         </Grid>
 
     </Grid>
