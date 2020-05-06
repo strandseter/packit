@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataLinks
 {
-    public class BackpackItemLink
+    public class BackpackWithItems
     {
         public Backpack Backpack { get; set; }
-        public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
+        public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
+
+        public BackpackWithItems(Backpack backpack) => Backpack = backpack;
     }
 }

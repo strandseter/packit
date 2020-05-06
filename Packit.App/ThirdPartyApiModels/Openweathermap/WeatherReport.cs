@@ -1,13 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Packit.App.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.ThirdPartyApiModels.Openweathermap
 {
-    public class WeatherReport
+    public class WeatherReport : Observable
     {
         [JsonProperty("name")]
         public string City { get; set; }

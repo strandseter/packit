@@ -202,4 +202,8 @@
   <data name="Shell_LogOut.Content" xml:space="preserve">
     <value>Log out</value>
   </data>
+  <data name="Shell_DetailTripPageV2.Content" xml:space="preserve">
+    <value>DetailTripPageV2</value>
+    <comment>Navigation view item name for DetailTripPageV2</comment>
+  </data>
 </root>

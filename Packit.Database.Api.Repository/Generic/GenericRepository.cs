@@ -9,7 +9,7 @@ namespace Packit.Database.Api.GenericRepository
 {
     public class GenericRepository<T> : ControllerBase, IGenericRepository<T> where T : class, IDatabase
     {
-        protected PackitContext Context { get;}
+        protected PackitContext Context { get; }
 
         public GenericRepository(PackitContext context)
         {

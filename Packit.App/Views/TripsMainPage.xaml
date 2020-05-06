@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:link="using:Packit.App.DataLinks"
+    xmlns:model="using:Packit.Model"
     xmlns:viewmodel="using:Packit.App.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -20,7 +21,7 @@
 
     <Page.Resources>
 
-        <DataTemplate x:Name="TripGridTemplate" x:DataType="link:TripBackpackItemLink">
+        <DataTemplate x:Name="TripGridTemplate" x:DataType="link:TripImageWeatherLink">
             <Grid>
                 <Image Source="{x:Bind Image, Mode=OneWay}"
                        Stretch="UniformToFill"
@@ -32,7 +33,7 @@
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock FontSize="15" Text="{x:Bind Trip.Description}" Style="{ThemeResource CaptionTextBlockStyle}" 
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
-                        <TextBlock FontSize="15" Text="{x:Bind BackpackItems.Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
+                        <TextBlock FontSize="15" Text="{x:Bind Trip.Backpacks.Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
                         <TextBlock FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" 
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
@@ -54,7 +55,7 @@
                 IsItemClickEnabled="True"
                 ItemClickCommand="{x:Bind ViewModel.TripDetailCommand}"
                 ItemTemplate="{StaticResource TripGridTemplate}"
-                ItemsSource="{x:Bind ViewModel.TripBackpackItemLinks}">
+                ItemsSource="{x:Bind ViewModel.Trips}">
 
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">

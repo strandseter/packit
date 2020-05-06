@@ -63,5 +63,17 @@ namespace Packit.App.DataAccess
 
             return entities;
         }
+
+        public async Task<T[]> GetAllTestAsync()
+        {
+            var uri = new Uri($"{baseUri}/test");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
+
+            HttpResponseMessage result = await httpClient.GetAsync(uri);
+            string json = await result.Content.ReadAsStringAsync();
+            T[] entities = JsonConvert.DeserializeObject<T[]>(json);
+
+            return entities;
+        }
     }
 }

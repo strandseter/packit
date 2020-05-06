@@ -1,4 +1,5 @@
-﻿using Packit.Database.Api.GenericRepository;
+﻿using Microsoft.AspNetCore.Mvc;
+using Packit.Database.Api.GenericRepository;
 using Packit.Database.Api.Repository.Generic;
 using Packit.Model;
 using System;
@@ -11,5 +12,7 @@ namespace Packit.Database.Api.Repository.Interfaces
     public interface ITripRepository : IGenericRepository<Trip>, IGenericManyToManyRepository<Trip>
     {
         //Declare methods that are not possible to make generic here.
+
+        Task<IActionResult> GetAllTripBackpacksItemsAsync(int userId);
     }
 }

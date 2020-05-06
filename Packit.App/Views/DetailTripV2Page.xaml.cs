@@ -7,11 +7,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Packit.App.Views
 {
-    public sealed partial class DetailTripPage : Page
+    public sealed partial class DetailTripV2Page : Page
     {
         public DetailTripViewModel ViewModel { get; } = new DetailTripViewModel();
 
-        public DetailTripPage()
+        public DetailTripV2Page()
         {
             InitializeComponent();
         }
@@ -19,7 +19,7 @@ namespace Packit.App.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.InitializeAsync(e?.Parameter as TripBackpackItemLink);
+            ViewModel.Initialize(e?.Parameter as TripImageWeatherLink);
         }
     }
 }

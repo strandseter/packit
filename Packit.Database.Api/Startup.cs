@@ -30,6 +30,10 @@ namespace Packit.Database.Api
 
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .AddJsonOptions(
+                    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             ConfigureInjections(services);
             ConfigureDatabaseConnection(services);

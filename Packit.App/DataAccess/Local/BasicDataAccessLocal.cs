@@ -28,5 +28,10 @@ namespace Packit.App.DataAccess
         {
             throw new NotImplementedException();
         }
+
+        public Task<T[]> GetAllTestAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

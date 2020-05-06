@@ -58,7 +58,7 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE774;"/>
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
-            
+
             <winui:NavigationViewItem x:Uid="Shell_Profile" Icon="Contact" helpers:NavHelper.NavigateTo="views:MainPage" VerticalAlignment="Bottom"/>
 
             <winui:NavigationViewItem x:Uid="Shell_LogOut" helpers:NavHelper.NavigateTo="views:MainPage" VerticalAlignment="Bottom">

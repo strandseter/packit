@@ -56,21 +56,9 @@ namespace Packit.DataAccess
                 foreignkey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            
-            //modelBuilder.Entity<User>().HasMany(i => i.Items).WithRequired().WillCascadeOnDelete(false);
-
+           
             ConfigureManyToManyItemBackpack(modelBuilder);
             ConfigureManyToManyBackpackTrip(modelBuilder);
-            //ConfigureOneToOneBackpackSharedBackpack(modelBuilder);
-            //ConfigureOneToManyUserItems(modelBuilder);
-            //ConfigureOneToManyUserBackpacks(modelBuilder);
-            //ConfigureOneToManyUserTrips(modelBuilder);
-
-            //modelBuilder.Entity<Item>()
-            //    .HasOne(i => i.User).WithMany(u => u.Items)
-            //        .HasForeignKey(i => i.UserId)
-            //        .OnDelete(DeleteBehavior.Cascade);
-
         }
 
         private void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
@@ -99,50 +87,6 @@ namespace Packit.DataAccess
                 .HasOne(bt => bt.Trip)
                 .WithMany(t => t.Backpacks)
                 .HasForeignKey(bt => bt.TripId);
-
-
-            //modelBuilder.Entity<Backpack>().HasOne(b => b.User).WithMany(u => u.Backpacks)
-            //    .HasForeignKey(b => b.UserId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //modelBuilder.Entity<Trip>().HasOne(t => t.User).WithMany(u => u.Trips)
-            //    .HasForeignKey(t => t.UserId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //modelBuilder.Entity<Trip>().HasOne(t => t.User).WithMany(u => u.Trips)
-            //    .HasForeignKey(t => t.UserId)
-            //.OnDelete(DeleteBehavior.Restrict);
-
-
         }
-
-        //private void ConfigureOneToOneBackpackSharedBackpack(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Backpack>()
-        //        .HasOne(b => b.SharedBackpack)
-        //        .WithOne(s => s.Backpack)
-        //        .HasForeignKey<SharedBackpack>(s => s.Backpack);
-        //}
-
-        //private void ConfigureOneToManyUserItems(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<User>()
-        //        .HasMany(u => u.Items)
-        //        .WithOne(i => i.User);
-        //}
-
-        //private void ConfigureOneToManyUserBackpacks(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<User>()
-        //        .HasMany(u => u.Backpacks)
-        //        .WithOne(b => b.User);
-        //}
-
-        //private void ConfigureOneToManyUserTrips(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<User>()
-        //        .HasMany(u => u.Trips)
-        //        .WithOne(t => t.User);
-        //}
     }
 }
