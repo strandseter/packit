@@ -1,10 +1,11 @@
-﻿using Packit.Model;
+﻿using Packit.App.Helpers;
+using Packit.Model;
 using System.ComponentModel;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.DataLinks
 {
-    public class ItemImageLink : INotifyPropertyChanged
+    public class ItemImageLink : Observable
     {
         private BitmapImage image;
         private Item item;
@@ -30,9 +31,5 @@ namespace Packit.App.DataLinks
                 OnPropertyChanged(nameof(Item));
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

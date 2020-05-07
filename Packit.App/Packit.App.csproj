@@ -144,6 +144,9 @@
     <Compile Include="Activation\ActivationHandler.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderBehavior.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderMode.cs" />
+    <Compile Include="Convertes\BooleanToInvisibilityConverter.cs" />
+    <Compile Include="Convertes\BooleanToTextConverter.cs" />
+    <Compile Include="Convertes\BooleanToVisibilityConverter.cs" />
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
     <Compile Include="DataLinks\BackpackWithItems.cs" />
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />

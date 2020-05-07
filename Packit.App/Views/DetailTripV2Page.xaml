@@ -9,6 +9,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:datalinks="using:Packit.App.DataLinks"
+    xmlns:local="using:Packit.App.Convertes"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -19,19 +20,12 @@
     </i:Interaction.Behaviors>
 
     <Page.Resources>
-        <DataTemplate x:Key="ItemGridTemplate" x:DataType="model:Item">
-            <Grid>
-                <StackPanel Orientation="Vertical" Height="100" VerticalAlignment="Bottom" Padding="5,1,5,1" 
-                    Background="LightGray" Opacity=".80">
-                    <TextBlock Text="{x:Bind Title}" FontSize="20" Foreground="Black"/>
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock FontSize="15" Text="{x:Bind Description}" Style="{ThemeResource CaptionTextBlockStyle}" 
-                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
-                    </StackPanel>
-                    <CheckBox/>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
+
+        <local:BooleanToVisibilityConverter x:Key="TrueToVisibleConverter"/>
+        <local:BooleanToVisibilityConverter x:Key="FalseToVisibleConverter" IsReversed="True"/>
+        <local:BooleanToTextConverter x:Key="TrueTotextConverter"/>
+        <local:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True"/>
+
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
@@ -108,39 +102,115 @@
                        HorizontalAlignment="Center"
                        Style="{StaticResource SubheaderTextBlockStyle}"/>
 
-                <ListView ItemsSource="{x:Bind ViewModel.Backpacks}" HorizontalAlignment="Stretch" Background="White" Opacity="0.9" Margin="10">
+                    <Button Content="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueTotextConverter}}"
+                            Command="{x:Bind ViewModel.EditTripCommand}"/>
+
+                    <ListView Name="lvBackpacks"
+                          ItemsSource="{x:Bind ViewModel.Backpacks}"
+                          HorizontalAlignment="Stretch"
+                          Background="Black"
+                          Opacity="0.9" Margin="10"
+                          SelectionMode="None"
+                          DataContext="{x:Bind ViewModel}">
+
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="datalinks:BackpackWithItems">
                             <StackPanel Orientation="Vertical">
 
                                 <StackPanel Orientation="Horizontal">
 
-                                    <TextBlock Text="{x:Bind Backpack.Title}" Style="{StaticResource TitleTextBlockStyle}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Grid VerticalAlignment="Center">
 
-                                    <Button Content="...">
-                                        <Button.Flyout>
-                                            <MenuFlyout>
-                                                <MenuFlyoutItem Text="Share">
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE72D;"/>
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
+                                            <StackPanel Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"
+                                                        Orientation="Horizontal">
+                                                <TextBlock Text="{x:Bind Backpack.Title, Mode=OneWay}"
+                                                            Style="{StaticResource TitleTextBlockStyle}"
                                                 
-                                                <MenuFlyoutItem Text="Copy" Icon="Copy"/>
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center"/>
+                                                <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.ShareBackpackCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Margin="5,10,5,10">
+                                                    <SymbolIcon Symbol="Share"/>
+                                                </Button>
 
-                                                <MenuFlyoutItem Text="Delete" Icon="Delete"/>
+                                            </StackPanel>
 
-                                                <MenuFlyoutSeparator/>
-                                                <MenuFlyoutItem Text="Rename"/>
-                                                <MenuFlyoutItem Text="Select"/>
-                                            </MenuFlyout>
-                                        </Button.Flyout>
-                                    </Button>
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
+
+                                                <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
+                                                        Style="{StaticResource TitleTextBlockStyle}"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"/>
+
+                                                <StackPanel Margin="10,0,0,0" Spacing="5"
+                                                            Orientation="Horizontal">
+                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
+                                                            CommandParameter="{x:Bind}"
+                                                            Margin="0,0,10,0">
+                                                        <SymbolIcon Symbol="Add"/>
+                                                    </Button>
+                                                    
+                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
+                                                            CommandParameter="{x:Bind}">
+                                                        <SymbolIcon Symbol="Remove"/>
+                                                    </Button>
+
+                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteBackpackCommand}"
+                                                            CommandParameter="{x:Bind}">
+                                                        <SymbolIcon Symbol="Delete"/>
+                                                    </Button>
+                                                </StackPanel>
+
+                                            </StackPanel>
+
+                                        </Grid>
+
+                                    </StackPanel>
+
                                 </StackPanel>
 
                                 <controls:AdaptiveGridView ItemsSource="{x:Bind Items}"
-                                                           ItemTemplate="{StaticResource ItemGridTemplate}"
->
+                                                           SelectionMode="None">
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Item">
+                                            <Grid>
+                                                <StackPanel Orientation="Vertical"
+                                                            Height="100"
+                                                            VerticalAlignment="Bottom"
+                                                            Padding="5,1,5,1" 
+                                                            Background="LightGray" Opacity=".80">
+
+                                                    <Grid>
+                                                        <TextBlock Text="{x:Bind Title, Mode=OneWay}"
+                                                                   FontSize="20"
+                                                                   Foreground="Black"
+                                                                   Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
+                                                        <TextBox Text="{x:Bind Title, Mode=TwoWay}"
+                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                                                    </Grid>
+                                                        
+                                                    <Grid>
+                                                        <TextBlock FontSize="15"
+                                                                   Text="{x:Bind Description, Mode=OneWay}"
+                                                                   Style="{ThemeResource CaptionTextBlockStyle}" 
+                                                                   Foreground="{ThemeResource SystemBaseMediumHighColor}"
+                                                                   Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
+                                                        <TextBox Text="{x:Bind Description, Mode=TwoWay}"
+                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                                                    </Grid>
+                                                    
+                                                    <CheckBox/>
+                                                    
+                                                </StackPanel>
+                                                
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
 
                                     <GridView.ItemContainerStyle>
                                         <Style TargetType="GridViewItem">
