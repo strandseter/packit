@@ -30,6 +30,7 @@
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
+        
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ViewModel.TripWithImageWeather.Image, Mode=OneWay}" />
         </Grid.Background>
@@ -54,7 +55,7 @@
                         <Setter Target="ContentArea.Margin" Value="12"/>
                         <Setter Target="FirstGrid.Margin" Value="0 0 0 6"/>
                         <Setter Target="SecondGrid.Margin" Value="0 6 0 0"/>
-                        <Setter Target="ContentArea.RowDefinitions[1].Height" Value="*"/>
+                        <Setter Target="ContentArea.RowDefinitions[1].Height" Value="auto"/>
                         <Setter Target="ContentArea.ColumnDefinitions[1].Width" Value="auto"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="0"/>
                         <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
@@ -80,6 +81,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid x:Name="FirstGrid" Grid.Column="0" Grid.Row="0">
+
             <StackPanel Grid.Row="1">
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -94,11 +96,11 @@
                             <ImageBrush ImageSource="{x:Bind ViewModel.TripWithImageWeather.Image, Mode=OneWay}" Stretch="UniformToFill"/>
                         </Ellipse.Fill>
                     </Ellipse>
-
+                    
                 </StackPanel>
 
                 <TextBlock
-                       Text="Packing list"
+                       Text="Backpacks"
                        HorizontalAlignment="Center"
                        Style="{StaticResource SubheaderTextBlockStyle}"/>
 
@@ -175,13 +177,15 @@
                                 </StackPanel>
 
                                 <controls:AdaptiveGridView ItemsSource="{x:Bind Items}"
-                                                           SelectionMode="None">
+                                                           OneRowModeEnabled="False"
+                                                           SelectionMode="None"
+                                                           DesiredWidth="200">
                                     <GridView.ItemTemplate>
                                         <DataTemplate x:DataType="model:Item">
                                             <Grid>
                                                 <StackPanel Orientation="Vertical"
                                                             Height="100"
-                                                            VerticalAlignment="Bottom"
+                                                            HorizontalAlignment="Stretch"
                                                             Padding="5,1,5,1" 
                                                             Background="LightGray" Opacity=".80">
 
@@ -203,9 +207,7 @@
                                                         <TextBox Text="{x:Bind Description, Mode=TwoWay}"
                                                                  Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
                                                     </Grid>
-                                                    
-                                                    <CheckBox/>
-                                                    
+                                                                                                        
                                                 </StackPanel>
                                                 
                                             </Grid>
@@ -214,13 +216,16 @@
 
                                     <GridView.ItemContainerStyle>
                                         <Style TargetType="GridViewItem">
-                                            <Setter Property="Margin" Value="2, 2, 2, 2"/>
+                                            <Setter Property="Margin" Value="5, 5, 5, 5"/>
+                                            <Setter Property="MaxWidth" Value="250"/>
                                         </Style>
                                     </GridView.ItemContainerStyle>
 
                                     <GridView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <ItemsWrapGrid x:Name="MaxItemsWrapGrid" Orientation="Horizontal" MaximumRowsOrColumns="5"/>
+                                            <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                                                           Orientation="Horizontal"
+                                                           MaximumRowsOrColumns="5"/>
                                         </ItemsPanelTemplate>
                                     </GridView.ItemsPanel>
 
@@ -239,5 +244,8 @@
                 <TextBlock Text="{x:Bind ViewModel.TripWithImageWeather.WeatherReport.City, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
+
+        
+
     </Grid>
 </Page>
