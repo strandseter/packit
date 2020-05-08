@@ -9,7 +9,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:datalinks="using:Packit.App.DataLinks"
-    xmlns:local="using:Packit.App.Convertes"
+    xmlns:wrappers="using:Packit.App.Wrappers"
+    xmlns:converters="using:Packit.App.Convertes"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -21,16 +22,16 @@
 
     <Page.Resources>
 
-        <local:BooleanToVisibilityConverter x:Key="TrueToVisibleConverter"/>
-        <local:BooleanToVisibilityConverter x:Key="FalseToVisibleConverter" IsReversed="True"/>
-        <local:BooleanToTextConverter x:Key="TrueTotextConverter"/>
-        <local:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True"/>
+        <converters:BooleanToVisibilityConverter x:Key="TrueToVisibleConverter"/>
+        <converters:BooleanToVisibilityConverter x:Key="FalseToVisibleConverter" IsReversed="True"/>
+        <converters:BooleanToTextConverter x:Key="TrueTotextConverter"/>
+        <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True"/>
+
 
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
-        
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ViewModel.TripWithImageWeather.Image, Mode=OneWay}" />
         </Grid.Background>
@@ -117,6 +118,7 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="datalinks:BackpackWithItems">
+
                             <StackPanel Orientation="Vertical">
 
                                 <StackPanel Orientation="Horizontal">
@@ -176,13 +178,17 @@
 
                                 </StackPanel>
 
-                                <controls:AdaptiveGridView ItemsSource="{x:Bind Items}"
+                                <controls:AdaptiveGridView x:Name="gvItems"
+                                                           DataContext="{x:Bind}"
+                                                           ItemsSource="{x:Bind Items}"
                                                            OneRowModeEnabled="False"
                                                            SelectionMode="None"
                                                            DesiredWidth="200">
-                                    <GridView.ItemTemplate>
+
+                                    <controls:AdaptiveGridView.ItemTemplate>
                                         <DataTemplate x:DataType="model:Item">
                                             <Grid>
+
                                                 <StackPanel Orientation="Vertical"
                                                             Height="100"
                                                             HorizontalAlignment="Stretch"
@@ -207,12 +213,22 @@
                                                         <TextBox Text="{x:Bind Description, Mode=TwoWay}"
                                                                  Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
                                                     </Grid>
-                                                                                                        
+
+                                                    <Grid>
+
+                                                        <Grid.Resources>
+                                                            <wrappers:ItemBackpackWrapper x:Key="ii" Item="{x:Bind}" BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"/>
+                                                        </Grid.Resources>
+                                                        
+                                                        <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.AddBackpackCommand}" CommandParameter="{StaticResource ii}"/>
+
+                                                    </Grid>
+                                                    
                                                 </StackPanel>
                                                 
                                             </Grid>
                                         </DataTemplate>
-                                    </GridView.ItemTemplate>
+                                    </controls:AdaptiveGridView.ItemTemplate>
 
                                     <GridView.ItemContainerStyle>
                                         <Style TargetType="GridViewItem">

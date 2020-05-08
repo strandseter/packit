@@ -12,6 +12,7 @@ using Packit.App.Services;
 using Packit.App.Views;
 using Packit.App.DataAccess;
 using Packit.App.Factories;
+using Packit.App.Wrappers;
 
 namespace Packit.App.ViewModels
 {
@@ -24,7 +25,7 @@ namespace Packit.App.ViewModels
 
         public bool IsVisible
         {
-            get { return isVisible; }
+            get => isVisible; 
             set
             {
                 if (value == isVisible) return;
@@ -45,44 +46,39 @@ namespace Packit.App.ViewModels
         public ICommand DeleteItemCommand { get; set; }
         public TripImageWeatherLink TripWithImageWeather { get; set; }
         public WeatherReport WeatherReport { get; set; }
-        public BackpackWithItems Testdsf { get; set; } //Remove this
         public ObservableCollection<BackpackWithItems> Backpacks { get; } = new ObservableCollection<BackpackWithItems>();
 
         public DetailTripViewModel()
         {
-            EditTripCommand = new RelayCommand(() =>
-            {
-                IsVisible = !IsVisible;
-            });
+            EditTripCommand = new RelayCommand(() => IsVisible = !IsVisible);
 
             AddItemToBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
             {
-                Testdsf = param;
+                var dfgfdg = param;
             });
 
-            RemoveItemFromBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
+            RemoveItemFromBackpackCommand = new RelayCommand<ItemBackpackWrapper>(param =>
             {
-                Testdsf = param;
+                var dfgfdg = param;
             });
 
-            DeleteItemCommand = new RelayCommand<BackpackWithItems>(param =>
+            DeleteItemCommand = new RelayCommand<ItemBackpackWrapper>(param =>
             {
-                Testdsf = param;
+                var dfgfdg = param;
             });
 
-            AddBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
+            AddBackpackCommand = new RelayCommand<ItemBackpackWrapper>(param =>
             {
-                Testdsf = param;
+                var dfgfdg = param;
+
             });
 
             RemoveBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
             {
-                Testdsf = param;
             });
 
             DeleteBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
             {
-                Testdsf = param;
             });
 
             ShareBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
