@@ -129,19 +129,19 @@
                                             <StackPanel Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"
                                                         Orientation="Horizontal">
                                                 <TextBlock Text="{x:Bind Backpack.Title, Mode=OneWay}"
-                                                            Style="{StaticResource TitleTextBlockStyle}"
-                                                
-                                                            VerticalAlignment="Center"
-                                                            HorizontalAlignment="Center"/>
+                                                           Style="{StaticResource TitleTextBlockStyle}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
                                                 <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.ShareBackpackCommand}"
                                                         CommandParameter="{x:Bind}"
-                                                        Margin="5,10,5,10">
+                                                        Margin="10,10,5,10">
                                                     <SymbolIcon Symbol="Share"/>
                                                 </Button>
 
                                             </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal"
+                                            <StackPanel Margin="0,10,0,0"
+                                                        Orientation="Horizontal"
                                                         VerticalAlignment="Center"
                                                         HorizontalAlignment="Center"
                                                         Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
@@ -214,15 +214,25 @@
                                                                  Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
                                                     </Grid>
 
-                                                    <Grid>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
-                                                        <Grid.Resources>
-                                                            <wrappers:ItemBackpackWrapper x:Key="ii" Item="{x:Bind}" BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"/>
-                                                        </Grid.Resources>
+                                                            <StackPanel.Resources>
+                                                                <wrappers:ItemBackpackWrapper x:Key="ItemBackpackWrapper" Item="{x:Bind}" BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"/>
+                                                            </StackPanel.Resources>
+
+                                                            <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveItemFromBackpackCommand}"
+                                                                    CommandParameter="{StaticResource ItemBackpackWrapper}">
+                                                                <SymbolIcon Symbol="Remove"/>
+                                                            </Button>
+                                                            
+                                                            <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteItemCommand}"
+                                                                    CommandParameter="{StaticResource ItemBackpackWrapper}">
+                                                                <SymbolIcon Symbol="Delete"/>
+                                                            </Button>
+                                                            
+                                                        </StackPanel>
                                                         
-                                                        <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.AddBackpackCommand}" CommandParameter="{StaticResource ii}"/>
-
-                                                    </Grid>
                                                     
                                                 </StackPanel>
                                                 

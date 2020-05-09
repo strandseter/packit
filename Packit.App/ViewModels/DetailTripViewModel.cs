@@ -13,6 +13,7 @@ using Packit.App.Views;
 using Packit.App.DataAccess;
 using Packit.App.Factories;
 using Packit.App.Wrappers;
+using System.Linq;
 
 namespace Packit.App.ViewModels
 {
@@ -20,6 +21,9 @@ namespace Packit.App.ViewModels
     {
         private readonly WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
+        private readonly IBasicDataAccess<Item> itemDataAccess = new BasicDataAccessFactory<Item>().Create();
+        private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
+        private readonly IRelationDataAccess<Trip, Backpack> tripBackpackDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private ICommand loadedCommand;
         private bool isVisible;
 
@@ -57,28 +61,33 @@ namespace Packit.App.ViewModels
                 var dfgfdg = param;
             });
 
-            RemoveItemFromBackpackCommand = new RelayCommand<ItemBackpackWrapper>(param =>
+            RemoveItemFromBackpackCommand = new RelayCommand<ItemBackpackWrapper>(async param =>
             {
-                var dfgfdg = param;
+                if(await backpackItemDataAccess.DeleteEntityFromEntityAsync(param.BackpackWithItems.Backpack.BackpackId, param.Item.ItemId))
+                    param.BackpackWithItems.Items.Remove(param.Item);
             });
 
-            DeleteItemCommand = new RelayCommand<ItemBackpackWrapper>(param =>
+            DeleteItemCommand = new RelayCommand<ItemBackpackWrapper>(async param =>
             {
-                var dfgfdg = param;
+                if(await itemDataAccess.DeleteAsync(param.Item))
+                    param.BackpackWithItems.Items.Remove(param.Item);
             });
 
             AddBackpackCommand = new RelayCommand<ItemBackpackWrapper>(param =>
             {
                 var dfgfdg = param;
-
             });
 
-            RemoveBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
+            RemoveBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
             {
+                if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripWithImageWeather.Trip.TripId, param.Backpack.BackpackId))
+                    Backpacks.Remove(param);
             });
 
-            DeleteBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
+            DeleteBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
             {
+                if (await backpackDataAccess.DeleteAsync(param.Backpack))
+                    Backpacks.Remove(param);
             });
 
             ShareBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
@@ -110,6 +119,11 @@ namespace Packit.App.ViewModels
                 foreach(var item in bwi.Backpack.Items)
                     bwi.Items.Add(item.Item);
             }
+        }
+
+        private void LoadBackpacksInTrips()
+        {
+
         }
 
         private async Task LoadWeatherReportAsync()

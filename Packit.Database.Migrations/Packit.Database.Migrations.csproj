@@ -16,6 +16,12 @@
     <Compile Remove="Migrations\20200416171133_please3.Designer.cs" />
     <Compile Remove="Migrations\20200416171825_please5.cs" />
     <Compile Remove="Migrations\20200416171825_please5.Designer.cs" />
+    <Compile Remove="Migrations\20200509134809_restrictoff.cs" />
+    <Compile Remove="Migrations\20200509134809_restrictoff.Designer.cs" />
+    <Compile Remove="Migrations\20200509135031_setnull.cs" />
+    <Compile Remove="Migrations\20200509135031_setnull.Designer.cs" />
+    <Compile Remove="Migrations\20200509135326_cascade.cs" />
+    <Compile Remove="Migrations\20200509135326_cascade.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

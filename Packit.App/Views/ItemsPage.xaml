@@ -46,7 +46,6 @@
                 </Grid.ColumnDefinitions>
 
                 <SearchBox Grid.Column="2" Margin="5,5,2.5,5" FocusOnKeyboardInput="true" VerticalAlignment="Center"/>
-                
             </Grid>
 
             <GridView Grid.Row="1"

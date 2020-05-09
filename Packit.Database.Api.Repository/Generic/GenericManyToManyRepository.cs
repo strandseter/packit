@@ -25,7 +25,7 @@ namespace Packit.Database.Api.Repository.Generic
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await EntityExistsAsync(leftId) || !await EntityExistsAsync(rightId))
+            if (!await EntityExistsAsync<T2>(leftId) || !await EntityExistsAsync<T1>(rightId))
                 return NotFound();
 
             if (EntityRelationExists(leftId, rightId))
@@ -47,7 +47,7 @@ namespace Packit.Database.Api.Repository.Generic
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await EntityExistsAsync(leftId) || !await EntityExistsAsync(rightId))
+            if (!await EntityExistsAsync<T2>(leftId) || !await EntityExistsAsync<T1>(rightId))
                 return NotFound();
 
             if (!EntityRelationExists(leftId, rightId))
@@ -79,6 +79,8 @@ namespace Packit.Database.Api.Repository.Generic
 
             return Ok(entities);
         }
+
+        protected async Task<bool> EntityExistsAsync<T>(int id) where T : class, IDatabase => await Context.Set<T>().AnyAsync(e => e.GetId() == id);
 
         private bool EntityRelationExists(int leftId, int rightId) => Context.Set<T3>().Any(e => e.GetLeftId() == leftId && e.GetRightId() == rightId);
     }

@@ -56,7 +56,6 @@ namespace Packit.DataAccess
                 foreignkey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-           
             ConfigureManyToManyItemBackpack(modelBuilder);
             ConfigureManyToManyBackpackTrip(modelBuilder);
         }
@@ -68,11 +67,13 @@ namespace Packit.DataAccess
             modelBuilder.Entity<ItemBackpack>()
                 .HasOne(ib => ib.Item)
                 .WithMany(i => i.Backpacks)
-                .HasForeignKey(ib => ib.ItemId);
+                .HasForeignKey(ib => ib.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ItemBackpack>()
                 .HasOne(ib => ib.Backpack)
                 .WithMany(i => i.Items)
-                .HasForeignKey(ib => ib.BackpackId);
+                .HasForeignKey(ib => ib.BackpackId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         private void ConfigureManyToManyBackpackTrip(ModelBuilder modelBuilder)
@@ -82,11 +83,13 @@ namespace Packit.DataAccess
             modelBuilder.Entity<BackpackTrip>()
                 .HasOne(bt => bt.Backpack)
                 .WithMany(b => b.Trips)
-                .HasForeignKey(bt => bt.BackpackId);
+                .HasForeignKey(bt => bt.BackpackId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<BackpackTrip>()
                 .HasOne(bt => bt.Trip)
                 .WithMany(t => t.Backpacks)
-                .HasForeignKey(bt => bt.TripId);
+                .HasForeignKey(bt => bt.TripId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

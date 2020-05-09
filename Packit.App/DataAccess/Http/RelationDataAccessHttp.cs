@@ -13,18 +13,19 @@ namespace Packit.App.DataAccess
 
         private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjQiLCJpZCI6IjQiLCJuYmYiOjE1ODczNzg4MDEsImV4cCI6MTYxMzI5ODgwMSwiaWF0IjoxNTg3Mzc4ODAxfQ.vjCQhH4TKQcFbmM42ZM2VCIYYRGO_49LEWm6zWuWK00";
 
-        public async Task<bool> AddEntityToEntityAsync(int leftId, int rightId, string param1, string param2)
+        public async Task<bool> AddEntityToEntityAsync(int leftId, int rightId)
         {
-            var uri = new Uri($"{baseUri}/{leftId}/{param1}/{rightId}/{param2}");
+            var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/create");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.PutAsync(uri, null);
 
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteEntityFromEntityAsync(int leftId, int rightId, string param1, string param2)
+        public async Task<bool> DeleteEntityFromEntityAsync(int leftId, int rightId)
         {
-            var uri = new Uri($"{baseUri}/{leftId}/{param1}/{rightId}/{param2}");
+            var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/delete");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.DeleteAsync(uri);
