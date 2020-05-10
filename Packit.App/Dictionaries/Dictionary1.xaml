@@ -1,0 +1,28 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:link="using:Packit.App.DataLinks"
+    x:Class="Packit.App.Dictionaries.DataTemplates">
+
+    <DataTemplate x:Key="ItemGridTemplate" x:DataType="link:ItemImageLink">
+        <Grid>
+            <Image Source="{x:Bind Image, Mode=OneWay}"
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            <StackPanel Orientation="Vertical" Height="100" VerticalAlignment="Bottom" Padding="5,1,5,1" 
+                    Background="LightGray" Opacity=".80">
+                <TextBlock Text="{x:Bind Item.Title}" FontSize="20" Foreground="Black"/>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock FontSize="15" Text="{x:Bind Item.Description}" Style="{ThemeResource CaptionTextBlockStyle}" 
+                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+                    <TextBlock FontSize="15" Text="{x:Bind Item.Backpacks.Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
+                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+                    <TextBlock FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" 
+                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

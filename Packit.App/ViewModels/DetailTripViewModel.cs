@@ -58,7 +58,7 @@ namespace Packit.App.ViewModels
 
             AddItemToBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
             {
-                var dfgfdg = param;
+                NavigationService.Navigate(typeof(SelectItemsPage));
             });
 
             RemoveItemFromBackpackCommand = new RelayCommand<ItemBackpackWrapper>(async param =>

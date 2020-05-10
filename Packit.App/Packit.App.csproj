@@ -150,6 +150,7 @@
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
     <Compile Include="DataLinks\BackpackWithItems.cs" />
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />
+    <Compile Include="Dictionaries\DataTemplates.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Main.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\WeatherReport.cs" />
     <Compile Include="DataAccess\Http\WeatherDataAccess.cs" />
@@ -178,12 +179,12 @@
     <Compile Include="ThirdPartyApiModels\Openweathermap\Weather.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Wind.cs" />
     <Compile Include="ViewModels\BackpacksViewModel.cs" />
-    <Compile Include="ViewModels\DetailTripPageV2ViewModel.cs" />
     <Compile Include="ViewModels\DetailTripViewModel.cs" />
     <Compile Include="ViewModels\EditItemViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
+    <Compile Include="ViewModels\SelectItemsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TripsMainViewModel.cs" />
     <Compile Include="Views\BackpacksPage.xaml.cs">
@@ -204,6 +205,9 @@
     <Compile Include="Views\NewItemPage.xaml.cs">
       <DependentUpon>NewItemPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SelectItemsPage.xaml.cs">
+      <DependentUpon>SelectItemsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
@@ -219,6 +223,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dictionaries\Dictionary1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -260,6 +268,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NewItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SelectItemsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

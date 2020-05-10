@@ -153,7 +153,7 @@
 
                                                 <StackPanel Margin="10,0,0,0" Spacing="5"
                                                             Orientation="Horizontal">
-                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
+                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.AddItemToBackpackCommand}"
                                                             CommandParameter="{x:Bind}"
                                                             Margin="0,0,10,0">
                                                         <SymbolIcon Symbol="Add"/>

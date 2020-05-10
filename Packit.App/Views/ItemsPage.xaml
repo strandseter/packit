@@ -8,6 +8,7 @@
     xmlns:link="using:Packit.App.DataLinks"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -22,6 +23,9 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
         </Style>
+
+        
+        
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
@@ -35,7 +39,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.4*"/>
                 <RowDefinition Height="30*"/>
-                <RowDefinition Height="2.3*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -48,32 +52,33 @@
                 <SearchBox Grid.Column="2" Margin="5,5,2.5,5" FocusOnKeyboardInput="true" VerticalAlignment="Center"/>
             </Grid>
 
-            <GridView Grid.Row="1"
-                      x:Name="gvItems"
-                      DataContext="{x:Bind ViewModel}"
-                      ItemsSource="{x:Bind ViewModel.ItemImageLinks, Mode=OneWay}"
-                      SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="link:ItemImageLink">
-                        <StackPanel Orientation="Vertical" Margin="15">
-                            <StackPanel Spacing="10" Orientation="Horizontal">
-                                <TextBlock
-                                FontSize="50"
-                                Text="{x:Bind Item.Title }"
-                                Style="{StaticResource TitleTextBlockStyle}"/>
-                            </StackPanel>
-                            <Ellipse Height="200" Width="200">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind Image, Mode=OneWay}">
+            <controls:AdaptiveGridView
+                Grid.Row="1"
+                x:Name="gvItems"
+                OneRowModeEnabled="False"
+                SelectionMode="Single"
+                DesiredWidth="300"
+                IsItemClickEnabled="True"
+                ItemTemplate="{StaticResource ItemGridTemplate}"
+                ItemsSource="{x:Bind ViewModel.ItemImageLinks}">
 
-                                    </ImageBrush>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </StackPanel>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-            </GridView>
-            
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="MaxWidth" Value="700"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid" 
+                                        Orientation="Horizontal"
+                                        MaximumRowsOrColumns="5"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+            </controls:AdaptiveGridView>
+
             <Grid Grid.Row="2" ColumnSpacing="5">
                 
                 <Grid.ColumnDefinitions>

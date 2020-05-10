@@ -206,4 +206,8 @@
     <value>DetailTripPageV2</value>
     <comment>Navigation view item name for DetailTripPageV2</comment>
   </data>
+  <data name="Shell_SelectItems.Content" xml:space="preserve">
+    <value>SelectItems</value>
+    <comment>Navigation view item name for SelectItems</comment>
+  </data>
 </root>
