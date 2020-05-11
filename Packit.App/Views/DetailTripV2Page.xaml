@@ -22,8 +22,6 @@
 
     <Page.Resources>
 
-        <converters:BooleanToVisibilityConverter x:Key="TrueToVisibleConverter"/>
-        <converters:BooleanToVisibilityConverter x:Key="FalseToVisibleConverter" IsReversed="True"/>
         <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit trip"/>
         <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Edit trip"/>
 
@@ -147,7 +145,6 @@
                                                         Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
                                                 <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
-                                                        Style="{StaticResource TitleTextBlockStyle}"
                                                         VerticalAlignment="Center"
                                                         HorizontalAlignment="Center"/>
 

@@ -151,7 +151,8 @@
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
     <Compile Include="DataLinks\BackpackWithItems.cs" />
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />
-    <Compile Include="Dictionaries\DataTemplates.cs" />
+    <Compile Include="Dictionaries\ConvertersDictionary.cs" />
+    <Compile Include="Dictionaries\DataTemplatesDictionary.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Main.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\WeatherReport.cs" />
     <Compile Include="DataAccess\Http\WeatherDataAccess.cs" />
@@ -226,6 +227,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Dictionaries\Dictionary1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionaries\Dictionary2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

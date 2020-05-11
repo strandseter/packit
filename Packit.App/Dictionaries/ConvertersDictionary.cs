@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Packit.App.Dictionaries
 {
-    public partial class DataTemplates
+    public partial class ConvertersDictionary
     {
-        public DataTemplates() => InitializeComponent();
+        public ConvertersDictionary() => InitializeComponent();
     }
 }
