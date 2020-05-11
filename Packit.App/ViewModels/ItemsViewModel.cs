@@ -18,7 +18,7 @@ namespace Packit.App.ViewModels
         private ICommand loadedCommand;
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
 
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
+        public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
@@ -40,7 +40,7 @@ namespace Packit.App.ViewModels
             AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
         }
 
-        private async void LoadData()
+        protected async void LoadData()
         {
             await LoadItemsAsync();
             await LoadImagesAsync();
@@ -50,13 +50,13 @@ namespace Packit.App.ViewModels
         {
             var items = await itemsDataAccess.GetAllAsync();
 
-            foreach (Model.Item i in items)
+            foreach (var i in items)
                 ItemImageLinks.Add(new ItemImageLink() { Item = i });
         }
 
         private async Task LoadImagesAsync()
         {
-            foreach (ItemImageLink iml in ItemImageLinks)
+            foreach (var iml in ItemImageLinks)
                 iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName);
         }
     }

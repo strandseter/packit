@@ -147,6 +147,7 @@
     <Compile Include="Convertes\BooleanToInvisibilityConverter.cs" />
     <Compile Include="Convertes\BooleanToTextConverter.cs" />
     <Compile Include="Convertes\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Convertes\ListViewBaseToSelectedItemsConverter.cs" />
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
     <Compile Include="DataLinks\BackpackWithItems.cs" />
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Views\TripsMainPage.xaml.cs">
       <DependentUpon>TripsMainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wrappers\BackpackTripWrapper.cs" />
     <Compile Include="Wrappers\ItemBackpackWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -64,9 +64,9 @@ namespace Packit.App.DataAccess
             return entities;
         }
 
-        public async Task<T[]> GetAllTestAsync()
+        public async Task<T[]> GetAllWithChildEntities()
         {
-            var uri = new Uri($"{baseUri}/test");
+            var uri = new Uri($"{baseUri}/all");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             HttpResponseMessage result = await httpClient.GetAsync(uri);
@@ -74,6 +74,30 @@ namespace Packit.App.DataAccess
             T[] entities = JsonConvert.DeserializeObject<T[]>(json);
 
             return entities;
+        }
+
+        public async Task<T> GetById(T entity)
+        {
+            var uri = new Uri($"{baseUri}/{entity.GetId()}");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
+
+            HttpResponseMessage result = await httpClient.GetAsync(uri);
+            string json = await result.Content.ReadAsStringAsync();
+            T outEntity = JsonConvert.DeserializeObject<T>(json);
+
+            return outEntity;
+        }
+
+        public async Task<T> GetByIdWithChildEntities(T entity)
+        {
+            var uri = new Uri($"{baseUri}/{entity.GetId()}/all");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
+
+            HttpResponseMessage result = await httpClient.GetAsync(uri);
+            string json = await result.Content.ReadAsStringAsync();
+            T outEntity = JsonConvert.DeserializeObject<T>(json);
+
+            return outEntity;
         }
     }
 }

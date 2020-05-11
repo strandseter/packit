@@ -9,6 +9,8 @@ namespace Packit.App.Convertes
 {
     public class BooleanToTextConverter : IValueConverter
     {
+        public string TrueString { get; set; }
+        public string FalseString { get; set; }
         public bool IsReversed { get; set; }
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -18,9 +20,9 @@ namespace Packit.App.Convertes
                 val = !val;
 
             if (val)
-                return "Done";
+                return TrueString;
 
-            return "Edit Trip";
+            return FalseString;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

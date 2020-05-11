@@ -29,7 +29,17 @@ namespace Packit.App.DataAccess
             throw new NotImplementedException();
         }
 
-        public Task<T[]> GetAllTestAsync()
+        public Task<T[]> GetAllWithChildEntities()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetById(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetByIdWithChildEntities(T entity)
         {
             throw new NotImplementedException();
         }

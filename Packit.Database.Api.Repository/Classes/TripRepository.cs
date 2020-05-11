@@ -21,7 +21,7 @@ namespace Packit.Database.Api.Repository.Classes
 
         //Implement methods that are not possible to make generic here.
 
-        public async Task<IActionResult> GetAllTripBackpacksItemsAsync(int userId)
+        public async Task<IActionResult> GetAllTripsWithBackpacksItemsAsync(int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -33,6 +33,25 @@ namespace Packit.Database.Api.Repository.Classes
                         .ThenInclude(b => b.Items)
                             .ThenInclude(b => b.Item)
                 .ToListAsync();
+
+            if (res == null)
+                return NotFound();
+
+            return Ok(res);
+        }
+
+        public async Task<IActionResult> GetTripByIdWithBackpacksItemsAsync(int id, int user)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var res = await Context.Trips
+                .Where(t => t.TripId == id)
+                    .Include(t => t.Backpacks)
+                        .ThenInclude(b => b.Backpack)
+                            .ThenInclude(b => b.Items)
+                                .ThenInclude(b => b.Item)
+                .FirstOrDefaultAsync();
 
             if (res == null)
                 return NotFound();

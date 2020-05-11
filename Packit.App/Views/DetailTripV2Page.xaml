@@ -24,8 +24,8 @@
 
         <converters:BooleanToVisibilityConverter x:Key="TrueToVisibleConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="FalseToVisibleConverter" IsReversed="True"/>
-        <converters:BooleanToTextConverter x:Key="TrueTotextConverter"/>
-        <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True"/>
+        <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit trip"/>
+        <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Edit trip"/>
 
 
     </Page.Resources>
@@ -109,7 +109,7 @@
                             Command="{x:Bind ViewModel.EditTripCommand}"/>
 
                     <ListView Name="lvBackpacks"
-                          ItemsSource="{x:Bind ViewModel.Backpacks}"
+                          ItemsSource="{x:Bind ViewModel.Backpacks, Mode=OneWay}"
                           HorizontalAlignment="Stretch"
                           Background="Black"
                           Opacity="0.9" Margin="10"
@@ -180,7 +180,7 @@
 
                                 <controls:AdaptiveGridView x:Name="gvItems"
                                                            DataContext="{x:Bind}"
-                                                           ItemsSource="{x:Bind Items}"
+                                                           ItemsSource="{x:Bind Items, Mode=OneWay}"
                                                            OneRowModeEnabled="False"
                                                            SelectionMode="None"
                                                            DesiredWidth="200">

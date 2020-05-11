@@ -21,18 +21,23 @@ namespace Packit.Database.Api.Controllers
         public TripsController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor, ITripRepository repository)
             : base(context, authenticationService, httpContextAccessor) => this.repository = repository;
 
-        //GET: api/trips/5/test
+        //GET: api/trips/all
         [HttpGet]
-        [Route("test")] //TODO: Fix naming
-        public async Task<IActionResult> GetTest() => await repository.GetAllTripBackpacksItemsAsync(CurrentUserId());
+        [Route("all")] //TODO: Fix naming
+        public async Task<IActionResult> GetTest() => await repository.GetAllTripsWithBackpacksItemsAsync(CurrentUserId());
 
         // GET: api/trips
         [HttpGet]
         public IEnumerable<Trip> GetTrips() => repository.GetAll(CurrentUserId());
 
-        // GET: api/Trips/5
+        // GET: api/trips/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTrip([FromRoute] int id) => await repository.GetByIdAsync(id, CurrentUserId());
+
+        // GET: api/trips/4/all
+        [HttpGet]
+        [Route("{tripId}/all")]
+        public async Task<IActionResult> GetTripWithBackpacksItems([FromRoute] int tripId) => await repository.GetTripByIdWithBackpacksItemsAsync(tripId, CurrentUserId());
 
         // GET: api/trips/4/backpacks
         [HttpGet]

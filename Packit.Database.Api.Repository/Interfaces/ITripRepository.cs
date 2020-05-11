@@ -13,6 +13,7 @@ namespace Packit.Database.Api.Repository.Interfaces
     {
         //Declare methods that are not possible to make generic here.
 
-        Task<IActionResult> GetAllTripBackpacksItemsAsync(int userId);
+        Task<IActionResult> GetAllTripsWithBackpacksItemsAsync(int userId);
+        Task<IActionResult> GetTripByIdWithBackpacksItemsAsync(int id, int user);
     }
 }

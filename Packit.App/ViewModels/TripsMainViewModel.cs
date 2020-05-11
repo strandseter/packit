@@ -41,7 +41,7 @@ namespace Packit.App.ViewModels
 
         private async Task LoadTrips()
         {
-            var trips = await tripsDataAccess.GetAllTestAsync();
+            var trips = await tripsDataAccess.GetAllWithChildEntities();
 
             foreach (Trip trip in trips)
                 Trips.Add(new TripImageWeatherLink(trip));

@@ -58,7 +58,7 @@ namespace Packit.App.ViewModels
 
             AddItemToBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
             {
-                NavigationService.Navigate(typeof(SelectItemsPage));
+                NavigationService.Navigate(typeof(SelectItemsPage), new BackpackTripWrapper() { Backpack = param, Trip = TripWithImageWeather });
             });
 
             RemoveItemFromBackpackCommand = new RelayCommand<ItemBackpackWrapper>(async param =>
@@ -119,11 +119,6 @@ namespace Packit.App.ViewModels
                 foreach(var item in bwi.Backpack.Items)
                     bwi.Items.Add(item.Item);
             }
-        }
-
-        private void LoadBackpacksInTrips()
-        {
-
         }
 
         private async Task LoadWeatherReportAsync()

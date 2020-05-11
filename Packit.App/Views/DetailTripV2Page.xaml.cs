@@ -11,10 +11,7 @@ namespace Packit.App.Views
     {
         public DetailTripViewModel ViewModel { get; } = new DetailTripViewModel();
 
-        public DetailTripV2Page()
-        {
-            InitializeComponent();
-        }
+        public DetailTripV2Page() => InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
