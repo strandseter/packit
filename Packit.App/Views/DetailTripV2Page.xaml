@@ -21,11 +21,8 @@
     </i:Interaction.Behaviors>
 
     <Page.Resources>
-
         <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit trip"/>
         <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Edit trip"/>
-
-
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
@@ -184,10 +181,8 @@
 
                                     <controls:AdaptiveGridView.ItemTemplate>
                                         <DataTemplate x:DataType="model:Item">
-                                            <Grid>
-
-                                                <StackPanel Orientation="Vertical"
-                                                            Height="100"
+                                            <StackPanel Orientation="Vertical"
+                                                            Height="auto"
                                                             HorizontalAlignment="Stretch"
                                                             Padding="5,1,5,1" 
                                                             Background="LightGray" Opacity=".80">
@@ -198,7 +193,8 @@
                                                                    Foreground="Black"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                                                         <TextBox Text="{x:Bind Title, Mode=TwoWay}"
-                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
+                                                                 Margin="0,0,0,5"/>
                                                     </Grid>
                                                         
                                                     <Grid>
@@ -208,7 +204,8 @@
                                                                    Foreground="{ThemeResource SystemBaseMediumHighColor}"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                                                         <TextBox Text="{x:Bind Description, Mode=TwoWay}"
-                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
+                                                                 Margin="0,0,0,5"/>
                                                     </Grid>
 
                                                         <StackPanel Orientation="Horizontal"
@@ -229,11 +226,11 @@
                                                             </Button>
                                                             
                                                         </StackPanel>
-                                                        
-                                                    
-                                                </StackPanel>
+
+                                                <CheckBox Margin="0,5,0,5" Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}" IsChecked="{x:Bind IsChecked}"/>
+
+                                            </StackPanel>
                                                 
-                                            </Grid>
                                         </DataTemplate>
                                     </controls:AdaptiveGridView.ItemTemplate>
 

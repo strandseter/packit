@@ -9,6 +9,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converters="using:Packit.App.Convertes"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -23,6 +24,10 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
         </Style>
+
+        <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit items"/>
+        <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Done"/>
+        
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
@@ -46,7 +51,6 @@
                     <ColumnDefinition Width="10*"/>
                 </Grid.ColumnDefinitions>
 
-                <SearchBox Grid.Column="2" Margin="5,5,2.5,5" FocusOnKeyboardInput="true" VerticalAlignment="Center"/>
             </Grid>
 
             <controls:AdaptiveGridView
@@ -56,6 +60,7 @@
                 SelectionMode="Single"
                 DesiredWidth="300"
                 IsItemClickEnabled="True"
+                DataContext="{x:Bind ViewModel}"
                 ItemTemplate="{StaticResource ItemGridTemplate}"
                 ItemsSource="{x:Bind ViewModel.ItemImageLinks}">
 
@@ -93,7 +98,7 @@
                 <Button Grid.Column="1" Command="{x:Bind ViewModel.EditCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Edit"/>
-                        <TextBlock>Edit</TextBlock>
+                        <TextBlock Text="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueTotextConverter}}"/>
                     </StackPanel>
                 </Button>
                 <Button Grid.Column="2" Command="{x:Bind ViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,5,5" >

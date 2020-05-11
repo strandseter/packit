@@ -11,26 +11,14 @@ namespace Packit.Model
 
         public virtual ICollection<ItemBackpack> Backpacks { get; } = new List<ItemBackpack>();
 
-        public Item()
-        {
-            ImageStringName = $"image{ItemId}";
-        }
+        public Item() => ImageStringName = $"image{ItemId}";
 
-        public override int GetId()
-        {
-            return ItemId;
-        }
+        public override int GetId() => ItemId;
 
-        public override void SetId(int value)
-        {
-            ItemId = value;
-        }
+        public override void SetId(int value) => ItemId = value;
 
         public override string ToString() => $"{Title} {ItemId}";
 
-        public int GetUserId()
-        {
-            return UserId;
-        }
+        public int GetUserId() => UserId;
     }
 }

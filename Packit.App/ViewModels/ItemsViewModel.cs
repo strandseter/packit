@@ -17,7 +17,18 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private ICommand loadedCommand;
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
+        private bool isVisible;
 
+        public bool IsVisible
+        {
+            get => isVisible;
+            set
+            {
+                if (value == isVisible) return;
+                isVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
+            }
+        }
         public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
@@ -32,10 +43,7 @@ namespace Packit.App.ViewModels
                                                                     ItemImageLinks.Remove(itemImageLink);
                                                             }, itemImageLink => itemImageLink != null);
 
-            EditCommand = new RelayCommand<ItemImageLink>(itemImageLink =>
-                                                            {
-                                                                NavigationService.Navigate(typeof(EditItemPage), itemImageLink);
-                                                            }, itemImageLink => itemImageLink != null);
+            EditCommand = new RelayCommand(() => IsVisible = !IsVisible);
 
             AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
         }

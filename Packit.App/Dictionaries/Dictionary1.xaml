@@ -10,16 +10,33 @@
                        Stretch="UniformToFill"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-            <StackPanel Orientation="Vertical" Height="100" VerticalAlignment="Bottom" Padding="5,1,5,1" 
-                    Background="LightGray" Opacity=".80">
-                <TextBlock Text="{x:Bind Item.Title}" FontSize="20" Foreground="Black"/>
-                <StackPanel Orientation="Horizontal" >
-                    <TextBlock FontSize="15" Text="{x:Bind Item.Description}" Style="{ThemeResource CaptionTextBlockStyle}" 
-                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
-                    <TextBlock FontSize="15" Text="{x:Bind Item.Backpacks.Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
-                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
-                    <TextBlock FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" 
-                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+            <StackPanel Orientation="Vertical"
+                        Height="100" VerticalAlignment="Bottom"
+                        Padding="5,1,5,1" Background="LightGray"
+                        Opacity=".80">
+                <Grid>
+                    <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
+                               Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
+                    <TextBox Text="{x:Bind Item.Title, Mode=TwoWay}"
+                             Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                </Grid>
+                <StackPanel Orientation="Vertical" >
+                    <Grid>
+                        <TextBlock FontSize="15" Text="{x:Bind Item.Description, Mode=OneWay}"
+                                   Style="{ThemeResource CaptionTextBlockStyle}" 
+                                   Foreground="{ThemeResource SystemBaseMediumHighColor}"
+                                   Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
+                        <TextBox Text="{x:Bind Item.Description, Mode=TwoWay}"
+                                 Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                    </Grid>
+
+                    <TextBlock FontSize="15" 
+                               Style="{ThemeResource CaptionTextBlockStyle}" 
+                               Foreground="{ThemeResource SystemBaseMediumHighColor}">
+                        <Run Text="Used in"/>
+                        <Run Text="{x:Bind Item.Backpacks.Count, Mode=OneWay}"/>
+                        <Run Text="backpacks"/>
+                    </TextBlock>
                 </StackPanel>
             </StackPanel>
         </Grid>
