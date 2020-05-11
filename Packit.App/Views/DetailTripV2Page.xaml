@@ -227,7 +227,7 @@
                                                             
                                                         </StackPanel>
 
-                                                <CheckBox Margin="0,5,0,5" Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}" IsChecked="{x:Bind IsChecked}"/>
+                                                <CheckBox />
 
                                             </StackPanel>
                                                 
