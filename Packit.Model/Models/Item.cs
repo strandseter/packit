@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Packit.Model
 {
-    public class Item : BaseInformation, IDatabase, INotifyPropertyChanged
+    public class Item : BaseInformation, INotifyPropertyChanged
     {
         private Check check;
 

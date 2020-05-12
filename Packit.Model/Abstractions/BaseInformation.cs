@@ -44,10 +44,13 @@ namespace Packit.Model
         }
 
         public int GetUserId() => UserId;
+        public void SetUserId(int value) => UserId = value;
         public abstract int GetId();
         public abstract void SetId(int value);
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        
     }
 }

@@ -21,6 +21,11 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            if (entity == null)
+                return BadRequest();
+
+            entity.SetUserId(userId);
+
             await Context.Set<T>().AddAsync(entity);
 
             await SaveChangesAsync();
@@ -68,7 +73,10 @@ namespace Packit.Database.Api.GenericRepository
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != entity?.GetId())
+            if (entity == null)
+                return BadRequest();
+
+            if (id != entity.GetId())
                 return BadRequest();
 
             Context.Set<T>().Update(entity).State = EntityState.Modified;

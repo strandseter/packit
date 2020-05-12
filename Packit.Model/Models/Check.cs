@@ -19,6 +19,7 @@ namespace Packit.Model.Models
         public int GetId() => CheckId;
 
         public int GetUserId() => UserId;
+        public void SetUserId(int value) => UserId = value;
 
         public void SetId(int value) => CheckId = value;
     }

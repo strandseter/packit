@@ -6,5 +6,6 @@ namespace Packit.Model.Models
         int GetId();
         void SetId(int value);
         int GetUserId();
+        void SetUserId(int value);
     }
 }
