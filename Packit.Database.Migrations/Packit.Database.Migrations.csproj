@@ -22,6 +22,8 @@
     <Compile Remove="Migrations\20200509135031_setnull.Designer.cs" />
     <Compile Remove="Migrations\20200509135326_cascade.cs" />
     <Compile Remove="Migrations\20200509135326_cascade.Designer.cs" />
+    <Compile Remove="Migrations\20200512081944_relationitem.cs" />
+    <Compile Remove="Migrations\20200512081944_relationitem.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,6 +11,7 @@
     xmlns:datalinks="using:Packit.App.DataLinks"
     xmlns:wrappers="using:Packit.App.Wrappers"
     xmlns:converters="using:Packit.App.Convertes"
+    xmlns:models="using:Packit.Model.Models"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -226,9 +227,22 @@
                                                             </Button>
                                                             
                                                         </StackPanel>
+                                                
+                                                <StackPanel>
 
-                                                <CheckBox />
-
+                                                    <StackPanel.Resources>
+                                                        <wrappers:ItemBackpackBoolWrapper x:Key="ItemBackpackBoolWrapper"
+                                                                                          Item="{x:Bind}"
+                                                                                          BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"
+                                                                                          IsChecked="{Binding ElementName=ItemCheckBox, Path=IsChecked}"/>
+                                                    </StackPanel.Resources>
+                                                    
+                                                    <CheckBox x:Name="ItemCheckBox"
+                                                        IsChecked="{x:Bind IsChecked, Mode=TwoWay}"
+                                                          Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
+                                                          CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
+                                                </StackPanel>    
+                                                
                                             </StackPanel>
                                                 
                                         </DataTemplate>

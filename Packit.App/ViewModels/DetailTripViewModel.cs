@@ -14,6 +14,7 @@ using Packit.App.DataAccess;
 using Packit.App.Factories;
 using Packit.App.Wrappers;
 using System.Linq;
+using Packit.Model.Models;
 
 namespace Packit.App.ViewModels
 {
@@ -48,9 +49,11 @@ namespace Packit.App.ViewModels
         public ICommand AddItemToBackpackCommand { get; set; }
         public ICommand RemoveItemFromBackpackCommand { get; set; }
         public ICommand DeleteItemCommand { get; set; }
+        public ICommand ItemCheckedCommand { get; set; }
         public TripImageWeatherLink TripWithImageWeather { get; set; }
         public WeatherReport WeatherReport { get; set; }
         public ObservableCollection<BackpackWithItems> Backpacks { get; } = new ObservableCollection<BackpackWithItems>();
+        public ObservableCollection<Check> ItemChecks { get; } = new ObservableCollection<Check>();
 
         public DetailTripViewModel()
         {
@@ -97,13 +100,24 @@ namespace Packit.App.ViewModels
                 if (!await backpackDataAccess.UpdateAsync(param.Backpack))
                     param.Backpack.IsShared = false;
             });
+
+            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(param =>
+            {
+                var dfgfdg = param;
+            });
         }
 
         private async void LoadData()
         {
             LoadBackpacks();
             LoadItemsInBackpacks();
+            //await LoadChecks();
             await LoadWeatherReportAsync();
+        }
+
+        private async Task LoadChecks()
+        {
+            throw new NotImplementedException();
         }
 
         private void LoadBackpacks()
@@ -116,8 +130,10 @@ namespace Packit.App.ViewModels
         {
             foreach(var bwi in Backpacks)
             {
-                foreach(var item in bwi.Backpack.Items)
-                    bwi.Items.Add(item.Item);
+                foreach(var itemBackpack in bwi.Backpack.Items)
+                {
+                    bwi.Items.Add(itemBackpack.Item);
+                }
             }
         }
 

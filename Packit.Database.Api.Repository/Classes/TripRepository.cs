@@ -19,7 +19,7 @@ namespace Packit.Database.Api.Repository.Classes
         {
         }
 
-        //Implement methods that are not possible to make generic here.
+        //Implement non generic methods here.
 
         public async Task<IActionResult> GetAllTripsWithBackpacksItemsAsync(int userId)
         {
@@ -40,7 +40,7 @@ namespace Packit.Database.Api.Repository.Classes
             return Ok(res);
         }
 
-        public async Task<IActionResult> GetTripByIdWithBackpacksItemsAsync(int id, int user)
+        public async Task<IActionResult> GetTripByIdWithBackpacksItemsAsync(int id, int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

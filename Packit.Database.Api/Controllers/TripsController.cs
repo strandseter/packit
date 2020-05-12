@@ -23,8 +23,8 @@ namespace Packit.Database.Api.Controllers
 
         //GET: api/trips/all
         [HttpGet]
-        [Route("all")] //TODO: Fix naming
-        public async Task<IActionResult> GetTest() => await repository.GetAllTripsWithBackpacksItemsAsync(CurrentUserId());
+        [Route("all")]
+        public async Task<IActionResult> GetAllTripsWithBackpacksItemsAsync() => await repository.GetAllTripsWithBackpacksItemsAsync(CurrentUserId());
 
         // GET: api/trips
         [HttpGet]

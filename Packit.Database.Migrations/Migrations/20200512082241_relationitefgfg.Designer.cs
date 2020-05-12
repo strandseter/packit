@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Packit.DataAccess;
 
 namespace Packit.DataAccess.Migrations
 {
     [DbContext(typeof(PackitContext))]
-    partial class PackitContextModelSnapshot : ModelSnapshot
+    [Migration("20200512082241_relationitefgfg")]
+    partial class relationitefgfg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -99,13 +101,11 @@ namespace Packit.DataAccess.Migrations
 
                     b.Property<bool>("IsChecked");
 
-                    b.Property<int>("ItemId");
+                    b.Property<int?>("ItemId");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("ItemmId");
 
                     b.HasKey("CheckId");
-
-                    b.HasIndex("BackpackId");
 
                     b.HasIndex("ItemId");
 
@@ -202,15 +202,10 @@ namespace Packit.DataAccess.Migrations
 
             modelBuilder.Entity("Packit.Model.Models.Check", b =>
                 {
-                    b.HasOne("Packit.Model.Backpack", "Backpack")
-                        .WithMany()
-                        .HasForeignKey("BackpackId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Packit.Model.Item", "Item")
+                    b.HasOne("Packit.Model.Item")
                         .WithMany("Checks")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Packit.Model.Trip", b =>

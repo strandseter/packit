@@ -1,4 +1,6 @@
-﻿using Packit.DataAccess;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Packit.DataAccess;
 using Packit.Database.Api.GenericRepository;
 using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
@@ -16,6 +18,21 @@ namespace Packit.Database.Api
         {
         }
 
-        //Implement methods that are not possible to make generic here.
+        //Implement non generic methods here.
+
+        public async Task<IActionResult> GetAllItemsWithChecksAsync(int userId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var res = await Context.Items
+                .Include(i => i.Checks)
+                .ToListAsync();
+
+            if (res == null)
+                return NotFound();
+
+            return Ok(res);
+        }
     }
 }
