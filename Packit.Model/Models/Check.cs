@@ -14,7 +14,6 @@ namespace Packit.Model.Models
         public int ItemId { get; set; }
         public Item Item { get; set; }
         public int UserId { get; set; }
-        [NotMapped]
         public bool IsChecked { get; set; }
 
         public int GetId() => CheckId;

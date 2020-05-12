@@ -116,6 +116,7 @@ namespace Packit.App.ViewModels
                 {
                     var check = new Check()
                     {
+                        IsChecked = true,
                         ItemId = param.Item.ItemId,
                         BackpackId = param.BackpackWithItems.Backpack.BackpackId,
                         UserId = 4
