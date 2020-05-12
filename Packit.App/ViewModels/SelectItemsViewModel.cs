@@ -48,7 +48,7 @@ namespace Packit.App.ViewModels
 
                 if (isSuccess)
                 {
-                    var updatedTrip = await tripssDataAccess.GetByIdWithChildEntities(SelectedTrip.Trip);
+                    var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTrip.Trip);
                     SelectedTrip.Trip = updatedTrip;
                     NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
                 }

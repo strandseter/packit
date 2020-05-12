@@ -213,7 +213,7 @@
                                                                     Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
                                                             <StackPanel.Resources>
-                                                                <wrappers:ItemBackpackWrapper x:Key="ItemBackpackWrapper" Item="{x:Bind}" BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"/>
+                                                        <wrappers:ItemBackpackWrapper x:Key="ItemBackpackWrapper" Item="{x:Bind}" BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"/>
                                                             </StackPanel.Resources>
 
                                                             <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveItemFromBackpackCommand}"
@@ -238,7 +238,7 @@
                                                     </StackPanel.Resources>
                                                     
                                                     <CheckBox x:Name="ItemCheckBox"
-                                                        IsChecked="{x:Bind IsChecked, Mode=TwoWay}"
+                                                          IsChecked="{x:Bind Check.IsChecked, Mode=TwoWay}"
                                                           Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
                                                           CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
                                                 </StackPanel>    
@@ -278,8 +278,6 @@
                 <TextBlock Text="{x:Bind ViewModel.TripWithImageWeather.WeatherReport.City, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
-
-        
 
     </Grid>
 </Page>

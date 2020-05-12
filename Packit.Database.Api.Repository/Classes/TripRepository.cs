@@ -21,17 +21,18 @@ namespace Packit.Database.Api.Repository.Classes
 
         //Implement non generic methods here.
 
-        public async Task<IActionResult> GetAllTripsWithBackpacksItemsAsync(int userId)
+        public async Task<IActionResult> GetAllTripsWithBackpacksItemsChecksAsync(int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            //TODO: Better errorhandling? And make generic?
+            //TODO: Better errorhandling? 
             //Eager loading
             var res = await Context.Trips
                 .Include(t => t.Backpacks)
                     .ThenInclude(b => b.Backpack)
                         .ThenInclude(b => b.Items)
                             .ThenInclude(b => b.Item)
+                                .ThenInclude(i => i.Checks)
                 .ToListAsync();
 
             if (res == null)
@@ -40,7 +41,7 @@ namespace Packit.Database.Api.Repository.Classes
             return Ok(res);
         }
 
-        public async Task<IActionResult> GetTripByIdWithBackpacksItemsAsync(int id, int userId)
+        public async Task<IActionResult> GetTripByIdWithBackpacksItemsChecksAsync(int id, int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -51,6 +52,7 @@ namespace Packit.Database.Api.Repository.Classes
                         .ThenInclude(b => b.Backpack)
                             .ThenInclude(b => b.Items)
                                 .ThenInclude(b => b.Item)
+                                    .ThenInclude(i => i.Checks)
                 .FirstOrDefaultAsync();
 
             if (res == null)

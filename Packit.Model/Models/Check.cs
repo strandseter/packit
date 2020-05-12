@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace Packit.Model.Models
     public class Check : IDatabase
     {
         public int CheckId { get; set; }
+        [NotMapped]
         public bool IsChecked { get; set; }
         public int UserId { get; set; }
         public int BackpackId { get; set; }

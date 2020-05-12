@@ -48,6 +48,6 @@ namespace Packit.Model
         public abstract void SetId(int value);
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

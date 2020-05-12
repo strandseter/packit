@@ -8,8 +8,8 @@ namespace Packit.App.DataAccess
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(T entity);
         Task<T[]> GetAllAsync();
-        Task<T> GetById(T entity);
-        Task<T[]> GetAllWithChildEntities();
-        Task<T> GetByIdWithChildEntities(T entity);
+        Task<T> GetByIdAsync(T entity);
+        Task<T[]> GetAllWithChildEntitiesAsync();
+        Task<T> GetByIdWithChildEntitiesAsync(T entity);
     }
 }

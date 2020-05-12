@@ -27,10 +27,7 @@ namespace Packit.App.ViewModels
 
         public TripsMainViewModel()
         {
-            TripDetailCommand = new RelayCommand<TripImageWeatherLink>(param =>
-            {
-                NavigationService.Navigate(typeof(DetailTripV2Page), param);
-            });
+            TripDetailCommand = new RelayCommand<TripImageWeatherLink>(param => NavigationService.Navigate(typeof(DetailTripV2Page), param));
         }
 
         private async void LoadDataAsync()
@@ -41,7 +38,7 @@ namespace Packit.App.ViewModels
 
         private async Task LoadTrips()
         {
-            var trips = await tripsDataAccess.GetAllWithChildEntities();
+            var trips = await tripsDataAccess.GetAllWithChildEntitiesAsync();
 
             foreach (Trip trip in trips)
                 Trips.Add(new TripImageWeatherLink(trip));

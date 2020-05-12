@@ -24,7 +24,7 @@ namespace Packit.Database.Api.Controllers
         //GET: api/trips/all
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAllTripsWithBackpacksItemsAsync() => await repository.GetAllTripsWithBackpacksItemsAsync(CurrentUserId());
+        public async Task<IActionResult> GetAllTripsWithBackpacksItemsAsync() => await repository.GetAllTripsWithBackpacksItemsChecksAsync(CurrentUserId());
 
         // GET: api/trips
         [HttpGet]
@@ -37,7 +37,7 @@ namespace Packit.Database.Api.Controllers
         // GET: api/trips/4/all
         [HttpGet]
         [Route("{tripId}/all")]
-        public async Task<IActionResult> GetTripWithBackpacksItems([FromRoute] int tripId) => await repository.GetTripByIdWithBackpacksItemsAsync(tripId, CurrentUserId());
+        public async Task<IActionResult> GetTripWithBackpacksItems([FromRoute] int tripId) => await repository.GetTripByIdWithBackpacksItemsChecksAsync(tripId, CurrentUserId());
 
         // GET: api/trips/4/backpacks
         [HttpGet]

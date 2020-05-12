@@ -23,6 +23,7 @@ namespace Packit.App.ViewModels
         private readonly WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private readonly IBasicDataAccess<Item> itemDataAccess = new BasicDataAccessFactory<Item>().Create();
+        private readonly IBasicDataAccess<Check> checksDataAccess = new BasicDataAccessFactory<Check>().Create();
         private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
         private readonly IRelationDataAccess<Trip, Backpack> tripBackpackDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private ICommand loadedCommand;
@@ -38,7 +39,6 @@ namespace Packit.App.ViewModels
                 OnPropertyChanged(nameof(IsVisible));
             }
         }
-
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
         public ICommand ItemCommand { get; set; }
         public ICommand EditTripCommand { get; set; }
@@ -53,7 +53,6 @@ namespace Packit.App.ViewModels
         public TripImageWeatherLink TripWithImageWeather { get; set; }
         public WeatherReport WeatherReport { get; set; }
         public ObservableCollection<BackpackWithItems> Backpacks { get; } = new ObservableCollection<BackpackWithItems>();
-        public ObservableCollection<Check> ItemChecks { get; } = new ObservableCollection<Check>();
 
         public DetailTripViewModel()
         {
@@ -66,8 +65,18 @@ namespace Packit.App.ViewModels
 
             RemoveItemFromBackpackCommand = new RelayCommand<ItemBackpackWrapper>(async param =>
             {
-                if(await backpackItemDataAccess.DeleteEntityFromEntityAsync(param.BackpackWithItems.Backpack.BackpackId, param.Item.ItemId))
+                if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(param.BackpackWithItems.Backpack.BackpackId, param.Item.ItemId))
+                {
                     param.BackpackWithItems.Items.Remove(param.Item);
+
+                    if (param.Item.Check != null)
+                    {
+                        if (await checksDataAccess.DeleteAsync(param.Item.Check))
+                        {
+                            param.Item.Check.IsChecked = false;
+                        }
+                    }
+                }
             });
 
             DeleteItemCommand = new RelayCommand<ItemBackpackWrapper>(async param =>
@@ -101,9 +110,29 @@ namespace Packit.App.ViewModels
                     param.Backpack.IsShared = false;
             });
 
-            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(param =>
+            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param =>
             {
-                var dfgfdg = param;
+                if (param.IsChecked)
+                {
+                    var check = new Check()
+                    {
+                        ItemId = param.Item.ItemId,
+                        BackpackId = param.BackpackWithItems.Backpack.BackpackId,
+                        UserId = 4
+                    };
+
+                    if (await checksDataAccess.AddAsync(check))
+                    {
+                        param.Item.Check = check;
+                        param.Item.Check.IsChecked = true;
+                    }   
+                }
+
+                if (!param.IsChecked)
+                {
+                    if (await checksDataAccess.DeleteAsync(param.Item.Check))
+                        param.Item.Check.IsChecked = false;
+                }
             });
         }
 
@@ -111,13 +140,7 @@ namespace Packit.App.ViewModels
         {
             LoadBackpacks();
             LoadItemsInBackpacks();
-            //await LoadChecks();
             await LoadWeatherReportAsync();
-        }
-
-        private async Task LoadChecks()
-        {
-            throw new NotImplementedException();
         }
 
         private void LoadBackpacks()
@@ -132,6 +155,14 @@ namespace Packit.App.ViewModels
             {
                 foreach(var itemBackpack in bwi.Backpack.Items)
                 {
+                    foreach(var check in itemBackpack.Item.Checks)
+                    {
+                        if(bwi.Backpack.BackpackId == check.BackpackId && itemBackpack.Item.ItemId == check.ItemId)
+                        {
+                            itemBackpack.Item.Check = check;
+                            itemBackpack.Item.Check.IsChecked = true;
+                        }
+                    }
                     bwi.Items.Add(itemBackpack.Item);
                 }
             }

@@ -18,10 +18,11 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> AddAsync(T entity)
         {
-            var uri = new Uri($"{baseUri}/create");
+            //var uri = new Uri($"{baseUri}/create");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             string json = JsonConvert.SerializeObject(entity);
-            HttpResponseMessage result = await httpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
+            HttpResponseMessage result = await httpClient.PostAsync(baseUri, new StringContent(json, Encoding.UTF8, "application/json"));
 
             if (!result.IsSuccessStatusCode) return false;
 
@@ -64,7 +65,7 @@ namespace Packit.App.DataAccess
             return entities;
         }
 
-        public async Task<T[]> GetAllWithChildEntities()
+        public async Task<T[]> GetAllWithChildEntitiesAsync()
         {
             var uri = new Uri($"{baseUri}/all");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
@@ -76,7 +77,7 @@ namespace Packit.App.DataAccess
             return entities;
         }
 
-        public async Task<T> GetById(T entity)
+        public async Task<T> GetByIdAsync(T entity)
         {
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
@@ -88,7 +89,7 @@ namespace Packit.App.DataAccess
             return outEntity;
         }
 
-        public async Task<T> GetByIdWithChildEntities(T entity)
+        public async Task<T> GetByIdWithChildEntitiesAsync(T entity)
         {
             var uri = new Uri($"{baseUri}/{entity.GetId()}/all");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
