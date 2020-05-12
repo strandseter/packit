@@ -9,13 +9,13 @@ namespace Packit.Model.Models
     public class Check : IDatabase
     {
         public int CheckId { get; set; }
-        [NotMapped]
-        public bool IsChecked { get; set; }
-        public int UserId { get; set; }
         public int BackpackId { get; set; }
         public Backpack Backpack { get; set; }
         public int ItemId { get; set; }
         public Item Item { get; set; }
+        public int UserId { get; set; }
+        [NotMapped]
+        public bool IsChecked { get; set; }
 
         public int GetId() => CheckId;
 

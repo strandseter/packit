@@ -59,13 +59,17 @@ namespace Packit.DataAccess
                 foreignkey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
+            ConfigureManyToManyItemBackpack(modelBuilder);
+            ConfigureManyToManyBackpackTrip(modelBuilder);
+            ConfifureOneToManyItemChecks(modelBuilder);
+        }
+
+        private void ConfifureOneToManyItemChecks(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Item>()
                 .HasMany(i => i.Checks)
                 .WithOne(c => c.Item)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            ConfigureManyToManyItemBackpack(modelBuilder);
-            ConfigureManyToManyBackpackTrip(modelBuilder);
         }
 
         private void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
