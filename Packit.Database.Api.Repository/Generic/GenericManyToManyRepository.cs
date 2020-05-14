@@ -29,7 +29,7 @@ namespace Packit.Database.Api.Repository.Generic
                 return NotFound();
 
             if (EntityRelationExists(leftId, rightId))
-                return BadRequest();
+                return NoContent();
 
             var entity = (T3)Activator.CreateInstance(typeof(T3));
             entity.SetLeftId(leftId);
@@ -51,7 +51,7 @@ namespace Packit.Database.Api.Repository.Generic
                 return NotFound();
 
             if (!EntityRelationExists(leftId, rightId))
-                return NotFound();
+                return NoContent();
 
             var entity = await Context.Set<T3>().FirstOrDefaultAsync(e => e.GetLeftId() == leftId && e.GetRightId() == rightId);
             Context.Set<T3>().Remove(entity);

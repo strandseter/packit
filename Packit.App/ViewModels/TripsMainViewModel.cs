@@ -18,17 +18,20 @@ namespace Packit.App.ViewModels
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private ICommand loadedCommand;
 
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadDataAsync));
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand TripDetailCommand { get; set; }
+        public ICommand AddTripCommand { get; set; }
 
         public ObservableCollection<TripImageWeatherLink> Trips { get; } = new ObservableCollection<TripImageWeatherLink>();
 
         public TripsMainViewModel()
         {
             TripDetailCommand = new RelayCommand<TripImageWeatherLink>(param => NavigationService.Navigate(typeof(DetailTripV2Page), param));
+
+            AddTripCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewTripPage)));
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             await LoadTrips();
             await LoadTripImagesAsync();

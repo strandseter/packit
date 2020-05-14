@@ -27,7 +27,7 @@ namespace Packit.Database.Api.Repository.Classes
                 return BadRequest(ModelState);
             //TODO: Better errorhandling? 
             //Eager loading
-            var res = await Context.Trips
+            var trips = await Context.Trips
                 .Include(t => t.Backpacks)
                     .ThenInclude(b => b.Backpack)
                         .ThenInclude(b => b.Items)
@@ -35,10 +35,10 @@ namespace Packit.Database.Api.Repository.Classes
                                 .ThenInclude(i => i.Checks)
                 .ToListAsync();
 
-            if (res == null)
+            if (trips == null)
                 return NotFound();
 
-            return Ok(res);
+            return Ok(trips);
         }
 
         public async Task<IActionResult> GetTripByIdWithBackpacksItemsChecksAsync(int id, int userId)
@@ -46,7 +46,7 @@ namespace Packit.Database.Api.Repository.Classes
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var res = await Context.Trips
+            var trip = await Context.Trips
                 .Where(t => t.TripId == id)
                     .Include(t => t.Backpacks)
                         .ThenInclude(b => b.Backpack)
@@ -55,10 +55,10 @@ namespace Packit.Database.Api.Repository.Classes
                                     .ThenInclude(i => i.Checks)
                 .FirstOrDefaultAsync();
 
-            if (res == null)
+            if (trip == null)
                 return NotFound();
 
-            return Ok(res);
+            return Ok(trip);
         }
     }
 }

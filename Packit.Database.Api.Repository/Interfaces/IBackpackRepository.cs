@@ -1,4 +1,5 @@
-﻿using Packit.Database.Api.GenericRepository;
+﻿using Microsoft.AspNetCore.Mvc;
+using Packit.Database.Api.GenericRepository;
 using Packit.Database.Api.Repository.Generic;
 using Packit.Model;
 using System;
@@ -13,5 +14,6 @@ namespace Packit.Database.Api.Repository.Interfaces
         //Declare type specific methods here.
 
         IQueryable<Backpack> GetSharedBackpacks();
+        Task<IActionResult> GetAllBackpacksWithItems(int userId);
     }
 }

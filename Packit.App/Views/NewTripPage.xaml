@@ -4,15 +4,178 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:datalinks="using:Packit.App.DataLinks"
+    xmlns:model="using:Packit.Model"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.
-            -->
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel MaxWidth="400" Grid.Row="0">
+            <TextBox Header="Title"
+                         FontSize="30"
+                         Margin="0,5,0,5"
+                         Text=""/>
+            <TextBox Header="Description"
+                         FontSize="30" Margin="0,5,0,5"
+                         Height="200"
+                         TextWrapping="Wrap"
+                         Text=""/>
+            <DatePicker Header="Depature date" FontSize="30"/>
+            <StackPanel>
+
+                <TextBlock Text="Image" FontSize="30"/>
+                <Image MaxHeight="250"/>
+
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            
+            <Grid Grid.Column="0" Grid.Row="0" Margin="0,0,4,5" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Selected backpacks" HorizontalAlignment="Center" FontSize="30"/>
+
+                <ListView x:Name="lvSelectedBackpacks"
+                          Grid.Row="1"
+                          BorderBrush="White"
+                          BorderThickness="1"
+                          ItemsSource="{x:Bind ViewModel.SelectedBackpacksWithitems, Mode=OneWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="datalinks:BackpackWithItems">
+                            <StackPanel>
+
+                                <TextBlock Text="{x:Bind Backpack.Title}" FontSize="20"/>
+
+                                <ListView ItemsSource="{x:Bind Items}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Item">
+                                            <TextBlock Text="{x:Bind Title}" FontSize="5"/>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="0" Margin="1,0,0,5" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Available backpacks" HorizontalAlignment="Center" FontSize="30"/>
+
+                <ListView x:Name="lvAvailableBackpacks"
+                          Grid.Row="1"
+                          BorderBrush="White"
+                          BorderThickness="1"
+                          ItemsSource="{x:Bind ViewModel.AvailableBackpacksWithitems, Mode=OneWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="datalinks:BackpackWithItems">
+                            <StackPanel>
+
+                                <TextBlock Text="{x:Bind Backpack.Title}" FontSize="20"/>
+
+                                <ListView ItemsSource="{x:Bind Items}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Item">
+                                            <TextBlock Text="{x:Bind Title}" FontSize="5"/>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+            </Grid>
+
+            <Button Grid.Column="0"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="0,0,4,10"
+                    CornerRadius="0"
+                    Command="{x:Bind ViewModel.RemoveBackpackCommand}"
+                    CommandParameter="{Binding ElementName=lvSelectedBackpacks, Path=SelectedItem}">
+                <StackPanel>
+                    <TextBlock Text="Remove"/>
+                    <SymbolIcon Symbol="Remove"/>
+                </StackPanel>
+            </Button>
+
+            <Button Grid.Column="1"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="1,0,0,10"
+                    CornerRadius="0"
+                    Command="{x:Bind ViewModel.AddBackpackCommand}"
+                    CommandParameter="{Binding ElementName=lvAvailableBackpacks, Path=SelectedItem}">
+                <StackPanel>
+                    <TextBlock Text="Add"/>
+                    <SymbolIcon Symbol="Add"/>
+                </StackPanel>
+            </Button>
+
         </Grid>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnSpacing="5" Margin="0,0,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="0" Command="{x:Bind ViewModel.SaveCommand}">
+                <StackPanel>
+                    <TextBlock Text="Save"/>
+                    <SymbolIcon Symbol="Save"/>
+                </StackPanel>
+            </Button>
+
+            <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="0" Command="{x:Bind ViewModel.CandcelCommand}">
+                <StackPanel>
+                    <TextBlock Text="Cancel"/>
+                    <SymbolIcon Symbol="Cancel"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+        
     </Grid>
 </Page>

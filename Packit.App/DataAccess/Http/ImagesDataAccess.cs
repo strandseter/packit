@@ -15,9 +15,9 @@ namespace Packit.App.DataAccess
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri("http://localhost:61813/api/Images/");
 
-        public async Task<BitmapImage> GetImageAsync(string imageStringName, string fallbackImageStringName)
+        public async Task<BitmapImage> GetImageAsync(string imageStringName, string fallbackImageStringPath)
         {
-            var fallbackImage = new Uri(fallbackImageStringName);
+            var fallbackImage = new Uri(fallbackImageStringPath);
 
             if (imageStringName == null)
                 return new BitmapImage(fallbackImage);

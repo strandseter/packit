@@ -86,7 +86,12 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,0,0,5" CornerRadius="0">
+                <Button Grid.Column="0"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Margin="5,0,0,5"
+                        CornerRadius="0"
+                        Command="{x:Bind ViewModel.AddTripCommand}">
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>
                         <TextBlock Text="New"/>

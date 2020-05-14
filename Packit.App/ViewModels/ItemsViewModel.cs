@@ -92,7 +92,7 @@ namespace Packit.App.ViewModels
         {
             for (int i = 0; i < ItemImageLinks.Count; i++)
             {
-                if (!StringIsEqual(ItemImageLinks[i].Item.Title, itemImageLinksClone[i].Item.Title) || (!StringIsEqual(ItemImageLinks[i].Item.Title, itemImageLinksClone[i].Item.Title)))
+                if (!StringIsEqual(ItemImageLinks[i].Item.Title, itemImageLinksClone[i].Item.Title) || (!StringIsEqual(ItemImageLinks[i].Item.Description, itemImageLinksClone[i].Item.Description)))
                     if (!await itemsDataAccess.UpdateAsync(ItemImageLinks[i].Item))
                         isVisible = true;
             }
@@ -114,6 +114,5 @@ namespace Packit.App.ViewModels
 
         private void CloneItemImageLinksList() => itemImageLinksClone = ItemImageLinks.ToList().DeepClone();
         private bool StringIsEqual(string title1, string title2) => title1.Equals(title2, StringComparison.CurrentCulture);
-
     }
 }

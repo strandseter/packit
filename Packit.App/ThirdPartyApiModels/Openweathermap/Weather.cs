@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Packit.App.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.ThirdPartyApiModels.Openweathermap
 {
-    public class Weather
+    public class Weather : Observable
     {
         private string description;
         private BitmapImage iconImage;
@@ -27,7 +28,16 @@ namespace Packit.App.ThirdPartyApiModels.Openweathermap
             get => description;
             set => description = UppercaseFirst(value);
         }
-        public BitmapImage IconImage { get => iconImage; set => iconImage = value; }
+        public BitmapImage IconImage
+        {
+            get => iconImage;
+            set
+            {
+                if (value == iconImage) return;
+                iconImage = value;
+                OnPropertyChanged(nameof(IconImage));
+            }
+        }
 
         private static string UppercaseFirst(string s)
         {
