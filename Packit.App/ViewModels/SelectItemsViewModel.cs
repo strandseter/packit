@@ -25,7 +25,7 @@ namespace Packit.App.ViewModels
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private bool isSuccess = true;
 
-        public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadDataAsync));
+        public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public TripImageWeatherLink SelectedTrip { get; set; }
         public BackpackWithItems SelectedBackpackWithItems { get; set; }
         public ICommand DoneSelectingItemsCommand { get; set; }
@@ -51,8 +51,7 @@ namespace Packit.App.ViewModels
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
         }
 
-
-        private async void LoadDataAsync() //TODO: Refactor?
+        private async Task LoadDataAsync()
         {
             await LoadItemsAsync();
             await LoadImagesAsync();
@@ -70,7 +69,7 @@ namespace Packit.App.ViewModels
             SelectedTrip.Trip = updatedTrip;
         }
 
-        private async Task LoadItemsAsync()
+        protected override async Task LoadItemsAsync()
         {
             var items = await itemsDataAccess.GetAllAsync();
 
@@ -83,12 +82,6 @@ namespace Packit.App.ViewModels
                     if (i.ItemId == item.ItemId)
                         ItemImageLinks.Remove(itemImageLink);
             }
-        }
-
-        private async Task LoadImagesAsync()
-        {
-            foreach (var iml in ItemImageLinks)
-                iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName, "ms-appx:///Assets/grey.jpg");
         }
 
         public void Initialize(BackpackTripWrapper backpackTrip)

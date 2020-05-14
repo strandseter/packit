@@ -210,4 +210,8 @@
     <value>SelectItems</value>
     <comment>Navigation view item name for SelectItems</comment>
   </data>
+  <data name="Shell_NewTrip.Content" xml:space="preserve">
+    <value>NewTrip</value>
+    <comment>Navigation view item name for NewTrip</comment>
+  </data>
 </root>

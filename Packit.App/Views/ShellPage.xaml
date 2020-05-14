@@ -67,6 +67,7 @@
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
             
+            <winui:NavigationViewItem x:Uid="Shell_NewTrip" Icon="Document" helpers:NavHelper.NavigateTo="views:NewTripPage" />
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior

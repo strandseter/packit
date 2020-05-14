@@ -34,7 +34,8 @@ namespace Packit.App.ViewModels
                 OnPropertyChanged(nameof(IsVisible));
             }
         }
-        public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
+
+        public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadData()));
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
@@ -69,7 +70,7 @@ namespace Packit.App.ViewModels
             AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
         }
 
-        protected async void LoadData()
+        private async Task LoadData()
         {
             await LoadItemsAsync();
             await LoadImagesAsync();
@@ -97,24 +98,21 @@ namespace Packit.App.ViewModels
             }
         }
 
-        private void CloneItemImageLinksList() => itemImageLinksClone = ItemImageLinks.ToList().DeepClone();
-
-        private async Task LoadItemsAsync()
+        protected virtual async Task LoadItemsAsync()
         {
             var items = await itemsDataAccess.GetAllAsync();
 
             foreach (var i in items)
-            {
                 ItemImageLinks.Add(new ItemImageLink() { Item = i });
-            }
         }
 
-        private async Task LoadImagesAsync()
+        protected async Task LoadImagesAsync()
         {
             foreach (var iml in ItemImageLinks)
                 iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName, "ms-appx:///Assets/grey.jpg");
         }
 
+        private void CloneItemImageLinksList() => itemImageLinksClone = ItemImageLinks.ToList().DeepClone();
         private bool StringIsEqual(string title1, string title2) => title1.Equals(title2, StringComparison.CurrentCulture);
 
     }
