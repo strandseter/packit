@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using Packit.App.DataAccess;
 using Packit.App.DataLinks;
@@ -29,12 +30,17 @@ namespace Packit.App.ViewModels
 
             SaveCommand = new RelayCommand(async () =>
             {
-                //TODO: Error handling
+                var randomImageName = GenerateImageName();
 
-                if (await itemsDataAccess.AddAsync(ItemImageLink.Item) && await imagesDataAccess.AddImageAsync(localImage))
+                if (localImage != null)
                 {
-                    NavigationService.GoBack();
+                    ItemImageLink.Item.ImageStringName = randomImageName;
+
+                    if (await itemsDataAccess.AddAsync(ItemImageLink.Item) && await imagesDataAccess.AddImageAsync(localImage, randomImageName))
+                        NavigationService.GoBack();
                 }
+                    if (await itemsDataAccess.AddAsync(ItemImageLink.Item))
+                        NavigationService.GoBack();
             });
 
             ImageDeviceCommand = new RelayCommand(async () =>
@@ -47,6 +53,17 @@ namespace Packit.App.ViewModels
                 ItemImageLink.Image = await FileService.StorageFileToBitmapImageAsync(localImage);
             });
 
+        }
+
+        private static string GenerateImageName()
+        {
+            var random = new Random();
+
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var name = new string(Enumerable.Repeat(chars, 10)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return $"{name}.jpg";
         }
     }
 }

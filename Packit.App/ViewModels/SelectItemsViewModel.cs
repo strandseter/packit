@@ -23,11 +23,13 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly IRelationDataAccess<Backpack, Item> backpackDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
+        private bool isSuccess = true;
 
         public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadDataAsync));
         public TripImageWeatherLink SelectedTrip { get; set; }
         public BackpackWithItems SelectedBackpackWithItems { get; set; }
         public ICommand DoneSelectingItemsCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
 
         public SelectItemsViewModel()
         {
@@ -36,23 +38,17 @@ namespace Packit.App.ViewModels
                 //This is a workaround. It is not possible to bind readonly "SelectedItems" in multiselect grid/list-view.
                 List<object> selectedItems = param.ToList();
 
-                bool isSuccess = true;
-
                 foreach (var obj in selectedItems)
-                {
-                    var itemImageLink = (ItemImageLink)obj;
-
-                    if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItems.Backpack.BackpackId, itemImageLink.Item.ItemId))
-                        isSuccess = false;
-                }
+                    await AddItemTobackpack((ItemImageLink)obj);
 
                 if (isSuccess)
                 {
-                    var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTrip.Trip);
-                    SelectedTrip.Trip = updatedTrip;
+                    await UpdateSelectedTrip();
                     NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
                 }
             });
+
+            CancelCommand = new RelayCommand(() => NavigationService.GoBack());
         }
 
 
@@ -60,6 +56,18 @@ namespace Packit.App.ViewModels
         {
             await LoadItemsAsync();
             await LoadImagesAsync();
+        }
+
+        private async Task AddItemTobackpack(ItemImageLink itemImageLink)
+        {
+            if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItems.Backpack.BackpackId, itemImageLink.Item.ItemId))
+                isSuccess = false;
+        }
+
+        private async Task UpdateSelectedTrip()
+        {
+            var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTrip.Trip);
+            SelectedTrip.Trip = updatedTrip;
         }
 
         private async Task LoadItemsAsync()
@@ -80,7 +88,7 @@ namespace Packit.App.ViewModels
         private async Task LoadImagesAsync()
         {
             foreach (var iml in ItemImageLinks)
-                iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName);
+                iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName, "ms-appx:///Assets/grey.jpg");
         }
 
         public void Initialize(BackpackTripWrapper backpackTrip)

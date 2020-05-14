@@ -43,7 +43,7 @@ namespace Packit.App.DataAccess.Http
             HttpResponseMessage result = await httpClient.GetAsync(uri);
 
             if (result == null || !result.IsSuccessStatusCode)
-                return new BitmapImage(new Uri("ms-appx:///Assets/generictrip.jpg"));
+                return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
 
             bitmap.UriSource = uri;
 

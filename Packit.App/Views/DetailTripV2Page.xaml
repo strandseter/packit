@@ -146,24 +146,35 @@
                                                         VerticalAlignment="Center"
                                                         HorizontalAlignment="Center"/>
 
-                                                <StackPanel Margin="10,0,0,0" Spacing="5"
-                                                            Orientation="Horizontal">
-                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.AddItemToBackpackCommand}"
-                                                            CommandParameter="{x:Bind}"
-                                                            Margin="0,0,10,0">
-                                                        <SymbolIcon Symbol="Add"/>
-                                                    </Button>
-                                                    
-                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
-                                                            CommandParameter="{x:Bind}">
-                                                        <SymbolIcon Symbol="Remove"/>
-                                                    </Button>
-
-                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteBackpackCommand}"
-                                                            CommandParameter="{x:Bind}">
-                                                        <SymbolIcon Symbol="Delete"/>
-                                                    </Button>
-                                                </StackPanel>
+                                                <Button Content="Options">
+                                                    <Button.Flyout>
+                                                        <MenuFlyout>
+                                                            <MenuFlyoutItem Text="Add items"
+                                                                            Command="{Binding ElementName=lvBackpacks, Path=DataContext.AddItemToBackpackCommand}"
+                                                                            CommandParameter="{x:Bind}"
+                                                                            Margin="0,0,10,0">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE710;"/>
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+                                                            <MenuFlyoutSeparator/>
+                                                            <MenuFlyoutItem Text="Remove backpack"
+                                                                            Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
+                                                                            CommandParameter="{x:Bind}">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE738;"/>
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+                                                            <MenuFlyoutItem Text="Delete backpack"
+                                                                            Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteBackpackCommand}"
+                                                                            CommandParameter="{x:Bind}">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE74D;"/>
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+                                                        </MenuFlyout>
+                                                    </Button.Flyout>
+                                                </Button>
 
                                             </StackPanel>
 
@@ -238,9 +249,9 @@
                                                     </StackPanel.Resources>
                                                     
                                                     <CheckBox x:Name="ItemCheckBox"
-                                                          IsChecked="{x:Bind Check.IsChecked, Mode=TwoWay}"
-                                                          Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
-                                                          CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
+                                                              IsChecked="{x:Bind Check.IsChecked, Mode=TwoWay}"
+                                                              Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
+                                                              CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
                                                 </StackPanel>    
                                                 
                                             </StackPanel>

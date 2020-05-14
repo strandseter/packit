@@ -14,7 +14,9 @@ using Packit.App.DataAccess;
 using Packit.App.Factories;
 using Packit.App.Wrappers;
 using System.Linq;
+using Packit.Extensions;
 using Packit.Model.Models;
+using System.Collections.Generic;
 
 namespace Packit.App.ViewModels
 {
@@ -28,6 +30,7 @@ namespace Packit.App.ViewModels
         private readonly IRelationDataAccess<Trip, Backpack> tripBackpackDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private ICommand loadedCommand;
         private bool isVisible;
+        private IList<BackpackWithItems> backpacksClone;
 
         public bool IsVisible
         {
@@ -56,7 +59,16 @@ namespace Packit.App.ViewModels
 
         public DetailTripViewModel()
         {
-            EditTripCommand = new RelayCommand(() => IsVisible = !IsVisible);
+            EditTripCommand = new RelayCommand(() =>
+            {
+
+                if (!IsVisible)
+                    CopyBackpackWithItemsList();
+
+
+
+                IsVisible = !IsVisible;
+            });
 
             AddItemToBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
             {
@@ -135,6 +147,11 @@ namespace Packit.App.ViewModels
                         param.Item.Check.IsChecked = false;
                 }
             });
+        }
+
+        private void CopyBackpackWithItemsList()
+        {
+            backpacksClone = Backpacks.ToList().DeepClone();
         }
 
         private async void LoadData()

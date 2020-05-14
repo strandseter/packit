@@ -9,8 +9,6 @@ using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Model;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 
 namespace Packit.App.ViewModels
 {
@@ -47,7 +45,7 @@ namespace Packit.App.ViewModels
         private async Task LoadTripImagesAsync()
         {
             foreach (TripImageWeatherLink t in Trips)
-                t.Image = await imagesDataAccess.GetImageAsync(t.Trip.ImageStringName);
+                t.Image = await imagesDataAccess.GetImageAsync(t.Trip.ImageStringName, "ms-appx:///Assets/generictrip.jpg");
         }
     }
 }

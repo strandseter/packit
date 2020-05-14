@@ -47,8 +47,14 @@
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
             <controls:AdaptiveGridView
                 x:Name="gvTrips"
+                Grid.Row="0"
                 OneRowModeEnabled="False"
                 SelectionMode="Single"
                 DesiredWidth="300"
@@ -73,6 +79,20 @@
                 </GridView.ItemsPanel>
                 
             </controls:AdaptiveGridView>
+
+            <Grid Grid.Row="1" ColumnSpacing="5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,0,0,5" CornerRadius="0">
+                    <StackPanel>
+                        <SymbolIcon Symbol="Add"/>
+                        <TextBlock Text="New"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
 
         </Grid>
     </Grid>

@@ -1,12 +1,13 @@
 ﻿
 using Packit.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Packit.Model
 {
-    public class Item : BaseInformation, INotifyPropertyChanged
+    public class Item : BaseInformation
     {
         private Check check;
 
@@ -25,7 +26,9 @@ namespace Packit.Model
             }
         }
 
-        public Item() => ImageStringName = $"image{ItemId}";
+        public Item()
+        {
+        }
 
         public override int GetId() => ItemId;
 

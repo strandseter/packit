@@ -15,10 +15,15 @@ namespace Packit.App.DataAccess
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri("http://localhost:61813/api/Images/");
 
-        public async Task<BitmapImage> GetImageAsync(string imageStringName)
+        public async Task<BitmapImage> GetImageAsync(string imageStringName, string fallbackImageStringName)
         {
+            var fallbackImage = new Uri(fallbackImageStringName);
+
+            if (imageStringName == null)
+                return new BitmapImage(fallbackImage);
+
             if (!InternetConnectionService.IsConnected())
-                return new BitmapImage(new Uri("ms-appx:///Assets/generictrip.jpg"));
+                return new BitmapImage(fallbackImage);
 
             var uri = new Uri($"{baseUri}{imageStringName}");
 
@@ -27,19 +32,17 @@ namespace Packit.App.DataAccess
             HttpResponseMessage response = await httpClient.GetAsync(uri);
 
             if (response == null || !response.IsSuccessStatusCode)
-                return new BitmapImage(new Uri("ms-appx:///Assets/generictrip.jpg"));
+                return new BitmapImage(fallbackImage);
 
             bitmap.UriSource = uri;
 
             return bitmap;
         }
 
-        public async Task<bool> AddImageAsync(StorageFile file)
+        public async Task<bool> AddImageAsync(StorageFile file, string fileName)
         {
             if (file == null)
                 return false;
-
-            var imageName = $"{RandomString(10)}{Path.GetExtension(file.Name)}";
 
             byte[] fileBytes = await FileToBytesAsync(file);
 
@@ -47,7 +50,7 @@ namespace Packit.App.DataAccess
             {
                 using (var stream = new StreamContent(new MemoryStream(fileBytes)))
                 {
-                    form.Add(stream, imageName, imageName);
+                    form.Add(stream, fileName, fileName);
 
                     var response = await httpClient.PostAsync(baseUri, form);
 
@@ -79,15 +82,6 @@ namespace Packit.App.DataAccess
                 }
             }
             return fileBytes;
-        }
-
-        public static string RandomString(int length)
-        {
-            var random = new Random();
-
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

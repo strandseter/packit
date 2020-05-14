@@ -62,7 +62,7 @@
                 IsItemClickEnabled="True"
                 DataContext="{x:Bind ViewModel}"
                 ItemTemplate="{StaticResource ItemGridTemplate}"
-                ItemsSource="{x:Bind ViewModel.ItemImageLinks}">
+                ItemsSource="{x:Bind ViewModel.ItemImageLinks, Mode=OneWay}">
 
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
@@ -92,7 +92,7 @@
                 <Button Grid.Column="0" Command="{x:Bind ViewModel.AddCommand}" Margin="5,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>
-                        <TextBlock>Add</TextBlock>
+                        <TextBlock>New</TextBlock>
                     </StackPanel>
                 </Button>
                 <Button Grid.Column="1" Command="{x:Bind ViewModel.EditCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,0,5" >

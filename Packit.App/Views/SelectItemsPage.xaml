@@ -94,7 +94,7 @@
                     <Button Grid.Column="0" Command="{x:Bind ViewModel.AddCommand}" Margin="5,0,0,5" >
                         <StackPanel>
                             <SymbolIcon Symbol="Add"/>
-                            <TextBlock>Add</TextBlock>
+                            <TextBlock>New</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button Grid.Column="1" Command="{x:Bind ViewModel.EditCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,0,5" >
@@ -111,11 +111,32 @@
                     </Button>
                 </Grid>
 
-                <Grid Grid.Row="3">
-                    <Button Command="{x:Bind ViewModel.DoneSelectingItemsCommand}" CommandParameter="{Binding ElementName=gvItems, Converter={StaticResource lvToListConverter}}" Margin="0,0,0,5">
+                <Grid Grid.Row="3"
+                      ColumnSpacing="5"
+                      Margin="5,0,0,5">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0"
+                            Command="{x:Bind ViewModel.DoneSelectingItemsCommand}"
+                            CommandParameter="{Binding ElementName=gvItems, Converter={StaticResource lvToListConverter}}"
+                            Margin="0,0,0,5">
                         <StackPanel>
                             <SymbolIcon Symbol="Accept"/>
                             <TextBlock>Done</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Column="1"
+                            Command="{x:Bind ViewModel.CancelCommand}"
+                            CommandParameter="{Binding ElementName=gvItems, Converter={StaticResource lvToListConverter}}"
+                            Margin="0,0,5,5">
+                        <StackPanel>
+                            <SymbolIcon Symbol="Cancel"/>
+                            <TextBlock>Cancel</TextBlock>
                         </StackPanel>
                     </Button>
                 </Grid>

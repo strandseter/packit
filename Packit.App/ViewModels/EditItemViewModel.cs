@@ -42,7 +42,7 @@ namespace Packit.App.ViewModels
 
                                                             try
                                                             {
-                                                                if (await itemsDataAccess.UpdateAsync(param.Item) && await imagesDataAccess.AddImageAsync(localImage))
+                                                                if (await itemsDataAccess.UpdateAsync(param.Item) && await imagesDataAccess.AddImageAsync(localImage, "bla"))
                                                                 {
                                                                     NavigationService.Navigate(typeof(ItemsPage));
                                                                 }

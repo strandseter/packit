@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -326,6 +326,10 @@
     <ProjectReference Include="..\Packit.App.Core\Packit.App.Core.csproj">
       <Project>{3D3AAD4F-0121-4FFD-BD5D-A2D3710A72BD}</Project>
       <Name>Packit.App.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Packit.Extensions\Packit.Extensions.csproj">
+      <Project>{5efc0b8f-6c90-425c-aad7-d7dd32d9845c}</Project>
+      <Name>Packit.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj">
       <Project>{7AFD05F6-34AA-40C7-9B83-428081F13911}</Project>
