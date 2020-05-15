@@ -1,10 +1,11 @@
 ﻿using Packit.Model.Models;
+using Packit.Model.NotifyPropertyChanged;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Packit.Model
 {
-    public abstract class BaseInformation : IDatabase, INotifyPropertyChanged
+    public abstract class BaseInformation : Observable, IDatabase
     {
         private string title;
         private string description;
@@ -47,8 +48,5 @@ namespace Packit.Model
         public void SetUserId(int value) => UserId = value;
         public abstract int GetId();
         public abstract void SetId(int value);
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Packit.App.Helpers;
 using Packit.Model;
+using Packit.Model.NotifyPropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

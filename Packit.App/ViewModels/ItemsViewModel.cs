@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Packit.App.Helpers;
 using Packit.Model;
 using Packit.App.DataAccess;
 using System.Windows.Input;
@@ -13,6 +12,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using Packit.Extensions;
+using Packit.Model.NotifyPropertyChanged;
+using Packit.App.Helpers;
 
 namespace Packit.App.ViewModels
 {

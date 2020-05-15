@@ -168,7 +168,6 @@
     <Compile Include="Factories\RelationDataAccessFactory.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
-    <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="DataLinks\ItemImageLink.cs" />
     <Compile Include="Helpers\NoParameterRelayCommand.cs" />
@@ -338,6 +337,10 @@
     <ProjectReference Include="..\Packit.Extensions\Packit.Extensions.csproj">
       <Project>{5efc0b8f-6c90-425c-aad7-d7dd32d9845c}</Project>
       <Name>Packit.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Packit.Model.Observable\Packit.Model.Observable.csproj">
+      <Project>{D5FFD628-2E7E-409C-B7FC-C905E4E4A4ED}</Project>
+      <Name>Packit.Model.Observable</Name>
     </ProjectReference>
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj">
       <Project>{7AFD05F6-34AA-40C7-9B83-428081F13911}</Project>

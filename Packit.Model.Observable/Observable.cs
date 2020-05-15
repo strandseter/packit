@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Packit.App.Helpers
+namespace Packit.Model.NotifyPropertyChanged
 {
     public class Observable : INotifyPropertyChanged
     {
@@ -11,9 +11,7 @@ namespace Packit.App.Helpers
         protected void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
         {
             if (Equals(storage, value))
-            {
                 return;
-            }
 
             storage = value;
             OnPropertyChanged(propertyName);

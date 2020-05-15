@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Packit.App.Helpers;
+using Packit.Model.NotifyPropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

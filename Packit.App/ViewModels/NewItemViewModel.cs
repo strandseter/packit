@@ -8,6 +8,7 @@ using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Model;
+using Packit.Model.NotifyPropertyChanged;
 using Windows.Storage;
 
 namespace Packit.App.ViewModels

@@ -1,6 +1,7 @@
 ﻿using Packit.App.Helpers;
 using Packit.App.ThirdPartyApiModels.Openweathermap;
 using Packit.Model;
+using Packit.Model.NotifyPropertyChanged;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.DataLinks

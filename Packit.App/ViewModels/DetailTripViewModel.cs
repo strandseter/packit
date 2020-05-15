@@ -17,6 +17,7 @@ using System.Linq;
 using Packit.Extensions;
 using Packit.Model.Models;
 using System.Collections.Generic;
+using Packit.Model.NotifyPropertyChanged;
 
 namespace Packit.App.ViewModels
 {
