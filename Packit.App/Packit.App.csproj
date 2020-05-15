@@ -338,9 +338,9 @@
       <Project>{5efc0b8f-6c90-425c-aad7-d7dd32d9845c}</Project>
       <Name>Packit.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Packit.Model.Observable\Packit.Model.Observable.csproj">
+    <ProjectReference Include="..\Packit.Model.Observable\Packit.Model.NotifyPorpertyChanged.csproj">
       <Project>{D5FFD628-2E7E-409C-B7FC-C905E4E4A4ED}</Project>
-      <Name>Packit.Model.Observable</Name>
+      <Name>Packit.Model.NotifyPorpertyChanged</Name>
     </ProjectReference>
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj">
       <Project>{7AFD05F6-34AA-40C7-9B83-428081F13911}</Project>

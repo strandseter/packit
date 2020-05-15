@@ -217,6 +217,11 @@ namespace Packit.App.ViewModels
             }
         }
 
+        private async Task UpdateWeatherAsync()
+        {
+
+        }
+
         private void CloneBackpackWithItemsList() => backpacksClone = Backpacks.ToList().DeepClone();
 
         private void CloneTrip() => tripClone = (Trip)TripImageWeatherLink.Trip.Clone();

@@ -6,12 +6,34 @@ namespace Packit.Model
 {
     public class Trip : BaseInformation, ICloneable
     {
+        private string destination;
+        private DateTime depatureDate;
+
         public int TripId { get; set; }
-        public string Destination { get; set; }
-        public DateTime DepatureDate { get; set; }
+        public string Destination 
+        { 
+            get => destination;
+            set
+            {
+                if (value == destination) return;
+                destination = value;
+                OnPropertyChanged(nameof(Destination));
+            }
+        }
+        public DateTime DepatureDate 
+        { 
+            get => depatureDate;
+            set
+            {
+                if (value == depatureDate) return;
+                depatureDate = value;
+                OnPropertyChanged(nameof(DepatureDate));
+            }
+        }
+
         public virtual ICollection<BackpackTrip> Backpacks { get; } = new List<BackpackTrip>();
 
-        public Trip() 
+        public Trip()
         {
         }
 

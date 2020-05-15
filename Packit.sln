@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Packit.Database.Api.Reposit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Packit.Extensions", "Packit.Extensions\Packit.Extensions.csproj", "{5EFC0B8F-6C90-425C-AAD7-D7DD32D9845C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packit.Model.Observable", "Packit.Model.Observable\Packit.Model.Observable.csproj", "{D5FFD628-2E7E-409C-B7FC-C905E4E4A4ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packit.Model.NotifyPorpertyChanged", "Packit.Model.Observable\Packit.Model.NotifyPorpertyChanged.csproj", "{D5FFD628-2E7E-409C-B7FC-C905E4E4A4ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

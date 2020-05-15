@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Packit.Model.Observable\Packit.Model.Observable.csproj" />
+    <ProjectReference Include="..\Packit.Model.Observable\Packit.Model.NotifyPorpertyChanged.csproj" />
   </ItemGroup>
 
   <ItemGroup>
