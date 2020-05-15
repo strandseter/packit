@@ -9,8 +9,18 @@ namespace Packit.App.DataLinks
     {
         private BitmapImage image;
         private WeatherReport weatherReport;
+        private Trip trip;
 
-        public Trip Trip { get; set; }
+        public Trip Trip
+        {
+            get => trip;
+            set
+            {
+                if (value == trip) return;
+                trip = value;
+                OnPropertyChanged(nameof(Trip));
+            }
+        }
         public BitmapImage Image
         {
             get => image;

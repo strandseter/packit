@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Packit.Model
 {
-    public class Trip : BaseInformation
+    public class Trip : BaseInformation, ICloneable
     {
         public int TripId { get; set; }
         public string Destination { get; set; }
@@ -15,16 +15,12 @@ namespace Packit.Model
         {
         }
 
-        public override int GetId()
-        {
-            return TripId;
-        }
+        public override int GetId() => TripId;
 
-        public override void SetId(int value)
-        {
-            TripId = value;
-        }
+        public override void SetId(int value) => TripId = value;
 
         public override string ToString() => $"{Title}, ";
+
+        public object Clone() => MemberwiseClone();
     }
 }

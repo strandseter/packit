@@ -26,7 +26,6 @@
         <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Edit trip"/>
     </Page.Resources>
 
-
     <ScrollViewer>
 
         <VisualStateManager.VisualStateGroups>
@@ -67,7 +66,6 @@
         
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
-        
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ViewModel.TripImageWeatherLink.Image, Mode=OneWay}" />
         </Grid.Background>
@@ -81,19 +79,27 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        
-
         <Grid x:Name="FirstGrid" Grid.Column="0" Grid.Row="0">
 
             <StackPanel Grid.Row="1">
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                    <TextBlock VerticalAlignment="Top"
-                        Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Title, Mode=OneWay}"
-                        Style="{StaticResource HeaderTextBlockStyle}"
-                           x:Name="TextTest"/>
-
+                        <Grid VerticalAlignment="Top" >
+                            <TextBlock 
+                                Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Title, Mode=OneWay}"
+                                Style="{StaticResource HeaderTextBlockStyle}"
+                                x:Name="TextTest"
+                                Visibility="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"
+                                HorizontalAlignment="Center"/>
+                            <TextBox Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Title, Mode=TwoWay}"
+                                     FontSize="46"
+                                     Opacity="0.8"
+                                     MaxLength="15"
+                                     HorizontalAlignment="Center"
+                                     Visibility="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"/>
+                        </Grid>
+                    
                     <Ellipse Height="60" Width="60" VerticalAlignment="Top">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource="{x:Bind ViewModel.TripImageWeatherLink.Image, Mode=OneWay}" Stretch="UniformToFill"/>
@@ -107,9 +113,49 @@
                        HorizontalAlignment="Center"
                        Style="{StaticResource SubheaderTextBlockStyle}"/>
 
-                    <Button Content="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueTotextConverter}}"
-                            Command="{x:Bind ViewModel.EditTripCommand}"/>
+                    <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Spacing="5">
 
+                        <Button Content="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueTotextConverter}}"
+                                Command="{x:Bind ViewModel.EditTripCommand}"
+                                Background="Black"
+                                Opacity="0.9">
+                        </Button>
+
+                        <Button Content="Options"
+                                Visibility="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"
+                                Background="Black"
+                                Opacity="0.9">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Add backpacks"
+                                                    Command="{Binding ElementName=lvBackpacks, Path=DataContext.AddItemToBackpackCommand}"
+                                                    CommandParameter="{x:Bind}"
+                                                    Margin="0,0,10,0">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon Glyph="&#xE710;"/>
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutSeparator/>
+                                    <MenuFlyoutItem Text="Cancel trip"
+                                                    Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
+                                                    CommandParameter="{x:Bind}">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon Glyph="&#xE711;"/>
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutItem Text="Delete trip"
+                                                    Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteBackpackCommand}"
+                                                    CommandParameter="{x:Bind}">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon Glyph="&#xE74D;"/>
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        
+                    </StackPanel>
+                    
                     <ListView Name="lvBackpacks"
                           ItemsSource="{x:Bind ViewModel.Backpacks, Mode=OneWay}"
                           HorizontalAlignment="Stretch"
@@ -150,7 +196,8 @@
 
                                                 <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
                                                         VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center"/>
+                                                        HorizontalAlignment="Center"
+                                                        Margin="5,0,5,0"/>
 
                                                 <Button Content="Options">
                                                     <Button.Flyout>
@@ -234,7 +281,8 @@
                                                             </StackPanel.Resources>
 
                                                             <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveItemFromBackpackCommand}"
-                                                                    CommandParameter="{StaticResource ItemBackpackWrapper}">
+                                                                    CommandParameter="{StaticResource ItemBackpackWrapper}"
+                                                                    Margin="0,0,5,0">
                                                                 <SymbolIcon Symbol="Remove"/>
                                                             </Button>
                                                             
@@ -300,7 +348,16 @@
             <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,0">
                     <StackPanel HorizontalAlignment="Center" Margin="0,0,0,10">
                         <TextBlock Text="Destination" FontSize="15" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Destination}" FontSize="25" HorizontalAlignment="Center"/>
+                        <Grid HorizontalAlignment="Center">
+                            <TextBlock Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Destination, Mode=OneWay}"
+                                       FontSize="25"
+                                       HorizontalAlignment="Center"
+                                       Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
+                            <TextBox Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Destination, Mode=TwoWay}"
+                                     FontSize="25"
+                                     HorizontalAlignment="Center"
+                                     Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                        </Grid>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center" Margin="0,0,0,10">
                         <TextBlock Text="Date" FontSize="15" HorizontalAlignment="Center"/>
