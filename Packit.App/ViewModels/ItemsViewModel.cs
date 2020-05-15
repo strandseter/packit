@@ -14,6 +14,7 @@ using System.Linq;
 using Packit.Extensions;
 using Packit.Model.NotifyPropertyChanged;
 using Packit.App.Helpers;
+using System.Net.Http;
 
 namespace Packit.App.ViewModels
 {
@@ -44,49 +45,63 @@ namespace Packit.App.ViewModels
 
         public ItemsViewModel()
         {
-            DeleteCommand = new RelayCommand<ItemImageLink>(async param =>
-            {
-                if(param.Item.ImageStringName != null)
-                    await DeleteItemAndImageAsync(param);
-                else
-                    await DeleteItemAsync(param);
-                }, param => param != null);
+            DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopupService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
+                                                                            ,param => param != null);
 
-            EditCommand = new RelayCommand(async () =>
-            {
-                if (!IsVisible)
-                {
-                    if (ItemImageLinks.Count == 0)
-                        return;
-
-                    CloneItemImageLinksList();
-                }
-
-                if (IsVisible)
-                    await UpdateItemsAsync();
-
-                IsVisible = !IsVisible;
-            });
+            EditCommand = new RelayCommand(async () => await EditItem());
 
             AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
         }
 
         private async Task LoadData()
         {
-            await LoadItemsAsync();
-            await LoadImagesAsync();
+            try
+            {
+                await LoadItemsAsync();
+                await LoadImagesAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopupService.ShowCouldNotLoadAsync(LoadData, "Items");
+            }
         }
 
-        private async Task DeleteItemAndImageAsync(ItemImageLink itemImageLink)
+        private async Task EditItem()
+        {
+            if (!IsVisible)
+            {
+                if (ItemImageLinks.Count == 0)
+                    return;
+
+                CloneItemImageLinksList();
+            }
+
+            if (IsVisible)
+                await UpdateItemsAsync();
+
+            IsVisible = !IsVisible;
+        }
+
+        private async Task DeleteItemAsync(ItemImageLink itemImageLink)
+        {
+            if (itemImageLink.Item.ImageStringName != null)
+                await DeleteItemAndImageRequestAsync(itemImageLink);
+            else
+                await DeleteItemRequestAsync(itemImageLink);
+        }
+
+        private async Task DeleteItemAndImageRequestAsync(ItemImageLink itemImageLink)
         {
             if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName))
                 ItemImageLinks.Remove(itemImageLink);
         }
 
-        private async Task DeleteItemAsync(ItemImageLink itemImageLink)
+        private async Task DeleteItemRequestAsync(ItemImageLink itemImageLink)
         {
-            if (await itemsDataAccess.DeleteAsync(itemImageLink.Item))
-                ItemImageLinks.Remove(itemImageLink);
+            if (!await itemsDataAccess.DeleteAsync(itemImageLink.Item))
+                return;
+
+            ItemImageLinks.Remove(itemImageLink);
         }
 
         private async Task UpdateItemsAsync()

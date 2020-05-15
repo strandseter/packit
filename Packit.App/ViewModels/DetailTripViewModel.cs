@@ -18,6 +18,7 @@ using Packit.Extensions;
 using Packit.Model.Models;
 using System.Collections.Generic;
 using Packit.Model.NotifyPropertyChanged;
+using System.Net.Http;
 
 namespace Packit.App.ViewModels
 {
@@ -48,7 +49,7 @@ namespace Packit.App.ViewModels
             }
         }
 
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(LoadData));
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadData()));
         public ICommand ItemCommand { get; set; }
         public ICommand EditTripCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
@@ -228,11 +229,22 @@ namespace Packit.App.ViewModels
 
         private bool StringIsEqual(string firstString, string secondString) => firstString.Equals(secondString, StringComparison.CurrentCulture);
 
-        private async void LoadData()
+        private async Task LoadData()
         {
-            LoadBackpacks();
-            LoadItemsInBackpacks();
-            await LoadWeatherReportAsync();
+            try
+            {
+                LoadBackpacks();
+                LoadItemsInBackpacks();
+                await LoadWeatherReportAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void LoadBackpacks()

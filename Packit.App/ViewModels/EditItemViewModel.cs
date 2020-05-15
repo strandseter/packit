@@ -48,16 +48,13 @@ namespace Packit.App.ViewModels
                                                                     NavigationService.Navigate(typeof(ItemsPage));
                                                                 }
                                                                     
-                                                                else
-                                                                    DialogService.CouldNotSaveChanges();
+                                       
                                                             }
                                                             catch(HttpRequestException ex)
                                                             {
-                                                                DialogService.CouldNotSaveChanges(ex);
                                                             }
                                                             catch(Exception ex)
                                                             {
-                                                                DialogService.UnknownErrorOccurred(ex);
                                                             }
                                                         });
 

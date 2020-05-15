@@ -153,6 +153,7 @@
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />
     <Compile Include="Dictionaries\ConvertersDictionary.cs" />
     <Compile Include="Dictionaries\DataTemplatesDictionary.cs" />
+    <Compile Include="Services\PopupService.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Main.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\WeatherReport.cs" />
     <Compile Include="DataAccess\Http\WeatherDataAccess.cs" />
@@ -176,7 +177,6 @@
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="Services\DialogService.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Weather.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Wind.cs" />
     <Compile Include="ViewModels\BackpacksViewModel.cs" />
@@ -338,9 +338,9 @@
       <Project>{5efc0b8f-6c90-425c-aad7-d7dd32d9845c}</Project>
       <Name>Packit.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Packit.Model.Observable\Packit.Model.NotifyPorpertyChanged.csproj">
+    <ProjectReference Include="..\Packit.Model.Observable\Packit.Model.NotifyPropertyChanged.csproj">
       <Project>{D5FFD628-2E7E-409C-B7FC-C905E4E4A4ED}</Project>
-      <Name>Packit.Model.NotifyPorpertyChanged</Name>
+      <Name>Packit.Model.NotifyPropertyChanged</Name>
     </ProjectReference>
     <ProjectReference Include="..\Packit.Model\Packit.Model.csproj">
       <Project>{7AFD05F6-34AA-40C7-9B83-428081F13911}</Project>
