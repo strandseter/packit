@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,7 +14,7 @@ using Windows.Storage;
 
 namespace Packit.App.ViewModels
 {
-    public class NewTripViewModel : Observable
+    public class NewTripViewModel : ViewModel
     {
         private readonly IBasicDataAccess<Trip> tripsDataAccess = new BasicDataAccessFactory<Trip>().Create();
         private readonly IBasicDataAccess<Backpack> backpacksDataAcess = new BasicDataAccessFactory<Backpack>().Create();
@@ -26,7 +27,7 @@ namespace Packit.App.ViewModels
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand CandcelCommand { get; set; }
-        public ICommand NextCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
         public ICommand AddBackpackCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
         public ObservableCollection<BackpackWithItems> AvailableBackpacksWithitems { get; } = new ObservableCollection<BackpackWithItems>();
@@ -48,9 +49,27 @@ namespace Packit.App.ViewModels
                 SelectedBackpacksWithitems.Remove(param);
             }, param => param != null);
 
-            NextCommand = new RelayCommand(async () =>
+            SaveCommand = new RelayCommand(async () =>
             {
+                var failedUploads = new Collection<Backpack>();
+                var isSuccess = true;
 
+                if (!await tripsDataAccess.AddAsync(Trip))
+                    await PopupService.ShowCouldNotSaveChangesAsync(Trip.Title);
+
+                foreach (var backpackWithItems in SelectedBackpacksWithitems)
+                {
+                    if (await tripBackpackDataAccess.AddEntityToEntityAsync(Trip.TripId, backpackWithItems.Backpack.BackpackId))
+                        continue;
+
+                    failedUploads.Add(backpackWithItems.Backpack);
+                    isSuccess = false;
+                }
+
+                if (!isSuccess)
+                    await CouldNotSave(failedUploads);
+
+                NavigationService.GoBack();
             });
         }
 

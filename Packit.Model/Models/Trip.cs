@@ -7,7 +7,7 @@ namespace Packit.Model
     public class Trip : BaseInformation, ICloneable
     {
         private string destination;
-        private DateTime depatureDate;
+        private DateTimeOffset depatureDate = DateTimeOffset.Now;
 
         public int TripId { get; set; }
         public virtual ICollection<BackpackTrip> Backpacks { get; } = new List<BackpackTrip>();
@@ -18,7 +18,7 @@ namespace Packit.Model
             set => Set(ref destination, value);
         }
 
-        public DateTime DepatureDate 
+        public DateTimeOffset DepatureDate 
         { 
             get => depatureDate;
             set => Set(ref depatureDate, value);

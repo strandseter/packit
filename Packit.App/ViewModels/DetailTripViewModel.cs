@@ -120,7 +120,7 @@ namespace Packit.App.ViewModels
 
             RemoveBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
             {
-                if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, param.Backpack.BackpackId))
+                if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, param.Backpack.BackpackId)) { }
                     Backpacks.Remove(param);
             });
 

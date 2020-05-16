@@ -66,9 +66,7 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7E8;"/>
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
-            
-            <winui:NavigationViewItem x:Uid="Shell_SelectBackpacks" Icon="Document" helpers:NavHelper.NavigateTo="views:SelectBackpacksPage" />
-            <winui:NavigationViewItem x:Uid="Shell_NewBackpack" Icon="Document" helpers:NavHelper.NavigateTo="views:NewBackpackPage" />
+
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior

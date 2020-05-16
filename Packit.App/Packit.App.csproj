@@ -184,10 +184,8 @@
     <Compile Include="ViewModels\EditItemViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\NewBackpackViewModel.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
     <Compile Include="ViewModels\NewTripViewModel.cs" />
-    <Compile Include="ViewModels\SelectBackpacksViewModel.cs" />
     <Compile Include="ViewModels\SelectItemsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TripsMainViewModel.cs" />
@@ -207,17 +205,11 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewBackpackPage.xaml.cs">
-      <DependentUpon>NewBackpackPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\NewItemPage.xaml.cs">
       <DependentUpon>NewItemPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewTripPage.xaml.cs">
       <DependentUpon>NewTripPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SelectBackpacksPage.xaml.cs">
-      <DependentUpon>SelectBackpacksPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectItemsPage.xaml.cs">
       <DependentUpon>SelectItemsPage.xaml</DependentUpon>
@@ -287,19 +279,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NewBackpackPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\NewItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NewTripPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SelectBackpacksPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

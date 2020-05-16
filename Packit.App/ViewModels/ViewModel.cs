@@ -11,13 +11,13 @@ namespace Packit.App.ViewModels
 {
     public class ViewModel : Observable
     {
-        protected async Task CouldNotSave<T>(ICollection<T> failedUpdates)
+        protected async Task CouldNotSave<T>(ICollection<T> failedUploads)
         {
-            if (failedUpdates == null) return;
+            if (failedUploads == null) return;
 
             var builder = new StringBuilder();
 
-            foreach (var failedUpdate in failedUpdates)
+            foreach (var failedUpdate in failedUploads)
                 builder.Append($"{failedUpdate}, ");
 
             await PopupService.ShowCouldNotSaveChangesAsync(builder.ToString());

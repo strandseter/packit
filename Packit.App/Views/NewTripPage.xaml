@@ -9,6 +9,8 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:datalinks="using:Packit.App.DataLinks"
     xmlns:model="using:Packit.Model"
+    xmlns:converters="using:Packit.App.Convertes"
+    xmlns:system="using:System"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -31,16 +33,24 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel MaxWidth="400" Grid.Row="0">
+
             <TextBox Header="Title"
                          FontSize="30"
                          Margin="0,5,0,5"
-                         Text=""/>
+                         Text="{x:Bind ViewModel.Trip.Title, Mode=TwoWay}"/>
             <TextBox Header="Description"
                          FontSize="30" Margin="0,5,0,5"
                          Height="200"
                          TextWrapping="Wrap"
-                         Text=""/>
-            <DatePicker Header="Depature date" FontSize="30"/>
+                         Text="{x:Bind ViewModel.Trip.Description, Mode=TwoWay}"/>
+            <TextBox Header="Destionation city"
+                     FontSize="30"
+                     Margin="0,5,0,5"
+                     Text="{x:Bind ViewModel.Trip.Destination, Mode=TwoWay}"/>
+            <CalendarDatePicker Header="Depature date"
+                                FontSize="30"
+                                Date="{x:Bind ViewModel.Trip.DepatureDate, Mode=TwoWay}"
+                                MinDate="{x:Bind ViewModel.Trip.DepatureDate, Mode=OneWay}"/>
             <StackPanel>
 
                 <TextBlock Text="Image" FontSize="30"/>

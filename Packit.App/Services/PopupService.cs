@@ -36,7 +36,7 @@ namespace Packit.App.Services
 
         public static async Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle)
         {
-            var message = new MessageDialog($"Could not save changes in {notUpdatingTitle}", "Could not save changes");
+            var message = new MessageDialog($"Could not upload: {notUpdatingTitle}", "Could not upload changes");
             message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
             await message.ShowAsync();
         }
