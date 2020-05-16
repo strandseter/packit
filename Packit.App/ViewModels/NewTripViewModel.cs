@@ -26,7 +26,7 @@ namespace Packit.App.ViewModels
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand CandcelCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
+        public ICommand NextCommand { get; set; }
         public ICommand AddBackpackCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
         public ObservableCollection<BackpackWithItems> AvailableBackpacksWithitems { get; } = new ObservableCollection<BackpackWithItems>();
@@ -48,15 +48,8 @@ namespace Packit.App.ViewModels
                 SelectedBackpacksWithitems.Remove(param);
             }, param => param != null);
 
-            SaveCommand = new RelayCommand(async () =>
+            NextCommand = new RelayCommand(async () =>
             {
-                if (await tripsDataAccess.AddAsync(Trip))
-                {
-                    foreach (var backpackWithItems in SelectedBackpacksWithitems)
-                    {
-                        
-                    }
-                }
 
             });
         }

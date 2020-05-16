@@ -19,10 +19,11 @@ using Packit.Model.Models;
 using System.Collections.Generic;
 using Packit.Model.NotifyPropertyChanged;
 using System.Net.Http;
+using System.Text;
 
 namespace Packit.App.ViewModels
 {
-    public class DetailTripViewModel : Observable
+    public class DetailTripViewModel : ViewModel
     {
         private readonly WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
@@ -49,7 +50,7 @@ namespace Packit.App.ViewModels
             }
         }
 
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadData()));
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand ItemCommand { get; set; }
         public ICommand EditTripCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
@@ -62,26 +63,24 @@ namespace Packit.App.ViewModels
         public ICommand ItemCheckedCommand { get; set; }
 
         public TripImageWeatherLink TripImageWeatherLink { get; set; }
-        public WeatherReport WeatherReport { get; set; }
         public ObservableCollection<BackpackWithItems> Backpacks { get; } = new ObservableCollection<BackpackWithItems>();
 
         public DetailTripViewModel()
         {
             EditTripCommand = new RelayCommand(async () =>
             {
-
                 if (!IsVisible)
                 {
                     CloneBackpackWithItemsList();
                     CloneTrip();
                 }
                     
-
                 if (IsVisible)
                 {
                     await UpdateBackpacksAsync();
                     await UpdateItemsAsync();
                     await UpdateTripAsync();
+                    await UpdateWeatherAsync();
                 }
 
                 IsVisible = !IsVisible;
@@ -139,35 +138,40 @@ namespace Packit.App.ViewModels
                     param.Backpack.IsShared = false;
             });
 
-            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param =>
+            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
+        }
+
+        private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
+        {
+            if (param.IsChecked)
             {
-                if (param.IsChecked)
+                var check = new Check()
                 {
-                    var check = new Check()
-                    {
-                        IsChecked = true,
-                        ItemId = param.Item.ItemId,
-                        BackpackId = param.BackpackWithItems.Backpack.BackpackId,
-                        UserId = 4
-                    };
+                    IsChecked = true,
+                    ItemId = param.Item.ItemId,
+                    BackpackId = param.BackpackWithItems.Backpack.BackpackId,
+                    UserId = 4
+                };
 
-                    if (await checksDataAccess.AddAsync(check))
-                    {
-                        param.Item.Check = check;
-                        param.Item.Check.IsChecked = true;
-                    }   
-                }
-
-                if (!param.IsChecked)
+                if (await checksDataAccess.AddAsync(check))
                 {
-                    if (await checksDataAccess.DeleteAsync(param.Item.Check))
-                        param.Item.Check.IsChecked = false;
+                    param.Item.Check = check;
+                    param.Item.Check.IsChecked = true;
                 }
-            });
+            }
+
+            if (!param.IsChecked)
+            {
+                if (await checksDataAccess.DeleteAsync(param.Item.Check))
+                    param.Item.Check.IsChecked = false;
+            }
         }
 
         private async Task UpdateItemsAsync()
         {
+            bool isSuccess = true;
+            ICollection<Item> failedUpdates = new Collection<Item>();
+
             for (int i = 0; i < Backpacks.Count; i++)
             {
                 for (int j = 0; j < Backpacks[i].Items.Count; j++)
@@ -177,16 +181,21 @@ namespace Packit.App.ViewModels
                     
                     if (!await itemDataAccess.UpdateAsync(Backpacks[i].Items[j]))
                     {
+                        isSuccess = false;
                         Backpacks[i].Items[j] = backpacksClone[i].Items[j];
-
-                        //Error box
                     }
                 }
             }
+
+            if (!isSuccess)
+                await CouldNotSave(failedUpdates);
         }
 
         private async Task UpdateBackpacksAsync()
         {
+            bool isSuccess = true;
+            ICollection<BackpackWithItems> failedUpdates = new Collection<BackpackWithItems>();
+
             for (int i = 0; i < Backpacks.Count; i++)
             {
                 if (StringIsEqual(Backpacks[i].Backpack.Title, backpacksClone[i].Backpack.Title))
@@ -196,11 +205,14 @@ namespace Packit.App.ViewModels
 
                 if (!await backpackDataAccess.UpdateAsync(Backpacks[i].Backpack))
                 {
+                    isSuccess = false;
+                    failedUpdates.Add(backpacksClone[i]);
                     Backpacks[i] = backpacksClone[i];
-
-                    //Error box
                 }
             }
+
+            if (!isSuccess)
+                await CouldNotSave(failedUpdates);
         }
 
         private async Task UpdateTripAsync()
@@ -212,24 +224,20 @@ namespace Packit.App.ViewModels
 
             if (!await tripDataAccess.UpdateAsync(TripImageWeatherLink.Trip))
             {
+                await PopupService.ShowCouldNotSaveChangesAsync(tripClone.Title);
                 TripImageWeatherLink.Trip = tripClone;
-
-                //Error box
             }
         }
 
         private async Task UpdateWeatherAsync()
         {
+            if (StringIsEqual(TripImageWeatherLink.Trip.Destination, tripClone.Destination))
+                return;
 
+            await LoadWeatherReportAsync();
         }
 
-        private void CloneBackpackWithItemsList() => backpacksClone = Backpacks.ToList().DeepClone();
-
-        private void CloneTrip() => tripClone = (Trip)TripImageWeatherLink.Trip.Clone();
-
-        private bool StringIsEqual(string firstString, string secondString) => firstString.Equals(secondString, StringComparison.CurrentCulture);
-
-        private async Task LoadData()
+        private async Task LoadDataAsync()
         {
             try
             {
@@ -239,11 +247,11 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                
+                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Page");
             }
             catch (Exception ex)
             {
-
+                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Page");
             }
         }
 
@@ -279,5 +287,9 @@ namespace Packit.App.ViewModels
         }
 
         public void Initialize(TripImageWeatherLink trip) => TripImageWeatherLink = trip;
+
+        private void CloneBackpackWithItemsList() => backpacksClone = Backpacks.ToList().DeepClone();
+
+        private void CloneTrip() => tripClone = (Trip)TripImageWeatherLink.Trip.Clone();
     }
 }

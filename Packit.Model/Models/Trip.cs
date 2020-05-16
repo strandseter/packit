@@ -10,28 +10,19 @@ namespace Packit.Model
         private DateTime depatureDate;
 
         public int TripId { get; set; }
+        public virtual ICollection<BackpackTrip> Backpacks { get; } = new List<BackpackTrip>();
+
         public string Destination 
         { 
             get => destination;
-            set
-            {
-                if (value == destination) return;
-                destination = value;
-                OnPropertyChanged(nameof(Destination));
-            }
+            set => Set(ref destination, value);
         }
+
         public DateTime DepatureDate 
         { 
             get => depatureDate;
-            set
-            {
-                if (value == depatureDate) return;
-                depatureDate = value;
-                OnPropertyChanged(nameof(DepatureDate));
-            }
+            set => Set(ref depatureDate, value);
         }
-
-        public virtual ICollection<BackpackTrip> Backpacks { get; } = new List<BackpackTrip>();
 
         public Trip()
         {

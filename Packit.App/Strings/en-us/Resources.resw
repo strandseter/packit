@@ -214,4 +214,12 @@
     <value>NewTrip</value>
     <comment>Navigation view item name for NewTrip</comment>
   </data>
+  <data name="Shell_SelectBackpacks.Content" xml:space="preserve">
+    <value>SelectBackpacks</value>
+    <comment>Navigation view item name for SelectBackpacks</comment>
+  </data>
+  <data name="Shell_NewBackpack.Content" xml:space="preserve">
+    <value>NewBackpack</value>
+    <comment>Navigation view item name for NewBackpack</comment>
+  </data>
 </root>

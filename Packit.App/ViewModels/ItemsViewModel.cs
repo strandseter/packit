@@ -18,7 +18,7 @@ using System.Net.Http;
 
 namespace Packit.App.ViewModels
 {
-    public class ItemsViewModel : Observable
+    public class ItemsViewModel : ViewModel
     {
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private ICommand loadedCommand;
@@ -37,7 +37,7 @@ namespace Packit.App.ViewModels
             }
         }
 
-        public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadData()));
+        public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
@@ -53,18 +53,6 @@ namespace Packit.App.ViewModels
             AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
         }
 
-        private async Task LoadData()
-        {
-            try
-            {
-                await LoadItemsAsync();
-                await LoadImagesAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopupService.ShowCouldNotLoadAsync(LoadData, "Items");
-            }
-        }
 
         private async Task EditItem()
         {
@@ -114,6 +102,20 @@ namespace Packit.App.ViewModels
             }
         }
 
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                await LoadItemsAsync();
+                await LoadImagesAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Items");
+            }
+        }
+
+
         protected virtual async Task LoadItemsAsync()
         {
             var items = await itemsDataAccess.GetAllAsync();
@@ -129,6 +131,5 @@ namespace Packit.App.ViewModels
         }
 
         private void CloneItemImageLinksList() => itemImageLinksClone = ItemImageLinks.ToList().DeepClone();
-        private bool StringIsEqual(string title1, string title2) => title1.Equals(title2, StringComparison.CurrentCulture);
     }
 }

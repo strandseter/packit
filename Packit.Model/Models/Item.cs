@@ -17,13 +17,8 @@ namespace Packit.Model
         [NotMapped]
         public Check Check 
         { 
-            get => check; 
-            set
-            {
-                if (value == check) return;
-                check = value;
-                OnPropertyChanged(nameof(Check));
-            }
+            get => check;
+            set => Set(ref check, value);
         }
 
         public Item()
