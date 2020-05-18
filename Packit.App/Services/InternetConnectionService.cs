@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.NetworkInformation;
 using Windows.Networking.Connectivity;
 
 namespace Packit.App.Services
@@ -7,14 +10,18 @@ namespace Packit.App.Services
     {
         public static bool IsConnected()
         {
-            IReadOnlyList<ConnectionProfile> connections = NetworkInformation.GetConnectionProfiles();
-
-            foreach (var con in connections)
+            try
             {
-                if (con == null) continue;
-                if (con.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess) return true;
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://www.google.com"))
+                {
+                    return true;
+                }
             }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
     }
 }

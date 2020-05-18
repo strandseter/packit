@@ -22,7 +22,7 @@ namespace Packit.App.Services
 
             StorageFile file = await picker.PickSingleFileAsync();
 
-            if (file is null)
+            if (file == null)
                 return null;
 
             return file;
@@ -30,6 +30,9 @@ namespace Packit.App.Services
 
         public static async Task<BitmapImage> StorageFileToBitmapImageAsync(StorageFile storageFile)
         {
+            if (storageFile == null)
+                throw new ArgumentNullException(nameof(storageFile));
+
             using (IRandomAccessStream fileStream = await storageFile?.OpenAsync(FileAccessMode.Read))
             {
                 BitmapImage bitmapImage = new BitmapImage();

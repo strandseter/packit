@@ -23,6 +23,17 @@ namespace Packit.App.ViewModels
             await PopupService.ShowCouldNotSaveChangesAsync(builder.ToString());
         }
 
+        protected static string GenerateImageName()
+        {
+            var random = new Random();
+
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var name = new string(Enumerable.Repeat(chars, 10)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return $"{name}.jpg";
+        }
+
         protected bool StringIsEqual(string firstString, string secondString) => firstString.Equals(secondString, StringComparison.CurrentCulture);
     }
 }

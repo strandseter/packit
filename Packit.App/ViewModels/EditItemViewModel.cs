@@ -19,12 +19,12 @@ namespace Packit.App.ViewModels
 {
     public class EditItemViewModel : Observable
     {
-        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
+        private readonly IBasicDataAccess<Model.Item> itemsDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private StorageFile localImage;
 
-        private ItemImageLink EditedItemImageLink { get; set; }
-        public ItemImageLink ItemImageLink { get; set;}
+        private DataLinks.ItemImageLink EditedItemImageLink { get; set; }
+        public DataLinks.ItemImageLink ItemImageLink { get; set;}
         
         public ICommand CancelCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
@@ -36,7 +36,7 @@ namespace Packit.App.ViewModels
         {
             CancelCommand = new RelayCommand(() => NavigationService.Navigate(typeof(ItemsPage)));
 
-            SaveCommand = new RelayCommand<ItemImageLink>(async param =>
+            SaveCommand = new RelayCommand<DataLinks.ItemImageLink>(async param =>
                                                         {
                                                             //if (localImage is null)
                                                             //    return;
@@ -69,6 +69,6 @@ namespace Packit.App.ViewModels
                                             });
         }
 
-        public void Initialize(ItemImageLink itemImageLink) => ItemImageLink = itemImageLink;
+        public void Initialize(DataLinks.ItemImageLink itemImageLink) => ItemImageLink = itemImageLink;
     }
 }

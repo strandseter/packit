@@ -29,14 +29,6 @@
                         <TextBox Text="{x:Bind Item.Description, Mode=TwoWay}"
                                  Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
                     </Grid>
-
-                    <TextBlock FontSize="15" 
-                               Style="{ThemeResource CaptionTextBlockStyle}" 
-                               Foreground="{ThemeResource SystemBaseMediumHighColor}">
-                        <Run Text="Used in"/>
-                        <Run Text="{x:Bind Item.Backpacks.Count, Mode=OneWay}"/>
-                        <Run Text="backpacks"/>
-                    </TextBlock>
                 </StackPanel>
             </StackPanel>
         </Grid>

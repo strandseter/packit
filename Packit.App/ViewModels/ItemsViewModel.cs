@@ -20,32 +20,27 @@ namespace Packit.App.ViewModels
 {
     public class ItemsViewModel : ViewModel
     {
-        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
+        private readonly IBasicDataAccess<Model.Item> itemsDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
         private ICommand loadedCommand;
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private bool isVisible;
-        private IList<ItemImageLink> itemImageLinksClone;
+        private IList<DataLinks.ItemImageLink> itemImageLinksClone;
 
         public bool IsVisible
         {
             get => isVisible;
-            set
-            {
-                if (value == isVisible) return;
-                isVisible = value;
-                OnPropertyChanged(nameof(IsVisible));
-            }
+            set => Set(ref isVisible, value);
         }
 
         public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
-        public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
+        public ObservableCollection<DataLinks.ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<DataLinks.ItemImageLink>();
 
         public ItemsViewModel()
         {
-            DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopupService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
+            DeleteCommand = new RelayCommand<DataLinks.ItemImageLink>(async param => { await PopupService.ShowDeleteDialogAsync(this.DeleteItemAsync, param, param.Item.Title); }
                                                                             ,param => param != null);
 
             EditCommand = new RelayCommand(async () => await EditItem());
@@ -70,7 +65,7 @@ namespace Packit.App.ViewModels
             IsVisible = !IsVisible;
         }
 
-        private async Task DeleteItemAsync(ItemImageLink itemImageLink)
+        private async Task DeleteItemAsync(DataLinks.ItemImageLink itemImageLink)
         {
             if (itemImageLink.Item.ImageStringName != null)
                 await DeleteItemAndImageRequestAsync(itemImageLink);
@@ -78,13 +73,13 @@ namespace Packit.App.ViewModels
                 await DeleteItemRequestAsync(itemImageLink);
         }
 
-        private async Task DeleteItemAndImageRequestAsync(ItemImageLink itemImageLink)
+        private async Task DeleteItemAndImageRequestAsync(DataLinks.ItemImageLink itemImageLink)
         {
             if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName))
                 ItemImageLinks.Remove(itemImageLink);
         }
 
-        private async Task DeleteItemRequestAsync(ItemImageLink itemImageLink)
+        private async Task DeleteItemRequestAsync(DataLinks.ItemImageLink itemImageLink)
         {
             if (!await itemsDataAccess.DeleteAsync(itemImageLink.Item))
                 return;
@@ -121,7 +116,7 @@ namespace Packit.App.ViewModels
             var items = await itemsDataAccess.GetAllAsync();
 
             foreach (var i in items)
-                ItemImageLinks.Add(new ItemImageLink() { Item = i });
+                ItemImageLinks.Add(new DataLinks.ItemImageLink() { Item = i });
         }
 
         protected async Task LoadImagesAsync()

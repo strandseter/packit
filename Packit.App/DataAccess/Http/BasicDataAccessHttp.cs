@@ -18,7 +18,9 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> AddAsync(T entity)
         {
-            //var uri = new Uri($"{baseUri}/create");
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
             string json = JsonConvert.SerializeObject(entity);
@@ -35,6 +37,9 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> DeleteAsync(T entity)
         {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 
@@ -45,6 +50,9 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> UpdateAsync(T entity)
         {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
 

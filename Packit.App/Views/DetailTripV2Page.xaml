@@ -11,7 +11,6 @@
     xmlns:datalinks="using:Packit.App.DataLinks"
     xmlns:wrappers="using:Packit.App.Wrappers"
     xmlns:converters="using:Packit.App.Convertes"
-    xmlns:models="using:Packit.Model.Models"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 

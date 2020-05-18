@@ -35,7 +35,7 @@
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
-            <winui:NavigationViewItem x:Uid="Shell_Backpacks" helpers:NavHelper.NavigateTo="views:MainPage">
+            <winui:NavigationViewItem x:Uid="Shell_Backpacks" helpers:NavHelper.NavigateTo="views:BackpacksPage">
                 <winui:NavigationViewItem.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72E;"/>
                 </winui:NavigationViewItem.Icon>

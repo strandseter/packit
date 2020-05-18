@@ -8,9 +8,11 @@ using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
+using Packit.App.Views;
 using Packit.Model;
 using Packit.Model.NotifyPropertyChanged;
 using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.ViewModels
 {
@@ -22,76 +24,67 @@ namespace Packit.App.ViewModels
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private ICommand loadedCommand;
         private StorageFile localImage;
+        private BitmapImage tripImage;
 
         public Trip Trip { get; set; } = new Trip();
+        public BitmapImage TripImage
+        {
+            get => tripImage;
+            set => Set(ref tripImage, value);
+        }
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand CandcelCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
+        public ICommand NextCommand { get; set; }
+        public ICommand ImageDeviceCommand { get; set; }
         public ICommand AddBackpackCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
-        public ObservableCollection<BackpackWithItems> AvailableBackpacksWithitems { get; } = new ObservableCollection<BackpackWithItems>();
-        public ObservableCollection<BackpackWithItems> SelectedBackpacksWithitems { get; } = new ObservableCollection<BackpackWithItems>();
 
         public NewTripViewModel()
         {
             CandcelCommand = new RelayCommand(() => NavigationService.GoBack());
 
-            AddBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
+            ImageDeviceCommand = new RelayCommand(async () =>
             {
-                SelectedBackpacksWithitems.Add(param);
-                AvailableBackpacksWithitems.Remove(param);
-            },  param => param != null);
+                localImage = await FileService.GetImageFromDevice();
 
-            RemoveBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
+                if (localImage == null)
+                    return;
+
+                TripImage = await FileService.StorageFileToBitmapImageAsync(localImage);
+            });
+
+            NextCommand = new RelayCommand(async () =>
             {
-                AvailableBackpacksWithitems.Add(param);
-                SelectedBackpacksWithitems.Remove(param);
-            }, param => param != null);
-
-            SaveCommand = new RelayCommand(async () =>
-            {
-                var failedUploads = new Collection<Backpack>();
-                var isSuccess = true;
-
-                if (!await tripsDataAccess.AddAsync(Trip))
-                    await PopupService.ShowCouldNotSaveChangesAsync(Trip.Title);
-
-                foreach (var backpackWithItems in SelectedBackpacksWithitems)
+                if (localImage != null)
                 {
-                    if (await tripBackpackDataAccess.AddEntityToEntityAsync(Trip.TripId, backpackWithItems.Backpack.BackpackId))
-                        continue;
+                    var randomImageName = GenerateImageName();
+                    Trip.ImageStringName = randomImageName;
 
-                    failedUploads.Add(backpackWithItems.Backpack);
-                    isSuccess = false;
+                    if (!await tripsDataAccess.AddAsync(Trip) || !await imagesDataAccess.AddImageAsync(localImage, randomImageName))
+                    {
+                        await PopupService.ShowCouldNotSaveChangesAsync($"{Trip.Title} or {nameof(localImage)}");
+                        return;
+                    }
+
+                    NavigationService.Navigate(typeof(SelectBackpacksPage));
+                    return;
                 }
 
-                if (!isSuccess)
-                    await CouldNotSave(failedUploads);
+                if (!await tripsDataAccess.AddAsync(Trip))
+                {
+                    await PopupService.ShowCouldNotSaveChangesAsync(Trip.Title);
+                    return;
+                }
 
-                NavigationService.GoBack();
+                NavigationService.Navigate(typeof(SelectBackpacksPage), Trip);
             });
         }
 
         private async Task LoadDataAsync()
         {
-            await LoadBackpacksAsync();
-            LoadItemsInBackpacks();
-        }
-
-        private async Task LoadBackpacksAsync()
-        {
-            var backpacks = await backpacksDataAcess.GetAllWithChildEntitiesAsync();
-
-            foreach (var backpack in backpacks)
-                AvailableBackpacksWithitems.Add(new BackpackWithItems(backpack));
-        }
-
-        private void LoadItemsInBackpacks()
-        {
-            foreach (var bwi in AvailableBackpacksWithitems)
-                foreach (var itemBackpack in bwi.Backpack.Items)
-                    bwi.Items.Add(itemBackpack.Item);
+            //await LoadBackpacksAsync();
+            //LoadItemsInBackpacks();
         }
     }
 }

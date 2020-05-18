@@ -10,28 +10,18 @@ namespace Packit.App.DataLinks
     public class ItemImageLink : Observable
     {
         private BitmapImage image;
-        private Item item;
+        private Model.Item item;
 
         public BitmapImage Image
         {
             get => image;
-            set
-            {
-                if (value == image) return;
-                image = value;
-                OnPropertyChanged(nameof(Image));
-            }
+            set => Set(ref image, value);
         }
 
-        public Item Item
+        public Model.Item Item
         {
             get => item;
-            set
-            {
-                if (value == item) return;
-                item = value;
-                OnPropertyChanged(nameof(Item));
-            }
+            set => Set(ref item, value);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Packit.App.Wrappers
     {
         public static readonly DependencyProperty ItemProperty =
             DependencyProperty.Register(
-                "Item", typeof(Item),
+                "Item", typeof(Model.Item),
                 typeof(ItemBackpackWrapper), null);
 
         public static readonly DependencyProperty BackpackWithItemsProperty =
@@ -22,9 +22,9 @@ namespace Packit.App.Wrappers
                "BackpackWithItems", typeof(BackpackWithItems),
                typeof(ItemBackpackWrapper), null);
 
-        public Item Item
+        public Model.Item Item
         {
-            get { return (Item)GetValue(ItemProperty); }
+            get { return (Model.Item)GetValue(ItemProperty); }
             set { SetValue(ItemProperty, value); }
         }
 

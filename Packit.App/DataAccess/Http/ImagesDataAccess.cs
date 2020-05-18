@@ -17,17 +17,20 @@ namespace Packit.App.DataAccess
 
         public async Task<BitmapImage> GetImageAsync(string imageStringName, string fallbackImageStringPath)
         {
-            var fallbackImage = new Uri(fallbackImageStringPath);
+            var uriIsCreated = Uri.TryCreate(fallbackImageStringPath, UriKind.Absolute, out Uri fallbackImage);
 
-            if (imageStringName == null)
-                return new BitmapImage(fallbackImage);
+            if (!uriIsCreated)
+                return new BitmapImage(new Uri("ms-appx:///Assets/grey.jpg"));
 
             if (!InternetConnectionService.IsConnected())
                 return new BitmapImage(fallbackImage);
 
+            if (string.IsNullOrEmpty(imageStringName))
+                return new BitmapImage(fallbackImage);
+
             var uri = new Uri($"{baseUri}{imageStringName}");
 
-            BitmapImage bitmap = new BitmapImage();
+            var bitmap = new BitmapImage();
 
             HttpResponseMessage response = await httpClient.GetAsync(uri);
 
@@ -43,6 +46,9 @@ namespace Packit.App.DataAccess
         {
             if (file == null)
                 return false;
+
+            if (string.IsNullOrWhiteSpace(fileName))
+               return false;
 
             byte[] fileBytes = await FileToBytesAsync(file);
 

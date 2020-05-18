@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataLinks
 {
-    public class BackpackWithItems : Observable, ICloneable
+    public class BackpackWithItems : Observable
     {
-        private ObservableCollection<Item> items;
+        private ObservableCollection<Model.Item> items;
         private Backpack backpack;
 
         public Backpack Backpack
@@ -25,7 +25,7 @@ namespace Packit.App.DataLinks
                 OnPropertyChanged(nameof(Backpack));
             }
         }
-        public ObservableCollection<Item> Items
+        public ObservableCollection<Model.Item> Items
         {
             get => items;
             set
@@ -38,8 +38,7 @@ namespace Packit.App.DataLinks
         public BackpackWithItems(Backpack backpack)
         {
             Backpack = backpack;
-            Items = new ObservableCollection<Item>();
+            Items = new ObservableCollection<Model.Item>();
         }
-        public object Clone() => MemberwiseClone();
     }
 }

@@ -27,10 +27,10 @@ namespace Packit.App.ViewModels
     {
         private readonly WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
-        private readonly IBasicDataAccess<Item> itemDataAccess = new BasicDataAccessFactory<Item>().Create();
+        private readonly IBasicDataAccess<Model.Item> itemDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
         private readonly IBasicDataAccess<Trip> tripDataAccess = new BasicDataAccessFactory<Trip>().Create();
         private readonly IBasicDataAccess<Check> checksDataAccess = new BasicDataAccessFactory<Check>().Create();
-        private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
+        private readonly IRelationDataAccess<Backpack, Model.Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Model.Item>().Create();
         private readonly IRelationDataAccess<Trip, Backpack> tripBackpackDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
 
         private ICommand loadedCommand;
@@ -70,18 +70,10 @@ namespace Packit.App.ViewModels
             EditTripCommand = new RelayCommand(async () =>
             {
                 if (!IsVisible)
-                {
-                    CloneBackpackWithItemsList();
-                    CloneTrip();
-                }
+                    Clone();   
                     
                 if (IsVisible)
-                {
-                    await UpdateBackpacksAsync();
-                    await UpdateItemsAsync();
-                    await UpdateTripAsync();
-                    await UpdateWeatherAsync();
-                }
+                    await Update();
 
                 IsVisible = !IsVisible;
             });
@@ -100,9 +92,7 @@ namespace Packit.App.ViewModels
                     if (param.Item.Check != null)
                     {
                         if (await checksDataAccess.DeleteAsync(param.Item.Check))
-                        {
                             param.Item.Check.IsChecked = false;
-                        }
                     }
                 }
             });
@@ -141,6 +131,20 @@ namespace Packit.App.ViewModels
             ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
         }
 
+        private async Task Update()
+        {
+            await UpdateBackpacksAsync();
+            await UpdateItemsAsync();
+            await UpdateTripAsync();
+            await UpdateWeatherAsync();
+        }
+
+        private void Clone()
+        {
+            CloneBackpackWithItemsList();
+            CloneTrip();
+        }
+
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
         {
             if (param.IsChecked)
@@ -170,7 +174,7 @@ namespace Packit.App.ViewModels
         private async Task UpdateItemsAsync()
         {
             bool isSuccess = true;
-            ICollection<Item> failedUpdates = new Collection<Item>();
+            ICollection<Model.Item> failedUpdates = new Collection<Model.Item>();
 
             for (int i = 0; i < Backpacks.Count; i++)
             {
@@ -247,11 +251,7 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Page");
-            }
-            catch (Exception ex)
-            {
-                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Page");
+                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Weather");
             }
         }
 

@@ -150,6 +150,7 @@
     <Compile Include="Convertes\ListViewBaseToSelectedItemsConverter.cs" />
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
     <Compile Include="DataLinks\BackpackWithItems.cs" />
+    <Compile Include="DataLinks\BackpackWithItemsWithImages.cs" />
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />
     <Compile Include="Dictionaries\ConvertersDictionary.cs" />
     <Compile Include="Dictionaries\DataTemplatesDictionary.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
     <Compile Include="ViewModels\NewTripViewModel.cs" />
+    <Compile Include="ViewModels\SelectBackpacksViewModel.cs" />
     <Compile Include="ViewModels\SelectItemsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TripsMainViewModel.cs" />
@@ -211,6 +213,9 @@
     <Compile Include="Views\NewTripPage.xaml.cs">
       <DependentUpon>NewTripPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SelectBackpacksPage.xaml.cs">
+      <DependentUpon>SelectBackpacksPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SelectItemsPage.xaml.cs">
       <DependentUpon>SelectItemsPage.xaml</DependentUpon>
     </Compile>
@@ -223,6 +228,7 @@
     <Compile Include="Wrappers\BackpackTripWrapper.cs" />
     <Compile Include="Wrappers\ItemBackpackBoolWrapper.cs" />
     <Compile Include="Wrappers\ItemBackpackWrapper.cs" />
+    <Compile Include="Wrappers\ItemImageBackpackWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -284,6 +290,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NewTripPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SelectBackpacksPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
