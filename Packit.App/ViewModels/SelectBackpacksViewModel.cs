@@ -51,12 +51,6 @@ namespace Packit.App.ViewModels
                 isSuccess = false;
         }
 
-        //private async Task UpdateSelectedTrip()
-        //{
-        //    var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTrip);
-        //    SelectedTrip = updatedTrip;
-        //}
-
         protected override async Task LoadBackpacksAsync()
         {
             var backpacksWithItems = await backpacksDataAccess.GetAllWithChildEntitiesAsync();
@@ -72,12 +66,6 @@ namespace Packit.App.ViewModels
                 }
 
                 BackpackWithItemsWithImagess.Add(backpackWithItemsWithImages);
-
-                //foreach (var b in SelectedTrip.Backpacks)
-                //{
-                //    if (b.BackpackId == backpack.BackpackId)
-                //        BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
-                //}
             }
         }
 
