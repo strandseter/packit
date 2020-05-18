@@ -16,7 +16,7 @@ namespace Packit.App.ViewModels
     public class BackpacksViewModel : Observable
     {
         private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
-        private readonly IBasicDataAccess<Model.Item> itemsDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
+        private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private bool isVisible;
 

@@ -67,7 +67,7 @@ namespace Packit.App.ViewModels
                         return;
                     }
 
-                    NavigationService.Navigate(typeof(SelectBackpacksPage));
+                    NavigationService.Navigate(typeof(SelectBackpacksPage), Trip);
                     return;
                 }
 

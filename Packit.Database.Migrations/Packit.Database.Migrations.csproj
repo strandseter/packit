@@ -24,6 +24,8 @@
     <Compile Remove="Migrations\20200509135326_cascade.Designer.cs" />
     <Compile Remove="Migrations\20200512081944_relationitem.cs" />
     <Compile Remove="Migrations\20200512081944_relationitem.Designer.cs" />
+    <Compile Remove="Migrations\20200518151201_tripIdCheck.cs" />
+    <Compile Remove="Migrations\20200518151201_tripIdCheck.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

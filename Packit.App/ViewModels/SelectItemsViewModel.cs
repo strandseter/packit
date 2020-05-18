@@ -84,7 +84,7 @@ namespace Packit.App.ViewModels
             }
         }
 
-        public void Initialize(BackpackTripWrapper backpackTrip)
+        internal void Initialize(BackpackTripWrapper backpackTrip)
         {
             SelectedBackpackWithItems = backpackTrip?.Backpack;
             SelectedTrip = backpackTrip?.Trip;

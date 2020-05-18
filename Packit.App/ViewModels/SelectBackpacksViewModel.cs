@@ -20,7 +20,7 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private bool isSuccess = true;
 
-        public TripImageWeatherLink SelectedTrip { get; set; }
+        public Trip SelectedTrip { get; set; }
 
         public ICommand DoneSelectingBackpacksCommand { get; set; }
         public ICommand CancelCommand { get; set; }
@@ -37,8 +37,8 @@ namespace Packit.App.ViewModels
 
                 if (isSuccess)
                 {
-                    await UpdateSelectedTrip();
-                    NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                    //await UpdateSelectedTrip();
+                    NavigationService.Navigate(typeof(TripsMainPage));
                 }
             });
 
@@ -47,15 +47,15 @@ namespace Packit.App.ViewModels
 
         private async Task AddBackpackToTrip(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
-            if (!await backpackRelationDataAccess.AddEntityToEntityAsync(SelectedTrip.Trip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
+            if (!await backpackRelationDataAccess.AddEntityToEntityAsync(SelectedTrip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
                 isSuccess = false;
         }
 
-        private async Task UpdateSelectedTrip()
-        {
-            var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTrip.Trip);
-            SelectedTrip.Trip = updatedTrip;
-        }
+        //private async Task UpdateSelectedTrip()
+        //{
+        //    var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTrip);
+        //    SelectedTrip = updatedTrip;
+        //}
 
         protected override async Task LoadBackpacksAsync()
         {
@@ -66,16 +66,21 @@ namespace Packit.App.ViewModels
                 var backpackWithItemsWithImages = new BackpackWithItemsWithImages(backpack);
 
                 foreach (var itemBackpack in backpack.Items)
+                {
+                    itemBackpack.Item.Checks.Clear();
                     backpackWithItemsWithImages.ItemImageLinks.Add(new ItemImageLink() { Item = itemBackpack.Item });
+                }
 
                 BackpackWithItemsWithImagess.Add(backpackWithItemsWithImages);
 
-                foreach (var b in SelectedTrip.Trip.Backpacks)
-                {
-                    if (b.BackpackId == backpack.BackpackId)
-                        BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
-                }
+                //foreach (var b in SelectedTrip.Backpacks)
+                //{
+                //    if (b.BackpackId == backpack.BackpackId)
+                //        BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
+                //}
             }
         }
+
+        internal void Initialize(Trip trip) => SelectedTrip = trip;
     }
 }

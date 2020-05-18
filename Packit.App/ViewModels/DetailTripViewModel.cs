@@ -154,6 +154,7 @@ namespace Packit.App.ViewModels
                     IsChecked = true,
                     ItemId = param.Item.ItemId,
                     BackpackId = param.BackpackWithItems.Backpack.BackpackId,
+                    TripId = TripImageWeatherLink.Trip.TripId,
                     UserId = 4
                 };
 
@@ -174,7 +175,7 @@ namespace Packit.App.ViewModels
         private async Task UpdateItemsAsync()
         {
             bool isSuccess = true;
-            ICollection<Model.Item> failedUpdates = new Collection<Model.Item>();
+            ICollection<Item> failedUpdates = new Collection<Item>();
 
             for (int i = 0; i < Backpacks.Count; i++)
             {
@@ -269,7 +270,7 @@ namespace Packit.App.ViewModels
                 {
                     foreach(var check in itemBackpack.Item.Checks)
                     {
-                        if(bwi.Backpack.BackpackId == check.BackpackId && itemBackpack.Item.ItemId == check.ItemId)
+                        if(bwi.Backpack.BackpackId == check.BackpackId && itemBackpack.Item.ItemId == check.ItemId && TripImageWeatherLink.Trip.TripId == check.TripId)
                         {
                             itemBackpack.Item.Check = check;
                             itemBackpack.Item.Check.IsChecked = true;
