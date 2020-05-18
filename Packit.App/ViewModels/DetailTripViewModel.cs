@@ -27,10 +27,10 @@ namespace Packit.App.ViewModels
     {
         private readonly WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
-        private readonly IBasicDataAccess<Model.Item> itemDataAccess = new BasicDataAccessFactory<Model.Item>().Create();
+        private readonly IBasicDataAccess<Item> itemDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly IBasicDataAccess<Trip> tripDataAccess = new BasicDataAccessFactory<Trip>().Create();
         private readonly IBasicDataAccess<Check> checksDataAccess = new BasicDataAccessFactory<Check>().Create();
-        private readonly IRelationDataAccess<Backpack, Model.Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Model.Item>().Create();
+        private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
         private readonly IRelationDataAccess<Trip, Backpack> tripBackpackDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
 
         private ICommand loadedCommand;
@@ -51,11 +51,12 @@ namespace Packit.App.ViewModels
         }
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
-        public ICommand ItemCommand { get; set; }
         public ICommand EditTripCommand { get; set; }
+        public ICommand DeleteTripCommand { get; set; }
+        public ICommand CancelTripCommand { get; set; }
+        public ICommand AddBackpacksCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
         public ICommand DeleteBackpackCommand { get; set; }
-        public ICommand AddBackpackCommand { get; set; }
         public ICommand ShareBackpackCommand { get; set; }
         public ICommand AddItemToBackpackCommand { get; set; }
         public ICommand RemoveItemFromBackpackCommand { get; set; }
@@ -67,6 +68,17 @@ namespace Packit.App.ViewModels
 
         public DetailTripViewModel()
         {
+            CancelTripCommand = new RelayCommand(async () =>
+            {
+                var test = 0;
+            });
+
+            DeleteTripCommand = new RelayCommand(async () =>
+            {
+                if (await tripDataAccess.DeleteAsync(TripImageWeatherLink.Trip))
+                    NavigationService.GoBack();
+            });
+
             EditTripCommand = new RelayCommand(async () =>
             {
                 if (!IsVisible)
@@ -103,9 +115,9 @@ namespace Packit.App.ViewModels
                     param.BackpackWithItems.Items.Remove(param.Item);
             });
 
-            AddBackpackCommand = new RelayCommand<ItemBackpackWrapper>(param =>
+            AddBackpacksCommand = new RelayCommand<ItemBackpackWrapper>(param =>
             {
-                var dfgfdg = param;
+                NavigationService.Navigate(typeof(SelectBackpacksPage), TripImageWeatherLink.Trip);
             });
 
             RemoveBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>

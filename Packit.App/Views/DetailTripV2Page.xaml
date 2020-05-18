@@ -127,8 +127,7 @@
                             <Button.Flyout>
                                 <MenuFlyout>
                                     <MenuFlyoutItem Text="Add backpacks"
-                                                    Command="{Binding ElementName=lvBackpacks, Path=DataContext.AddItemToBackpackCommand}"
-                                                    CommandParameter="{x:Bind}"
+                                                    Command="{x:Bind ViewModel.AddBackpacksCommand}"
                                                     Margin="0,0,10,0">
                                         <MenuFlyoutItem.Icon>
                                             <FontIcon Glyph="&#xE710;"/>
@@ -136,15 +135,13 @@
                                     </MenuFlyoutItem>
                                     <MenuFlyoutSeparator/>
                                     <MenuFlyoutItem Text="Cancel trip"
-                                                    Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
-                                                    CommandParameter="{x:Bind}">
+                                                    Command="{x:Bind ViewModel.CancelTripCommand}">
                                         <MenuFlyoutItem.Icon>
                                             <FontIcon Glyph="&#xE711;"/>
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                     <MenuFlyoutItem Text="Delete trip"
-                                                    Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteBackpackCommand}"
-                                                    CommandParameter="{x:Bind}">
+                                                    Command="{x:Bind ViewModel.DeleteTripCommand}">
                                         <MenuFlyoutItem.Icon>
                                             <FontIcon Glyph="&#xE74D;"/>
                                         </MenuFlyoutItem.Icon>
