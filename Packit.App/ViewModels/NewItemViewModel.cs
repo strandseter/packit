@@ -8,7 +8,6 @@ using Packit.App.DataAccess;
 using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
-using Packit.App.InputValidation;
 using Packit.App.Services;
 using Packit.Model;
 using Windows.Storage;

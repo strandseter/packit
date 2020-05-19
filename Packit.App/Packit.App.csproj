@@ -154,7 +154,6 @@
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />
     <Compile Include="Dictionaries\ConvertersDictionary.cs" />
     <Compile Include="Dictionaries\DataTemplatesDictionary.cs" />
-    <Compile Include="InputValidation\ItemValidation.cs" />
     <Compile Include="Services\PopupService.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Main.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\WeatherReport.cs" />
@@ -184,9 +183,11 @@
     <Compile Include="ViewModels\DetailTripViewModel.cs" />
     <Compile Include="ViewModels\EditItemViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
     <Compile Include="ViewModels\NewTripViewModel.cs" />
+    <Compile Include="ViewModels\RegisterUserViewModel.cs" />
     <Compile Include="ViewModels\SelectBackpacksViewModel.cs" />
     <Compile Include="ViewModels\SelectItemsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -204,6 +205,9 @@
     <Compile Include="Views\ItemsPage.xaml.cs">
       <DependentUpon>ItemsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -212,6 +216,9 @@
     </Compile>
     <Compile Include="Views\NewTripPage.xaml.cs">
       <DependentUpon>NewTripPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegisterUserPage.xaml.cs">
+      <DependentUpon>RegisterUserPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectBackpacksPage.xaml.cs">
       <DependentUpon>SelectBackpacksPage.xaml</DependentUpon>
@@ -281,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -290,6 +301,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NewTripPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RegisterUserPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -67,6 +67,8 @@
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
+            <winui:NavigationViewItem x:Uid="Shell_RegisterUser" Icon="Document" helpers:NavHelper.NavigateTo="views:RegisterUserPage" />
+            <winui:NavigationViewItem x:Uid="Shell_Login" Icon="Document" helpers:NavHelper.NavigateTo="views:LoginPage" />
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior

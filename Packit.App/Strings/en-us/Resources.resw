@@ -222,4 +222,12 @@
     <value>NewBackpack</value>
     <comment>Navigation view item name for NewBackpack</comment>
   </data>
+  <data name="Shell_RegisterUser.Content" xml:space="preserve">
+    <value>RegisterUser</value>
+    <comment>Navigation view item name for RegisterUser</comment>
+  </data>
+  <data name="Shell_Login.Content" xml:space="preserve">
+    <value>Login</value>
+    <comment>Navigation view item name for Login</comment>
+  </data>
 </root>
