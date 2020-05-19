@@ -29,23 +29,9 @@ namespace Packit.App.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand ImageDeviceCommand { get; set; }
 
-        public bool ItemHasErrors
-        {
-            get => itemHasErrors;
-            set => Set(ref itemHasErrors, value);
-        }
-
-        public string TitleErrorMessage
-        {
-            get => titleErrorMessage;
-            set => Set(ref titleErrorMessage, value);
-        }
-
-        public string DescriptionErrorMessage
-        {
-            get => descriptionErrorMessage;
-            set => Set(ref descriptionErrorMessage, value);
-        }
+        public bool ItemHasErrors { get => itemHasErrors; set => Set(ref itemHasErrors, value); }
+        public string TitleErrorMessage{ get => titleErrorMessage; set => Set(ref titleErrorMessage, value); }
+        public string DescriptionErrorMessage { get => descriptionErrorMessage; set => Set(ref descriptionErrorMessage, value); }
 
         public NewItemViewModel()
         {
