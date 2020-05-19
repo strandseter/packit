@@ -60,7 +60,7 @@ namespace Packit.App.ViewModels
 
             DeviceCommand = new RelayCommand(async () =>
                                             {
-                                                localImage = await FileService.GetImageFromDevice();
+                                                localImage = await FileService.GetImageFromDeviceAsync();
 
                                                 if (localImage is null)
                                                     return;

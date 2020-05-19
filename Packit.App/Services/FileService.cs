@@ -11,7 +11,7 @@ namespace Packit.App.Services
 {
     public static class FileService
     {
-        public static async Task<StorageFile> GetImageFromDevice()
+        public static async Task<StorageFile> GetImageFromDeviceAsync()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker
             {

@@ -34,6 +34,19 @@ namespace Packit.App.ViewModels
             return $"{name}.jpg";
         }
 
+        protected string InputErrorMessage(IEnumerable errors)
+        {
+            if (errors == null)
+                return "";
+
+            var builder = new StringBuilder();
+
+            foreach (var message in errors)
+                builder.Append($"{message.ToString()}\n");
+
+            return builder.ToString();
+        }
+
         protected bool StringIsEqual(string firstString, string secondString) => firstString.Equals(secondString, StringComparison.CurrentCulture);
     }
 }

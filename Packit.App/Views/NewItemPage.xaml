@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
         <Grid.ColumnDefinitions>
@@ -58,15 +60,25 @@
 
         <Grid x:Name="FirstGrid" Grid.Column="0">
             <StackPanel Margin="20,10,20,10">
-                <TextBox Header="Title"
+
+                <TextBox Name="titleTextbox"
+                         Header="Title"
                          FontSize="30"
-                         Margin="0,5,0,5"
+                         Margin="0,5,0,0"
                          Text="{x:Bind ViewModel.ItemImageLink.Item.Title, Mode=TwoWay}"/>
+                <TextBlock Height="20"
+                           Visibility="{x:Bind ViewModel.ItemHasErrors, Mode=OneWay}"
+                           Text="{x:Bind ViewModel.TitleErrorMessage, Mode=OneWay}">
+                    
+                </TextBlock>
                 <TextBox Header="Description"
-                         FontSize="30" Margin="0,5,0,5"
+                         FontSize="30" Margin="0,5,0,0"
                          Height="200"
                          TextWrapping="Wrap"
                          Text="{x:Bind ViewModel.ItemImageLink.Item.Description, Mode=TwoWay}"/>
+                <TextBlock Height="20"
+                           Visibility="{x:Bind ViewModel.ItemHasErrors, Mode=OneWay}"
+                           Text="{x:Bind ViewModel.DescriptionErrorMessage, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
 

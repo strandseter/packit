@@ -38,7 +38,7 @@ namespace Packit.App.ViewModels
                 if (isSuccess)
                 {
                     //await UpdateSelectedTrip();
-                    NavigationService.Navigate(typeof(DetailTripV2Page), );
+                    //NavigationService.Navigate(typeof(DetailTripV2Page), );
                 }
             });
 
