@@ -23,6 +23,7 @@ namespace Packit.App.ViewModels
         private readonly KeyboardAccelerator _backKeyboardAccelerator = BuildKeyboardAccelerator(VirtualKey.GoBack);
 
         private bool _isBackEnabled;
+        private bool _isVisible;
         private IList<KeyboardAccelerator> _keyboardAccelerators;
         private WinUI.NavigationView _navigationView;
         private WinUI.NavigationViewItem _selected;
@@ -33,6 +34,12 @@ namespace Packit.App.ViewModels
         {
             get { return _isBackEnabled; }
             set { Set(ref _isBackEnabled, value); }
+        }
+
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set { Set(ref _isVisible, value); }
         }
 
         public WinUI.NavigationViewItem Selected
@@ -93,6 +100,12 @@ namespace Packit.App.ViewModels
             Selected = _navigationView.MenuItems
                             .OfType<WinUI.NavigationViewItem>()
                             .FirstOrDefault(menuItem => IsMenuItemForPageType(menuItem, e.SourcePageType));
+
+            if (e.SourcePageType == typeof(MainPage))
+                IsVisible = true;
+
+            if (e.SourcePageType == typeof(LoginPage))
+                IsVisible = false;
         }
 
         private bool IsMenuItemForPageType(WinUI.NavigationViewItem menuItem, Type sourcePageType)

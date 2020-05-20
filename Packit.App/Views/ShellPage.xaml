@@ -24,6 +24,7 @@
         IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
         SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
         IsSettingsVisible="False"
+        IsPaneVisible="{x:Bind ViewModel.IsVisible, Mode=OneWay}"
         Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
         <winui:NavigationView.MenuItems>
 
@@ -61,14 +62,12 @@
 
             <winui:NavigationViewItem x:Uid="Shell_Profile" Icon="Contact" helpers:NavHelper.NavigateTo="views:MainPage" VerticalAlignment="Bottom"/>
 
-            <winui:NavigationViewItem x:Uid="Shell_LogOut" helpers:NavHelper.NavigateTo="views:MainPage" VerticalAlignment="Bottom">
+            <winui:NavigationViewItem x:Uid="Shell_LogOut" helpers:NavHelper.NavigateTo="views:LoginPage" VerticalAlignment="Bottom">
                 <winui:NavigationViewItem.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7E8;"/>
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
-            <winui:NavigationViewItem x:Uid="Shell_RegisterUser" Icon="Document" helpers:NavHelper.NavigateTo="views:RegisterUserPage" />
-            <winui:NavigationViewItem x:Uid="Shell_Login" Icon="Document" helpers:NavHelper.NavigateTo="views:LoginPage" />
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
             <behaviors:NavigationViewHeaderBehavior

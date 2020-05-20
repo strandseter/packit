@@ -44,7 +44,7 @@ namespace Packit.App
 
         private ActivationService CreateActivationService2()
         {
-            return new ActivationService(this, typeof(Views.LoginPage));
+            return new ActivationService(this, typeof(Views.LoginPage), new Lazy<UIElement>(CreateShell));
         }
 
         private UIElement CreateShell()

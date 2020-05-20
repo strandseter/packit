@@ -26,6 +26,7 @@ namespace Packit.Database.Api
                 return BadRequest(ModelState);
 
             var res = await Context.Items
+                .Where(i => i.UserId == userId)
                 .Include(i => i.Checks)
                 .ToListAsync();
 

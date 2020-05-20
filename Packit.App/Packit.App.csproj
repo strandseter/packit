@@ -149,6 +149,7 @@
     <Compile Include="Convertes\BooleanToVisibilityConverter.cs" />
     <Compile Include="Convertes\ListViewBaseToSelectedItemsConverter.cs" />
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
+    <Compile Include="DataAccess\Http\UserDataAccess.cs" />
     <Compile Include="DataLinks\BackpackWithItems.cs" />
     <Compile Include="DataLinks\BackpackWithItemsWithImages.cs" />
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Weather.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Wind.cs" />
+    <Compile Include="CurrentUserStorage.cs" />
     <Compile Include="ViewModels\BackpacksViewModel.cs" />
     <Compile Include="ViewModels\DetailTripViewModel.cs" />
     <Compile Include="ViewModels\EditItemViewModel.cs" />

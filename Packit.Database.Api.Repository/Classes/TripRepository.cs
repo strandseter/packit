@@ -28,6 +28,7 @@ namespace Packit.Database.Api.Repository.Classes
             //TODO: Better errorhandling? 
             //Eager loading
             var trips = await Context.Trips
+                .Where(t => t.UserId == userId)
                 .Include(t => t.Backpacks)
                     .ThenInclude(b => b.Backpack)
                         .ThenInclude(b => b.Items)

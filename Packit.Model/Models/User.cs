@@ -20,19 +20,7 @@ namespace Packit.Model
         public string FirstName 
         { 
             get => firstName;
-            set 
-            {
-                if (!Equals(firstName, value) || string.IsNullOrEmpty(value))
-                {
-                    if (string.IsNullOrEmpty(value))
-                        AddError(nameof(FirstName), "First name cannot be empty");
-                    else if (value.Length > 20)
-                        AddError(nameof(FirstName), "First name cannot be longer than 20 digits");
-                    else
-                        RemoveError(nameof(FirstName));
-                }
-                Set(ref firstName, value);
-            }
+            set => Set(ref firstName, value);
         }
         public string LastName 
         { 
@@ -65,9 +53,6 @@ namespace Packit.Model
         {
         }
 
-        public override string ToString()
-        {
-            return $"{FirstName} {LastName}, {UserId}";
-        }
+        public override string ToString() => $"{FirstName} {LastName}, {UserId}";
     }
 }

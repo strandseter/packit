@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 
@@ -41,11 +42,19 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public static async Task ShowUnknownErrorAsync(Func<bool> onGoBackExecute, string notLoadingTitl)
+        public static async Task ShowUnknownErrorAsync(string exeptionMessage)
         {
             var popup = new PopupMenu();
-            var message = new MessageDialog("An unknown error occured, please try again.", "Could not load");
-            message.Commands.Add(new UICommand("Go back", (command) => onGoBackExecute()));
+            var message = new MessageDialog("An unknown error occured", exeptionMessage);
+            message.Commands.Add(new UICommand("Ok", (command) => { return; }));
+            message.Commands.Add(new UICommand("Force close", (command) => CoreApplication.Exit()));
+            await message.ShowAsync();
+        }
+
+        public static async Task ShowCouldNotLogIn()
+        {
+            var message = new MessageDialog("Could not log in, please try again", "Failed to log in");
+            message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
             await message.ShowAsync();
         }
     }

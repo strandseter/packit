@@ -29,6 +29,7 @@ namespace Packit.Database.Api.Repository.Classes
                 return BadRequest(ModelState);
 
             var backpacks = await Context.Backpacks
+                .Where(b => b.UserId == userId)
                 .Include(b => b.Items)
                     .ThenInclude(i => i.Item)
                 .ToListAsync();

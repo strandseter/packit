@@ -16,7 +16,7 @@ namespace Packit.App.DataAccess
         public async Task<bool> AddEntityToEntityAsync(int leftId, int rightId)
         {
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/create");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             HttpResponseMessage result = await httpClient.PutAsync(uri, null);
 
@@ -26,7 +26,7 @@ namespace Packit.App.DataAccess
         public async Task<bool> DeleteEntityFromEntityAsync(int leftId, int rightId)
         {
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/delete");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             HttpResponseMessage result = await httpClient.DeleteAsync(uri);
 
@@ -36,7 +36,7 @@ namespace Packit.App.DataAccess
         public async Task<T2[]> GetEntitiesInEntityAsync(int id, string param)
         {
             var uri = new Uri($"{baseUri}/{id}/{param}");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", dummyToken);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             HttpResponseMessage result = await httpClient.GetAsync(uri);
             string json = await result.Content.ReadAsStringAsync();
