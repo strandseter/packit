@@ -26,6 +26,7 @@ namespace Packit.App.ViewModels
         private bool emailIsValid;
         private bool passwordIsValid;
         private bool repeatedPasswordIsValid;
+        private string registerErrorMessage = "";
         private string repeatedPassword = "";
         private string password = "";
         private string repeatedPasswordErrormessage = "";
@@ -46,6 +47,8 @@ namespace Packit.App.ViewModels
         public string RepeatedPassword { get => repeatedPassword; set => Set(ref repeatedPassword, value); }
         public string RepeatedPasswordErrormessage { get => repeatedPasswordErrormessage; set => Set(ref repeatedPasswordErrormessage, value); }
         public string PasswordErrormessage { get => passwordErrormessage; set => Set(ref passwordErrormessage, value); }
+        public string RegsiterErrorMessage { get => registerErrorMessage; set => Set(ref registerErrorMessage, value); }
+
         public ICollection<bool> UserInputStringtFields { get; } = new Collection<bool>();
         public bool UserInputIsValid { get; set; } = true;
 
@@ -63,14 +66,18 @@ namespace Packit.App.ViewModels
 
             RegisterCommand = new RelayCommand(async () =>
             {
-                UserInputStringtFields.Clear();
+                RegsiterErrorMessage = "";
 
+                UserInputStringtFields.Clear();
                 UserInputStringtFields.Add(FirstNameIsValid);
                 UserInputStringtFields.Add(LastNameIsValid);
                 UserInputStringtFields.Add(EmailIsValid);
 
                 if (!CheckUserInput())
+                {
+                    RegsiterErrorMessage = "Failed to register, please try again";
                     return;
+                }
 
                 await RegisterUser();
             });
@@ -107,21 +114,17 @@ namespace Packit.App.ViewModels
             try
             {
                 if (await userDataAccess.AddUserAsync(NewUser))
-                {
                     NavigationService.Navigate(typeof(MainPage));
-                }
                 else
-                {
-                    //Error
-                }
+                    registerErrorMessage = "Failed to register in, please try again";
             }
             catch (HttpRequestException ex)
             {
-                //Error message
+                await PopupService.ShowInternetConnectionErrorAsync(ex.Message);
             }
             catch (Exception ex)
             {
-                //Error message
+                await PopupService.ShowUnknownErrorAsync(ex.Message);
             }
             
         }

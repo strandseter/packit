@@ -51,6 +51,24 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
+        public static async Task ShowUnknownErrorAsync(string exeptionMessage, Action onBackExecute)
+        {
+            var popup = new PopupMenu();
+            var message = new MessageDialog("An unknown error occured", exeptionMessage);
+            message.Commands.Add(new UICommand("Ok", (command) => { return; }));
+            message.Commands.Add(new UICommand("Go back", (command) => onBackExecute()));
+            message.Commands.Add(new UICommand("Force close", (command) => CoreApplication.Exit()));
+            await message.ShowAsync();
+        }
+
+        public static async Task ShowInternetConnectionErrorAsync(string exeptionMessage)
+        {
+            var popup = new PopupMenu();
+            var message = new MessageDialog($"Please check your connection and try again\nError: {exeptionMessage}", "A connection error occured");
+            message.Commands.Add(new UICommand("Ok", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
         public static async Task ShowCouldNotLogIn()
         {
             var message = new MessageDialog("Could not log in, please try again", "Failed to log in");

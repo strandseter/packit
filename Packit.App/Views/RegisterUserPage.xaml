@@ -88,9 +88,13 @@
                                      Text="{x:Bind ViewModel.RepeatedPasswordErrormessage, Mode=OneWay}"/>
                     </StackPanel>
 
-                    <Button Content="Register"
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Register"
                             Margin="0,5,0,0"
                             Command="{x:Bind ViewModel.RegisterCommand}"/>
+                        <TextBlock Text="{x:Bind ViewModel.RegsiterErrorMessage, Mode=OneWay}" Margin="125,10,0,0"/>
+                    </StackPanel>
+                    
                     <Button Background="Transparent"
                             Padding="0,0,0,0"
                             Margin="0,20,0,0"

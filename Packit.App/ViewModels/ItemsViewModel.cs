@@ -9,10 +9,8 @@ using Packit.App.Services;
 using Packit.App.Views;
 using Packit.App.DataLinks;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using Packit.Extensions;
-using Packit.Model.NotifyPropertyChanged;
 using Packit.App.Helpers;
 using System.Net.Http;
 
@@ -40,7 +38,7 @@ namespace Packit.App.ViewModels
 
         public ItemsViewModel()
         {
-            DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopupService.ShowDeleteDialogAsync(this.DeleteItemAsync, param, param.Item.Title); }
+            DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopupService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
                                                                             ,param => param != null);
 
             EditCommand = new RelayCommand(async () => await EditItem());

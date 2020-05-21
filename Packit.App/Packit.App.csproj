@@ -187,6 +187,7 @@
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NewBackpackViewModel.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
     <Compile Include="ViewModels\NewTripViewModel.cs" />
     <Compile Include="ViewModels\RegisterUserViewModel.cs" />
@@ -212,6 +213,9 @@
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewBackpackPage.xaml.cs">
+      <DependentUpon>NewBackpackPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewItemPage.xaml.cs">
       <DependentUpon>NewItemPage.xaml</DependentUpon>
@@ -295,6 +299,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NewBackpackPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

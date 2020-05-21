@@ -7,6 +7,7 @@ using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
+using Packit.App.Views;
 using Packit.App.Wrappers;
 using Packit.Model;
 using Packit.Model.NotifyPropertyChanged;
@@ -53,7 +54,7 @@ namespace Packit.App.ViewModels
 
             AddCommand = new RelayCommand(async () =>
             {
-                var test = 1;
+                NavigationService.Navigate(typeof(NewBackpackPage));
             });
 
             RemoveItemCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>

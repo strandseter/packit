@@ -15,7 +15,16 @@ namespace Packit.App.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.Initialize(e?.Parameter as BackpackTripWrapper);
+
+            if (e.Parameter.GetType() == typeof(BackpackWithItemsWithImages))
+            {
+
+            }
+
+            if (e.Parameter.GetType() == typeof(BackpackTripWrapper))
+            {
+                ViewModel.Initialize(e?.Parameter as BackpackTripWrapper);
+            }
         }
     }
 }

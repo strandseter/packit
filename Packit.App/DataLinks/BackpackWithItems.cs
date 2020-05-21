@@ -12,33 +12,23 @@ namespace Packit.App.DataLinks
 {
     public class BackpackWithItems : Observable
     {
-        private ObservableCollection<Model.Item> items;
+        private ObservableCollection<Item> items;
         private Backpack backpack;
 
         public Backpack Backpack
         {
             get => backpack;
-            set
-            {
-                if (backpack == value) return;
-                backpack = value;
-                OnPropertyChanged(nameof(Backpack));
-            }
+            set => Set(ref backpack, value);
         }
-        public ObservableCollection<Model.Item> Items
+        public ObservableCollection<Item> Items
         {
             get => items;
-            set
-            {
-                if (items == value) return;
-                items = value;
-                OnPropertyChanged(nameof(Items));
-            }
+            set => Set(ref items, value);
         }
         public BackpackWithItems(Backpack backpack)
         {
             Backpack = backpack;
-            Items = new ObservableCollection<Model.Item>();
+            Items = new ObservableCollection<Item>();
         }
     }
 }

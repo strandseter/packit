@@ -43,8 +43,13 @@ namespace Packit.App.ViewModels
 
                 if (isSuccess)
                 {
-                    await UpdateSelectedTrip();
-                    NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                    if (SelectedTrip == null)
+                        NavigationService.Navigate(typeof(BackpacksPage));
+                    else
+                    {
+                        await UpdateSelectedTrip();
+                        NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                    }
                 }
             });
 

@@ -16,13 +16,14 @@ namespace Packit.App.ViewModels
         private UserDataAccess userDataAccess = new UserDataAccess();
         private string email;
         private string password;
+        private string loginErrorMessage;
 
         public ICommand RegisterCommand { get; set; }
         public ICommand LoginCommand { get; set; }
         public bool EmailIsValid { get; set; }
-
         public string Email { get => email; set => Set(ref email, value); }
         public string Password { get => password; set => Set(ref password, value); }
+        public string LoginErrorMessage { get => loginErrorMessage; set => Set(ref loginErrorMessage, value); }
 
         public LoginViewModel()
         {
@@ -32,9 +33,11 @@ namespace Packit.App.ViewModels
 
             LoginCommand = new RelayCommand(async () =>
             {
+                LoginErrorMessage = "";
+
                 if (!EmailIsValid)
                 {
-                    await PopupService.ShowCouldNotLogIn();
+                    LoginErrorMessage = "Failed to Log in, please try again";
                     return;
                 }
 
@@ -43,11 +46,11 @@ namespace Packit.App.ViewModels
                     if (await userDataAccess.AuthenticateUser(new User { Email = Email, HashedPassword = Password }))
                         NavigationService.Navigate(typeof(MainPage));
                     else
-                        await PopupService.ShowCouldNotLogIn();
+                        LoginErrorMessage = "Failed to Log in, please try again";
                 }
                 catch (HttpRequestException ex)
                 {
-                    await PopupService.ShowUnknownErrorAsync(ex.Message);
+                    await PopupService.ShowInternetConnectionErrorAsync(ex.Message);
                 }
 
                 catch (Exception ex)
