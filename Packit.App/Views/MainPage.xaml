@@ -4,15 +4,113 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:wrappers="using:Packit.App.Wrappers"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:datalinks="using:Packit.App.DataLinks"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.
-            -->
+            <ListView Name="lvBackpacks"
+                          ItemsSource="{x:Bind ViewModel.BackspackWithItemsWithImages, Mode=OneWay}"
+                          HorizontalAlignment="Stretch"
+                          Background="Black"
+                          Opacity="0.9" Margin="10"
+                          SelectionMode="None"
+                          DataContext="{x:Bind ViewModel}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="datalinks:BackpackWithItemsWithImages">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Bind Backpack.Title, Mode=OneWay}"
+                                               Style="{StaticResource TitleTextBlockStyle}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <controls:AdaptiveGridView x:Name="gvItems"
+                                                       DataContext="{x:Bind}"
+                                                       ItemsSource="{x:Bind ItemImageLinks, Mode=OneWay}"
+                                                       OneRowModeEnabled="False"
+                                                       SelectionMode="None"
+                                                       DesiredWidth="200">
+
+                                <controls:AdaptiveGridView.ItemTemplate>
+                                    <DataTemplate x:DataType="datalinks:ItemImageLink">
+                                        <StackPanel Orientation="Vertical"
+                                                    Height="auto"
+                                                    HorizontalAlignment="Stretch"
+                                                    Padding="5,1,5,1" 
+                                                    Background="LightGray" Opacity=".80">
+
+                                            
+                                             <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
+                                                        FontSize="20"
+                                                        Foreground="Black"/>
+
+                                            <TextBlock FontSize="15"
+                                                       Text="{x:Bind Item.Description, Mode=OneWay}"
+                                                       Style="{ThemeResource CaptionTextBlockStyle}" 
+                                                       Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
+
+                                            <StackPanel>
+
+                                                <StackPanel.Resources>
+                                                    <wrappers:ItemBackpackBoolWrapper x:Key="ItemBackpackBoolWrapper"
+                                                                                      Item="{x:Bind Item}"
+                                                                                      BackpackWithItemsWithImages="{Binding ElementName=gvItems, Path=DataContext}"
+                                                                                      IsChecked="{Binding ElementName=ItemCheckBox, Path=IsChecked}"/>
+                                                </StackPanel.Resources>
+
+                                                <CheckBox x:Name="ItemCheckBox"
+                                                          IsChecked="{x:Bind Item.Check.IsChecked, Mode=TwoWay}"
+                                                          Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
+                                                          CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
+                                            </StackPanel>
+
+                                        </StackPanel>
+
+                                    </DataTemplate>
+                                </controls:AdaptiveGridView.ItemTemplate>
+
+                                <GridView.ItemContainerStyle>
+                                    <Style TargetType="GridViewItem">
+                                        <Setter Property="Margin" Value="5, 5, 5, 5"/>
+                                        <Setter Property="MaxWidth" Value="250"/>
+                                    </Style>
+                                </GridView.ItemContainerStyle>
+
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                                                           Orientation="Horizontal"
+                                                           MaximumRowsOrColumns="5"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+
+                            </controls:AdaptiveGridView>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </Page>

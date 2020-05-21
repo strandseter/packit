@@ -234,4 +234,8 @@
     <value>Error</value>
     <comment>Navigation view item name for Error</comment>
   </data>
+  <data name="Shell_Splash.Content" xml:space="preserve">
+    <value>Splash</value>
+    <comment>Navigation view item name for Splash</comment>
+  </data>
 </root>

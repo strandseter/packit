@@ -2,6 +2,8 @@
 using Packit.App.DataLinks;
 using Packit.App.Helpers;
 using Packit.App.DataAccess.Http;
+using Packit.App.ThirdPartyApiModels;
+using Packit.App.ThirdPartyApiModels.Openweathermap;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
@@ -115,9 +117,7 @@ namespace Packit.App.ViewModels
             RemoveBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
                 if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, param.Backpack.BackpackId))
-                {
                     Backpacks.Remove(param);
-                }
             });
 
             DeleteBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
