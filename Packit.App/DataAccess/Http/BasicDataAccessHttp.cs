@@ -13,9 +13,6 @@ namespace Packit.App.DataAccess
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T).Name}s");
 
-        //TODO: Remove
-        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjQiLCJpZCI6IjQiLCJuYmYiOjE1ODczNzg4MDEsImV4cCI6MTYxMzI5ODgwMSwiaWF0IjoxNTg3Mzc4ODAxfQ.vjCQhH4TKQcFbmM42ZM2VCIYYRGO_49LEWm6zWuWK00";
-
         public async Task<bool> AddAsync(T entity)
         {
             if (entity == null)

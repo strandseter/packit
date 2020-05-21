@@ -15,5 +15,6 @@ namespace Packit.Database.Api.Repository.Interfaces
 
         Task<IActionResult> GetAllTripsWithBackpacksItemsChecksAsync(int userId);
         Task<IActionResult> GetTripByIdWithBackpacksItemsChecksAsync(int id, int user);
+        Task<IActionResult> GetNextTripWithBackpacksItemsChecksAsync(int userId);
     }
 }

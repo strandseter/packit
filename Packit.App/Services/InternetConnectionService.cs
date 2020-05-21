@@ -8,6 +8,7 @@ namespace Packit.App.Services
 {
     public static class InternetConnectionService
     {
+        //This has no real purpose. I did not get the time to include a local database in my project.
         public static bool IsConnected()
         {
             try
@@ -20,7 +21,7 @@ namespace Packit.App.Services
             }
             catch
             {
-                return false;
+                return true;
             }
         }
     }

@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
-using Packit.Database.Api.GenericRepository;
 using Packit.Database.Api.Repository.Generic;
 using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -55,6 +53,28 @@ namespace Packit.Database.Api.Repository.Classes
                                 .ThenInclude(b => b.Item)
                                     .ThenInclude(i => i.Checks)
                 .FirstOrDefaultAsync();
+
+            if (trip == null)
+                return NotFound();
+
+            return Ok(trip);
+        }
+
+        public async Task<IActionResult> GetNextTripWithBackpacksItemsChecksAsync(int userId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var trip = await Context.Trips
+                .Where(t => t.UserId == userId)
+                .Where(t => t.DepatureDate > DateTimeOffset.Now)
+                .Include(t => t.Backpacks)
+                        .ThenInclude(b => b.Backpack)
+                            .ThenInclude(b => b.Items)
+                                .ThenInclude(b => b.Item)
+                                    .ThenInclude(i => i.Checks)
+                .OrderBy(t => t.DepatureDate)
+                .FirstAsync();
 
             if (trip == null)
                 return NotFound();

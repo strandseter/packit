@@ -44,6 +44,11 @@ namespace Packit.Database.Api.Controllers
         [Route("{tripId}/backpacks")]
         public async Task<IActionResult> GetBackpacksInTrip([FromRoute] int tripId) => await repository.GetManyToManyAsync(tripId);
 
+        // GET: api/trips/next
+        [HttpGet]
+        [Route("next")]
+        public async Task<IActionResult> GetNextTrip() => await repository.GetNextTripWithBackpacksItemsChecksAsync(CurrentUserId());
+
         // PUT: api/trips/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTrip([FromRoute] int id, [FromBody] Trip trip) => await repository.UpdateAsync(id, trip, CurrentUserId());

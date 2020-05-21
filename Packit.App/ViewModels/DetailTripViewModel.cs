@@ -2,8 +2,6 @@
 using Packit.App.DataLinks;
 using Packit.App.Helpers;
 using Packit.App.DataAccess.Http;
-using Packit.App.ThirdPartyApiModels;
-using Packit.App.ThirdPartyApiModels.Openweathermap;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
@@ -17,9 +15,7 @@ using System.Linq;
 using Packit.Extensions;
 using Packit.Model.Models;
 using System.Collections.Generic;
-using Packit.Model.NotifyPropertyChanged;
 using System.Net.Http;
-using System.Text;
 
 namespace Packit.App.ViewModels
 {
@@ -42,13 +38,8 @@ namespace Packit.App.ViewModels
 
         public bool IsVisible
         {
-            get => isVisible; 
-            set
-            {
-                if (value == isVisible) return;
-                isVisible = value;
-                OnPropertyChanged(nameof(IsVisible));
-            }
+            get => isVisible;
+            set => Set(ref isVisible, value);
         }
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
