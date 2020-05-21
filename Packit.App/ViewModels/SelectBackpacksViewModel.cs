@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
+using Packit.App.Wrappers;
 using Packit.Model;
 
 namespace Packit.App.ViewModels
@@ -20,7 +22,9 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private bool isSuccess = true;
 
-        public Trip SelectedTrip { get; set; }
+        public Trip NewTrip { get; set; }
+        public TripImageWeatherLink SelectedTripImageWeatherLink { get; set; }
+        public ObservableCollection<BackpackWithItemsWithImages> SelectedBackpacks { get; set; } 
 
         public ICommand DoneSelectingBackpacksCommand { get; set; }
         public ICommand CancelCommand { get; set; }
@@ -32,23 +36,47 @@ namespace Packit.App.ViewModels
                 //This is a workaround. It is not possible to bind readonly "SelectedItems" in multiselect grid/list-view.
                 List<object> selectedItems = param.ToList();
 
-                foreach (var obj in selectedItems)
-                    await AddBackpackToTrip((BackpackWithItemsWithImages)obj);
-
-                if (isSuccess)
+                if (SelectedTripImageWeatherLink != null)
                 {
-                    //await UpdateSelectedTrip();
-                    //NavigationService.Navigate(typeof(DetailTripV2Page), );
+                    foreach (var obj in selectedItems)
+                        await AddBackpackToExistingTrip((BackpackWithItemsWithImages)obj);
+
+                    if (isSuccess)
+                    {
+                        await UpdateSelectedTrip();
+                        NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTripImageWeatherLink);
+                    }
+                }
+
+                if (NewTrip != null)
+                {
+                    foreach (var obj in selectedItems)
+                        await AddBackpackToNewtrip((BackpackWithItemsWithImages)obj);
+
+                    if (isSuccess)
+                        NavigationService.Navigate(typeof(TripsMainPage));
                 }
             });
 
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
         }
 
-        private async Task AddBackpackToTrip(BackpackWithItemsWithImages backpackWithItemsWithImages)
+        private async Task AddBackpackToNewtrip(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
-            if (!await backpackRelationDataAccess.AddEntityToEntityAsync(SelectedTrip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
+            if (!await backpackRelationDataAccess.AddEntityToEntityAsync(NewTrip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
                 isSuccess = false;
+        }
+
+        private async Task AddBackpackToExistingTrip(BackpackWithItemsWithImages backpackWithItemsWithImages)
+        {
+            if (!await backpackRelationDataAccess.AddEntityToEntityAsync(SelectedTripImageWeatherLink.Trip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
+                isSuccess = false;
+        }
+
+        private async Task UpdateSelectedTrip()
+        {
+            var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTripImageWeatherLink.Trip);
+            SelectedTripImageWeatherLink.Trip = updatedTrip;
         }
 
         protected override async Task LoadBackpacksAsync()
@@ -59,16 +87,32 @@ namespace Packit.App.ViewModels
             {
                 var backpackWithItemsWithImages = new BackpackWithItemsWithImages(backpack);
 
+                BackpackWithItemsWithImagess.Add(backpackWithItemsWithImages);
+
                 foreach (var itemBackpack in backpack.Items)
                 {
                     itemBackpack.Item.Checks.Clear();
                     backpackWithItemsWithImages.ItemImageLinks.Add(new ItemImageLink() { Item = itemBackpack.Item });
                 }
 
-                BackpackWithItemsWithImagess.Add(backpackWithItemsWithImages);
+                if (SelectedBackpacks == null)
+                    continue;
+
+                foreach (var b in SelectedBackpacks)
+                    if (b.Backpack.BackpackId == backpack.BackpackId)
+                        BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
             }
         }
 
-        internal void Initialize(Trip trip) => SelectedTrip = trip;
+        internal void Initialize(BackpackWithItemsWithImagesTripWrapper  backpackWithItemsWithImagesTripWrapper)
+        {
+            SelectedTripImageWeatherLink = backpackWithItemsWithImagesTripWrapper.TripImageWeatherLink;
+            SelectedBackpacks = backpackWithItemsWithImagesTripWrapper.BackpackWithItemsWithImages;
+        }
+
+        internal void Initialize(Trip trip)
+        {
+            NewTrip = trip;
+        }
     }
 }

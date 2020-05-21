@@ -27,7 +27,7 @@ namespace Packit.App.ViewModels
 
         public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public TripImageWeatherLink SelectedTrip { get; set; }
-        public BackpackWithItems SelectedBackpackWithItems { get; set; }
+        public BackpackWithItemsWithImages SelectedBackpackWithItemsWithImages { get; set; }
         public ICommand DoneSelectingItemsCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
@@ -64,7 +64,7 @@ namespace Packit.App.ViewModels
 
         private async Task AddItemTobackpack(ItemImageLink itemImageLink)
         {
-            if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItems.Backpack.BackpackId, itemImageLink.Item.ItemId))
+            if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItemsWithImages.Backpack.BackpackId, itemImageLink.Item.ItemId))
                 isSuccess = false;
         }
 
@@ -83,15 +83,15 @@ namespace Packit.App.ViewModels
                 var itemImageLink = new ItemImageLink() { Item = i };
                 ItemImageLinks.Add(itemImageLink);
 
-                foreach (var item in SelectedBackpackWithItems.Items)
-                    if (i.ItemId == item.ItemId)
+                foreach (var item in SelectedBackpackWithItemsWithImages.ItemImageLinks)
+                    if (i.ItemId == item.Item.ItemId)
                         ItemImageLinks.Remove(itemImageLink);
             }
         }
 
         internal void Initialize(BackpackTripWrapper backpackTrip)
         {
-            SelectedBackpackWithItems = backpackTrip?.Backpack;
+            SelectedBackpackWithItemsWithImages = backpackTrip?.Backpack;
             SelectedTrip = backpackTrip?.Trip;
         }
     }

@@ -23,7 +23,7 @@ namespace Packit.App.ViewModels
         private string titleErrorMessage;
         private string descriptionErrorMessage;
 
-        public ItemImageLink ItemImageLink { get; set; } = new ItemImageLink() { Item = new Item() };
+        public ItemImageLink ItemImageLink { get; set; } = new ItemImageLink() { Item = new Item() { Title = "", Description = ""} };
 
         public ICommand CancelCommand { get; set; }
         public ICommand SaveCommand { get; set; }

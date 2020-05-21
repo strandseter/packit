@@ -161,7 +161,7 @@
                           DataContext="{x:Bind ViewModel}">
 
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="datalinks:BackpackWithItems">
+                        <DataTemplate x:DataType="datalinks:BackpackWithItemsWithImages">
 
                             <StackPanel Orientation="Vertical">
 
@@ -235,13 +235,13 @@
 
                                 <controls:AdaptiveGridView x:Name="gvItems"
                                                            DataContext="{x:Bind}"
-                                                           ItemsSource="{x:Bind Items, Mode=OneWay}"
+                                                           ItemsSource="{x:Bind ItemImageLinks, Mode=OneWay}"
                                                            OneRowModeEnabled="False"
                                                            SelectionMode="None"
                                                            DesiredWidth="200">
 
                                     <controls:AdaptiveGridView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:Item">
+                                        <DataTemplate x:DataType="datalinks:ItemImageLink">
                                             <StackPanel Orientation="Vertical"
                                                             Height="auto"
                                                             HorizontalAlignment="Stretch"
@@ -249,22 +249,22 @@
                                                             Background="LightGray" Opacity=".80">
 
                                                     <Grid>
-                                                        <TextBlock Text="{x:Bind Title, Mode=OneWay}"
+                                                        <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
                                                                    FontSize="20"
                                                                    Foreground="Black"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
-                                                        <TextBox Text="{x:Bind Title, Mode=TwoWay}"
+                                                        <TextBox Text="{x:Bind Item.Title, Mode=TwoWay}"
                                                                  Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
                                                                  Margin="0,0,0,5"/>
                                                     </Grid>
                                                         
                                                     <Grid>
                                                         <TextBlock FontSize="15"
-                                                                   Text="{x:Bind Description, Mode=OneWay}"
+                                                                   Text="{x:Bind Item.Description, Mode=OneWay}"
                                                                    Style="{ThemeResource CaptionTextBlockStyle}" 
                                                                    Foreground="{ThemeResource SystemBaseMediumHighColor}"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
-                                                        <TextBox Text="{x:Bind Description, Mode=TwoWay}"
+                                                        <TextBox Text="{x:Bind Item.Description, Mode=TwoWay}"
                                                                  Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
                                                                  Margin="0,0,0,5"/>
                                                     </Grid>
@@ -273,7 +273,7 @@
                                                                     Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
                                                             <StackPanel.Resources>
-                                                        <wrappers:ItemBackpackWrapper x:Key="ItemBackpackWrapper" Item="{x:Bind}" BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"/>
+                                                        <wrappers:ItemImageBackpackWrapper x:Key="ItemBackpackWrapper" ItemImageLink="{x:Bind}" BackpackWithItemsWithImages="{Binding ElementName=gvItems, Path=DataContext}"/>
                                                             </StackPanel.Resources>
 
                                                             <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveItemFromBackpackCommand}"
@@ -293,13 +293,14 @@
 
                                                     <StackPanel.Resources>
                                                         <wrappers:ItemBackpackBoolWrapper x:Key="ItemBackpackBoolWrapper"
-                                                                                          Item="{x:Bind}"
-                                                                                          BackpackWithItems="{Binding ElementName=gvItems, Path=DataContext}"
+                                                                                          Item="{x:Bind Item}"
+                                                                                          BackpackWithItemsWithImages="{Binding ElementName=gvItems, Path=DataContext}"
                                                                                           IsChecked="{Binding ElementName=ItemCheckBox, Path=IsChecked}"/>
                                                     </StackPanel.Resources>
                                                     
                                                     <CheckBox x:Name="ItemCheckBox"
-                                                              IsChecked="{x:Bind Check.IsChecked, Mode=TwoWay}"
+                                                              Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"
+                                                              IsChecked="{x:Bind Item.Check.IsChecked, Mode=TwoWay}"
                                                               Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
                                                               CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
                                                 </StackPanel>    

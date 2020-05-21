@@ -9,7 +9,7 @@ namespace Packit.App.Wrappers
 {
     public class BackpackTripWrapper
     {
-        public BackpackWithItems Backpack { get; set; }
+        public BackpackWithItemsWithImages Backpack { get; set; }
         public TripImageWeatherLink Trip { get; set; }
     }
 }

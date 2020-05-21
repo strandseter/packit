@@ -1,6 +1,7 @@
 ﻿using System;
-
+using Packit.App.DataLinks;
 using Packit.App.ViewModels;
+using Packit.App.Wrappers;
 using Packit.Model;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -14,8 +15,16 @@ namespace Packit.App.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (e == null)
+                throw new ArgumentNullException(nameof(e));
+
             base.OnNavigatedTo(e);
-            ViewModel.Initialize(e?.Parameter as Trip);
+
+            if (e.Parameter.GetType() == typeof(BackpackWithItemsWithImagesTripWrapper))
+                ViewModel.Initialize(e?.Parameter as BackpackWithItemsWithImagesTripWrapper);
+
+            if (e.Parameter.GetType() == typeof(Trip))
+                ViewModel.Initialize(e.Parameter as Trip);
         }
     }
 }

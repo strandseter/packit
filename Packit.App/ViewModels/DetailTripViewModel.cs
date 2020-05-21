@@ -25,6 +25,7 @@ namespace Packit.App.ViewModels
 {
     public class DetailTripViewModel : ViewModel
     {
+        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private readonly WeatherDataAccess weatherDataAccess = new WeatherDataAccess();
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private readonly IBasicDataAccess<Item> itemDataAccess = new BasicDataAccessFactory<Item>().Create();
@@ -36,7 +37,7 @@ namespace Packit.App.ViewModels
         private ICommand loadedCommand;
         private bool isVisible;
 
-        private IList<BackpackWithItems> backpacksClone;
+        private IList<BackpackWithItemsWithImages> backpacksClone;
         private Trip tripClone;
 
         public bool IsVisible
@@ -64,7 +65,7 @@ namespace Packit.App.ViewModels
         public ICommand ItemCheckedCommand { get; set; }
 
         public TripImageWeatherLink TripImageWeatherLink { get; set; }
-        public ObservableCollection<BackpackWithItems> Backpacks { get; } = new ObservableCollection<BackpackWithItems>();
+        public ObservableCollection<BackpackWithItemsWithImages> Backpacks { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
 
         public DetailTripViewModel()
         {
@@ -90,49 +91,51 @@ namespace Packit.App.ViewModels
                 IsVisible = !IsVisible;
             });
 
-            AddItemToBackpackCommand = new RelayCommand<BackpackWithItems>(param =>
+            AddItemToBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(param =>
             {
                 NavigationService.Navigate(typeof(SelectItemsPage), new BackpackTripWrapper() { Backpack = param, Trip = TripImageWeatherLink });
             });
 
-            RemoveItemFromBackpackCommand = new RelayCommand<ItemBackpackWrapper>(async param =>
+            RemoveItemFromBackpackCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
-                if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(param.BackpackWithItems.Backpack.BackpackId, param.Item.ItemId))
+                if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(param.BackpackWithItemsWithImages.Backpack.BackpackId, param.ItemImageLink.Item.ItemId))
                 {
-                    param.BackpackWithItems.Items.Remove(param.Item);
+                    param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
 
-                    if (param.Item.Check != null)
+                    if (param.ItemImageLink.Item.Check != null)
                     {
-                        if (await checksDataAccess.DeleteAsync(param.Item.Check))
-                            param.Item.Check.IsChecked = false;
+                        if (await checksDataAccess.DeleteAsync(param.ItemImageLink.Item.Check))
+                            param.ItemImageLink.Item.Check.IsChecked = false;
                     }
                 }
             });
 
-            DeleteItemCommand = new RelayCommand<ItemBackpackWrapper>(async param =>
+            DeleteItemCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
-                if(await itemDataAccess.DeleteAsync(param.Item))
-                    param.BackpackWithItems.Items.Remove(param.Item);
+                if(await itemDataAccess.DeleteAsync(param.ItemImageLink.Item))
+                    param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
             });
 
             AddBackpacksCommand = new RelayCommand<ItemBackpackWrapper>(param =>
             {
-                NavigationService.Navigate(typeof(SelectBackpacksPage), TripImageWeatherLink.Trip);
+                NavigationService.Navigate(typeof(SelectBackpacksPage), new BackpackWithItemsWithImagesTripWrapper() { BackpackWithItemsWithImages = Backpacks, TripImageWeatherLink = TripImageWeatherLink});
             });
 
-            RemoveBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
+            RemoveBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
-                if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, param.Backpack.BackpackId)) { }
+                if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, param.Backpack.BackpackId))
+                {
                     Backpacks.Remove(param);
+                }
             });
 
-            DeleteBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
+            DeleteBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
                 if (await backpackDataAccess.DeleteAsync(param.Backpack))
                     Backpacks.Remove(param);
             });
 
-            ShareBackpackCommand = new RelayCommand<BackpackWithItems>(async param =>
+            ShareBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
                 param.Backpack.IsShared = true;
 
@@ -165,7 +168,7 @@ namespace Packit.App.ViewModels
                 {
                     IsChecked = true,
                     ItemId = param.Item.ItemId,
-                    BackpackId = param.BackpackWithItems.Backpack.BackpackId,
+                    BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
                     TripId = TripImageWeatherLink.Trip.TripId,
                     UserId = 4
                 };
@@ -191,15 +194,15 @@ namespace Packit.App.ViewModels
 
             for (int i = 0; i < Backpacks.Count; i++)
             {
-                for (int j = 0; j < Backpacks[i].Items.Count; j++)
+                for (int j = 0; j < Backpacks[i].ItemImageLinks.Count; j++)
                 {
-                    if (StringIsEqual(Backpacks[i].Items[j].Title, backpacksClone[i].Items[j].Title) && StringIsEqual(Backpacks[i].Items[j].Description, backpacksClone[i].Items[j].Description))
+                    if (StringIsEqual(Backpacks[i].ItemImageLinks[j].Item.Title, backpacksClone[i].ItemImageLinks[j].Item.Title) && StringIsEqual(Backpacks[i].ItemImageLinks[j].Item.Description, backpacksClone[i].ItemImageLinks[j].Item.Description))
                         continue;
                     
-                    if (!await itemDataAccess.UpdateAsync(Backpacks[i].Items[j]))
+                    if (!await itemDataAccess.UpdateAsync(Backpacks[i].ItemImageLinks[j].Item))
                     {
                         isSuccess = false;
-                        Backpacks[i].Items[j] = backpacksClone[i].Items[j];
+                        Backpacks[i].ItemImageLinks[j] = backpacksClone[i].ItemImageLinks[j];
                     }
                 }
             }
@@ -211,7 +214,7 @@ namespace Packit.App.ViewModels
         private async Task UpdateBackpacksAsync()
         {
             bool isSuccess = true;
-            ICollection<BackpackWithItems> failedUpdates = new Collection<BackpackWithItems>();
+            ICollection<BackpackWithItemsWithImages> failedUpdates = new Collection<BackpackWithItemsWithImages>();
 
             for (int i = 0; i < Backpacks.Count; i++)
             {
@@ -261,6 +264,7 @@ namespace Packit.App.ViewModels
                 LoadBackpacks();
                 LoadItemsInBackpacks();
                 await LoadWeatherReportAsync();
+                await LoadItemImagesAsync();
             }
             catch (HttpRequestException ex)
             {
@@ -271,7 +275,7 @@ namespace Packit.App.ViewModels
         private void LoadBackpacks()
         {
             foreach(var bt in TripImageWeatherLink.Trip.Backpacks)
-                Backpacks.Add(new BackpackWithItems(bt.Backpack));
+                Backpacks.Add(new BackpackWithItemsWithImages(bt.Backpack));
         }
 
         private void LoadItemsInBackpacks()
@@ -288,7 +292,18 @@ namespace Packit.App.ViewModels
                             itemBackpack.Item.Check.IsChecked = true;
                         }
                     }
-                    bwi.Items.Add(itemBackpack.Item);
+                    bwi.ItemImageLinks.Add(new ItemImageLink() { Item = itemBackpack.Item });
+                }
+            }
+        }
+
+        private async Task LoadItemImagesAsync()
+        {
+            foreach (var bwi in Backpacks)
+            {
+                foreach (var itemImageLink in bwi.ItemImageLinks)
+                {
+                    itemImageLink.Image = await imagesDataAccess.GetImageAsync(itemImageLink.Item.ImageStringName, "ms-appx:///Assets/grey.jpg");
                 }
             }
         }
@@ -300,9 +315,7 @@ namespace Packit.App.ViewModels
         }
 
         public void Initialize(TripImageWeatherLink trip) => TripImageWeatherLink = trip;
-
         private void CloneBackpackWithItemsList() => backpacksClone = Backpacks.ToList().DeepClone();
-
         private void CloneTrip() => tripClone = (Trip)TripImageWeatherLink.Trip.Clone();
     }
 }

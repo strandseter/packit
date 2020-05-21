@@ -13,12 +13,12 @@ namespace Packit.App.Wrappers
     {
         public static readonly DependencyProperty ItemProperty =
             DependencyProperty.Register(
-                "Item", typeof(Model.Item),
+                "Item", typeof(Item),
                 typeof(ItemBackpackBoolWrapper), null);
 
-        public static readonly DependencyProperty BackpackWithItemsProperty =
+        public static readonly DependencyProperty BackpackWithItemsWithImagesProperty =
            DependencyProperty.Register(
-               "BackpackWithItems", typeof(BackpackWithItems),
+               "BackpackWithItemsWithImages", typeof(BackpackWithItemsWithImages),
                typeof(ItemBackpackBoolWrapper), null);
 
         public static readonly DependencyProperty IsCheckedProperty =
@@ -32,16 +32,16 @@ namespace Packit.App.Wrappers
             set { SetValue(IsCheckedProperty, value); }
         }
 
-        public Model.Item Item
+        public Item Item
         {
-            get { return (Model.Item)GetValue(ItemProperty); }
+            get { return (Item)GetValue(ItemProperty); }
             set { SetValue(ItemProperty, value); }
         }
 
-        public BackpackWithItems BackpackWithItems
+        public BackpackWithItemsWithImages BackpackWithItemsWithImages
         {
-            get { return (BackpackWithItems)GetValue(BackpackWithItemsProperty); }
-            set { SetValue(BackpackWithItemsProperty, value); }
+            get { return (BackpackWithItemsWithImages)GetValue(BackpackWithItemsWithImagesProperty); }
+            set { SetValue(BackpackWithItemsWithImagesProperty, value); }
         }
     }
 }

@@ -239,6 +239,7 @@
       <DependentUpon>TripsMainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wrappers\BackpackTripWrapper.cs" />
+    <Compile Include="Wrappers\BackpackWithItemsWithImagesTripWrapper.cs" />
     <Compile Include="Wrappers\ItemBackpackBoolWrapper.cs" />
     <Compile Include="Wrappers\ItemBackpackWrapper.cs" />
     <Compile Include="Wrappers\ItemImageBackpackWrapper.cs" />
