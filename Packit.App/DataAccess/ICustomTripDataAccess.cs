@@ -1,10 +1,11 @@
 ﻿using Packit.Model;
+using System;
 using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
 {
     public interface ICustomTripDataAccess
     {
-        Task<Trip> GetNextTrip();
+        Task<Tuple<bool, Trip>> GetNextTrip();
     }
 }

@@ -12,7 +12,7 @@ namespace Packit.App.DataAccess.Http
         private readonly HttpClient httpClient = new HttpClient();
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/trips");
 
-        public async Task<Trip> GetNextTrip()
+        public async Task<Tuple<bool, Trip>>GetNextTrip()
         {
             var uri = new Uri($"{baseUri}/next");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
@@ -21,7 +21,10 @@ namespace Packit.App.DataAccess.Http
             string json = await result.Content.ReadAsStringAsync();
             var nextTrip = JsonConvert.DeserializeObject<Trip>(json);
 
-            return nextTrip;
+            if (nextTrip == null)
+                return new Tuple<bool, Trip>(false, nextTrip);
+
+            return new Tuple<bool, Trip>(true, nextTrip);
         }
 
         //public async Task<T> GetByIdAsync(T entity)

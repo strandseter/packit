@@ -9,7 +9,7 @@ namespace Packit.App.DataAccess.Local
 {
     public class CustomTripDataAccessLocal : ICustomTripDataAccess
     {
-        public Task<Trip> GetNextTrip()
+        Task<Tuple<bool, Trip>> ICustomTripDataAccess.GetNextTrip()
         {
             throw new NotImplementedException();
         }

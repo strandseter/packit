@@ -11,6 +11,8 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Linq;
 using Packit.App.Wrappers;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Packit.App.Services;
+using Packit.App.Views;
 
 namespace Packit.App.ViewModels
 {
@@ -21,9 +23,12 @@ namespace Packit.App.ViewModels
         private ICommand loadedCommand;
         private Trip nextTrip;
         private BitmapImage tripImage;
+        private bool hasNextTrip;
 
+        public bool HasNextTrip { get => hasNextTrip; set => Set(ref hasNextTrip, value); }
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand ItemCheckedCommand { get; set; }
+        public ICommand TripDetailsCommand { get; set; }
         public Trip NextTrip { get => nextTrip; set => Set(ref nextTrip, value); }
         public BitmapImage TripImage { get => tripImage; set => Set(ref tripImage, value); }
         public ObservableCollection<BackpackWithItemsWithImages> BackspackWithItemsWithImages { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
@@ -34,11 +39,22 @@ namespace Packit.App.ViewModels
             {
                 var fdgdfg = param;
             });
+
+            TripDetailsCommand = new RelayCommand(() => {
+
+                var tripImageWeatherLink = new TripImageWeatherLink(NextTrip) { Image = TripImage };
+
+                NavigationService.Navigate(typeof(DetailTripV2Page), tripImageWeatherLink);
+            });
         }
 
         private async Task LoadDataAsync()
         {
             await LoadTripAsync();
+
+            if (!HasNextTrip)
+                return;
+
             await LoadTripImage();
             await Task.Run(async () =>
             {
@@ -47,8 +63,7 @@ namespace Packit.App.ViewModels
                     LoadBackpacks();
                     LoadItems();
                 });
-
-            }); ;
+            });
             await LoadItemImagesAsync();
         }
 
@@ -60,15 +75,19 @@ namespace Packit.App.ViewModels
 
         private async Task LoadTripAsync()
         {
-            NextTrip = await customTripDataAccess.GetNextTrip();
+            var response = await customTripDataAccess.GetNextTrip();
+
+            if (response.Item1)
+            {
+                NextTrip = response.Item2;
+                HasNextTrip = true;
+            }
         }
 
         private async Task LoadTripImage()
         {
             TripImage = await imagesDataAccess.GetImageAsync(NextTrip.ImageStringName, "ms-appx:///Assets/generictrip.jpg");
         }
-
-        
 
         private void LoadItems()
         {

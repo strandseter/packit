@@ -202,6 +202,36 @@ namespace Packit.App.ViewModels
                 await CouldNotSave(failedUpdates);
         }
 
+        private async Task UpdateItemsAsync2()
+        {
+            bool isSuccess = true;
+            ICollection<Item> failedUpdates = new Collection<Item>();
+
+            foreach (var backpackWithItemsWithImages in Backpacks)
+            {
+                foreach (var backpackWithItemsWithImagesClone in backpacksClone)
+                {
+                    foreach (var itemImageLink in backpackWithItemsWithImages.ItemImageLinks)
+                    {
+                        foreach (var itemImageLinkClone in backpackWithItemsWithImagesClone.ItemImageLinks)
+                        {
+                            if (StringIsEqual(itemImageLink.Item.Title, itemImageLinkClone.Item.Title) && StringIsEqual(itemImageLink.Item.Description, itemImageLinkClone.Item.Description))
+                                continue;
+
+                            if (!await itemDataAccess.UpdateAsync(itemImageLink.Item))
+                            {
+                                isSuccess = false;
+                                itemImageLink.Item = itemImageLinkClone.Item;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!isSuccess)
+                await CouldNotSave(failedUpdates);
+        }
+
         private async Task UpdateBackpacksAsync()
         {
             bool isSuccess = true;
@@ -226,6 +256,13 @@ namespace Packit.App.ViewModels
                 await CouldNotSave(failedUpdates);
         }
 
+        private async Task UpdateBackpacks2()
+        {
+            bool isSuccess = true;
+            ICollection<BackpackWithItemsWithImages> failedUpdates = new Collection<BackpackWithItemsWithImages>();
+
+        }
+
         private async Task UpdateTripAsync()
         {
             if (StringIsEqual(TripImageWeatherLink.Trip.Title, tripClone.Title) && StringIsEqual(TripImageWeatherLink.Trip.Destination, tripClone.Destination))
@@ -244,7 +281,7 @@ namespace Packit.App.ViewModels
         {
             if (StringIsEqual(TripImageWeatherLink.Trip.Destination, tripClone.Destination))
                 return;
-
+            //TODO: Error handling
             await LoadWeatherReportAsync();
         }
 

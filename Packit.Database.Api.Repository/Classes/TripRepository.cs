@@ -74,7 +74,7 @@ namespace Packit.Database.Api.Repository.Classes
                                 .ThenInclude(b => b.Item)
                                     .ThenInclude(i => i.Checks)
                 .OrderBy(t => t.DepatureDate)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
             if (trip == null)
                 return NotFound();

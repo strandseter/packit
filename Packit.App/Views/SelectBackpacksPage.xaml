@@ -210,8 +210,6 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.Resources>
@@ -221,30 +219,13 @@
                     </Style>
                 </Grid.Resources>
 
-                <Button Grid.Column="0"
-                        Command="{x:Bind ViewModel.AddCommand}"
-                        Margin="5,0,0,5" >
+                <Button Grid.Column="1"
+                        Command="{x:Bind ViewModel.NewCommand}"
+                        CommandParameter="{Binding ElementName=lvBackpacks, Path=SelectedItem}"
+                        Margin="5,0,5,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>
                         <TextBlock>New</TextBlock>
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="1"
-                        Command="{x:Bind ViewModel.EditCommand}"
-                        CommandParameter="{Binding ElementName=lvBackpacks, Path=SelectedItem}"
-                        Margin="0,0,0,5" >
-                    <StackPanel>
-                        <SymbolIcon Symbol="Edit"/>
-                        <TextBlock Text="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueTotextConverter}}"/>
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="2"
-                        Command="{x:Bind ViewModel.DeleteCommand}"
-                        CommandParameter="{Binding ElementName=lvBackpacks, Path=SelectedItem}"
-                        Margin="0,0,5,5" >
-                    <StackPanel>
-                        <SymbolIcon Symbol="Delete"/>
-                        <TextBlock>Delete</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>

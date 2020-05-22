@@ -220,7 +220,7 @@
                 </Grid.Resources>
 
                 <Button Grid.Column="0"
-                        Command="{x:Bind ViewModel.AddCommand}"
+                        Command="{x:Bind ViewModel.NewCommand}"
                         Margin="5,0,0,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>

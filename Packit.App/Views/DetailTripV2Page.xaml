@@ -242,38 +242,42 @@
 
                                     <controls:AdaptiveGridView.ItemTemplate>
                                         <DataTemplate x:DataType="datalinks:ItemImageLink">
-                                            <StackPanel Orientation="Vertical"
+
+                                                <Grid>
+                                                    <Image Source="{x:Bind Image, Mode=OneWay}"/>
+
+                                                    <StackPanel Orientation="Vertical"
                                                             Height="auto"
                                                             HorizontalAlignment="Stretch"
                                                             Padding="5,1,5,1" 
                                                             Background="LightGray" Opacity=".80">
 
-                                                    <Grid>
-                                                        <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
+                                                        <Grid>
+                                                            <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
                                                                    FontSize="20"
                                                                    Foreground="Black"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
-                                                        <TextBox Text="{x:Bind Item.Title, Mode=TwoWay}"
+                                                            <TextBox Text="{x:Bind Item.Title, Mode=TwoWay}"
                                                                  Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
                                                                  Margin="0,0,0,5"/>
-                                                    </Grid>
-                                                        
-                                                    <Grid>
-                                                        <TextBlock FontSize="15"
+                                                        </Grid>
+
+                                                        <Grid>
+                                                            <TextBlock FontSize="15"
                                                                    Text="{x:Bind Item.Description, Mode=OneWay}"
                                                                    Style="{ThemeResource CaptionTextBlockStyle}" 
                                                                    Foreground="{ThemeResource SystemBaseMediumHighColor}"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
-                                                        <TextBox Text="{x:Bind Item.Description, Mode=TwoWay}"
+                                                            <TextBox Text="{x:Bind Item.Description, Mode=TwoWay}"
                                                                  Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
                                                                  Margin="0,0,0,5"/>
-                                                    </Grid>
+                                                        </Grid>
 
                                                         <StackPanel Orientation="Horizontal"
                                                                     Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
                                                             <StackPanel.Resources>
-                                                        <wrappers:ItemImageBackpackWrapper x:Key="ItemBackpackWrapper" ItemImageLink="{x:Bind}" BackpackWithItemsWithImages="{Binding ElementName=gvItems, Path=DataContext}"/>
+                                                                <wrappers:ItemImageBackpackWrapper x:Key="ItemBackpackWrapper" ItemImageLink="{x:Bind}" BackpackWithItemsWithImages="{Binding ElementName=gvItems, Path=DataContext}"/>
                                                             </StackPanel.Resources>
 
                                                             <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveItemFromBackpackCommand}"
@@ -281,31 +285,33 @@
                                                                     Margin="0,0,5,0">
                                                                 <SymbolIcon Symbol="Remove"/>
                                                             </Button>
-                                                            
+
                                                             <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteItemCommand}"
                                                                     CommandParameter="{StaticResource ItemBackpackWrapper}">
                                                                 <SymbolIcon Symbol="Delete"/>
                                                             </Button>
-                                                            
-                                                        </StackPanel>
-                                                
-                                                <StackPanel>
 
-                                                    <StackPanel.Resources>
-                                                        <wrappers:ItemBackpackBoolWrapper x:Key="ItemBackpackBoolWrapper"
+                                                        </StackPanel>
+
+                                                        <StackPanel>
+
+                                                            <StackPanel.Resources>
+                                                                <wrappers:ItemBackpackBoolWrapper x:Key="ItemBackpackBoolWrapper"
                                                                                           Item="{x:Bind Item}"
                                                                                           BackpackWithItemsWithImages="{Binding ElementName=gvItems, Path=DataContext}"
                                                                                           IsChecked="{Binding ElementName=ItemCheckBox, Path=IsChecked}"/>
-                                                    </StackPanel.Resources>
-                                                    
-                                                    <CheckBox x:Name="ItemCheckBox"
+                                                            </StackPanel.Resources>
+
+                                                            <CheckBox x:Name="ItemCheckBox"
                                                               Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"
                                                               IsChecked="{x:Bind Item.Check.IsChecked, Mode=TwoWay}"
                                                               Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
                                                               CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
-                                                </StackPanel>    
-                                                
-                                            </StackPanel>
+                                                        </StackPanel>
+
+                                                    </StackPanel>
+                                                </Grid>
+                                            
                                                 
                                         </DataTemplate>
                                     </controls:AdaptiveGridView.ItemTemplate>

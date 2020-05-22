@@ -107,7 +107,6 @@ namespace Packit.App.ViewModels
             }
         }
 
-
         protected virtual async Task LoadItemsAsync()
         {
             var items = await itemsDataAccess.GetAllAsync();

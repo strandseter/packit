@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Packit.App.DataAccess;
+﻿using Packit.App.DataAccess;
 using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
@@ -13,6 +6,11 @@ using Packit.App.Services;
 using Packit.App.Views;
 using Packit.App.Wrappers;
 using Packit.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Packit.App.ViewModels
 {
@@ -28,6 +26,7 @@ namespace Packit.App.ViewModels
         public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public TripImageWeatherLink SelectedTrip { get; set; }
         public BackpackWithItemsWithImages SelectedBackpackWithItemsWithImages { get; set; }
+        public Backpack NewBackpack { get; set; }
         public ICommand DoneSelectingItemsCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
@@ -38,14 +37,23 @@ namespace Packit.App.ViewModels
                 //This is a workaround. It is not possible to bind readonly "SelectedItems" in multiselect grid/list-view.
                 List<object> selectedItems = param.ToList();
 
-                foreach (var obj in selectedItems)
-                    await AddItemTobackpack((ItemImageLink)obj);
-
-                if (isSuccess)
+                if (NewBackpack != null)
                 {
-                    if (SelectedTrip == null)
+                    foreach (var obj in selectedItems)
+                        await AddItemsToNewBackpack((ItemImageLink)obj);
+
+                    if (isSuccess)
+                    {
                         NavigationService.Navigate(typeof(BackpacksPage));
-                    else
+                    }
+                }
+
+                if (SelectedBackpackWithItemsWithImages != null)
+                {
+                    foreach (var obj in selectedItems)
+                        await AddItemsToExistingBackpack((ItemImageLink)obj);
+
+                    if (isSuccess)
                     {
                         await UpdateSelectedTrip();
                         NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
@@ -62,9 +70,15 @@ namespace Packit.App.ViewModels
             await LoadImagesAsync();
         }
 
-        private async Task AddItemTobackpack(ItemImageLink itemImageLink)
+        private async Task AddItemsToExistingBackpack(ItemImageLink itemImageLink)
         {
             if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItemsWithImages.Backpack.BackpackId, itemImageLink.Item.ItemId))
+                isSuccess = false;
+        }
+
+        private async Task AddItemsToNewBackpack(ItemImageLink itemImageLink)
+        {
+            if (!await backpackDataAccess.AddEntityToEntityAsync(NewBackpack.BackpackId, itemImageLink.Item.ItemId))
                 isSuccess = false;
         }
 
@@ -83,6 +97,9 @@ namespace Packit.App.ViewModels
                 var itemImageLink = new ItemImageLink() { Item = i };
                 ItemImageLinks.Add(itemImageLink);
 
+                if (SelectedBackpackWithItemsWithImages == null)
+                    continue;
+
                 foreach (var item in SelectedBackpackWithItemsWithImages.ItemImageLinks)
                     if (i.ItemId == item.Item.ItemId)
                         ItemImageLinks.Remove(itemImageLink);
@@ -93,6 +110,11 @@ namespace Packit.App.ViewModels
         {
             SelectedBackpackWithItemsWithImages = backpackTrip?.Backpack;
             SelectedTrip = backpackTrip?.Trip;
+        }
+
+        internal void Initialize(Backpack backpack)
+        {
+            NewBackpack = backpack;
         }
     }
 }

@@ -7,12 +7,60 @@
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.
-            -->
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" MaxWidth="500" Margin="0,0,0,0">
+            <TextBox Name="titleTextbox"
+                         Header="Title"
+                         FontSize="30"
+                         Margin="0,5,0,0"
+                         Text="{x:Bind ViewModel.NewBackpack.Title, Mode=TwoWay}"/>
+            <TextBox Header="Description"
+                         FontSize="30" Margin="0,5,0,0"
+                         Height="200"
+                         TextWrapping="Wrap"
+                         Text="{x:Bind ViewModel.NewBackpack.Description, Mode=TwoWay}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="2"
+                      ColumnSpacing="5"
+                      Margin="5,0,0,5">
+
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                            Command="{x:Bind ViewModel.NextCommand}"
+                            Margin="0,0,0,5">
+                <StackPanel>
+                    <SymbolIcon Symbol="Next"/>
+                    <TextBlock>Next</TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button Grid.Column="1"
+                            Command="{x:Bind ViewModel.CancelCommand}"
+                            Margin="0,0,5,5">
+                <StackPanel>
+                    <SymbolIcon Symbol="Cancel"/>
+                    <TextBlock>Cancel</TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
+
     </Grid>
 </Page>

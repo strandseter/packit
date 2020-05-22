@@ -19,6 +19,8 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
+        private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
+
         private bool isVisible;
 
         private ICommand loadedCommand;
@@ -33,7 +35,7 @@ namespace Packit.App.ViewModels
 
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        public ICommand AddCommand { get; set; }
+        public ICommand NewCommand { get; set; }
         public ICommand RemoveItemCommand { get; set; }
         public ICommand DeleteItemCommand { get; set; }
         public ICommand AddItemsCommand { get; set; }
@@ -49,22 +51,24 @@ namespace Packit.App.ViewModels
 
             DeleteCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
-                var test = param;
-            });
+               await PopupService.ShowDeleteDialogAsync(DeleteBackpackAsync, param, param.Backpack.Title);
+            }, param => param != null);
 
-            AddCommand = new RelayCommand(async () =>
+            NewCommand = new RelayCommand(async () =>
             {
                 NavigationService.Navigate(typeof(NewBackpackPage));
             });
 
             RemoveItemCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
-                var test = param;
+                if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(param.BackpackWithItemsWithImages.Backpack.BackpackId, param.ItemImageLink.Item.ItemId))
+                    param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
             });
 
             DeleteItemCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
-                var test = param;
+                if (await itemsDataAccess.DeleteAsync(param.ItemImageLink.Item))
+                    param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
             });
 
             AddItemsCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
@@ -77,6 +81,12 @@ namespace Packit.App.ViewModels
                 var test = param;
             });
 
+        }
+
+        private async Task DeleteBackpackAsync(BackpackWithItemsWithImages backpackWithItemsWithImages)
+        {
+            if (await backpacksDataAccess.DeleteAsync(backpackWithItemsWithImages.Backpack))
+                BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
         }
 
         private async Task DeleteItemAndImageRequestAsync(ItemImageLink itemImageLink)
