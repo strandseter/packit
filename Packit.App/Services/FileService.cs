@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
@@ -40,6 +42,20 @@ namespace Packit.App.Services
                 await bitmapImage.SetSourceAsync(fileStream);
                 return bitmapImage;
             }
+        }
+
+        public static async Task<byte[]> BitmapImageToByteArray(BitmapImage bitmapImage)
+        {
+            byte[] bytes;
+
+            using (var randomAccessStream = await RandomAccessStreamReference.CreateFromUri(bitmapImage.UriSource).OpenReadAsync())
+            {
+                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(randomAccessStream);
+                PixelDataProvider pixelData = await decoder.GetPixelDataAsync();
+
+                bytes = pixelData.DetachPixelData();
+            }
+            return bytes;
         }
     }
 }
