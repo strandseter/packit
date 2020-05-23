@@ -2,10 +2,17 @@
     x:Class="Packit.App.Views.NewBackpackPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Packit.App.Convertes"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:BooleanToTextConverter x:Key="BooleanToTextConverter" TrueString="" FalseString="Title is required"/>
+    </Page.Resources>
+
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
 
@@ -16,10 +23,13 @@
 
         <StackPanel Grid.Row="0" MaxWidth="500" Margin="0,0,0,0">
             <TextBox Name="titleTextbox"
-                         Header="Title"
-                         FontSize="30"
-                         Margin="0,5,0,0"
-                         Text="{x:Bind ViewModel.NewBackpack.Title, Mode=TwoWay}"/>
+                     extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
+                     extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.TitleIsValid, Mode=TwoWay}"
+                     Header="Title"
+                     FontSize="30"
+                     Margin="0,5,0,0"
+                     Text="{x:Bind ViewModel.NewBackpack.Title, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding (extensions:TextBoxRegex.IsValid), ElementName=titleTextbox, Converter={StaticResource BooleanToTextConverter}}" />
             <TextBox Header="Description"
                          FontSize="30" Margin="0,5,0,0"
                          Height="200"
@@ -44,8 +54,9 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0"
-                            Command="{x:Bind ViewModel.NextCommand}"
-                            Margin="0,0,0,5">
+                    CommandParameter="{x:Bind ViewModel.TitleIsValid, Mode=OneWay}"
+                    Command="{x:Bind ViewModel.NextCommand}"
+                    Margin="0,0,0,5">
                 <StackPanel>
                     <SymbolIcon Symbol="Next"/>
                     <TextBlock>Next</TextBlock>

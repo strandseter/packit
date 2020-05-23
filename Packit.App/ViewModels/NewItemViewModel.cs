@@ -19,31 +19,26 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private StorageFile localImage;
-        private bool itemHasErrors;
-        private string titleErrorMessage;
-        private string descriptionErrorMessage;
+        private bool titleIsValid;
 
         public ItemImageLink ItemImageLink { get; set; } = new ItemImageLink() { Item = new Item() { Title = "", Description = ""} };
 
         public ICommand CancelCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand ImageDeviceCommand { get; set; }
-
-        public bool ItemHasErrors { get => itemHasErrors; set => Set(ref itemHasErrors, value); }
-        public string TitleErrorMessage{ get => titleErrorMessage; set => Set(ref titleErrorMessage, value); }
-        public string DescriptionErrorMessage { get => descriptionErrorMessage; set => Set(ref descriptionErrorMessage, value); }
+        public bool TitleIsValid
+        {
+            get => titleIsValid;
+            set => Set(ref titleIsValid, value);
+        }
 
         public NewItemViewModel()
         {
-            ItemImageLink.Item.ErrorsChanged += Item_ErrorsChanged;
 
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
 
-            SaveCommand = new RelayCommand(async () =>
+            SaveCommand = new RelayCommand<bool>(async param =>
             {
-                if (ItemHasErrors)
-                    return;
-
                 if (localImage != null)
                 {
                     var randomImageName = GenerateImageName();
@@ -53,9 +48,12 @@ namespace Packit.App.ViewModels
                     if (await itemsDataAccess.AddAsync(ItemImageLink.Item) && await imagesDataAccess.AddImageAsync(localImage, randomImageName))
                         NavigationService.GoBack();
                 }
+
                 if (await itemsDataAccess.AddAsync(ItemImageLink.Item))
+                {
                     NavigationService.GoBack();
-            });
+                }
+            }, param => param);
 
             ImageDeviceCommand = new RelayCommand(async () =>
             {
@@ -66,13 +64,6 @@ namespace Packit.App.ViewModels
 
                 ItemImageLink.Image = await FileService.StorageFileToBitmapImageAsync(localImage);
             });
-        }
-
-        private void Item_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
-        {
-            ItemHasErrors = ItemImageLink.Item.HasErrors;
-            TitleErrorMessage = InputErrorMessage(ItemImageLink.Item.GetErrors(nameof(ItemImageLink.Item.Title)));
-            DescriptionErrorMessage = InputErrorMessage(ItemImageLink.Item.GetErrors(nameof(ItemImageLink.Item.Description)));
         }
     }
 }

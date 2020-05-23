@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace Packit.Model
 {
-    public class Item : BaseInformation
+    public class Item : BaseInformation, ISerializable
     {
         private Check check;
 
@@ -32,5 +33,7 @@ namespace Packit.Model
         public override string ToString() => $"{Title} {ItemId}";
 
         public int GetUserId() => UserId;
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) => throw new NotImplementedException();
     }
 }

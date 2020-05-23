@@ -16,19 +16,26 @@ namespace Packit.App.ViewModels
     {
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private readonly IRelationDataAccess<Trip, Backpack> backpackTripRelationDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
-
+        private bool titleIsValid;
 
         public ICommand CancelCommand { get; set; }
         public ICommand NextCommand { get; set; }
 
         public Trip SelectedTrip { get; set; }
-        public Backpack NewBackpack { get; set; } = new Backpack() { Title = "", Description = "" }; 
+        public Backpack NewBackpack { get; set; } = new Backpack() { Title = "", Description = "" };
+
+        public bool TitleIsValid
+        {
+            get => titleIsValid;
+            set => Set(ref titleIsValid, value);
+        }
 
         public NewBackpackViewModel()
         {
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
 
-            NextCommand = new RelayCommand(async () => {
+            NextCommand = new RelayCommand<bool>(async param =>
+            {
 
                 if (await backpackDataAccess.AddAsync(NewBackpack))
                 {
@@ -40,7 +47,7 @@ namespace Packit.App.ViewModels
                     else
                         NavigationService.Navigate(typeof(SelectItemsPage), NewBackpack);
                 }
-            });
+            }, param => param);
         }
 
         internal void Initialize(Trip trip)

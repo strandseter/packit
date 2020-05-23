@@ -1,9 +1,9 @@
-﻿using Packit.Model.Abstractions;
-using Packit.Model.Models;
+﻿using Packit.Model.Models;
+using Packit.Model.NotifyPropertyChanged;
 
 namespace Packit.Model
 {
-    public abstract class BaseInformation : BaseModel, IDatabase
+    public abstract class BaseInformation : Observable, IDatabase
     {
         private string title;
         private string description;
@@ -11,35 +11,13 @@ namespace Packit.Model
         public string Title
         {
             get => title;
-            set 
-            {
-                if (!Equals(title, value))
-                {
-                    if (string.IsNullOrEmpty(value))
-                        AddError(nameof(Title), "Title cannot be empty");
-                    else if (value.Length > 15)
-                        AddError(nameof(Title), "Title cannot be longer than 15 digits");
-                    else
-                        RemoveError(nameof(Title));
-                }
-                Set(ref title, value);
-            }
+            set => Set(ref title, value);
         }
 
         public string Description
         {
             get => description;
-            set 
-            {
-                if (!Equals(description, value))
-                {
-                    if (value?.Length > 30)
-                        AddError(nameof(Description), "Description cannot be longer than 30 digits");
-                    else
-                        RemoveError(nameof(Description));
-                }
-                Set(ref description, value);
-            } 
+            set => Set(ref description, value);
         }
 
         public string ImageStringName { get; set; }

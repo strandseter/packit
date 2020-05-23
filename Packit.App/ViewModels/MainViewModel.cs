@@ -66,7 +66,6 @@ namespace Packit.App.ViewModels
             await LoadItemImagesAsync();
         }
 
-
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
         {
             if (param.IsChecked)

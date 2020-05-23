@@ -22,7 +22,7 @@ namespace Packit.App.ViewModels
         private ICommand loadedCommand;
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private bool isVisible;
-        private IList<ItemImageLink> itemImageLinksClone;
+        private Item itemClone;
 
         public bool IsVisible
         {
@@ -34,32 +34,28 @@ namespace Packit.App.ViewModels
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
+        public ICommand ItemToEditCommand { get; set; }
+        public ICommand ItemDoneEditingCommand { get; set; }
         public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
 
         public ItemsViewModel()
         {
             DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopupService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
                                                                             ,param => param != null);
-
-            EditCommand = new RelayCommand(async () => await EditItem());
-
-            AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));                                  
-        }
-
-        private async Task EditItem()
-        {
-            if (!IsVisible)
+            ItemDoneEditingCommand = new RelayCommand<Item>(async param =>
             {
-                if (ItemImageLinks.Count == 0)
+                if (StringIsEqual(param.Description, itemClone.Description) && StringIsEqual(param.Title, itemClone.Title))
                     return;
 
-                CloneItemImageLinksList();
-            }
+                if (await itemsDataAccess.UpdateAsync(param))
+                    isVisible = true;
+            });
 
-            if (IsVisible)
-                await UpdateItemsAsync();
+            ItemToEditCommand = new RelayCommand<Item>(param => itemClone = param.DeepClone());
 
-            IsVisible = !IsVisible;
+            EditCommand = new RelayCommand(() => IsVisible = !IsVisible);
+
+            AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));
         }
 
         private async Task DeleteItemAsync(ItemImageLink itemImageLink)
@@ -84,15 +80,6 @@ namespace Packit.App.ViewModels
             ItemImageLinks.Remove(itemImageLink);
         }
 
-        private async Task UpdateItemsAsync()
-        {
-            for (int i = 0; i < itemImageLinksClone.Count; i++)
-            {
-                if (!StringIsEqual(ItemImageLinks[i].Item.Title, itemImageLinksClone[i].Item.Title) || (!StringIsEqual(ItemImageLinks[i].Item.Description, itemImageLinksClone[i].Item.Description)))
-                    if (!await itemsDataAccess.UpdateAsync(ItemImageLinks[i].Item))
-                        isVisible = true;
-            }
-        }
 
         private async Task LoadDataAsync()
         {
@@ -120,7 +107,5 @@ namespace Packit.App.ViewModels
             foreach (var iml in ItemImageLinks)
                 iml.Image = await imagesDataAccess.GetImageAsync(iml.Item.ImageStringName, "ms-appx:///Assets/grey.jpg");
         }
-
-        private void CloneItemImageLinksList() => itemImageLinksClone = ItemImageLinks.ToList().DeepClone();
     }
 }

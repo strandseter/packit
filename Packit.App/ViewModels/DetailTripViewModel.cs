@@ -35,7 +35,6 @@ namespace Packit.App.ViewModels
         private ICommand loadedCommand;
         private bool isVisible;
 
-        private IList<BackpackWithItemsWithImages> backpacksClone;
         private Trip tripClone;
 
         public bool IsVisible

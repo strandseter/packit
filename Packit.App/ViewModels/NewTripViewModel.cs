@@ -19,12 +19,10 @@ namespace Packit.App.ViewModels
     public class NewTripViewModel : ViewModel
     {
         private readonly IBasicDataAccess<Trip> tripsDataAccess = new BasicDataAccessFactory<Trip>().Create();
-        private readonly IBasicDataAccess<Backpack> backpacksDataAcess = new BasicDataAccessFactory<Backpack>().Create();
-        private readonly IRelationDataAccess<Trip, Backpack> tripBackpackDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
-        private ICommand loadedCommand;
         private StorageFile localImage;
         private BitmapImage tripImage;
+        private bool titleIsValid;
 
         public Trip Trip { get; set; } = new Trip();
         public BitmapImage TripImage
@@ -33,12 +31,16 @@ namespace Packit.App.ViewModels
             set => Set(ref tripImage, value);
         }
 
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand CandcelCommand { get; set; }
         public ICommand NextCommand { get; set; }
         public ICommand ImageDeviceCommand { get; set; }
         public ICommand AddBackpackCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
+        public bool TitleIsValid
+        {
+            get => titleIsValid;
+            set => Set(ref titleIsValid, value);
+        }
 
         public NewTripViewModel()
         {
@@ -54,7 +56,7 @@ namespace Packit.App.ViewModels
                 TripImage = await FileService.StorageFileToBitmapImageAsync(localImage);
             });
 
-            NextCommand = new RelayCommand(async () =>
+            NextCommand = new RelayCommand<bool>(async param =>
             {
                 if (localImage != null)
                 {
@@ -78,13 +80,7 @@ namespace Packit.App.ViewModels
                 }
 
                 NavigationService.Navigate(typeof(SelectBackpacksPage), Trip);
-            });
-        }
-
-        private async Task LoadDataAsync()
-        {
-            //await LoadBackpacksAsync();
-            //LoadItemsInBackpacks();
+            }, param => param);
         }
     }
 }

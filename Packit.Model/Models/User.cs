@@ -1,5 +1,4 @@
 ﻿
-using Packit.Model.Abstractions;
 using Packit.Model.NotifyPropertyChanged;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Packit.Model
 {
-    public class User : BaseModel
+    public class User : Observable
     {
         private string firstName;
         private string lastName;

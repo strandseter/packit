@@ -4,9 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:converters="using:Packit.App.Convertes"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:BooleanToTextConverter x:Key="BooleanToTextConverter" TrueString="" FalseString="Title is required"/>
+    </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
@@ -62,23 +67,21 @@
             <StackPanel Margin="20,10,20,10">
 
                 <TextBox Name="titleTextbox"
+                         extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
+                         extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.TitleIsValid, Mode=TwoWay}"
+                         MaxLength="20"
                          Header="Title"
                          FontSize="30"
                          Margin="0,5,0,0"
                          Text="{x:Bind ViewModel.ItemImageLink.Item.Title, Mode=TwoWay}"/>
-                <TextBlock Height="20"
-                           Visibility="{x:Bind ViewModel.ItemHasErrors, Mode=OneWay}"
-                           Text="{x:Bind ViewModel.TitleErrorMessage, Mode=OneWay}">
-                    
-                </TextBlock>
-                <TextBox Header="Description"
+                <TextBlock Text="{Binding (extensions:TextBoxRegex.IsValid), ElementName=titleTextbox, Converter={StaticResource BooleanToTextConverter}}" />
+                <TextBox Name="descriptionTextbox"
+                         MaxLength="20"
+                         Header="Description"
                          FontSize="30" Margin="0,5,0,0"
                          Height="200"
                          TextWrapping="Wrap"
                          Text="{x:Bind ViewModel.ItemImageLink.Item.Description, Mode=TwoWay}"/>
-                <TextBlock Height="20"
-                           Visibility="{x:Bind ViewModel.ItemHasErrors, Mode=OneWay}"
-                           Text="{x:Bind ViewModel.DescriptionErrorMessage, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
 
@@ -133,6 +136,7 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     CornerRadius="0"
+                    CommandParameter="{x:Bind ViewModel.TitleIsValid, Mode=OneWay}"
                     Command="{x:Bind ViewModel.SaveCommand}">
                 <StackPanel>
                     <SymbolIcon Symbol="Save"/>

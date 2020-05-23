@@ -6,19 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:datalinks="using:Packit.App.DataLinks"
-    xmlns:model="using:Packit.Model"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:converters="using:Packit.App.Convertes"
-    xmlns:system="using:System"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
-    <i:Interaction.Behaviors>
-        <ic:EventTriggerBehavior EventName="Loaded">
-            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
-        </ic:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
+    <Page.Resources>
+        <converters:BooleanToTextConverter x:Key="BooleanToTextConverter" TrueString="" FalseString="Title is required"/>
+    </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
@@ -34,10 +29,14 @@
 
         <StackPanel MaxWidth="400" Grid.Row="0" Grid.Column="0">
 
-            <TextBox Header="Title"
-                         FontSize="30"
-                         Margin="0,5,0,5"
-                         Text="{x:Bind ViewModel.Trip.Title, Mode=TwoWay}"/>
+            <TextBox Name="titleTextbox"
+                     extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
+                     extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.TitleIsValid, Mode=TwoWay}"
+                     Header="Title"
+                     FontSize="30"
+                     Margin="0,5,0,0"
+                     Text="{x:Bind ViewModel.Trip.Title, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding (extensions:TextBoxRegex.IsValid), ElementName=titleTextbox, Converter={StaticResource BooleanToTextConverter}}" />
             <TextBox Header="Description"
                          FontSize="30" Margin="0,5,0,5"
                          Height="200"
@@ -92,13 +91,21 @@
         </StackPanel>
 
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnSpacing="5" Margin="0,0,0,5">
+        <Grid Grid.Row="1"
+              Grid.ColumnSpan="2"
+              ColumnSpacing="5"
+              Margin="0,0,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="0" Command="{x:Bind ViewModel.NextCommand}">
+            <Button Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    CornerRadius="0"
+                    CommandParameter="{x:Bind ViewModel.TitleIsValid, Mode=OneWay}"
+                    Command="{x:Bind ViewModel.NextCommand}">
                 <StackPanel>
                     <TextBlock Text="Next"/>
                     <SymbolIcon Symbol="Next"/>
