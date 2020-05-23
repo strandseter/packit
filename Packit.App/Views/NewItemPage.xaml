@@ -66,6 +66,8 @@
         <Grid x:Name="FirstGrid" Grid.Column="0">
             <StackPanel Margin="20,10,20,10">
 
+                <TextBlock Margin="5,0,0,0" Text="New Item" Style="{StaticResource HeaderTextBlockStyle}"/>
+
                 <TextBox Name="titleTextbox"
                          extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
                          extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.TitleIsValid, Mode=TwoWay}"

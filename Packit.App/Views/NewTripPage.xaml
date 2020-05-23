@@ -19,6 +19,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
@@ -27,7 +28,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel MaxWidth="400" Grid.Row="0" Grid.Column="0">
+        <TextBlock Grid.Row="0" Margin="5,0,0,0" Text="New Trip" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+        <StackPanel MaxWidth="400" Grid.Row="1" Grid.Column="0">
 
             <TextBox Name="titleTextbox"
                      extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
@@ -53,7 +56,7 @@
             
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="0">
+        <StackPanel Grid.Column="1" Grid.Row="1">
             <StackPanel>
 
                 <TextBlock Text="Image" FontSize="30" HorizontalAlignment="Center"/>
@@ -91,7 +94,7 @@
         </StackPanel>
 
 
-        <Grid Grid.Row="1"
+        <Grid Grid.Row="2"
               Grid.ColumnSpan="2"
               ColumnSpacing="5"
               Margin="0,0,0,5">

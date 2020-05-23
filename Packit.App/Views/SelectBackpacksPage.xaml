@@ -32,11 +32,15 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="10*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <ListView Grid.Row="0" Name="lvBackpacks"
+            <TextBlock Margin="5,0,0,0" Text="Select backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+
+            <ListView Grid.Row="1" Name="lvBackpacks"
                           ItemsSource="{x:Bind ViewModel.BackpackWithItemsWithImagess, Mode=OneWay}"
                           HorizontalAlignment="Stretch"
                           SelectionMode="Multiple"
@@ -206,7 +210,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Grid Grid.Row="1" ColumnSpacing="5">
+            <Grid Grid.Row="3" ColumnSpacing="5">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -225,7 +229,7 @@
                         Margin="5,0,5,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>
-                        <TextBlock>New</TextBlock>
+                        <TextBlock>New backpack</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -252,7 +256,7 @@
                             Margin="0,0,0,5">
                     <StackPanel>
                         <SymbolIcon Symbol="Accept"/>
-                        <TextBlock>Done</TextBlock>
+                        <TextBlock>Done selecting</TextBlock>
                     </StackPanel>
                 </Button>
 

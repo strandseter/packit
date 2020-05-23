@@ -49,12 +49,15 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="10*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
+            <TextBlock Grid.Row="0" Margin="5,0,0,0" Text="My trips" Style="{StaticResource HeaderTextBlockStyle}"/>
+
             <controls:AdaptiveGridView
                 x:Name="gvTrips"
-                Grid.Row="0"
+                Grid.Row="1"
                 OneRowModeEnabled="False"
                 SelectionMode="Single"
                 DesiredWidth="300"
@@ -80,7 +83,7 @@
                 
             </controls:AdaptiveGridView>
 
-            <Grid Grid.Row="1" ColumnSpacing="5">
+            <Grid Grid.Row="2" ColumnSpacing="5">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -94,7 +97,7 @@
                         Command="{x:Bind ViewModel.AddTripCommand}">
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>
-                        <TextBlock Text="New"/>
+                        <TextBlock Text="New trip"/>
                     </StackPanel>
                 </Button>
             </Grid>

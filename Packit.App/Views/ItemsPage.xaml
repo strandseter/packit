@@ -29,6 +29,7 @@
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
+
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
@@ -37,10 +38,12 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.4*"/>
+                <RowDefinition Height="3*"/>
                 <RowDefinition Height="30*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
+
+            <TextBlock Margin="5,0,0,0" Text="All items" Style="{StaticResource HeaderTextBlockStyle}"/>
 
             <Grid Grid.Row="0">
 

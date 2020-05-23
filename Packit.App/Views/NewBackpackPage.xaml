@@ -18,10 +18,13 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" MaxWidth="500" Margin="0,0,0,0">
+        <TextBlock Margin="5,0,0,0" Text="New backpack" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+        <StackPanel Grid.Row="1" MaxWidth="500" Margin="0,0,0,0">
             <TextBox Name="titleTextbox"
                      extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
                      extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.TitleIsValid, Mode=TwoWay}"

@@ -20,9 +20,8 @@
     </i:Interaction.Behaviors>
 
     <Page.Resources>
-        <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit items"/>
+        <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit backpacks"/>
         <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Done"/>
-
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
@@ -31,10 +30,15 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="10*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            
-            <ListView Grid.Row="0" Name="lvBackpacks"
+
+            <TextBlock Margin="5,0,0,0" Text="All backpacks" Style="{StaticResource HeaderTextBlockStyle}">
+                
+            </TextBlock>
+
+            <ListView Grid.Row="1" Name="lvBackpacks"
                           ItemsSource="{x:Bind ViewModel.BackpackWithItemsWithImagess, Mode=OneWay}"
                           HorizontalAlignment="Stretch"
                           SelectionMode="Single"

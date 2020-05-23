@@ -186,7 +186,6 @@
     <Compile Include="CurrentUserStorage.cs" />
     <Compile Include="ViewModels\BackpacksViewModel.cs" />
     <Compile Include="ViewModels\DetailTripViewModel.cs" />
-    <Compile Include="ViewModels\EditItemViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -204,9 +203,6 @@
     </Compile>
     <Compile Include="Views\DetailTripV2Page.xaml.cs">
       <DependentUpon>DetailTripV2Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditItemPage.xaml.cs">
-      <DependentUpon>EditItemPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemsPage.xaml.cs">
       <DependentUpon>ItemsPage.xaml</DependentUpon>
@@ -291,10 +287,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\DetailTripV2Page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\EditItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
