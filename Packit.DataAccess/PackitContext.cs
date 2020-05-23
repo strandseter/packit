@@ -46,7 +46,7 @@ namespace Packit.DataAccess
                 IntegratedSecurity = false
             };
 
-            optionsBuilder.UseSqlServer(builderDonau.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
+            optionsBuilder.UseSqlServer(builderLocal.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

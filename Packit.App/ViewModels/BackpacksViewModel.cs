@@ -41,6 +41,8 @@ namespace Packit.App.ViewModels
         public ICommand AddItemsCommand { get; set; }
         public ICommand ShareBackpackCommand { get; set; }
         public ObservableCollection<BackpackWithItemsWithImages> BackpackWithItemsWithImagess { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
+        public Trip NewTrip { get; set; }
+        public TripImageWeatherLink SelectedTripImageWeatherLink { get; set; }
 
         public BackpacksViewModel()
         {
@@ -54,9 +56,14 @@ namespace Packit.App.ViewModels
                await PopupService.ShowDeleteDialogAsync(DeleteBackpackAsync, param, param.Backpack.Title);
             }, param => param != null);
 
-            NewCommand = new RelayCommand(async () =>
+            NewCommand = new RelayCommand(() =>
             {
-                NavigationService.Navigate(typeof(NewBackpackPage));
+                if(NewTrip != null)
+                    NavigationService.Navigate(typeof(NewBackpackPage), NewTrip);
+                if (SelectedTripImageWeatherLink != null)
+                    NavigationService.Navigate(typeof(NewBackpackPage), SelectedTripImageWeatherLink.Trip);
+                else
+                    NavigationService.Navigate(typeof(NewBackpackPage));
             });
 
             RemoveItemCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>

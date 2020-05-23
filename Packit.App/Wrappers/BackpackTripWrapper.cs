@@ -1,4 +1,4 @@
-﻿using Packit.App.DataLinks;
+﻿using Packit.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Packit.App.Wrappers
 {
     public class BackpackTripWrapper
     {
-        public BackpackWithItemsWithImages Backpack { get; set; }
-        public TripImageWeatherLink Trip { get; set; }
+        public Backpack Backpack { get; set; }
+        public Trip Trip { get; set; }
     }
 }

@@ -76,7 +76,7 @@ namespace Packit.App.ViewModels
             EditTripCommand = new RelayCommand(async () =>
             {
                 if (!IsVisible)
-                    Clone();   
+                    CloneTrip();
                     
                 if (IsVisible)
                     await Update();
@@ -86,7 +86,7 @@ namespace Packit.App.ViewModels
 
             AddItemToBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(param =>
             {
-                NavigationService.Navigate(typeof(SelectItemsPage), new BackpackTripWrapper() { Backpack = param, Trip = TripImageWeatherLink });
+                NavigationService.Navigate(typeof(SelectItemsPage), new BackpackWithItemsTripImageWeatherWrapper() { Backpack = param, Trip = TripImageWeatherLink });
             });
 
             RemoveItemFromBackpackCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
@@ -139,16 +139,8 @@ namespace Packit.App.ViewModels
 
         private async Task Update()
         {
-            await UpdateBackpacksAsync();
-            await UpdateItemsAsync();
             await UpdateTripAsync();
             await UpdateWeatherAsync();
-        }
-
-        private void Clone()
-        {
-            CloneBackpackWithItemsList();
-            CloneTrip();
         }
 
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
@@ -176,91 +168,6 @@ namespace Packit.App.ViewModels
                 if (await checksDataAccess.DeleteAsync(param.Item.Check))
                     param.Item.Check.IsChecked = false;
             }
-        }
-
-        private async Task UpdateItemsAsync()
-        {
-            bool isSuccess = true;
-            ICollection<Item> failedUpdates = new Collection<Item>();
-
-            for (int i = 0; i < Backpacks.Count; i++)
-            {
-                for (int j = 0; j < Backpacks[i].ItemImageLinks.Count; j++)
-                {
-                    if (StringIsEqual(Backpacks[i].ItemImageLinks[j].Item.Title, backpacksClone[i].ItemImageLinks[j].Item.Title) && StringIsEqual(Backpacks[i].ItemImageLinks[j].Item.Description, backpacksClone[i].ItemImageLinks[j].Item.Description))
-                        continue;
-                    
-                    if (!await itemDataAccess.UpdateAsync(Backpacks[i].ItemImageLinks[j].Item))
-                    {
-                        isSuccess = false;
-                        Backpacks[i].ItemImageLinks[j] = backpacksClone[i].ItemImageLinks[j];
-                    }
-                }
-            }
-
-            if (!isSuccess)
-                await CouldNotSave(failedUpdates);
-        }
-
-        private async Task UpdateItemsAsync2()
-        {
-            bool isSuccess = true;
-            ICollection<Item> failedUpdates = new Collection<Item>();
-
-            foreach (var backpackWithItemsWithImages in Backpacks)
-            {
-                foreach (var backpackWithItemsWithImagesClone in backpacksClone)
-                {
-                    foreach (var itemImageLink in backpackWithItemsWithImages.ItemImageLinks)
-                    {
-                        foreach (var itemImageLinkClone in backpackWithItemsWithImagesClone.ItemImageLinks)
-                        {
-                            if (StringIsEqual(itemImageLink.Item.Title, itemImageLinkClone.Item.Title) && StringIsEqual(itemImageLink.Item.Description, itemImageLinkClone.Item.Description))
-                                continue;
-
-                            if (!await itemDataAccess.UpdateAsync(itemImageLink.Item))
-                            {
-                                isSuccess = false;
-                                itemImageLink.Item = itemImageLinkClone.Item;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!isSuccess)
-                await CouldNotSave(failedUpdates);
-        }
-
-        private async Task UpdateBackpacksAsync()
-        {
-            bool isSuccess = true;
-            ICollection<BackpackWithItemsWithImages> failedUpdates = new Collection<BackpackWithItemsWithImages>();
-
-            for (int i = 0; i < Backpacks.Count; i++)
-            {
-                if (StringIsEqual(Backpacks[i].Backpack.Title, backpacksClone[i].Backpack.Title))
-                    continue;
-
-                Backpacks[i].Backpack.Items.Clear();
-
-                if (!await backpackDataAccess.UpdateAsync(Backpacks[i].Backpack))
-                {
-                    isSuccess = false;
-                    failedUpdates.Add(backpacksClone[i]);
-                    Backpacks[i] = backpacksClone[i];
-                }
-            }
-
-            if (!isSuccess)
-                await CouldNotSave(failedUpdates);
-        }
-
-        private async Task UpdateBackpacks2()
-        {
-            bool isSuccess = true;
-            ICollection<BackpackWithItemsWithImages> failedUpdates = new Collection<BackpackWithItemsWithImages>();
-
         }
 
         private async Task UpdateTripAsync()
@@ -343,7 +250,6 @@ namespace Packit.App.ViewModels
         }
 
         public void Initialize(TripImageWeatherLink trip) => TripImageWeatherLink = trip;
-        private void CloneBackpackWithItemsList() => backpacksClone = Backpacks.ToList().DeepClone();
         private void CloneTrip() => tripClone = (Trip)TripImageWeatherLink.Trip.Clone();
     }
 }

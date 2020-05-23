@@ -25,9 +25,14 @@ namespace Packit.App.Views
                 ViewModel.Initialize(e.Parameter as Backpack);
             }
 
+            if (e.Parameter.GetType() == typeof(BackpackWithItemsTripImageWeatherWrapper))
+            {
+                ViewModel.Initialize(e?.Parameter as BackpackWithItemsTripImageWeatherWrapper);
+            }
+
             if (e.Parameter.GetType() == typeof(BackpackTripWrapper))
             {
-                ViewModel.Initialize(e?.Parameter as BackpackTripWrapper);
+                ViewModel.Initialize(e.Parameter as BackpackTripWrapper);
             }
         }
     }

@@ -22,8 +22,6 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private bool isSuccess = true;
 
-        public Trip NewTrip { get; set; }
-        public TripImageWeatherLink SelectedTripImageWeatherLink { get; set; }
         public ObservableCollection<BackpackWithItemsWithImages> SelectedBackpacks { get; set; } 
 
         public ICommand DoneSelectingBackpacksCommand { get; set; }

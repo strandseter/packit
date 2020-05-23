@@ -25,6 +25,7 @@ namespace Packit.App.ViewModels
 
         public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public TripImageWeatherLink SelectedTrip { get; set; }
+        public Trip NewTrip { get; set; }
         public BackpackWithItemsWithImages SelectedBackpackWithItemsWithImages { get; set; }
         public Backpack NewBackpack { get; set; }
         public ICommand DoneSelectingItemsCommand { get; set; }
@@ -57,6 +58,17 @@ namespace Packit.App.ViewModels
                     {
                         await UpdateSelectedTrip();
                         NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                    }
+                }
+
+                if (NewTrip != null && NewBackpack != null)
+                {
+                    foreach (var obj in selectedItems)
+                        await AddItemsToNewBackpack((ItemImageLink)obj);
+
+                    if (isSuccess)
+                    {
+                        NavigationService.Navigate(typeof(SelectBackpacksPage), NewTrip);
                     }
                 }
             });
@@ -106,10 +118,16 @@ namespace Packit.App.ViewModels
             }
         }
 
-        internal void Initialize(BackpackTripWrapper backpackTrip)
+        internal void Initialize(BackpackWithItemsTripImageWeatherWrapper backpackTrip)
         {
             SelectedBackpackWithItemsWithImages = backpackTrip?.Backpack;
             SelectedTrip = backpackTrip?.Trip;
+        }
+
+        internal void Initialize(BackpackTripWrapper backpackTripWrapper)
+        {
+            NewTrip = backpackTripWrapper.Trip;
+            NewBackpack = backpackTripWrapper.Backpack;
         }
 
         internal void Initialize(Backpack backpack)

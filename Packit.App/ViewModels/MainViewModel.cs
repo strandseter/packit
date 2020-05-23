@@ -13,12 +13,14 @@ using Packit.App.Wrappers;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
+using Packit.Model.Models;
 
 namespace Packit.App.ViewModels
 {
     public class MainViewModel : Observable
     {
         private readonly ICustomTripDataAccess customTripDataAccess = new CustomTripDataAccessFactory().Create();
+        private readonly IBasicDataAccess<Check> checksDataAccess = new BasicDataAccessFactory<Check>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private ICommand loadedCommand;
         private Trip nextTrip;
@@ -35,10 +37,7 @@ namespace Packit.App.ViewModels
 
         public MainViewModel()
         {
-            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(param =>
-            {
-                var fdgdfg = param;
-            });
+            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
 
             TripDetailsCommand = new RelayCommand(() => {
 
@@ -65,6 +64,34 @@ namespace Packit.App.ViewModels
                 });
             });
             await LoadItemImagesAsync();
+        }
+
+
+        private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
+        {
+            if (param.IsChecked)
+            {
+                var check = new Check()
+                {
+                    IsChecked = true,
+                    ItemId = param.Item.ItemId,
+                    BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
+                    TripId = NextTrip.TripId,
+                    UserId = 4
+                };
+
+                if (await checksDataAccess.AddAsync(check))
+                {
+                    param.Item.Check = check;
+                    param.Item.Check.IsChecked = true;
+                }
+            }
+
+            if (!param.IsChecked)
+            {
+                if (await checksDataAccess.DeleteAsync(param.Item.Check))
+                    param.Item.Check.IsChecked = false;
+            }
         }
 
         private void LoadBackpacks()
