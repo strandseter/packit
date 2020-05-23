@@ -20,7 +20,6 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Trip> tripssDataAccess = new BasicDataAccessFactory<Trip>().Create();
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly IRelationDataAccess<Backpack, Item> backpackDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
-        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private bool isSuccess = true;
 
         public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
@@ -37,6 +36,18 @@ namespace Packit.App.ViewModels
             {
                 //This is a workaround. It is not possible to bind readonly "SelectedItems" in multiselect grid/list-view.
                 List<object> selectedItems = param.ToList();
+
+                if (NewTrip != null && NewBackpack != null)
+                {
+                    foreach (var obj in selectedItems)
+                        await AddItemsToNewBackpack((ItemImageLink)obj);
+
+                    if (isSuccess)
+                    {
+                        NavigationService.Navigate(typeof(SelectBackpacksPage), NewTrip);
+                        return;
+                    }
+                }
 
                 if (NewBackpack != null)
                 {
@@ -58,17 +69,6 @@ namespace Packit.App.ViewModels
                     {
                         await UpdateSelectedTrip();
                         NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
-                    }
-                }
-
-                if (NewTrip != null && NewBackpack != null)
-                {
-                    foreach (var obj in selectedItems)
-                        await AddItemsToNewBackpack((ItemImageLink)obj);
-
-                    if (isSuccess)
-                    {
-                        NavigationService.Navigate(typeof(SelectBackpacksPage), NewTrip);
                     }
                 }
             });
