@@ -41,6 +41,7 @@ namespace Packit.App
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<ViewModel>();
             serviceCollection.AddTransient<ItemsViewModel>();
+            serviceCollection.AddTransient<DetailTripViewModel>();
             serviceCollection.AddTransient<BackpacksViewModel>();
             serviceCollection.AddTransient<TripsMainViewModel>();
             serviceCollection.AddTransient<SelectBackpacksViewModel>();

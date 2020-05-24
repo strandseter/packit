@@ -42,7 +42,8 @@ namespace Packit.App.ViewModels
             set => Set(ref titleIsValid, value);
         }
 
-        public NewTripViewModel()
+        public NewTripViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             CandcelCommand = new RelayCommand(() => NavigationService.GoBack());
 

@@ -59,7 +59,8 @@ namespace Packit.App.ViewModels
         public TripImageWeatherLink TripImageWeatherLink { get; set; }
         public ObservableCollection<BackpackWithItemsWithImages> Backpacks { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
 
-        public DetailTripViewModel()
+        public DetailTripViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             CancelTripCommand = new RelayCommand(async () =>
             {
