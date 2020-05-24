@@ -65,24 +65,6 @@
                                                            Style="{StaticResource TitleTextBlockStyle}"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Center"/>
-                                            <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.ShareBackpackCommand}"
-                                                        CommandParameter="{x:Bind}"
-                                                        Margin="10,10,5,10">
-                                                <SymbolIcon Symbol="Share"/>
-                                            </Button>
-
-                                        </StackPanel>
-
-                                        <StackPanel Margin="0,10,0,0"
-                                                        Orientation="Horizontal"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center"
-                                                        Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
-
-                                            <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center"
-                                                        Margin="5,0,5,0"/>
 
                                             <Button Content="Options">
                                                 <Button.Flyout>
@@ -106,7 +88,28 @@
                                                     </MenuFlyout>
                                                 </Button.Flyout>
                                             </Button>
+                                            
+                                            <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.ShareBackpackCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Margin="10,10,5,10">
+                                                <SymbolIcon Symbol="Share"/>
+                                            </Button>
 
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,10,0,0"
+                                                        Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
+
+                                            <Grid>
+                                                <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        Margin="5,0,5,0"/>
+                                            </Grid>
+                                            
                                         </StackPanel>
 
                                     </Grid>

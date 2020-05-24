@@ -9,6 +9,7 @@ using Packit.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -25,53 +26,16 @@ namespace Packit.App.ViewModels
         public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public TripImageWeatherLink SelectedTrip { get; set; }
         public Trip NewTrip { get; set; }
+        public Backpack SelectedBackpack { get; set; }
         public BackpackWithItemsWithImages SelectedBackpackWithItemsWithImages { get; set; }
         public Backpack NewBackpack { get; set; }
         public ICommand DoneSelectingItemsCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public SelectItemsViewModel()
+        public SelectItemsViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
-            DoneSelectingItemsCommand = new RelayCommand<IList<object>>(async param =>
-            {
-                //This is a workaround. It is not possible to bind readonly "SelectedItems" in multiselect grid/list-view.
-                List<object> selectedItems = param.ToList();
-
-                if (NewTrip != null && NewBackpack != null)
-                {
-                    foreach (var obj in selectedItems)
-                        await AddItemsToNewBackpack((ItemImageLink)obj);
-
-                    if (isSuccess)
-                    {
-                        NavigationService.Navigate(typeof(SelectBackpacksPage), NewTrip);
-                        return;
-                    }
-                }
-
-                if (NewBackpack != null)
-                {
-                    foreach (var obj in selectedItems)
-                        await AddItemsToNewBackpack((ItemImageLink)obj);
-
-                    if (isSuccess)
-                    {
-                        NavigationService.Navigate(typeof(BackpacksPage));
-                    }
-                }
-
-                if (SelectedBackpackWithItemsWithImages != null)
-                {
-                    foreach (var obj in selectedItems)
-                        await AddItemsToExistingBackpack((ItemImageLink)obj);
-
-                    if (isSuccess)
-                    {
-                        await UpdateSelectedTrip();
-                        NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
-                    }
-                }
-            });
+            DoneSelectingItemsCommand = new RelayCommand<IList<object>>(async param => await SaveChangesNavigateBack(param.ToList()));
 
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
         }
@@ -82,7 +46,7 @@ namespace Packit.App.ViewModels
             await LoadImagesAsync();
         }
 
-        private async Task AddItemsToExistingBackpack(ItemImageLink itemImageLink)
+        private async Task AddItemsToExistingBackpackWithItemsWithImages(ItemImageLink itemImageLink)
         {
             if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItemsWithImages.Backpack.BackpackId, itemImageLink.Item.ItemId))
                 isSuccess = false;
@@ -94,6 +58,12 @@ namespace Packit.App.ViewModels
                 isSuccess = false;
         }
 
+        private async Task AddItemsToExistingBackpack(ItemImageLink itemImageLink)
+        {
+            if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpack.BackpackId, itemImageLink.Item.ItemId))
+                isSuccess = false;
+        }
+
         private async Task UpdateSelectedTrip()
         {
             var updatedTrip = await tripssDataAccess.GetByIdWithChildEntitiesAsync(SelectedTrip.Trip);
@@ -102,19 +72,75 @@ namespace Packit.App.ViewModels
 
         protected override async Task LoadItemsAsync()
         {
-            var items = await itemsDataAccess.GetAllAsync();
-
-            foreach (var i in items)
+            try
             {
-                var itemImageLink = new ItemImageLink() { Item = i };
-                ItemImageLinks.Add(itemImageLink);
+                var items = await itemsDataAccess.GetAllAsync();
 
-                if (SelectedBackpackWithItemsWithImages == null)
-                    continue;
+                foreach (var i in items)
+                {
+                    var itemImageLink = new ItemImageLink() { Item = i };
+                    ItemImageLinks.Add(itemImageLink);
 
-                foreach (var item in SelectedBackpackWithItemsWithImages.ItemImageLinks)
-                    if (i.ItemId == item.Item.ItemId)
-                        ItemImageLinks.Remove(itemImageLink);
+                    if (SelectedBackpackWithItemsWithImages == null)
+                        continue;
+
+                    foreach (var item in SelectedBackpackWithItemsWithImages.ItemImageLinks)
+                        if (i.ItemId == item.Item.ItemId)
+                            ItemImageLinks.Remove(itemImageLink);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync(NavigationService.GoBack, nameof(Item));
+            }
+        }
+
+        private async Task SaveChangesNavigateBack(IList<object> selectedItems)
+        {
+            if (NewTrip != null && NewBackpack != null)
+            {
+                foreach (var obj in selectedItems)
+                    await AddItemsToNewBackpack((ItemImageLink)obj);
+
+                if (isSuccess)
+                {
+                    NavigationService.Navigate(typeof(SelectBackpacksPage), NewTrip);
+                    return;
+                }
+            }
+
+            if (NewBackpack != null)
+            {
+                foreach (var obj in selectedItems)
+                    await AddItemsToNewBackpack((ItemImageLink)obj);
+
+                if (isSuccess)
+                {
+                    NavigationService.Navigate(typeof(BackpacksPage));
+                }
+            }
+
+            if (SelectedBackpack != null)
+            {
+                foreach (var obj in selectedItems)
+                    await AddItemsToExistingBackpack((ItemImageLink)obj);
+
+                if (isSuccess)
+                {
+                    NavigationService.Navigate(typeof(BackpacksPage));
+                }
+            }
+
+            if (SelectedBackpackWithItemsWithImages != null)
+            {
+                foreach (var obj in selectedItems)
+                    await AddItemsToExistingBackpackWithItemsWithImages((ItemImageLink)obj);
+
+                if (isSuccess)
+                {
+                    await UpdateSelectedTrip();
+                    NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                }
             }
         }
 

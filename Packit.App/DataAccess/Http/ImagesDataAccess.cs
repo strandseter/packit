@@ -1,7 +1,6 @@
 ﻿using Packit.App.Services;
 using System;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -32,11 +31,18 @@ namespace Packit.App.DataAccess
 
             var bitmap = new BitmapImage();
 
-            HttpResponseMessage response = await httpClient.GetAsync(uri);
+            try
+            {
+                HttpResponseMessage response = await httpClient.GetAsync(uri);
 
-            if (response == null || !response.IsSuccessStatusCode)
+                if (response == null || !response.IsSuccessStatusCode)
+                    return new BitmapImage(fallbackImage);
+            }
+            catch (HttpRequestException)
+            {
                 return new BitmapImage(fallbackImage);
-
+            }
+            
             bitmap.UriSource = uri;
 
             return bitmap;

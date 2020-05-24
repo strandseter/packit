@@ -11,6 +11,17 @@ namespace Packit.App.ViewModels
 {
     public class ViewModel : Observable
     {
+        protected IPopUpService PopUpService { get; set; }
+
+        public ViewModel(IPopUpService popUpService)
+        {
+            PopUpService = popUpService;
+        }
+
+        public ViewModel()
+        {
+        }
+
         protected async Task CouldNotSave<T>(ICollection<T> failedUploads)
         {
             if (failedUploads == null) return;
@@ -20,7 +31,7 @@ namespace Packit.App.ViewModels
             foreach (var failedUpdate in failedUploads)
                 builder.Append($"{failedUpdate}, ");
 
-            await PopupService.ShowCouldNotSaveChangesAsync(builder.ToString());
+            await PopUpService.ShowCouldNotSaveChangesAsync(builder.ToString());
         }
 
         protected static string GenerateImageName()

@@ -1,5 +1,5 @@
 ﻿using System;
-using Packit.App.DataLinks;
+using Microsoft.Extensions.DependencyInjection;
 using Packit.App.ViewModels;
 using Packit.App.Wrappers;
 using Packit.Model;
@@ -10,7 +10,7 @@ namespace Packit.App.Views
 {
     public sealed partial class SelectBackpacksPage : Page
     {
-        public SelectBackpacksViewModel ViewModel { get; } = new SelectBackpacksViewModel();
+        public SelectBackpacksViewModel ViewModel { get; } = (App.Current as App).ServiceProvider.GetService<SelectBackpacksViewModel>();
         public SelectBackpacksPage() => InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

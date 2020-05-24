@@ -121,6 +121,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>3.1.4</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
@@ -159,7 +162,8 @@
     <Compile Include="Dictionaries\ConvertersDictionary.cs" />
     <Compile Include="Dictionaries\DataTemplatesDictionary.cs" />
     <Compile Include="Factories\CustomTripDataAccessFactory.cs" />
-    <Compile Include="Services\PopupService.cs" />
+    <Compile Include="Services\IPopUpService.cs" />
+    <Compile Include="Services\PopUpService.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Main.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\WeatherReport.cs" />
     <Compile Include="DataAccess\Http\WeatherDataAccess.cs" />

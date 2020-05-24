@@ -65,7 +65,7 @@ namespace Packit.App.ViewModels
 
                     if (!await tripsDataAccess.AddAsync(Trip) || !await imagesDataAccess.AddImageAsync(localImage, randomImageName))
                     {
-                        await PopupService.ShowCouldNotSaveChangesAsync($"{Trip.Title} or {nameof(localImage)}");
+                        await PopUpService.ShowCouldNotSaveChangesAsync($"{Trip.Title} or {nameof(localImage)}");
                         return;
                     }
 
@@ -75,7 +75,7 @@ namespace Packit.App.ViewModels
 
                 if (!await tripsDataAccess.AddAsync(Trip))
                 {
-                    await PopupService.ShowCouldNotSaveChangesAsync(Trip.Title);
+                    await PopUpService.ShowCouldNotSaveChangesAsync(Trip.Title);
                     return;
                 }
 

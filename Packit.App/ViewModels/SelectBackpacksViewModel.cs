@@ -27,7 +27,8 @@ namespace Packit.App.ViewModels
         public ICommand DoneSelectingBackpacksCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public SelectBackpacksViewModel()
+        public SelectBackpacksViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             DoneSelectingBackpacksCommand = new RelayCommand<IList<object>>(async param =>
             {

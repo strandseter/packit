@@ -178,7 +178,7 @@ namespace Packit.App.ViewModels
 
             if (!await tripDataAccess.UpdateAsync(TripImageWeatherLink.Trip))
             {
-                await PopupService.ShowCouldNotSaveChangesAsync(tripClone.Title);
+                await PopUpService.ShowCouldNotSaveChangesAsync(tripClone.Title);
                 TripImageWeatherLink.Trip = tripClone;
             }
         }
@@ -202,7 +202,7 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Weather");
+                await PopUpService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Weather");
             }
         }
 

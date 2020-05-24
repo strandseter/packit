@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
@@ -13,7 +14,7 @@ using Packit.Model.NotifyPropertyChanged;
 
 namespace Packit.App.ViewModels
 {
-    public class TripsMainViewModel : Observable
+    public class TripsMainViewModel : ViewModel
     {
         private readonly IBasicDataAccess<Trip> tripsDataAccess = new BasicDataAccessFactory<Trip>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
@@ -25,7 +26,8 @@ namespace Packit.App.ViewModels
 
         public ObservableCollection<TripImageWeatherLink> Trips { get; } = new ObservableCollection<TripImageWeatherLink>();
 
-        public TripsMainViewModel()
+        public TripsMainViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             TripDetailCommand = new RelayCommand<TripImageWeatherLink>(param => NavigationService.Navigate(typeof(DetailTripV2Page), param));
 
@@ -34,8 +36,15 @@ namespace Packit.App.ViewModels
 
         private async Task LoadDataAsync()
         {
-            await LoadTrips();
-            await LoadTripImagesAsync();
+            try
+            {
+                await LoadTrips();
+                await LoadTripImagesAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+            }
         }
 
         private async Task LoadTrips()

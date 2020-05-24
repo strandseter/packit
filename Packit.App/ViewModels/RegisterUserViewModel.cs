@@ -17,7 +17,7 @@ using Windows.UI.Xaml;
 
 namespace Packit.App.ViewModels
 {
-    public class RegisterUserViewModel : Observable
+    public class RegisterUserViewModel : ViewModel
     {
         private UserDataAccess userDataAccess = new UserDataAccess();
         private bool firstNameIsValid;
@@ -60,7 +60,8 @@ namespace Packit.App.ViewModels
             HashedPassword = ""
         };
 
-        public RegisterUserViewModel()
+        public RegisterUserViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             LoginCommand = new RelayCommand(() => NavigationService.Navigate(typeof(LoginPage)));
 
@@ -120,11 +121,11 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                await PopupService.ShowInternetConnectionErrorAsync(ex.Message);
+                await PopUpService.ShowInternetConnectionErrorAsync(ex.Message);
             }
             catch (Exception ex)
             {
-                await PopupService.ShowUnknownErrorAsync(ex.Message);
+                await PopUpService.ShowUnknownErrorAsync(ex.Message);
             }
             
         }

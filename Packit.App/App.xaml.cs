@@ -1,7 +1,7 @@
 ﻿using System;
-
+using Microsoft.Extensions.DependencyInjection;
 using Packit.App.Services;
-
+using Packit.App.ViewModels;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 
@@ -16,6 +16,8 @@ namespace Packit.App
             get { return _activationService.Value; }
         }
 
+        public IServiceProvider ServiceProvider { get; private set; }
+
         public App()
         {
             InitializeComponent();
@@ -26,10 +28,25 @@ namespace Packit.App
 
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
+            ServiceProvider = RegisterServices();
+
             if (!args.PrelaunchActivated)
             {
                 await ActivationService.ActivateAsync(args);
             }
+        }
+
+        private IServiceProvider RegisterServices()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<ItemsViewModel>();
+            serviceCollection.AddTransient<BackpacksViewModel>();
+            serviceCollection.AddTransient<TripsMainViewModel>();
+            serviceCollection.AddTransient<SelectBackpacksViewModel>();
+            serviceCollection.AddTransient<SelectItemsViewModel>();
+            serviceCollection.AddTransient<MainViewModel>();
+            serviceCollection.AddSingleton<IPopUpService, PopUpService>();
+            return serviceCollection.BuildServiceProvider();
         }
 
         protected override async void OnActivated(IActivatedEventArgs args)

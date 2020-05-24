@@ -11,7 +11,7 @@ using Windows.Security.Credentials;
 
 namespace Packit.App.ViewModels
 {
-    public class LoginViewModel : Observable
+    public class LoginViewModel : ViewModel
     {
         private UserDataAccess userDataAccess = new UserDataAccess();
         private string email;
@@ -25,7 +25,8 @@ namespace Packit.App.ViewModels
         public string Password { get => password; set => Set(ref password, value); }
         public string LoginErrorMessage { get => loginErrorMessage; set => Set(ref loginErrorMessage, value); }
 
-        public LoginViewModel()
+        public LoginViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             var vault = new PasswordVault();
 
@@ -50,12 +51,12 @@ namespace Packit.App.ViewModels
                 }
                 catch (HttpRequestException ex)
                 {
-                    await PopupService.ShowInternetConnectionErrorAsync(ex.Message);
+                    await PopUpService.ShowInternetConnectionErrorAsync(ex.Message);
                 }
 
                 catch (Exception ex)
                 {
-                    await PopupService.ShowUnknownErrorAsync(ex.Message);
+                    await PopUpService.ShowUnknownErrorAsync(ex.Message);
                 }
             });
         }

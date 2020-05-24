@@ -38,18 +38,13 @@ namespace Packit.App.ViewModels
         public ICommand ItemDoneEditingCommand { get; set; }
         public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
 
-        public ItemsViewModel()
+        public ItemsViewModel(IPopUpService popUpService)
+            : base(popUpService)
         {
-            DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopupService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
+            DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopUpService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
                                                                             ,param => param != null);
-            ItemDoneEditingCommand = new RelayCommand<Item>(async param =>
-            {
-                if (StringIsEqual(param.Description, itemClone.Description) && StringIsEqual(param.Title, itemClone.Title))
-                    return;
 
-                if (await itemsDataAccess.UpdateAsync(param))
-                    isVisible = true;
-            });
+            ItemDoneEditingCommand = new RelayCommand<Item>(async param => await UpdateEditeditem(param));
 
             ItemToEditCommand = new RelayCommand<Item>(param => itemClone = param.DeepClone());
 
@@ -58,12 +53,49 @@ namespace Packit.App.ViewModels
             AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));
         }
 
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                await LoadItemsAsync();
+                await LoadImagesAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<ItemsPage>(NavigationService.Navigate, nameof(ItemsPage), ex);
+            }
+        }
+
+        private async Task UpdateEditeditem(Item item)
+        {
+            if (StringIsEqual(item.Description, itemClone.Description) && StringIsEqual(item.Title, itemClone.Title))
+                return;
+
+            try
+            {
+                if (await itemsDataAccess.UpdateAsync(item))
+                    isVisible = true;
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotSaveChangesAsync(itemClone.Title, ex);
+                item.Title = itemClone.Title;
+            }
+        }
+
         private async Task DeleteItemAsync(ItemImageLink itemImageLink)
         {
-            if (itemImageLink.Item.ImageStringName != null)
-                await DeleteItemAndImageRequestAsync(itemImageLink);
-            else
-                await DeleteItemRequestAsync(itemImageLink);
+            try
+            {
+                if (itemImageLink.Item.ImageStringName != null)
+                    await DeleteItemAndImageRequestAsync(itemImageLink);
+                else
+                    await DeleteItemRequestAsync(itemImageLink);
+            }
+            catch (HttpRequestException)
+            {
+                await PopUpService.ShowCouldNotSaveChangesAsync(itemImageLink.Item.Title);
+            }
         }
 
         private async Task DeleteItemAndImageRequestAsync(ItemImageLink itemImageLink)
@@ -78,20 +110,6 @@ namespace Packit.App.ViewModels
                 return;
 
             ItemImageLinks.Remove(itemImageLink);
-        }
-
-
-        private async Task LoadDataAsync()
-        {
-            try
-            {
-                await LoadItemsAsync();
-                await LoadImagesAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopupService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Items");
-            }
         }
 
         protected virtual async Task LoadItemsAsync()

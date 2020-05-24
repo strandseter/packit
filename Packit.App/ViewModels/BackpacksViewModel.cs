@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
@@ -14,13 +15,12 @@ using Packit.Model.NotifyPropertyChanged;
 
 namespace Packit.App.ViewModels
 {
-    public class BackpacksViewModel : Observable
+    public class BackpacksViewModel : ViewModel
     {
         private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
-
         private bool isVisible;
 
         private ICommand loadedCommand;
@@ -44,24 +44,26 @@ namespace Packit.App.ViewModels
         public Trip NewTrip { get; set; }
         public TripImageWeatherLink SelectedTripImageWeatherLink { get; set; }
 
-        public BackpacksViewModel()
+        public BackpacksViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
-            EditCommand = new RelayCommand(async () =>
-            {
-                var test = 0;
-            });
+            EditCommand = new RelayCommand(() => IsVisible = !IsVisible);
 
             DeleteCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
-               await PopupService.ShowDeleteDialogAsync(DeleteBackpackAsync, param, param.Backpack.Title);
+               await PopUpService.ShowDeleteDialogAsync(DeleteBackpackAsync, param, param.Backpack.Title);
             }, param => param != null);
 
             NewCommand = new RelayCommand(() =>
             {
                 if(NewTrip != null)
+                {
                     NavigationService.Navigate(typeof(NewBackpackPage), NewTrip);
+                }
                 if (SelectedTripImageWeatherLink != null)
+                {
                     NavigationService.Navigate(typeof(NewBackpackPage), SelectedTripImageWeatherLink.Trip);
+                }
                 else
                     NavigationService.Navigate(typeof(NewBackpackPage));
             });
@@ -78,9 +80,9 @@ namespace Packit.App.ViewModels
                     param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
             });
 
-            AddItemsCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
+            AddItemsCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
-                var test = param;
+                NavigationService.Navigate(typeof(SelectItemsPage), param.Backpack);
             });
 
             ShareBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
@@ -88,6 +90,19 @@ namespace Packit.App.ViewModels
                 var test = param;
             });
 
+        }
+
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                await LoadBackpacksAsync();
+                await LoadItemImagesAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<BackpacksPage>(NavigationService.Navigate, nameof(BackpacksPage), ex);
+            }
         }
 
         private async Task DeleteBackpackAsync(BackpackWithItemsWithImages backpackWithItemsWithImages)
@@ -100,12 +115,6 @@ namespace Packit.App.ViewModels
         {
             if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName)) ;
                 //ItemImageLinks.Remove(itemImageLink);
-        }
-
-        private async Task LoadDataAsync()
-        {
-            await LoadBackpacksAsync();
-            await LoadItemImagesAsync();
         }
 
         protected virtual async Task LoadBackpacksAsync()

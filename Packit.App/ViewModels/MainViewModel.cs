@@ -14,10 +14,11 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Model.Models;
+using System.Net.Http;
 
 namespace Packit.App.ViewModels
 {
-    public class MainViewModel : Observable
+    public class MainViewModel : ViewModel
     {
         private readonly ICustomTripDataAccess customTripDataAccess = new CustomTripDataAccessFactory().Create();
         private readonly IBasicDataAccess<Check> checksDataAccess = new BasicDataAccessFactory<Check>().Create();
@@ -35,7 +36,8 @@ namespace Packit.App.ViewModels
         public BitmapImage TripImage { get => tripImage; set => Set(ref tripImage, value); }
         public ObservableCollection<BackpackWithItemsWithImages> BackspackWithItemsWithImages { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
 
-        public MainViewModel()
+        public MainViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
 
@@ -49,21 +51,28 @@ namespace Packit.App.ViewModels
 
         private async Task LoadDataAsync()
         {
-            await LoadTripAsync();
-
-            if (!HasNextTrip)
-                return;
-
-            await LoadTripImage();
-            await Task.Run(async () =>
+            try
             {
-                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                await LoadTripAsync();
+
+                if (!HasNextTrip)
+                    return;
+
+                await LoadTripImage();
+                await Task.Run(async () =>
                 {
-                    LoadBackpacks();
-                    LoadItems();
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        LoadBackpacks();
+                        LoadItems();
+                    });
                 });
-            });
-            await LoadItemImagesAsync();
+                await LoadItemImagesAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<MainPage>(NavigationService.Navigate, nameof(MainPage), ex);
+            }
         }
 
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
