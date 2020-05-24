@@ -31,16 +31,21 @@ namespace Packit.App.ViewModels
         private readonly IBasicDataAccess<Check> checksDataAccess = new BasicDataAccessFactory<Check>().Create();
         private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
         private readonly IRelationDataAccess<Trip, Backpack> tripBackpackDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
-
         private ICommand loadedCommand;
-        private bool isVisible;
-
         private Trip tripClone;
+        private bool isVisible;
+        private bool weatherReportIsLoaded;
 
         public bool IsVisible
         {
             get => isVisible;
             set => Set(ref isVisible, value);
+        }
+
+        public bool WeatherReportIsLoaded
+        {
+            get => weatherReportIsLoaded;
+            set => Set(ref weatherReportIsLoaded, value);
         }
 
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
@@ -188,7 +193,7 @@ namespace Packit.App.ViewModels
         {
             if (StringIsEqual(TripImageWeatherLink.Trip.Destination, tripClone.Destination))
                 return;
-            //TODO: Error handling
+        
             await LoadWeatherReportAsync();
         }
 
@@ -203,7 +208,7 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync(NavigationService.GoBack, "Weather");
+                await PopUpService.ShowCouldNotLoadAsync<DetailTripV2Page>(NavigationService.Navigate, nameof(DetailTripV2Page), ex);
             }
         }
 
@@ -245,8 +250,16 @@ namespace Packit.App.ViewModels
 
         private async Task LoadWeatherReportAsync()
         {
-            TripImageWeatherLink.WeatherReport = await weatherDataAccess.GetCurrentWeatherReportAsync(TripImageWeatherLink.Trip.Destination);
-            TripImageWeatherLink.WeatherReport.Weathers[0].IconImage = await weatherDataAccess.GetCurrentWeatherIconAsync(TripImageWeatherLink.WeatherReport.Weathers[0].Icon);
+            try
+            {
+                TripImageWeatherLink.WeatherReport = await weatherDataAccess.GetCurrentWeatherReportAsync(TripImageWeatherLink.Trip.Destination);
+                TripImageWeatherLink.WeatherReport.Weathers[0].IconImage = await weatherDataAccess.GetCurrentWeatherIconAsync(TripImageWeatherLink.WeatherReport.Weathers[0].Icon);
+                WeatherReportIsLoaded = true;
+            }
+            catch (HttpRequestException)
+            {
+                WeatherReportIsLoaded = false;
+            }
         }
 
         public void Initialize(TripImageWeatherLink trip) => TripImageWeatherLink = trip;

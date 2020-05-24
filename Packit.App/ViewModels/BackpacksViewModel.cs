@@ -19,10 +19,9 @@ namespace Packit.App.ViewModels
     {
         private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
-        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private readonly IRelationDataAccess<Backpack, Item> backpackItemDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
+        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private bool isVisible;
-
         private ICommand loadedCommand;
 
         public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
@@ -113,7 +112,10 @@ namespace Packit.App.ViewModels
 
         private async Task DeleteItemAndImageRequestAsync(ItemImageLink itemImageLink)
         {
-            if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName)) ;
+            if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName))
+            {
+
+            }
                 //ItemImageLinks.Remove(itemImageLink);
         }
 

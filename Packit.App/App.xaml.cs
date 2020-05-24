@@ -1,7 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using Packit.App.DataAccess;
+using Packit.App.Factories;
 using Packit.App.Services;
 using Packit.App.ViewModels;
+using Packit.Model;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 
@@ -39,10 +42,12 @@ namespace Packit.App
         private IServiceProvider RegisterServices()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<ViewModel>();
             serviceCollection.AddTransient<ItemsViewModel>();
             serviceCollection.AddTransient<DetailTripViewModel>();
             serviceCollection.AddTransient<BackpacksViewModel>();
+            serviceCollection.AddTransient<NewItemViewModel>();
+            serviceCollection.AddTransient<NewTripViewModel>();
+            serviceCollection.AddTransient<NewBackpackViewModel>();
             serviceCollection.AddTransient<TripsMainViewModel>();
             serviceCollection.AddTransient<SelectBackpacksViewModel>();
             serviceCollection.AddTransient<SelectItemsViewModel>();

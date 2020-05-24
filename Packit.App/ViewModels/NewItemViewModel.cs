@@ -35,7 +35,6 @@ namespace Packit.App.ViewModels
         public NewItemViewModel(IPopUpService popUpService)
             :base(popUpService)
         {
-
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
 
             SaveCommand = new RelayCommand<bool>(async param =>
