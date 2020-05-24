@@ -5,9 +5,8 @@ namespace Packit.App.Helpers
 {
     public class RelayCommand : ICommand
     {
-        private readonly Action _execute;
-
-        private readonly Func<bool> _canExecute;
+        public Action Action { get; }
+        public Func<bool> Func { get; }
 
         public event EventHandler CanExecuteChanged;
 
@@ -18,16 +17,16 @@ namespace Packit.App.Helpers
 
         public RelayCommand(Action execute, Func<bool> canExecute)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
+            Action = execute ?? throw new ArgumentNullException(nameof(execute));
+            Func = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || _canExecute();
+            return Func == null || Func();
         }
 
-        public void Execute(object parameter) => _execute();
+        public virtual void Execute(object parameter) => Action();
 
         public void OnCanExecuteChanged()
         {
@@ -37,11 +36,19 @@ namespace Packit.App.Helpers
 
     public class RelayCommand<T> : ICommand
     {
-        private readonly Action<T> _execute;
-
-        private readonly Func<T, bool> _canExecute;
+        public Action<T> Action { get; }
+        public Func<T, bool> Func { get; }
 
         public event EventHandler CanExecuteChanged;
+
+        public RelayCommand()
+        {
+        }
+
+        public RelayCommand(Func<T, bool> canExecute)
+        {
+            Func = canExecute;
+        }
 
         public RelayCommand(Action<T> execute)
             : this(execute, null)
@@ -50,13 +57,13 @@ namespace Packit.App.Helpers
 
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
+            Action = execute ?? throw new ArgumentNullException(nameof(execute));
+            Func = canExecute;
         }
 
-        public bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
+        public bool CanExecute(object parameter) => Func == null || Func((T)parameter);
 
-        public void Execute(object parameter) => _execute((T)parameter);
+        public virtual void Execute(object parameter) => Action((T)parameter);
 
         public void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }

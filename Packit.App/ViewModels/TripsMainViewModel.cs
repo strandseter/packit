@@ -9,6 +9,7 @@ using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
+using Packit.Exceptions;
 using Packit.Model;
 using Packit.Model.NotifyPropertyChanged;
 
@@ -41,6 +42,11 @@ namespace Packit.App.ViewModels
                 await LoadTrips();
                 await LoadTripImagesAsync();
             }
+            catch (NetworkConnectionException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+
+            }
             catch (HttpRequestException ex)
             {
                 await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
@@ -49,16 +55,40 @@ namespace Packit.App.ViewModels
 
         private async Task LoadTrips()
         {
-            var trips = await tripsDataAccess.GetAllWithChildEntitiesAsync();
+            try
+            {
+                var trips = await tripsDataAccess.GetAllWithChildEntitiesAsync();
 
-            foreach (Trip trip in trips)
-                Trips.Add(new TripImageWeatherLink(trip));
+                foreach (Trip trip in trips)
+                    Trips.Add(new TripImageWeatherLink(trip));
+            }
+            catch (NetworkConnectionException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+            }
         }
-
+    
         private async Task LoadTripImagesAsync()
         {
-            foreach (TripImageWeatherLink t in Trips)
-                t.Image = await imagesDataAccess.GetImageAsync(t.Trip.ImageStringName, "ms-appx:///Assets/generictrip.jpg");
+            try
+            {
+                foreach (TripImageWeatherLink t in Trips)
+                    t.Image = await imagesDataAccess.GetImageAsync(t.Trip.ImageStringName, "ms-appx:///Assets/generictrip.jpg");
+            }
+            catch (NetworkConnectionException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+            }
         }
     }
 }

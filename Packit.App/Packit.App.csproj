@@ -162,6 +162,8 @@
     <Compile Include="Dictionaries\ConvertersDictionary.cs" />
     <Compile Include="Dictionaries\DataTemplatesDictionary.cs" />
     <Compile Include="Factories\CustomTripDataAccessFactory.cs" />
+    <Compile Include="Helpers\NetworkErrorHandlingRelayCommand.cs" />
+    <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\IPopUpService.cs" />
     <Compile Include="Services\PopUpService.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Main.cs" />
@@ -183,7 +185,6 @@
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultActivationHandler.cs" />
     <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Weather.cs" />
     <Compile Include="ThirdPartyApiModels\Openweathermap\Wind.cs" />
@@ -421,6 +422,10 @@
     <ProjectReference Include="..\Packit.App.Core\Packit.App.Core.csproj">
       <Project>{3D3AAD4F-0121-4FFD-BD5D-A2D3710A72BD}</Project>
       <Name>Packit.App.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Packit.Exceptions\Packit.Exceptions.csproj">
+      <Project>{6BF442B4-B60A-48BB-82D0-4A1DB3F10BC4}</Project>
+      <Name>Packit.Exceptions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Packit.Extensions\Packit.Extensions.csproj">
       <Project>{5efc0b8f-6c90-425c-aad7-d7dd32d9845c}</Project>

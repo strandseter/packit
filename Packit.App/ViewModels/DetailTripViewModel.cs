@@ -142,6 +142,21 @@ namespace Packit.App.ViewModels
             ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
         }
 
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                LoadBackpacks();
+                LoadItemsInBackpacks();
+                await LoadWeatherReportAsync();
+                await LoadItemImagesAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<DetailTripV2Page>(NavigationService.Navigate, nameof(DetailTripV2Page), ex);
+            }
+        }
+
         private async Task Update()
         {
             await UpdateTripAsync();
@@ -161,17 +176,32 @@ namespace Packit.App.ViewModels
                     UserId = 4
                 };
 
-                if (await checksDataAccess.AddAsync(check))
+                try
                 {
                     param.Item.Check = check;
-                    param.Item.Check.IsChecked = true;
+
+                    if (await checksDataAccess.AddAsync(check))
+                    {
+                        param.Item.Check.IsChecked = true;
+                    }
+                }
+                catch (HttpRequestException)
+                {
+                    param.Item.Check.IsChecked = false;
                 }
             }
 
-            if (!param.IsChecked)
+            try
             {
-                if (await checksDataAccess.DeleteAsync(param.Item.Check))
-                    param.Item.Check.IsChecked = false;
+                if (!param.IsChecked)
+                {
+                    if (await checksDataAccess.DeleteAsync(param.Item.Check))
+                        param.Item.Check.IsChecked = false;
+                }
+            }
+            catch (HttpRequestException)
+            {
+                param.Item.Check.IsChecked = false;
             }
         }
 
@@ -182,7 +212,19 @@ namespace Packit.App.ViewModels
 
             TripImageWeatherLink.Trip.Backpacks.Clear();
 
-            if (!await tripDataAccess.UpdateAsync(TripImageWeatherLink.Trip))
+            var isSuccess = true;
+
+            try
+            {
+                if (!await tripDataAccess.UpdateAsync(TripImageWeatherLink.Trip))
+                    isSuccess = false;
+            }
+            catch (HttpRequestException)
+            {
+                isSuccess = false;
+            }
+
+            if (!isSuccess)
             {
                 await PopUpService.ShowCouldNotSaveChangesAsync(tripClone.Title);
                 TripImageWeatherLink.Trip = tripClone;
@@ -195,21 +237,6 @@ namespace Packit.App.ViewModels
                 return;
         
             await LoadWeatherReportAsync();
-        }
-
-        private async Task LoadDataAsync()
-        {
-            try
-            {
-                LoadBackpacks();
-                LoadItemsInBackpacks();
-                await LoadWeatherReportAsync();
-                await LoadItemImagesAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<DetailTripV2Page>(NavigationService.Navigate, nameof(DetailTripV2Page), ex);
-            }
         }
 
         private void LoadBackpacks()

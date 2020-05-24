@@ -5,6 +5,7 @@ using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.App.Wrappers;
+using Packit.Exceptions;
 using Packit.Model;
 using System;
 using System.Collections.Generic;
@@ -48,14 +49,37 @@ namespace Packit.App.ViewModels
 
         private async Task AddItemsToExistingBackpackWithItemsWithImages(ItemImageLink itemImageLink)
         {
-            if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItemsWithImages.Backpack.BackpackId, itemImageLink.Item.ItemId))
-                isSuccess = false;
+            try
+            {
+                if (!await backpackDataAccess.AddEntityToEntityAsync(SelectedBackpackWithItemsWithImages.Backpack.BackpackId, itemImageLink.Item.ItemId))
+                    isSuccess = false;
+            }
+            catch (NetworkConnectionException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<SelectItemsPage>(NavigationService.Navigate, nameof(SelectItemsPage), ex);
+
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<SelectItemsPage>(NavigationService.Navigate, nameof(SelectItemsPage), ex);
+            }
         }
 
         private async Task AddItemsToNewBackpack(ItemImageLink itemImageLink)
         {
-            if (!await backpackDataAccess.AddEntityToEntityAsync(NewBackpack.BackpackId, itemImageLink.Item.ItemId))
-                isSuccess = false;
+            try
+            {
+                if (!await backpackDataAccess.AddEntityToEntityAsync(NewBackpack.BackpackId, itemImageLink.Item.ItemId))
+                    isSuccess = false;
+            }
+            catch (NetworkConnectionException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<SelectItemsPage>(NavigationService.Navigate, nameof(SelectItemsPage), ex);
+            }
+            catch (HttpRequestException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<SelectItemsPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+            }
         }
 
         private async Task AddItemsToExistingBackpack(ItemImageLink itemImageLink)
@@ -89,9 +113,14 @@ namespace Packit.App.ViewModels
                             ItemImageLinks.Remove(itemImageLink);
                 }
             }
+            catch (NetworkConnectionException ex)
+            {
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+
+            }
             catch (HttpRequestException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync(NavigationService.GoBack, nameof(Item));
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
             }
         }
 

@@ -2,6 +2,7 @@
 using Packit.Model.NotifyPropertyChanged;
 using System;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace Packit.App.ViewModels
 {

@@ -13,6 +13,7 @@ using System.Linq;
 using Packit.Extensions;
 using Packit.App.Helpers;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 
 namespace Packit.App.ViewModels
 {
@@ -44,7 +45,8 @@ namespace Packit.App.ViewModels
             DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopUpService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
                                                                             ,param => param != null);
 
-            ItemDoneEditingCommand = new RelayCommand<Item>(async param => await UpdateEditeditem(param));
+            ItemDoneEditingCommand = new NetworkErrorHandlingRelayCommand<Item, ItemsPage>(async param => await UpdateEditeditem(param), popUpService);
+
 
             ItemToEditCommand = new RelayCommand<Item>(param => itemClone = param.DeepClone());
 
@@ -71,16 +73,8 @@ namespace Packit.App.ViewModels
             if (StringIsEqual(item.Description, itemClone.Description) && StringIsEqual(item.Title, itemClone.Title))
                 return;
 
-            try
-            {
-                if (await itemsDataAccess.UpdateAsync(item))
-                    isVisible = true;
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotSaveChangesAsync(itemClone.Title, ex);
-                item.Title = itemClone.Title;
-            }
+            if (await itemsDataAccess.UpdateAsync(item))
+                isVisible = true;
         }
 
         private async Task DeleteItemAsync(ItemImageLink itemImageLink)

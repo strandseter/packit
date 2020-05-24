@@ -6,6 +6,6 @@ namespace Packit.App.Factories
 {
     public class BasicDataAccessFactory<T> where T : IDatabase
     {
-        public IBasicDataAccess<T> Create() => InternetConnectionService.IsConnected() ? new BasicDataAccessHttp<T>() : (IBasicDataAccess<T>)new BasicDataAccessLocal<T>();
+        public IBasicDataAccess<T> Create() => InternetConnectionService.IsConnectedMock() ? new BasicDataAccessHttp<T>() : (IBasicDataAccess<T>)new BasicDataAccessLocal<T>();
     }
 }

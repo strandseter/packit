@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Popups;
@@ -21,6 +22,9 @@ namespace Packit.App.Services
         {
             if (exception == null)
                 throw new ArgumentException(nameof(exception));
+
+            if (notLoadingTitle == null)
+                throw new ArgumentNullException(nameof(notLoadingTitle));
 
             var message = new MessageDialog($"Could not load {notLoadingTitle}, check your connection and try again ({exception.Message}).", "Could not load");
             message.Commands.Add(new UICommand("Retry", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));

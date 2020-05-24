@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Packit.App.Services;
+using Packit.Exceptions;
 using Packit.Model.Models;
 using System;
 using System.Net.Http;
@@ -15,6 +17,10 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> AddAsync(T entity)
         {
+            //This should not be here when the local database is connected
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
@@ -34,6 +40,10 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> DeleteAsync(T entity)
         {
+            //This should not be here when the local database is connected
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
@@ -47,6 +57,10 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> UpdateAsync(T entity)
         {
+            //This should not be here when the local database is connected
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
@@ -61,6 +75,10 @@ namespace Packit.App.DataAccess
 
         public async Task<T[]> GetAllAsync()
         {
+            //This should not be here when the local database is connected
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             HttpResponseMessage result = await httpClient.GetAsync(baseUri);
@@ -72,6 +90,10 @@ namespace Packit.App.DataAccess
 
         public async Task<T[]> GetAllWithChildEntitiesAsync()
         {
+            //This should not be here when the local database is connected
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             var uri = new Uri($"{baseUri}/all");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
@@ -84,6 +106,10 @@ namespace Packit.App.DataAccess
 
         public async Task<T> GetByIdAsync(T entity)
         {
+            //This should not be here when the local database is connected
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
@@ -96,6 +122,10 @@ namespace Packit.App.DataAccess
 
         public async Task<T> GetByIdWithChildEntitiesAsync(T entity)
         {
+            //This should not be here when the local database is connected
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             var uri = new Uri($"{baseUri}/{entity.GetId()}/all");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
