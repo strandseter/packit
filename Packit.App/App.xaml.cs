@@ -45,6 +45,8 @@ namespace Packit.App
             serviceCollection.AddTransient<SelectBackpacksViewModel>();
             serviceCollection.AddTransient<SelectItemsViewModel>();
             serviceCollection.AddTransient<MainViewModel>();
+            serviceCollection.AddTransient<LoginViewModel>();
+            serviceCollection.AddTransient<RegisterUserViewModel>();
             serviceCollection.AddSingleton<IPopUpService, PopUpService>();
             return serviceCollection.BuildServiceProvider();
         }
