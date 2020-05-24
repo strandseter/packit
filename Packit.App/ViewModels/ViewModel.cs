@@ -9,29 +9,13 @@ using System.Threading.Tasks;
 
 namespace Packit.App.ViewModels
 {
-    public class ViewModel : Observable
+    public abstract class ViewModel : Observable
     {
         protected IPopUpService PopUpService { get; set; }
 
         public ViewModel(IPopUpService popUpService)
         {
             PopUpService = popUpService;
-        }
-
-        public ViewModel()
-        {
-        }
-
-        protected async Task CouldNotSave<T>(ICollection<T> failedUploads)
-        {
-            if (failedUploads == null) return;
-
-            var builder = new StringBuilder();
-
-            foreach (var failedUpdate in failedUploads)
-                builder.Append($"{failedUpdate}, ");
-
-            await PopUpService.ShowCouldNotSaveChangesAsync(builder.ToString());
         }
 
         protected static string GenerateImageName()
@@ -43,19 +27,6 @@ namespace Packit.App.ViewModels
               .Select(s => s[random.Next(s.Length)]).ToArray());
 
             return $"{name}.jpg";
-        }
-
-        protected string InputErrorMessage(IEnumerable errors)
-        {
-            if (errors == null)
-                return "";
-
-            var builder = new StringBuilder();
-
-            foreach (var message in errors)
-                builder.Append($"{message.ToString()}\n");
-
-            return builder.ToString();
         }
 
         protected bool StringIsEqual(string firstString, string secondString) => firstString.Equals(secondString, StringComparison.CurrentCulture);

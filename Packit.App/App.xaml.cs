@@ -39,6 +39,7 @@ namespace Packit.App
         private IServiceProvider RegisterServices()
         {
             var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<ViewModel>();
             serviceCollection.AddTransient<ItemsViewModel>();
             serviceCollection.AddTransient<BackpacksViewModel>();
             serviceCollection.AddTransient<TripsMainViewModel>();
