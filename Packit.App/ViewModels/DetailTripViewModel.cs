@@ -85,8 +85,7 @@ namespace Packit.App.ViewModels
 
             DeleteItemCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
-                if (await itemDataAccess.DeleteAsync(param.ItemImageLink.Item))
-                    param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
+                await PopUpService.ShowDeleteDialogAsync(DeleteItem, param, param.ItemImageLink.Item.Title);
             });
 
             AddBackpacksCommand = new RelayCommand<ItemBackpackWrapper>(param =>
@@ -96,15 +95,18 @@ namespace Packit.App.ViewModels
 
             RemoveBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
-                if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, param.Backpack.BackpackId))
-                    Backpacks.Remove(param);
+                await PopUpService.ShowRemoveDialogAsync(RemoveBackpack, param, param.Backpack.Title, TripImageWeatherLink.Trip.Title);
             });
 
             DeleteBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
-                if (await backpackDataAccess.DeleteAsync(param.Backpack))
-                    Backpacks.Remove(param);
+                await PopUpService.ShowDeleteDialogAsync<BackpackWithItemsWithImages>(DeleteBackpack, param, param.Backpack.Title);
             });
+
+            ItemCheckedCommand = new NetworkErrorHandlingRelayCommand<ItemBackpackBoolWrapper, TripsMainPage>(async param =>
+            {
+                await CheckItemAsync(param);
+            }, PopUpService);
 
             ShareBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
@@ -113,11 +115,6 @@ namespace Packit.App.ViewModels
                 if (!await backpackDataAccess.UpdateAsync(param.Backpack))
                     param.Backpack.IsShared = false;
             });
-
-            ItemCheckedCommand = new NetworkErrorHandlingRelayCommand<ItemBackpackBoolWrapper, TripsMainPage>(async param =>
-            {
-               await CheckItemAsync(param);
-            }, PopUpService);
 
             EditTripCommand = new NetworkErrorHandlingRelayCommand<DetailTripV2Page>(async () =>
             {
@@ -143,6 +140,30 @@ namespace Packit.App.ViewModels
         {
             await UpdateTripAsync();
             await UpdateWeatherAsync();
+        }
+
+        private async Task DeleteBackpack(BackpackWithItemsWithImages backpackWithItemsWithImages)
+        {
+            if (await backpackDataAccess.DeleteAsync(backpackWithItemsWithImages.Backpack))
+                Backpacks.Remove(backpackWithItemsWithImages);
+            else
+                await PopUpService.ShowCouldNotDeleteAsync(backpackWithItemsWithImages.Backpack.Title);
+        }
+
+        private async Task RemoveBackpack(BackpackWithItemsWithImages backpackWithItemsWithImages)
+        {
+            if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
+                Backpacks.Remove(backpackWithItemsWithImages);
+            else
+                await PopUpService.ShowCouldNotDeleteAsync(backpackWithItemsWithImages.Backpack.Title);
+        }
+
+        private async Task DeleteItem(ItemImageBackpackWrapper itemImageBackpackWrapper)
+        {
+            if (await itemDataAccess.DeleteAsync(itemImageBackpackWrapper.ItemImageLink.Item))
+                itemImageBackpackWrapper.BackpackWithItemsWithImages.ItemImageLinks.Remove(itemImageBackpackWrapper.ItemImageLink);
+            else
+                await PopUpService.ShowCouldNotDeleteAsync(itemImageBackpackWrapper.ItemImageLink.Item.Title);
         }
 
         private async Task RemoveItemFromBackpack(ItemImageBackpackWrapper itemImageBackpackWrapper)
