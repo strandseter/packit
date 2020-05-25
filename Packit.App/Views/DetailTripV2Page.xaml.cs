@@ -16,8 +16,8 @@ namespace Packit.App.Views
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter == null)
-                ViewModel.Initialize(e.Parameter);
+            if (e?.Parameter == null)
+                ViewModel.Initialize();
             else
                 ViewModel.Initialize(e?.Parameter as TripImageWeatherLink);
         }

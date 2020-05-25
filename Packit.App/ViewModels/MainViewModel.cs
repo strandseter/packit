@@ -29,9 +29,11 @@ namespace Packit.App.ViewModels
         private bool hasNextTrip;
 
         public bool HasNextTrip { get => hasNextTrip; set => Set(ref hasNextTrip, value); }
+
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<MainPage>(async () => await LoadDataAsync(), PopUpService));
         public ICommand ItemCheckedCommand { get; set; }
         public ICommand TripDetailsCommand { get; set; }
+
         public Trip NextTrip { get => nextTrip; set => Set(ref nextTrip, value); }
         public BitmapImage TripImage { get => tripImage; set => Set(ref tripImage, value); }
         public ObservableCollection<BackpackWithItemsWithImages> BackspackWithItemsWithImages { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
@@ -41,11 +43,9 @@ namespace Packit.App.ViewModels
         {
             ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
 
-            TripDetailsCommand = new RelayCommand(() => {
-
-                var tripImageWeatherLink = new TripImageWeatherLink(NextTrip) { Image = TripImage };
-
-                NavigationService.Navigate(typeof(DetailTripV2Page), tripImageWeatherLink);
+            TripDetailsCommand = new RelayCommand(() =>
+            {
+                NavigationService.Navigate(typeof(DetailTripV2Page), new TripImageWeatherLink(NextTrip) { Image = TripImage });
             });
         }
 
@@ -74,28 +74,17 @@ namespace Packit.App.ViewModels
 
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
         {
-            if (param.IsChecked)
-            {
-                var check = new Check()
-                {
-                    IsChecked = true,
-                    ItemId = param.Item.ItemId,
-                    BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
-                    TripId = NextTrip.TripId
-                };
+            var itemcheker = new ItemChecker
+                (
+                    param.Item,
+                    param.BackpackWithItemsWithImages.Backpack,
+                    NextTrip,
+                    param.IsChecked,
+                    PopUpService,
+                    checksDataAccess
+                );
 
-                if (await checksDataAccess.AddAsync(check))
-                {
-                    param.Item.Check = check;
-                    param.Item.Check.IsChecked = true;
-                }
-            }
-
-            if (!param.IsChecked)
-            {
-                if (await checksDataAccess.DeleteAsync(param.Item.Check))
-                    param.Item.Check.IsChecked = false;
-            }
+            await itemcheker.HandleItemCheck();
         }
 
         private void LoadBackpacks()
@@ -141,12 +130,11 @@ namespace Packit.App.ViewModels
 
         private async Task LoadItemImagesAsync()
         {
-            foreach (var bwiwi in BackspackWithItemsWithImages)
+            foreach (var itemImageLink in from bwiwi in BackspackWithItemsWithImages
+                                          from itemImageLink in bwiwi.ItemImageLinks
+                                          select itemImageLink)
             {
-                foreach (var itemImageLink in bwiwi.ItemImageLinks)
-                {
-                    itemImageLink.Image = await imagesDataAccess.GetImageAsync(itemImageLink.Item.ImageStringName, "ms-appx:///Assets/grey.jpg");
-                }
+                itemImageLink.Image = await imagesDataAccess.GetImageAsync(itemImageLink.Item.ImageStringName, "ms-appx:///Assets/grey.jpg");
             }
         }
     }

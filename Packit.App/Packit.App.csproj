@@ -162,7 +162,7 @@
     <Compile Include="Dictionaries\ConvertersDictionary.cs" />
     <Compile Include="Dictionaries\DataTemplatesDictionary.cs" />
     <Compile Include="Factories\CustomTripDataAccessFactory.cs" />
-    <Compile Include="Helpers\CollectionPopulator.cs" />
+    <Compile Include="Helpers\ItemChecker.cs" />
     <Compile Include="Helpers\NetworkErrorHandlingRelayCommand.cs" />
     <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\IPopUpService.cs" />

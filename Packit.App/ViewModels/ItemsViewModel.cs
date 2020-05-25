@@ -38,6 +38,12 @@ namespace Packit.App.ViewModels
         public ItemsViewModel(IPopUpService popUpService)
             : base(popUpService)
         {
+            ItemToEditCommand = new RelayCommand<Item>(param => itemClone = param.DeepClone());
+
+            EditCommand = new RelayCommand(() => IsVisible = !IsVisible);
+
+            AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));
+
             DeleteCommand = new RelayCommand<ItemImageLink>(async param =>
             {
                 await PopUpService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title);
@@ -47,12 +53,6 @@ namespace Packit.App.ViewModels
             {
                 await UpdateEditeditem(param);
             }, popUpService);
-
-            ItemToEditCommand = new RelayCommand<Item>(param => itemClone = param.DeepClone());
-
-            EditCommand = new RelayCommand(() => IsVisible = !IsVisible);
-
-            AddCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewItemPage)));
         }
 
         private async Task LoadDataAsync()

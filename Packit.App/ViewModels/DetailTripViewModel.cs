@@ -73,11 +73,6 @@ namespace Packit.App.ViewModels
                 await PopUpService.ShowDeleteDialogAsync(DeleteTripAsync, TripImageWeatherLink.Trip.Title);
             });
 
-            AddItemToBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(param =>
-            {
-                NavigationService.Navigate(typeof(SelectItemsPage), new BackpackWithItemsTripImageWeatherWrapper() { Backpack = param, Trip = TripImageWeatherLink });
-            });
-
             RemoveItemFromBackpackCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
                 await PopUpService.ShowRemoveDialogAsync(RemoveItemFromBackpack, param, param.ItemImageLink.Item.Title, param.BackpackWithItemsWithImages.Backpack.Title);
@@ -88,11 +83,6 @@ namespace Packit.App.ViewModels
                 await PopUpService.ShowDeleteDialogAsync(DeleteItem, param, param.ItemImageLink.Item.Title);
             });
 
-            AddBackpacksCommand = new RelayCommand<ItemBackpackWrapper>(param =>
-            {
-                NavigationService.Navigate(typeof(SelectBackpacksPage), new BackpackWithItemsWithImagesTripWrapper() { BackpackWithItemsWithImages = Backpacks, TripImageWeatherLink = TripImageWeatherLink });
-            });
-
             RemoveBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
                 await PopUpService.ShowRemoveDialogAsync(RemoveBackpack, param, param.Backpack.Title, TripImageWeatherLink.Trip.Title);
@@ -100,7 +90,17 @@ namespace Packit.App.ViewModels
 
             DeleteBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
             {
-                await PopUpService.ShowDeleteDialogAsync<BackpackWithItemsWithImages>(DeleteBackpack, param, param.Backpack.Title);
+                await PopUpService.ShowDeleteDialogAsync(DeleteBackpack, param, param.Backpack.Title);
+            });
+
+            AddBackpacksCommand = new RelayCommand<ItemBackpackWrapper>(param =>
+            {
+                NavigationService.Navigate(typeof(SelectBackpacksPage), new BackpackWithItemsWithImagesTripWrapper() { BackpackWithItemsWithImages = Backpacks, TripImageWeatherLink = TripImageWeatherLink });
+            });
+
+            AddItemToBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(param =>
+            {
+                NavigationService.Navigate(typeof(SelectItemsPage), new BackpackWithItemsTripImageWeatherWrapper() { Backpack = param, Trip = TripImageWeatherLink });
             });
 
             ItemCheckedCommand = new NetworkErrorHandlingRelayCommand<ItemBackpackBoolWrapper, TripsMainPage>(async param =>
@@ -184,7 +184,7 @@ namespace Packit.App.ViewModels
 
         private async Task DeleteTripAsync()
         {
-            if (!await tripDataAccess.DeleteAsync(TripImageWeatherLink.Trip))
+            if (await tripDataAccess.DeleteAsync(TripImageWeatherLink.Trip))
                 NavigationService.GoBack();
             else
                 await PopUpService.ShowCouldNotDeleteAsync(TripImageWeatherLink.Trip.Title);
@@ -192,67 +192,17 @@ namespace Packit.App.ViewModels
 
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
         {
-            var check = new Check()
-            {
-                IsChecked = true,
-                ItemId = param.Item.ItemId,
-                BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
-                TripId = TripImageWeatherLink.Trip.TripId
-            };
+            var itemcheker = new ItemChecker
+                (
+                    param.Item,
+                    param.BackpackWithItemsWithImages.Backpack,
+                    TripImageWeatherLink.Trip,
+                    param.IsChecked,
+                    PopUpService,
+                    checksDataAccess
+                );
 
-            try
-            {
-                if (param.IsChecked)
-                {
-                    param.Item.Check = check;
-
-                    if (await checksDataAccess.AddAsync(check))
-                        param.Item.Check.IsChecked = true;
-                    else
-                    {
-                        param.Item.Check.IsChecked = false;
-                        await PopUpService.ShowInternetConnectionErrorAsync();
-                    }
-                }
-
-                if (!param.IsChecked)
-                {
-                    if (await checksDataAccess.DeleteAsync(param.Item.Check))
-                        param.Item.Check.IsChecked = false;
-                    else
-                    {
-                        param.Item.Check.IsChecked = true;
-                        await PopUpService.ShowInternetConnectionErrorAsync();
-                    }
-                }
-            }
-            catch (HttpRequestException)
-            {
-                if (param.IsChecked)
-                {
-                    param.Item.Check.IsChecked = false;
-                    throw;
-                }
-                else
-                {
-                    param.Item.Check.IsChecked = true;
-                    throw;
-                }
-
-            }
-            catch (NetworkConnectionException)
-            {
-                if (param.IsChecked)
-                {
-                    param.Item.Check.IsChecked = false;
-                    throw;
-                }
-                else
-                {
-                    param.Item.Check.IsChecked = true;
-                    throw;
-                }
-            }
+            await itemcheker.HandleItemCheck();
         }
 
         private async Task UpdateTripAsync()
@@ -295,13 +245,13 @@ namespace Packit.App.ViewModels
 
         private void LoadItemsInBackpacks()
         {
-            foreach(var bwi in Backpacks)
+            foreach (var bwi in Backpacks)
             {
-                foreach(var itemBackpack in bwi.Backpack.Items)
+                foreach (var itemBackpack in bwi.Backpack.Items)
                 {
-                    foreach(var check in itemBackpack.Item.Checks)
+                    foreach (var check in itemBackpack.Item.Checks)
                     {
-                        if(bwi.Backpack.BackpackId == check.BackpackId && itemBackpack.Item.ItemId == check.ItemId && TripImageWeatherLink.Trip.TripId == check.TripId)
+                        if (bwi.Backpack.BackpackId == check.BackpackId && itemBackpack.Item.ItemId == check.ItemId && TripImageWeatherLink.Trip.TripId == check.TripId)
                         {
                             itemBackpack.Item.Check = check;
                             itemBackpack.Item.Check.IsChecked = true;
@@ -338,7 +288,7 @@ namespace Packit.App.ViewModels
         }
 
         public void Initialize(TripImageWeatherLink trip) => TripImageWeatherLink = trip;
-        public void Initialize(object obj) => NavigationService.GoBack();
+        public void Initialize() => NavigationService.GoBack();
         private void CloneTrip() => tripClone = (Trip)TripImageWeatherLink.Trip.Clone();
     }
 }
