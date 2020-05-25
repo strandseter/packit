@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Net.Http;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
@@ -9,9 +7,7 @@ using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
-using Packit.Exceptions;
 using Packit.Model;
-using Packit.Model.NotifyPropertyChanged;
 
 namespace Packit.App.ViewModels
 {

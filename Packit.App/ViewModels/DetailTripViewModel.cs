@@ -18,6 +18,7 @@ using Packit.Extensions;
 using Packit.Model.Models;
 using System.Collections.Generic;
 using System.Net.Http;
+using Packit.Exceptions;
 
 namespace Packit.App.ViewModels
 {
@@ -48,7 +49,7 @@ namespace Packit.App.ViewModels
             set => Set(ref weatherReportIsLoaded, value);
         }
 
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<TripsMainPage>(async () => await LoadDataAsync(), PopUpService));
         public ICommand EditTripCommand { get; set; }
         public ICommand DeleteTripCommand { get; set; }
         public ICommand CancelTripCommand { get; set; }
@@ -65,28 +66,11 @@ namespace Packit.App.ViewModels
         public ObservableCollection<BackpackWithItemsWithImages> Backpacks { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
 
         public DetailTripViewModel(IPopUpService popUpService)
-            :base(popUpService)
+            : base(popUpService)
         {
-            CancelTripCommand = new RelayCommand(async () =>
-            {
-                var test = 0;
-            });
-
             DeleteTripCommand = new RelayCommand(async () =>
             {
-                if (await tripDataAccess.DeleteAsync(TripImageWeatherLink.Trip))
-                    NavigationService.GoBack();
-            });
-
-            EditTripCommand = new RelayCommand(async () =>
-            {
-                if (!IsVisible)
-                    CloneTrip();
-                    
-                if (IsVisible)
-                    await Update();
-
-                IsVisible = !IsVisible;
+                await PopUpService.ShowDeleteDialogAsync(DeleteTripAsync, TripImageWeatherLink.Trip.Title);
             });
 
             AddItemToBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(param =>
@@ -96,27 +80,18 @@ namespace Packit.App.ViewModels
 
             RemoveItemFromBackpackCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
-                if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(param.BackpackWithItemsWithImages.Backpack.BackpackId, param.ItemImageLink.Item.ItemId))
-                {
-                    param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
-
-                    if (param.ItemImageLink.Item.Check != null)
-                    {
-                        if (await checksDataAccess.DeleteAsync(param.ItemImageLink.Item.Check))
-                            param.ItemImageLink.Item.Check.IsChecked = false;
-                    }
-                }
+                await PopUpService.ShowRemoveDialogAsync(RemoveItemFromBackpack, param, param.ItemImageLink.Item.Title, param.BackpackWithItemsWithImages.Backpack.Title);
             });
 
             DeleteItemCommand = new RelayCommand<ItemImageBackpackWrapper>(async param =>
             {
-                if(await itemDataAccess.DeleteAsync(param.ItemImageLink.Item))
+                if (await itemDataAccess.DeleteAsync(param.ItemImageLink.Item))
                     param.BackpackWithItemsWithImages.ItemImageLinks.Remove(param.ItemImageLink);
             });
 
             AddBackpacksCommand = new RelayCommand<ItemBackpackWrapper>(param =>
             {
-                NavigationService.Navigate(typeof(SelectBackpacksPage), new BackpackWithItemsWithImagesTripWrapper() { BackpackWithItemsWithImages = Backpacks, TripImageWeatherLink = TripImageWeatherLink});
+                NavigationService.Navigate(typeof(SelectBackpacksPage), new BackpackWithItemsWithImagesTripWrapper() { BackpackWithItemsWithImages = Backpacks, TripImageWeatherLink = TripImageWeatherLink });
             });
 
             RemoveBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
@@ -139,22 +114,29 @@ namespace Packit.App.ViewModels
                     param.Backpack.IsShared = false;
             });
 
-            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
+            ItemCheckedCommand = new NetworkErrorHandlingRelayCommand<ItemBackpackBoolWrapper, TripsMainPage>(async param =>
+            {
+               await CheckItemAsync(param);
+            }, PopUpService);
+
+            EditTripCommand = new NetworkErrorHandlingRelayCommand<DetailTripV2Page>(async () =>
+            {
+                if (!IsVisible)
+                    CloneTrip();
+
+                if (IsVisible)
+                    await Update();
+
+                IsVisible = !IsVisible;
+            }, PopUpService);
         }
 
         private async Task LoadDataAsync()
         {
-            try
-            {
-                LoadBackpacks();
-                LoadItemsInBackpacks();
-                await LoadWeatherReportAsync();
-                await LoadItemImagesAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<DetailTripV2Page>(NavigationService.Navigate, ex);
-            }
+            LoadBackpacks();
+            LoadItemsInBackpacks();
+            await LoadWeatherReportAsync();
+            await LoadItemImagesAsync();
         }
 
         private async Task Update()
@@ -163,44 +145,92 @@ namespace Packit.App.ViewModels
             await UpdateWeatherAsync();
         }
 
+        private async Task RemoveItemFromBackpack(ItemImageBackpackWrapper itemImageBackpackWrapper)
+        {
+            if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(itemImageBackpackWrapper.BackpackWithItemsWithImages.Backpack.BackpackId, itemImageBackpackWrapper.ItemImageLink.Item.ItemId))
+            {
+                itemImageBackpackWrapper.BackpackWithItemsWithImages.ItemImageLinks.Remove(itemImageBackpackWrapper.ItemImageLink);
+
+                if (itemImageBackpackWrapper.ItemImageLink.Item.Check != null)
+                {
+                    if (await checksDataAccess.DeleteAsync(itemImageBackpackWrapper.ItemImageLink.Item.Check))
+                        itemImageBackpackWrapper.ItemImageLink.Item.Check.IsChecked = false;
+                }
+            }
+            else
+                await PopUpService.ShowCouldNotDeleteAsync(itemImageBackpackWrapper.ItemImageLink.Item.Title);
+        }
+
+        private async Task DeleteTripAsync()
+        {
+            if (!await tripDataAccess.DeleteAsync(TripImageWeatherLink.Trip))
+                NavigationService.GoBack();
+            else
+                await PopUpService.ShowCouldNotDeleteAsync(TripImageWeatherLink.Trip.Title);
+        }
+
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
         {
-            if (param.IsChecked)
+            var check = new Check()
             {
-                var check = new Check()
-                {
-                    IsChecked = true,
-                    ItemId = param.Item.ItemId,
-                    BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
-                    TripId = TripImageWeatherLink.Trip.TripId
-                };
+                IsChecked = true,
+                ItemId = param.Item.ItemId,
+                BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
+                TripId = TripImageWeatherLink.Trip.TripId
+            };
 
-                try
+            try
+            {
+                if (param.IsChecked)
                 {
                     param.Item.Check = check;
 
                     if (await checksDataAccess.AddAsync(check))
-                    {
                         param.Item.Check.IsChecked = true;
+                    else
+                    {
+                        param.Item.Check.IsChecked = false;
+                        await PopUpService.ShowInternetConnectionErrorAsync();
                     }
                 }
-                catch (HttpRequestException)
-                {
-                    param.Item.Check.IsChecked = false;
-                }
-            }
 
-            try
-            {
                 if (!param.IsChecked)
                 {
                     if (await checksDataAccess.DeleteAsync(param.Item.Check))
                         param.Item.Check.IsChecked = false;
+                    else
+                    {
+                        param.Item.Check.IsChecked = true;
+                        await PopUpService.ShowInternetConnectionErrorAsync();
+                    }
                 }
             }
             catch (HttpRequestException)
             {
-                param.Item.Check.IsChecked = false;
+                if (param.IsChecked)
+                {
+                    param.Item.Check.IsChecked = false;
+                    throw;
+                }
+                else
+                {
+                    param.Item.Check.IsChecked = true;
+                    throw;
+                }
+
+            }
+            catch (NetworkConnectionException)
+            {
+                if (param.IsChecked)
+                {
+                    param.Item.Check.IsChecked = false;
+                    throw;
+                }
+                else
+                {
+                    param.Item.Check.IsChecked = true;
+                    throw;
+                }
             }
         }
 
@@ -211,22 +241,20 @@ namespace Packit.App.ViewModels
 
             TripImageWeatherLink.Trip.Backpacks.Clear();
 
-            var isSuccess = true;
-
             try
             {
                 if (!await tripDataAccess.UpdateAsync(TripImageWeatherLink.Trip))
-                    isSuccess = false;
+                    TripImageWeatherLink.Trip = tripClone;
             }
             catch (HttpRequestException)
             {
-                isSuccess = false;
-            }
-
-            if (!isSuccess)
-            {
-                await PopUpService.ShowCouldNotSaveChangesAsync(tripClone.Title);
                 TripImageWeatherLink.Trip = tripClone;
+                throw;
+            }
+            catch (NetworkConnectionException)
+            {
+                TripImageWeatherLink.Trip = tripClone;
+                throw;
             }
         }
 
@@ -289,6 +317,7 @@ namespace Packit.App.ViewModels
         }
 
         public void Initialize(TripImageWeatherLink trip) => TripImageWeatherLink = trip;
+        public void Initialize(object obj) => NavigationService.GoBack();
         private void CloneTrip() => tripClone = (Trip)TripImageWeatherLink.Trip.Clone();
     }
 }

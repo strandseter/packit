@@ -12,6 +12,9 @@ namespace Packit.App.Services
     public interface IPopUpService
     {
         Task ShowDeleteDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string itemName);
+        Task ShowDeleteDialogAsync(Func<Task> onYesExecute, string itemName);
+        Task ShowRemoveDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string subItemName, string mainItemName);
+        Task ShowRemoveDialogAsync(Func<Task> onYesExecute, string subItemName, string mainItemName);
         Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, Exception exception) where T : Page;
         Task ShowCouldNotLoadAsync(Func<bool> onGoBackExecute, string notLoadingTitle);
         Task ShowCouldNotLoadAsync(Action onBackExecute, string notLoadingTitle);

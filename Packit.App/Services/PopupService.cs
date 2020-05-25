@@ -35,6 +35,75 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
+        public async Task ShowDeleteDialogAsync(Func<Task> onYesExecute, string itemName)
+        {
+            var message = new MessageDialog($"Are you sure you want to delete {itemName}?", "Delete Item");
+            message.Commands.Add(new UICommand("Yes", async (command) =>
+            {
+                try
+                {
+                    await onYesExecute();
+                }
+                catch (NetworkConnectionException)
+                {
+                    await ShowCouldNotDeleteAsync(itemName);
+                }
+                catch (HttpRequestException)
+                {
+                    await ShowCouldNotDeleteAsync(itemName);
+                }
+            }));
+
+            message.Commands.Add(new UICommand("No", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
+        public async Task ShowRemoveDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string subItemName, string mainItemName)
+        {
+            var message = new MessageDialog($"Are you sure you want to delete {subItemName} from {mainItemName}?", "Delete Item");
+            message.Commands.Add(new UICommand("Yes", async (command) =>
+            {
+                try
+                {
+                    await onYesExecute(onYesParam);
+                }
+                catch (NetworkConnectionException)
+                {
+                    await ShowCouldNotDeleteAsync(subItemName);
+                }
+                catch (HttpRequestException)
+                {
+                    await ShowCouldNotDeleteAsync(subItemName);
+                }
+            }));
+
+            message.Commands.Add(new UICommand("No", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
+        public async Task ShowRemoveDialogAsync(Func<Task> onYesExecute, string subItemName, string mainItemName)
+        {
+            var message = new MessageDialog($"Are you sure you want to delete {subItemName} from {mainItemName}?", "Delete Item");
+            message.Commands.Add(new UICommand("Yes", async (command) =>
+            {
+                try
+                {
+                    await onYesExecute();
+                }
+                catch (NetworkConnectionException)
+                {
+                    await ShowCouldNotDeleteAsync(subItemName);
+                }
+                catch (HttpRequestException)
+                {
+                    await ShowCouldNotDeleteAsync(subItemName);
+                }
+            }));
+
+            message.Commands.Add(new UICommand("No", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
         public async Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, Exception exception) where T : Page
         {
             if (exception == null)
@@ -74,7 +143,7 @@ namespace Packit.App.Services
 
         public async Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle)
         {
-            var message = new MessageDialog($"Could not upload: {notUpdatingTitle}", "Could not upload changes");
+            var message = new MessageDialog($"Could not upload changes in: {notUpdatingTitle}", "Could not upload changes");
             message.Commands.Add(new UICommand($"Close", (command) => { return; }));
             await message.ShowAsync();
         }
@@ -115,7 +184,7 @@ namespace Packit.App.Services
 
         public async Task ShowCouldNotDeleteAsync(string itemName)
         {
-            var message = new MessageDialog($"Check your connection, and try again.", $"Could not delete: {itemName}");
+            var message = new MessageDialog($"Please check your connection and try again.", $"Could not delete: {itemName}");
             message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
             await message.ShowAsync();
         }

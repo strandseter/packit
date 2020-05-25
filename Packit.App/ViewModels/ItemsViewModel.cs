@@ -67,12 +67,16 @@ namespace Packit.App.ViewModels
                 return;
 
             if (!await itemsDataAccess.UpdateAsync(item))
+            {
+                item.Title = itemClone.Title;
+                item.Description = itemClone.Description;
                 await PopUpService.ShowCouldNotSaveChangesAsync(itemClone.Title);
+            }
         }
 
         private async Task DeleteItemAsync(ItemImageLink itemImageLink)
         {
-            if (string.IsNullOrEmpty(itemImageLink.Item.ImageStringName))
+            if (!string.IsNullOrEmpty(itemImageLink.Item.ImageStringName))
                 await DeleteItemAndImageRequestAsync(itemImageLink);
             else
                 await DeleteItemRequestAsync(itemImageLink);
@@ -82,6 +86,8 @@ namespace Packit.App.ViewModels
         {
             if (await itemsDataAccess.DeleteAsync(itemImageLink.Item) && await imagesDataAccess.DeleteImageAsync(itemImageLink.Item.ImageStringName))
                 ItemImageLinks.Remove(itemImageLink);
+            else
+                await PopUpService.ShowCouldNotDeleteAsync(itemImageLink.Item.Title);
         }
 
         private async Task DeleteItemRequestAsync(ItemImageLink itemImageLink)
@@ -89,7 +95,7 @@ namespace Packit.App.ViewModels
             if (await itemsDataAccess.DeleteAsync(itemImageLink.Item))
                 ItemImageLinks.Remove(itemImageLink);
             else
-            await PopUpService.ShowCouldNotDeleteAsync(itemImageLink.Item.Title);
+                await PopUpService.ShowCouldNotDeleteAsync(itemImageLink.Item.Title);
         }
 
         protected virtual async Task LoadItemsAsync()

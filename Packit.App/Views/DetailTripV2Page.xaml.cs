@@ -15,7 +15,11 @@ namespace Packit.App.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.Initialize(e?.Parameter as TripImageWeatherLink);
+
+            if (e.Parameter == null)
+                ViewModel.Initialize(e.Parameter);
+            else
+                ViewModel.Initialize(e?.Parameter as TripImageWeatherLink);
         }
     }
 }
