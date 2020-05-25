@@ -1,4 +1,5 @@
-﻿using Packit.App.DataLinks;
+﻿using Newtonsoft.Json;
+using Packit.App.DataLinks;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Exceptions;
@@ -60,6 +61,10 @@ namespace Packit.App.Helpers
             {
                 await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, ex);
             }
+            catch (JsonReaderException ex)
+            {
+                await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, ex);
+            }
         }
     }
 
@@ -110,6 +115,10 @@ namespace Packit.App.Helpers
             catch (HttpRequestException ex)
             {
                 await popUpService.ShowCouldNotLoadAsync<T2>(NavigationService.Navigate, ex);
+            }
+            catch (JsonReaderException ex)
+            {
+                await popUpService.ShowInternetConnectionErrorAsync();
             }
         }
     }

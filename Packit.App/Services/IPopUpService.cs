@@ -17,9 +17,10 @@ namespace Packit.App.Services
         Task ShowCouldNotLoadAsync(Action onBackExecute, string notLoadingTitle);
         Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle, Exception exception);
         Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle);
+        Task ShowCouldNotDeleteAsync(string itemName);
         Task ShowUnknownErrorAsync(string exeptionMessage);
         Task ShowUnknownErrorAsync(string exeptionMessage, Action onBackExecute);
-        Task ShowInternetConnectionErrorAsync(string exeptionMessage);
+        Task ShowInternetConnectionErrorAsync();
         Task ShowCouldNotLogIn();
     }
 }

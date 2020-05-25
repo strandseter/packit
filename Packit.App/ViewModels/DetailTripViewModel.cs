@@ -172,8 +172,7 @@ namespace Packit.App.ViewModels
                     IsChecked = true,
                     ItemId = param.Item.ItemId,
                     BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
-                    TripId = TripImageWeatherLink.Trip.TripId,
-                    UserId = 4
+                    TripId = TripImageWeatherLink.Trip.TripId
                 };
 
                 try

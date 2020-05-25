@@ -51,7 +51,7 @@ namespace Packit.App.ViewModels
                 }
                 catch (HttpRequestException ex)
                 {
-                    await PopUpService.ShowInternetConnectionErrorAsync(ex.Message);
+                    await PopUpService.ShowInternetConnectionErrorAsync();
                 }
 
                 catch (Exception ex)

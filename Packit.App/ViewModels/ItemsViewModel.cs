@@ -8,12 +8,8 @@ using Packit.App.Factories;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.App.DataLinks;
-using System.Collections.Generic;
-using System.Linq;
 using Packit.Extensions;
 using Packit.App.Helpers;
-using System.Net.Http;
-using System.Net.NetworkInformation;
 
 namespace Packit.App.ViewModels
 {
@@ -31,7 +27,7 @@ namespace Packit.App.ViewModels
             set => Set(ref isVisible, value);
         }
 
-        public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
+        public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<ItemsPage>(async () => await LoadDataAsync(), PopUpService));
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand AddCommand { get; set; }
@@ -42,11 +38,15 @@ namespace Packit.App.ViewModels
         public ItemsViewModel(IPopUpService popUpService)
             : base(popUpService)
         {
-            DeleteCommand = new RelayCommand<ItemImageLink>(async param => { await PopUpService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title); }
-                                                                            ,param => param != null);
+            DeleteCommand = new RelayCommand<ItemImageLink>(async param =>
+            {
+                await PopUpService.ShowDeleteDialogAsync(DeleteItemAsync, param, param.Item.Title);
+            }, param => param != null);
 
-            ItemDoneEditingCommand = new NetworkErrorHandlingRelayCommand<Item, ItemsPage>(async param => await UpdateEditeditem(param), popUpService);
-
+            ItemDoneEditingCommand = new NetworkErrorHandlingRelayCommand<Item, ItemsPage>(async param =>
+            {
+                await UpdateEditeditem(param);
+            }, popUpService);
 
             ItemToEditCommand = new RelayCommand<Item>(param => itemClone = param.DeepClone());
 
@@ -57,15 +57,8 @@ namespace Packit.App.ViewModels
 
         private async Task LoadDataAsync()
         {
-            try
-            {
-                await LoadItemsAsync();
-                await LoadImagesAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<ItemsPage>(NavigationService.Navigate, nameof(ItemsPage), ex);
-            }
+            await LoadItemsAsync();
+            await LoadImagesAsync();
         }
 
         private async Task UpdateEditeditem(Item item)
@@ -73,23 +66,16 @@ namespace Packit.App.ViewModels
             if (StringIsEqual(item.Description, itemClone.Description) && StringIsEqual(item.Title, itemClone.Title))
                 return;
 
-            if (await itemsDataAccess.UpdateAsync(item))
-                isVisible = true;
+            if (!await itemsDataAccess.UpdateAsync(item))
+                await PopUpService.ShowCouldNotSaveChangesAsync(itemClone.Title);
         }
 
         private async Task DeleteItemAsync(ItemImageLink itemImageLink)
         {
-            try
-            {
-                if (itemImageLink.Item.ImageStringName != null)
-                    await DeleteItemAndImageRequestAsync(itemImageLink);
-                else
-                    await DeleteItemRequestAsync(itemImageLink);
-            }
-            catch (HttpRequestException)
-            {
-                await PopUpService.ShowCouldNotSaveChangesAsync(itemImageLink.Item.Title);
-            }
+            if (string.IsNullOrEmpty(itemImageLink.Item.ImageStringName))
+                await DeleteItemAndImageRequestAsync(itemImageLink);
+            else
+                await DeleteItemRequestAsync(itemImageLink);
         }
 
         private async Task DeleteItemAndImageRequestAsync(ItemImageLink itemImageLink)
@@ -100,10 +86,10 @@ namespace Packit.App.ViewModels
 
         private async Task DeleteItemRequestAsync(ItemImageLink itemImageLink)
         {
-            if (!await itemsDataAccess.DeleteAsync(itemImageLink.Item))
-                return;
-
-            ItemImageLinks.Remove(itemImageLink);
+            if (await itemsDataAccess.DeleteAsync(itemImageLink.Item))
+                ItemImageLinks.Remove(itemImageLink);
+            else
+            await PopUpService.ShowCouldNotDeleteAsync(itemImageLink.Item.Title);
         }
 
         protected virtual async Task LoadItemsAsync()

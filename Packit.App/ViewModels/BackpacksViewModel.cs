@@ -11,7 +11,6 @@ using Packit.App.Services;
 using Packit.App.Views;
 using Packit.App.Wrappers;
 using Packit.Model;
-using Packit.Model.NotifyPropertyChanged;
 
 namespace Packit.App.ViewModels
 {
@@ -100,7 +99,7 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<BackpacksPage>(NavigationService.Navigate, nameof(BackpacksPage), ex);
+                await PopUpService.ShowCouldNotLoadAsync<BackpacksPage>(NavigationService.Navigate, ex);
             }
         }
 

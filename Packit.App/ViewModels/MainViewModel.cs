@@ -57,6 +57,7 @@ namespace Packit.App.ViewModels
                 return;
 
             await LoadTripImage();
+
             await Task.Run(async () =>
             {
                 await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
@@ -65,7 +66,10 @@ namespace Packit.App.ViewModels
                     LoadItems();
                 });
             });
+
             await LoadItemImagesAsync();
+            await LoadItemImagesAsync();
+            await LoadTripImage();
         }
 
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
@@ -77,8 +81,7 @@ namespace Packit.App.ViewModels
                     IsChecked = true,
                     ItemId = param.Item.ItemId,
                     BackpackId = param.BackpackWithItemsWithImages.Backpack.BackpackId,
-                    TripId = NextTrip.TripId,
-                    UserId = 4
+                    TripId = NextTrip.TripId
                 };
 
                 if (await checksDataAccess.AddAsync(check))

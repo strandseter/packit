@@ -10,11 +10,11 @@ namespace Packit.App.Helpers
 
         public event EventHandler CanExecuteChanged;
 
-        public RelayCommand()
+        protected RelayCommand()
         {
         }
 
-        public RelayCommand(Func<bool> canExecute)
+        protected RelayCommand(Func<bool> canExecute)
         {
             Func = canExecute;
         }
@@ -50,11 +50,11 @@ namespace Packit.App.Helpers
 
         public event EventHandler CanExecuteChanged;
 
-        public RelayCommand()
+        protected RelayCommand()
         {
         }
 
-        public RelayCommand(Func<T, bool> canExecute)
+        protected RelayCommand(Func<T, bool> canExecute)
         {
             Func = canExecute;
         }

@@ -21,7 +21,7 @@ namespace Packit.App.ViewModels
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
         private ICommand loadedCommand;
 
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<TripsMainPage>(async () => await LoadDataAsync(), PopUpService));
         public ICommand TripDetailCommand { get; set; }
         public ICommand AddTripCommand { get; set; }
 
@@ -40,58 +40,22 @@ namespace Packit.App.ViewModels
 
         private async Task LoadDataAsync()
         {
-            try
-            {
-                await LoadTrips();
-                await LoadTripImagesAsync();
-            }
-            catch (NetworkConnectionException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
-
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
-            }
+            await LoadTrips();
+            await LoadTripImagesAsync();
         }
 
         private async Task LoadTrips()
         {
-            try
-            {
-                var trips = await tripsDataAccess.GetAllWithChildEntitiesAsync();
+            var trips = await tripsDataAccess.GetAllWithChildEntitiesAsync();
 
-                foreach (Trip trip in trips)
-                    Trips.Add(new TripImageWeatherLink(trip));
-            }
-            catch (NetworkConnectionException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
-
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
-            }
+            foreach (Trip trip in trips)
+                Trips.Add(new TripImageWeatherLink(trip));
         }
     
         private async Task LoadTripImagesAsync()
         {
-            try
-            {
-                foreach (TripImageWeatherLink t in Trips)
-                    t.Image = await imagesDataAccess.GetImageAsync(t.Trip.ImageStringName, "ms-appx:///Assets/generictrip.jpg");
-            }
-            catch (NetworkConnectionException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
-
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
-            }
+            foreach (TripImageWeatherLink t in Trips)
+                t.Image = await imagesDataAccess.GetImageAsync(t.Trip.ImageStringName, "ms-appx:///Assets/generictrip.jpg");
         }
     }
 }

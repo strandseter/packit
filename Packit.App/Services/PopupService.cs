@@ -98,10 +98,10 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public async Task ShowInternetConnectionErrorAsync(string exeptionMessage)
+        public async Task ShowInternetConnectionErrorAsync()
         {
             var popup = new PopupMenu();
-            var message = new MessageDialog($"Please check your connection and try again\nError: {exeptionMessage}", "A connection error occured");
+            var message = new MessageDialog($"Please check your connection and try again", "A connection error occured");
             message.Commands.Add(new UICommand("Ok", (command) => { return; }));
             await message.ShowAsync();
         }
@@ -113,7 +113,7 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        private async Task ShowCouldNotDeleteAsync(string itemName)
+        public async Task ShowCouldNotDeleteAsync(string itemName)
         {
             var message = new MessageDialog($"Check your connection, and try again.", $"Could not delete: {itemName}");
             message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
