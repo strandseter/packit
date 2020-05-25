@@ -135,12 +135,21 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Button Content="Trip details"
-                        HorizontalAlignment="Stretch"
-                        MaxWidth="200"
-                        Command="{x:Bind ViewModel.TripDetailsCommand}">
-                    
-                </Button>
+                <Grid>
+                    <Button Content="Trip details"
+                            HorizontalAlignment="Stretch"
+                            MaxWidth="200"
+                            Visibility="{x:Bind ViewModel.HasNextTrip, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"
+                            Command="{x:Bind ViewModel.TripDetailsCommand}">
+                    </Button>
+                    <Button Content="New trip"
+                            HorizontalAlignment="Stretch"
+                            MaxWidth="200"
+                            Visibility="{x:Bind ViewModel.HasNextTrip, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"
+                            Command="{x:Bind ViewModel.NewTripCommand}">
+                    </Button>
+                </Grid>
+                
             </StackPanel>
             
         </Grid>

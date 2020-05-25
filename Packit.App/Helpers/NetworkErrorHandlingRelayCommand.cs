@@ -16,7 +16,7 @@ namespace Packit.App.Helpers
     public class NetworkErrorHandlingRelayCommand<T> : RelayCommand where T : Page
     {
         private readonly IPopUpService popUpService;
-        private Func<Task> execute;
+        private readonly Func<Task> execute;
 
         public NetworkErrorHandlingRelayCommand(Action execute, IPopUpService popUpService)
             : base(execute, null)
@@ -71,19 +71,13 @@ namespace Packit.App.Helpers
     public class NetworkErrorHandlingRelayCommand<T1, T2> : RelayCommand<T1> where T2 : Page
     {
         private readonly IPopUpService popUpService;
-        private Func<T1, Task> execute;
+        private readonly Func<T1, Task> execute;
 
         public NetworkErrorHandlingRelayCommand(Action<T1> execute, IPopUpService popUpService)
             : base(execute, null)
         {
             this.popUpService = popUpService;
         }
-
-        //public NetworkErrorHandlingRelayCommand(Action<T1> execute, Func<T1, bool> canExecute, IPopUpService popUpService)
-        //    : base(execute, canExecute)
-        //{
-        //    this.popUpService = popUpService;
-        //}
 
         public NetworkErrorHandlingRelayCommand(Func<T1, Task> execute, IPopUpService popUpService)
         {

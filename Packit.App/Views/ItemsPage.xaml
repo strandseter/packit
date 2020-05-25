@@ -25,7 +25,6 @@
 
         <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit items"/>
         <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Done"/>
-        
     </Page.Resources>
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
@@ -46,12 +45,10 @@
             <TextBlock Margin="5,0,0,0" Text="All items" Style="{StaticResource HeaderTextBlockStyle}"/>
 
             <Grid Grid.Row="0">
-
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20*"/>
                     <ColumnDefinition Width="10*"/>
                 </Grid.ColumnDefinitions>
-
             </Grid>
 
             <controls:AdaptiveGridView
@@ -108,6 +105,7 @@
                         <TextBlock>Delete</TextBlock>
                     </StackPanel>
                 </Button>
+                
             </Grid>
             
         </Grid>

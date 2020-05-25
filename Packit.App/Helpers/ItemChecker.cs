@@ -16,11 +16,11 @@ namespace Packit.App.Helpers
 {
     public class ItemChecker
     {
-        private Item item;
-        private Backpack backpack;
-        private Trip trip;
-        private bool isChecked;
-        private IPopUpService popUpService;
+        private readonly Item item;
+        private readonly Backpack backpack;
+        private readonly Trip trip;
+        private readonly bool isChecked;
+        private readonly IPopUpService popUpService;
         private readonly IBasicDataAccess<Check> checksDataAccess;
 
         public ItemChecker(Item item, Backpack backpack, Trip trip, bool isChecked, IPopUpService popUpService, IBasicDataAccess<Check> checksDataAccess)

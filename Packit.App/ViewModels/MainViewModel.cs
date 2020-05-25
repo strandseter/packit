@@ -6,7 +6,6 @@ using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.Model;
-using Packit.Model.NotifyPropertyChanged;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Linq;
 using Packit.App.Wrappers;
@@ -14,7 +13,6 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Model.Models;
-using System.Net.Http;
 
 namespace Packit.App.ViewModels
 {
@@ -33,6 +31,7 @@ namespace Packit.App.ViewModels
         public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<MainPage>(async () => await LoadDataAsync(), PopUpService));
         public ICommand ItemCheckedCommand { get; set; }
         public ICommand TripDetailsCommand { get; set; }
+        public ICommand NewTripCommand { get; set; }
 
         public Trip NextTrip { get => nextTrip; set => Set(ref nextTrip, value); }
         public BitmapImage TripImage { get => tripImage; set => Set(ref tripImage, value); }
@@ -46,6 +45,11 @@ namespace Packit.App.ViewModels
             TripDetailsCommand = new RelayCommand(() =>
             {
                 NavigationService.Navigate(typeof(DetailTripV2Page), new TripImageWeatherLink(NextTrip) { Image = TripImage });
+            });
+
+            NewTripCommand = new RelayCommand(() =>
+            {
+                NavigationService.Navigate(typeof(NewTripPage));
             });
         }
 
