@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Packit.App.Services;
+using Packit.Exceptions;
 using Packit.Model;
 using System;
 using System.Net.Http;
@@ -14,6 +16,9 @@ namespace Packit.App.DataAccess.Http
 
         public async Task<Tuple<bool, Trip>>GetNextTrip()
         {
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             var uri = new Uri($"{baseUri}/next");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
@@ -26,17 +31,5 @@ namespace Packit.App.DataAccess.Http
 
             return new Tuple<bool, Trip>(true, nextTrip);
         }
-
-        //public async Task<T> GetByIdAsync(T entity)
-        //{
-        //    var uri = new Uri($"{baseUri}/{entity.GetId()}");
-        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
-
-        //    HttpResponseMessage result = await httpClient.GetAsync(uri);
-        //    string json = await result.Content.ReadAsStringAsync();
-        //    T outEntity = JsonConvert.DeserializeObject<T>(json);
-
-        //    return outEntity;
-        //}
     }
 }

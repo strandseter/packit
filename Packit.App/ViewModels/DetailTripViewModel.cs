@@ -153,7 +153,7 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<DetailTripV2Page>(NavigationService.Navigate, nameof(DetailTripV2Page), ex);
+                await PopUpService.ShowCouldNotLoadAsync<DetailTripV2Page>(NavigationService.Navigate, ex);
             }
         }
 

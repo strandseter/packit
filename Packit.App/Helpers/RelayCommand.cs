@@ -10,6 +10,15 @@ namespace Packit.App.Helpers
 
         public event EventHandler CanExecuteChanged;
 
+        public RelayCommand()
+        {
+        }
+
+        public RelayCommand(Func<bool> canExecute)
+        {
+            Func = canExecute;
+        }
+
         public RelayCommand(Action execute)
             : this(execute, null)
         {

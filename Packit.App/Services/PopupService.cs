@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Packit.App.DataLinks;
+using Packit.Exceptions;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -13,21 +15,33 @@ namespace Packit.App.Services
         public async Task ShowDeleteDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string itemName)
         {
             var message = new MessageDialog($"Are you sure you want to delete {itemName}?", "Delete Item");
-            message.Commands.Add(new UICommand("Yes", (command) => { onYesExecute(onYesParam); }));
+            message.Commands.Add(new UICommand("Yes", async (command) =>
+            {
+                try
+                {
+                    await onYesExecute(onYesParam);
+                }
+                catch (NetworkConnectionException)
+                {
+                    await ShowCouldNotDeleteAsync(itemName);
+                }
+                catch (HttpRequestException)
+                {
+                    await ShowCouldNotDeleteAsync(itemName);
+                }
+            }));
+
             message.Commands.Add(new UICommand("No", (command) => { return; }));
             await message.ShowAsync();
         }
 
-        public async Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, string notLoadingTitle, Exception exception) where T : Page
+        public async Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, Exception exception) where T : Page
         {
             if (exception == null)
-                throw new ArgumentException(nameof(exception));
+                throw new ArgumentNullException(nameof(exception));
 
-            if (notLoadingTitle == null)
-                throw new ArgumentNullException(nameof(notLoadingTitle));
-
-            var message = new MessageDialog($"Could not load {notLoadingTitle}, check your connection and try again ({exception.Message}).", "Could not load");
-            message.Commands.Add(new UICommand("Retry", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));
+            var message = new MessageDialog($"Could not connect, check your connection and try again ({exception.Message}).", "No connetion");
+            message.Commands.Add(new UICommand("Refresh", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));
             message.Commands.Add(new UICommand("Close", (command) => { return; }));
             await message.ShowAsync();
         }
@@ -95,6 +109,13 @@ namespace Packit.App.Services
         public async Task ShowCouldNotLogIn()
         {
             var message = new MessageDialog("Could not log in, please try again", "Failed to log in");
+            message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
+        private async Task ShowCouldNotDeleteAsync(string itemName)
+        {
+            var message = new MessageDialog($"Check your connection, and try again.", $"Could not delete: {itemName}");
             message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
             await message.ShowAsync();
         }

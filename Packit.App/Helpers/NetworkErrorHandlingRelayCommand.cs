@@ -1,4 +1,5 @@
-﻿using Packit.App.Services;
+﻿using Packit.App.DataLinks;
+using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Exceptions;
 using System;
@@ -14,6 +15,7 @@ namespace Packit.App.Helpers
     public class NetworkErrorHandlingRelayCommand<T> : RelayCommand where T : Page
     {
         private readonly IPopUpService popUpService;
+        private Func<Task> execute;
 
         public NetworkErrorHandlingRelayCommand(Action execute, IPopUpService popUpService)
             : base(execute, null)
@@ -27,19 +29,36 @@ namespace Packit.App.Helpers
             this.popUpService = popUpService;
         }
 
+        public NetworkErrorHandlingRelayCommand(Func<Task> execute, IPopUpService popUpService)
+        {
+            this.execute = execute;
+            this.popUpService = popUpService;
+        }
+
+        public NetworkErrorHandlingRelayCommand(Func<Task> execute, IPopUpService popUpService, Func<bool> canExecute)
+            : base(canExecute)
+        {
+            this.execute = execute;
+            this.popUpService = popUpService;
+        }
+
+        //Async void should be avoided(Task instead), but microsoft them self stated this:
+        //"Async void methods should be avoided unless they’re event handlers (or the logical equiv­alent of event handlers).
+        //Implementations of ICommand.Execute are logically event handlers and, thus, may be async void."
+        //Source: https://docs.microsoft.com/en-us/archive/msdn-magazine/2014/april/async-programming-patterns-for-asynchronous-mvvm-applications-commands
         public override async void Execute(object parameter)
         {
             try
             {
-                Action();
+                await execute();
             }
             catch (NetworkConnectionException ex)
             {
-                await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, nameof(T), ex);
+                await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, ex);
             }
             catch (HttpRequestException ex)
             {
-                await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, nameof(T), ex);
+                await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, ex);
             }
         }
     }
@@ -55,11 +74,11 @@ namespace Packit.App.Helpers
             this.popUpService = popUpService;
         }
 
-        public NetworkErrorHandlingRelayCommand(Action<T1> execute, Func<T1, bool> canExecute, IPopUpService popUpService)
-            : base(execute, canExecute)
-        {
-            this.popUpService = popUpService;
-        }
+        //public NetworkErrorHandlingRelayCommand(Action<T1> execute, Func<T1, bool> canExecute, IPopUpService popUpService)
+        //    : base(execute, canExecute)
+        //{
+        //    this.popUpService = popUpService;
+        //}
 
         public NetworkErrorHandlingRelayCommand(Func<T1, Task> execute, IPopUpService popUpService)
         {
@@ -67,7 +86,7 @@ namespace Packit.App.Helpers
             this.popUpService = popUpService;
         }
 
-        public NetworkErrorHandlingRelayCommand(Func<T1, Task> execute, Func<T1, bool> canExecute, IPopUpService popUpService)
+        public NetworkErrorHandlingRelayCommand(Func<T1, Task> execute, IPopUpService popUpService, Func<T1, bool> canExecute )
             : base(canExecute)
         {
             this.execute = execute;
@@ -86,11 +105,11 @@ namespace Packit.App.Helpers
             }
             catch (NetworkConnectionException ex)
             {
-                await popUpService.ShowCouldNotLoadAsync<T2>(NavigationService.Navigate, nameof(T2), ex);
+                await popUpService.ShowCouldNotLoadAsync<T2>(NavigationService.Navigate, ex);
             }
             catch (HttpRequestException ex)
             {
-                await popUpService.ShowCouldNotLoadAsync<T2>(NavigationService.Navigate, nameof(T2), ex);
+                await popUpService.ShowCouldNotLoadAsync<T2>(NavigationService.Navigate, ex);
             }
         }
     }

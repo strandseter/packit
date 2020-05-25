@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Packit.App.Services;
+using Packit.Exceptions;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,10 +13,11 @@ namespace Packit.App.DataAccess
         readonly HttpClient httpClient = new HttpClient();
         static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T1).Name}s");
 
-        private string dummyToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjQiLCJpZCI6IjQiLCJuYmYiOjE1ODczNzg4MDEsImV4cCI6MTYxMzI5ODgwMSwiaWF0IjoxNTg3Mzc4ODAxfQ.vjCQhH4TKQcFbmM42ZM2VCIYYRGO_49LEWm6zWuWK00";
-
         public async Task<bool> AddEntityToEntityAsync(int leftId, int rightId)
         {
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/create");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
@@ -25,6 +28,9 @@ namespace Packit.App.DataAccess
 
         public async Task<bool> DeleteEntityFromEntityAsync(int leftId, int rightId)
         {
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/delete");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
@@ -35,6 +41,9 @@ namespace Packit.App.DataAccess
 
         public async Task<T2[]> GetEntitiesInEntityAsync(int id, string param)
         {
+            if (!InternetConnectionService.IsConnected())
+                throw new NetworkConnectionException();
+
             var uri = new Uri($"{baseUri}/{id}/{param}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 

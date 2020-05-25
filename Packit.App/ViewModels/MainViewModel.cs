@@ -29,7 +29,7 @@ namespace Packit.App.ViewModels
         private bool hasNextTrip;
 
         public bool HasNextTrip { get => hasNextTrip; set => Set(ref hasNextTrip, value); }
-        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
+        public ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<MainPage>(async () => await LoadDataAsync(), PopUpService));
         public ICommand ItemCheckedCommand { get; set; }
         public ICommand TripDetailsCommand { get; set; }
         public Trip NextTrip { get => nextTrip; set => Set(ref nextTrip, value); }
@@ -51,28 +51,21 @@ namespace Packit.App.ViewModels
 
         private async Task LoadDataAsync()
         {
-            try
+            await LoadTripAsync();
+
+            if (!HasNextTrip)
+                return;
+
+            await LoadTripImage();
+            await Task.Run(async () =>
             {
-                await LoadTripAsync();
-
-                if (!HasNextTrip)
-                    return;
-
-                await LoadTripImage();
-                await Task.Run(async () =>
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                 {
-                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
-                    {
-                        LoadBackpacks();
-                        LoadItems();
-                    });
+                    LoadBackpacks();
+                    LoadItems();
                 });
-                await LoadItemImagesAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<MainPage>(NavigationService.Navigate, nameof(MainPage), ex);
-            }
+            });
+            await LoadItemImagesAsync();
         }
 
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)

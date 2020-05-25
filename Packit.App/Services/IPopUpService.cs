@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Packit.App.DataLinks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Packit.App.Services
     public interface IPopUpService
     {
         Task ShowDeleteDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string itemName);
-        Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, string notLoadingTitle, Exception exception) where T : Page;
+        Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, Exception exception) where T : Page;
         Task ShowCouldNotLoadAsync(Func<bool> onGoBackExecute, string notLoadingTitle);
         Task ShowCouldNotLoadAsync(Action onBackExecute, string notLoadingTitle);
         Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle, Exception exception);

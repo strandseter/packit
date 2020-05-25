@@ -47,12 +47,12 @@ namespace Packit.App.ViewModels
             }
             catch (NetworkConnectionException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
 
             }
             catch (HttpRequestException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
             }
         }
 
@@ -67,12 +67,12 @@ namespace Packit.App.ViewModels
             }
             catch (NetworkConnectionException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
 
             }
             catch (HttpRequestException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
             }
         }
     
@@ -85,12 +85,12 @@ namespace Packit.App.ViewModels
             }
             catch (NetworkConnectionException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
 
             }
             catch (HttpRequestException ex)
             {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, nameof(TripsMainPage), ex);
+                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
             }
         }
     }
