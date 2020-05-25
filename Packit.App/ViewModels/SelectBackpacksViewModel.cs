@@ -109,9 +109,6 @@ namespace Packit.App.ViewModels
             SelectedBackpacks = backpackWithItemsWithImagesTripWrapper.BackpackWithItemsWithImages;
         }
 
-        internal void Initialize(Trip trip)
-        {
-            NewTrip = trip;
-        }
+        internal void Initialize(Trip trip) => NewTrip = trip;
     }
 }

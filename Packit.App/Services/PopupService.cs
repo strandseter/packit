@@ -109,8 +109,8 @@ namespace Packit.App.Services
             if (exception == null)
                 throw new ArgumentNullException(nameof(exception));
 
-            var message = new MessageDialog($"Could not connect, check your connection and try again ({exception.Message}).", "No connetion");
-            message.Commands.Add(new UICommand("Refresh", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));
+            var message = new MessageDialog($"Could not connect, check your connection and try again ({exception.Message}).", "No connection");
+            message.Commands.Add(new UICommand("Try again", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));
             message.Commands.Add(new UICommand("Close", (command) => { return; }));
             await message.ShowAsync();
         }
@@ -144,6 +144,13 @@ namespace Packit.App.Services
         public async Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle)
         {
             var message = new MessageDialog($"Could not upload changes in: {notUpdatingTitle}", "Could not upload changes");
+            message.Commands.Add(new UICommand($"Close", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
+        public async Task ShowCouldNotSaveAsync(string notUpdatingTitle)
+        {
+            var message = new MessageDialog($"Could not upload: {notUpdatingTitle}. Please check you connection and try again", "Could not save");
             message.Commands.Add(new UICommand($"Close", (command) => { return; }));
             await message.ShowAsync();
         }

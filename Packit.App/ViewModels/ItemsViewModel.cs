@@ -51,7 +51,7 @@ namespace Packit.App.ViewModels
 
             ItemDoneEditingCommand = new NetworkErrorHandlingRelayCommand<Item, ItemsPage>(async param =>
             {
-                await UpdateEditeditem(param);
+               await UpdateEditeditem(param);
             }, popUpService);
         }
 

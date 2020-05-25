@@ -1,4 +1,5 @@
-﻿using Packit.App.DataAccess;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using Packit.App.DataAccess;
 using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
@@ -36,7 +37,7 @@ namespace Packit.App.ViewModels
         public SelectItemsViewModel(IPopUpService popUpService)
             :base(popUpService)
         {
-            DoneSelectingItemsCommand = new RelayCommand<IList<object>>(async param => await SaveChangesNavigateBack(param.ToList()));
+            DoneSelectingItemsCommand = new RelayCommand<IList<object>>(async param => await SaveChangesAndNavigate(param.ToList()));
 
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
         }
@@ -45,6 +46,13 @@ namespace Packit.App.ViewModels
         {
             await LoadItemsAsync();
             await LoadImagesAsync();
+            await Task.Run(async () =>
+            {
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                {
+                    FilterItemsCollection();
+                });
+            });
         }
 
         private async Task AddItemsToExistingBackpackWithItemsWithImages(ItemImageLink itemImageLink)
@@ -94,37 +102,22 @@ namespace Packit.App.ViewModels
             SelectedTrip.Trip = updatedTrip;
         }
 
-        protected override async Task LoadItemsAsync()
+        private void FilterItemsCollection()
         {
-            try
-            {
-                var items = await itemsDataAccess.GetAllAsync();
+            if (SelectedBackpackWithItemsWithImages == null)
+                return;
 
-                foreach (var i in items)
+            foreach (var itemImageLinkOld in ItemImageLinks.ToList())
+            {
+                foreach (var itemImageLinkNew in SelectedBackpackWithItemsWithImages.ItemImageLinks)
                 {
-                    var itemImageLink = new ItemImageLink() { Item = i };
-                    ItemImageLinks.Add(itemImageLink);
-
-                    if (SelectedBackpackWithItemsWithImages == null)
-                        continue;
-
-                    foreach (var item in SelectedBackpackWithItemsWithImages.ItemImageLinks)
-                        if (i.ItemId == item.Item.ItemId)
-                            ItemImageLinks.Remove(itemImageLink);
+                    if (itemImageLinkOld.Item.ItemId == itemImageLinkNew.Item.ItemId)
+                        ItemImageLinks.Remove(itemImageLinkOld);
                 }
-            }
-            catch (NetworkConnectionException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
-
-            }
-            catch (HttpRequestException ex)
-            {
-                await PopUpService.ShowCouldNotLoadAsync<TripsMainPage>(NavigationService.Navigate, ex);
             }
         }
 
-        private async Task SaveChangesNavigateBack(IList<object> selectedItems)
+        private async Task SaveChangesAndNavigate(IList<object> selectedItems)
         {
             if (NewTrip != null && NewBackpack != null)
             {

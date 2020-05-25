@@ -24,6 +24,7 @@ namespace Packit.App.Services
         Task ShowUnknownErrorAsync(string exeptionMessage);
         Task ShowUnknownErrorAsync(string exeptionMessage, Action onBackExecute);
         Task ShowInternetConnectionErrorAsync();
+        Task ShowCouldNotSaveAsync(string notUpdatingTitle);
         Task ShowCouldNotLogIn();
     }
 }

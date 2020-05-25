@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
-using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
@@ -12,7 +12,7 @@ using Packit.Model.NotifyPropertyChanged;
 
 namespace Packit.App.ViewModels
 {
-    public class NewBackpackViewModel : Observable
+    public class NewBackpackViewModel : ViewModel
     {
         private readonly IBasicDataAccess<Backpack> backpackDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private readonly IRelationDataAccess<Trip, Backpack> backpackTripRelationDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
@@ -30,13 +30,13 @@ namespace Packit.App.ViewModels
             set => Set(ref titleIsValid, value);
         }
 
-        public NewBackpackViewModel()
+        public NewBackpackViewModel(IPopUpService popUpService)
+            :base(popUpService)
         {
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
 
-            NextCommand = new RelayCommand<bool>(async param =>
+            NextCommand = new NetworkErrorHandlingRelayCommand<bool, BackpacksPage>(async param =>
             {
-
                 if (await backpackDataAccess.AddAsync(NewBackpack))
                 {
                     if (SelectedTrip != null)
@@ -47,12 +47,9 @@ namespace Packit.App.ViewModels
                     else
                         NavigationService.Navigate(typeof(SelectItemsPage), NewBackpack);
                 }
-            }, param => param);
+            }, PopUpService, param => param);
         }
 
-        internal void Initialize(Trip trip)
-        {
-            SelectedTrip = trip;
-        }
+        internal void Initialize(Trip trip) => SelectedTrip = trip;
     }
 }

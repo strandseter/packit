@@ -24,7 +24,7 @@ namespace Packit.App.ViewModels
         private BitmapImage tripImage;
         private bool titleIsValid;
 
-        public Trip Trip { get; set; } = new Trip();
+        public Trip Trip { get; set; } = new Trip { Title="", Description="", Destination=""};
         public BitmapImage TripImage
         {
             get => tripImage;
@@ -36,6 +36,7 @@ namespace Packit.App.ViewModels
         public ICommand ImageDeviceCommand { get; set; }
         public ICommand AddBackpackCommand { get; set; }
         public ICommand RemoveBackpackCommand { get; set; }
+
         public bool TitleIsValid
         {
             get => titleIsValid;
@@ -49,39 +50,50 @@ namespace Packit.App.ViewModels
 
             ImageDeviceCommand = new RelayCommand(async () =>
             {
-                localImage = await FileService.GetImageFromDeviceAsync();
-
-                if (localImage == null)
-                    return;
-
-                TripImage = await FileService.StorageFileToBitmapImageAsync(localImage);
+                await PickLocalImageAsync();
             });
 
-            NextCommand = new RelayCommand<bool>(async param =>
+            NextCommand = new NetworkErrorHandlingRelayCommand<bool, TripsMainPage>(async param =>
             {
-                if (localImage != null)
-                {
-                    var randomImageName = GenerateImageName();
-                    Trip.ImageStringName = randomImageName;
+                await AddTripAsync();
+            }, PopUpService, param => param);
+        }
 
-                    if (!await tripsDataAccess.AddAsync(Trip) || !await imagesDataAccess.AddImageAsync(localImage, randomImageName))
-                    {
-                        await PopUpService.ShowCouldNotSaveChangesAsync($"{Trip.Title} or {nameof(localImage)}");
-                        return;
-                    }
+        private async Task AddTripAsync()
+        {
+            if (localImage == null)
+                await AddTripRequestAsync();
+            else
+                await AddTripAndImageRequestAsync();
+        }
 
-                    NavigationService.Navigate(typeof(SelectBackpacksPage), Trip);
-                    return;
-                }
-
-                if (!await tripsDataAccess.AddAsync(Trip))
-                {
-                    await PopUpService.ShowCouldNotSaveChangesAsync(Trip.Title);
-                    return;
-                }
-
+        private async Task AddTripRequestAsync()
+        {
+            if (await tripsDataAccess.AddAsync(Trip))
                 NavigationService.Navigate(typeof(SelectBackpacksPage), Trip);
-            }, param => param);
+            else
+                await PopUpService.ShowCouldNotSaveAsync(Trip.Title);
+        }
+
+        private async Task AddTripAndImageRequestAsync()
+        {
+            var randomImageName = GenerateImageName();
+            Trip.ImageStringName = randomImageName;
+
+            if (await tripsDataAccess.AddAsync(Trip) && await imagesDataAccess.AddImageAsync(localImage, randomImageName))
+                NavigationService.Navigate(typeof(SelectBackpacksPage), Trip);
+            else
+                await PopUpService.ShowCouldNotSaveAsync(Trip.Title);
+        }
+
+        private async Task PickLocalImageAsync()
+        {
+            localImage = await FileService.GetImageFromDeviceAsync();
+
+            if (localImage == null)
+                return;
+
+            TripImage = await FileService.StorageFileToBitmapImageAsync(localImage);
         }
     }
 }

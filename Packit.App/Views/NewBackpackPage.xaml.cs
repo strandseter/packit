@@ -4,12 +4,13 @@ using Packit.App.ViewModels;
 using Packit.Model;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Packit.App.Views
 {
     public sealed partial class NewBackpackPage : Page
     {
-        public NewBackpackViewModel ViewModel { get; } = new NewBackpackViewModel();
+        public NewBackpackViewModel ViewModel { get; } = (App.Current as App).ServiceProvider.GetService<NewBackpackViewModel>();
 
         public NewBackpackPage()
         {

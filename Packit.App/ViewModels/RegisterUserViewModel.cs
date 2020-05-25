@@ -109,7 +109,6 @@ namespace Packit.App.ViewModels
             return true;
         }
 
-
         private async Task RegisterUser()
         {
             try

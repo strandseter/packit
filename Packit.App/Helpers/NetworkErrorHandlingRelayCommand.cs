@@ -1,13 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Packit.App.DataLinks;
 using Packit.App.Services;
-using Packit.App.Views;
 using Packit.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
@@ -49,6 +44,7 @@ namespace Packit.App.Helpers
         //Source: https://docs.microsoft.com/en-us/archive/msdn-magazine/2014/april/async-programming-patterns-for-asynchronous-mvvm-applications-commands
         public override async void Execute(object parameter)
         {
+            //This structure is made to be expandable and easy to edit in the future. NetworkConnectionException would not have been an exception to catch if I had the time to implement offline/local database.
             try
             {
                 await execute();
