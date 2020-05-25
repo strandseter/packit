@@ -30,7 +30,10 @@ namespace Packit.App.ViewModels
         public TripsMainViewModel(IPopUpService popUpService)
             :base(popUpService)
         {
-            TripDetailCommand = new RelayCommand<TripImageWeatherLink>(param => NavigationService.Navigate(typeof(DetailTripV2Page), param));
+            TripDetailCommand = new RelayCommand<TripImageWeatherLink>(param =>
+            {
+                NavigationService.Navigate(typeof(DetailTripV2Page), param);
+            });
 
             AddTripCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewTripPage)));
         }

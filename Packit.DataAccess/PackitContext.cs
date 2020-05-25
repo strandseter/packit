@@ -13,9 +13,7 @@ namespace Packit.DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Backpack> Backpacks { get; set; }
-
         public DbSet<Check> Checks { get; set; }
-
         public DbSet<ItemBackpack> ItemBackpack { get; set; }
         public DbSet<BackpackTrip> BackpackTrip { get; set; } 
 
@@ -31,7 +29,6 @@ namespace Packit.DataAccess
                 InitialCatalog = "Packit.DatabaseV2",
                 IntegratedSecurity = true
             };
-
 
             SqlConnectionStringBuilder builderDonau = new SqlConnectionStringBuilder
             {
