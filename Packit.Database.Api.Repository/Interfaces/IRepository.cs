@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Packit.Database.Api.GenericRepository
+namespace Packit.Database.Api.Repository.Interfaces
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         IQueryable<T> GetAll(int userId);
         Task<IActionResult> GetByIdAsync(int id, int userId);

@@ -49,7 +49,7 @@ namespace Packit.App.ViewModels
                     else
                         LoginErrorMessage = "Failed to Log in, please try again";
                 }
-                catch (HttpRequestException ex)
+                catch (HttpRequestException)
                 {
                     await PopUpService.ShowInternetConnectionErrorAsync();
                 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Packit.Database.Api.GenericRepository;
 using Packit.Database.Api.Repository.Generic;
 using Packit.Model;
 using System;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Interfaces
 {
-    public interface IBackpackRepository : IGenericRepository<Backpack>, IGenericManyToManyRepository<Backpack>
+    public interface IBackpackRepository : IRepository<Backpack>, IManyToManyRepository<Backpack>
     {
         //Declare type specific methods here.
 

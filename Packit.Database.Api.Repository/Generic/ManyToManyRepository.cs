@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
-using Packit.Database.Api.GenericRepository;
+using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
 using Packit.Model.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Generic
 {
-    public class GenericManyToManyRepository<T1, T2, T3> : GenericRepository<T1>, IGenericManyToManyRepository<T1> where T1 : class, IDatabase 
-                                                                                                                   where T2 : class, IDatabase 
-                                                                                                                   where T3 : class, IManyToMany //TODO: Move IManyToMany to another project
+    public class ManyToManyRepository<T1, T2, T3> : Repository<T1>, IManyToManyRepository<T1> where T1 : class, IDatabase 
+                                                                                              where T2 : class, IDatabase 
+                                                                                              where T3 : class, IManyToMany
     {
-        public GenericManyToManyRepository(PackitContext context)
+        public ManyToManyRepository(PackitContext context)
             :base(context)
         {
         }

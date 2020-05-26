@@ -1,4 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿// ***********************************************************************
+// Assembly         : Packit.App
+// Author           : ander
+// Created          : 05-20-2020
+//
+// Last Modified By : ander
+// Last Modified On : 05-26-2020
+// ***********************************************************************
+// <copyright file="UserDataAccess.cs" company="">
+//     Copyright ©  2020
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using Newtonsoft.Json;
 using Packit.Model;
 using System;
 using System.Net.Http;
@@ -7,18 +20,39 @@ using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess.Http
 {
+    /// <summary>
+    /// Class UserDataAccess.
+    /// </summary>
     public class UserDataAccess
     {
+        /// <summary>
+        /// The HTTP client
+        /// </summary>
         private readonly HttpClient httpClient = new HttpClient();
+        /// <summary>
+        /// The base URI
+        /// </summary>
         private readonly Uri baseUri = new Uri("http://localhost:52286/api/users");
 
+        /// <summary>
+        /// add user as an asynchronous operation.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="ArgumentNullException">user</exception>
         public async Task<bool> AddUserAsync(User user)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
             string json = JsonConvert.SerializeObject(user);
-            HttpResponseMessage result = await httpClient.PostAsync(baseUri, new StringContent(json, Encoding.UTF8, "application/json"));
+
+            HttpResponseMessage result;
+
+            using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
+            {
+               result = await httpClient.PostAsync(baseUri, content);
+            }
 
             if (!result.IsSuccessStatusCode)
                 return false;
@@ -33,6 +67,12 @@ namespace Packit.App.DataAccess.Http
             return true;
         }
 
+        /// <summary>
+        /// Authenticates the user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="ArgumentNullException">user</exception>
         public async Task<bool> AuthenticateUser(User user)
         {
             if (user == null)
@@ -41,7 +81,13 @@ namespace Packit.App.DataAccess.Http
             var uri = new Uri($"{baseUri}/authenticate");
 
             string json = JsonConvert.SerializeObject(user);
-            HttpResponseMessage result = await httpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
+
+            HttpResponseMessage result;
+
+            using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
+            {
+                result = await httpClient.PostAsync(uri, content);
+            }
 
             if (!result.IsSuccessStatusCode)
                 return false;

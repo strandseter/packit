@@ -1,4 +1,17 @@
-﻿using Packit.App.Services;
+﻿// ***********************************************************************
+// Assembly         : Packit.App
+// Author           : ander
+// Created          : 04-20-2020
+//
+// Last Modified By : ander
+// Last Modified On : 05-25-2020
+// ***********************************************************************
+// <copyright file="ImagesDataAccess.cs" company="">
+//     Copyright ©  2020
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using Packit.App.Services;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -9,11 +22,26 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Packit.App.DataAccess
 {
+    /// <summary>
+    /// Class ImagesDataAccess.
+    /// </summary>
     public class ImagesDataAccess
     {
+        /// <summary>
+        /// The HTTP client
+        /// </summary>
         private readonly HttpClient httpClient = new HttpClient();
+        /// <summary>
+        /// The base URI
+        /// </summary>
         private static readonly Uri baseUri = new Uri("http://localhost:61813/api/Images/");
 
+        /// <summary>
+        /// get image as an asynchronous operation.
+        /// </summary>
+        /// <param name="imageStringName">Name of the image string.</param>
+        /// <param name="fallbackImageStringPath">The fallback image string path.</param>
+        /// <returns>BitmapImage.</returns>
         public async Task<BitmapImage> GetImageAsync(string imageStringName, string fallbackImageStringPath)
         {
             var uriIsCreated = Uri.TryCreate(fallbackImageStringPath, UriKind.Absolute, out Uri fallbackImage);
@@ -48,6 +76,12 @@ namespace Packit.App.DataAccess
             return bitmap;
         }
 
+        /// <summary>
+        /// add image as an asynchronous operation.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public async Task<bool> AddImageAsync(StorageFile file, string fileName)
         {
             if (file == null)
@@ -71,6 +105,11 @@ namespace Packit.App.DataAccess
             }
         }
 
+        /// <summary>
+        /// delete image as an asynchronous operation.
+        /// </summary>
+        /// <param name="imageName">Name of the image.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public async Task<bool> DeleteImageAsync(string imageName)
         {
             var uri = new Uri($"{baseUri}{imageName}");
@@ -80,6 +119,11 @@ namespace Packit.App.DataAccess
             return result.IsSuccessStatusCode;
         }
 
+        /// <summary>
+        /// file to bytes as an asynchronous operation.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns>System.Byte[].</returns>
         private async Task<byte[]> FileToBytesAsync(StorageFile file)
         {
             byte[] fileBytes;

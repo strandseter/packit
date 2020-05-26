@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Packit.Database.Api.Repository.Generic
+namespace Packit.Database.Api.Repository.Interfaces
 {
-    public interface IGenericManyToManyRepository<T>
+    public interface IManyToManyRepository<T>
     {
         Task<IActionResult> CreateManyToManyAsync(string message, int leftId, int rightId);
         Task<IActionResult> GetManyToManyAsync(int id);

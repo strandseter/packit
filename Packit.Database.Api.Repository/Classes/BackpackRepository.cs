@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Classes
 {
-    public class BackpackRepository : GenericManyToManyRepository<Backpack, Item, ItemBackpack>, IBackpackRepository
+    public class BackpackRepository : ManyToManyRepository<Backpack, Item, ItemBackpack>, IBackpackRepository
     {
         public BackpackRepository(PackitContext context)
             :base(context)

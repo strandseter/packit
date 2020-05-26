@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
+using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Packit.Database.Api.GenericRepository
+namespace Packit.Database.Api.Repository.Generic
 {
-    public class GenericRepository<T> : ControllerBase, IGenericRepository<T> where T : class, IDatabase
+    public class Repository<T> : ControllerBase, IRepository<T> where T : class, IDatabase
     {
         protected PackitContext Context { get; }
 
-        public GenericRepository(PackitContext context)
+        public Repository(PackitContext context)
         {
             Context = context;
         }
