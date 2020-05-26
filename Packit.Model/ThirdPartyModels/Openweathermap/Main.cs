@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Packit.App.ThirdPartyApiModels.Openweathermap
+namespace Packit.Model.ThirdPartyModels.Openweathermap
 {
     public class Main
     {
