@@ -1,7 +1,9 @@
 ﻿using Packit.App.DataLinks;
 using Packit.Exceptions;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Popups;
@@ -110,7 +112,7 @@ namespace Packit.App.Services
                 throw new ArgumentNullException(nameof(exception));
 
             var message = new MessageDialog($"Could not connect, check your connection and try again ({exception.Message}).", "No connection");
-            message.Commands.Add(new UICommand("Try again", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));
+            message.Commands.Add(new UICommand("Refresh", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));
             message.Commands.Add(new UICommand("Close", (command) => { return; }));
             await message.ShowAsync();
         }
@@ -151,6 +153,21 @@ namespace Packit.App.Services
         public async Task ShowCouldNotSaveAsync(string notUpdatingTitle)
         {
             var message = new MessageDialog($"Could not upload: {notUpdatingTitle}. Please check you connection and try again", "Could not save");
+            message.Commands.Add(new UICommand($"Close", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
+        public async Task ShowCouldNotAddAsync<T>(IList<T> selectedEntities, string mainItemName)
+        {
+            if (selectedEntities == null)
+                throw new ArgumentNullException(nameof(selectedEntities));
+
+            var builder = new StringBuilder();
+
+            foreach(var entity in selectedEntities)
+                builder.Append($"{entity}\n");
+
+            var message = new MessageDialog($"Could not add the following elements to {mainItemName}:\n{builder}");
             message.Commands.Add(new UICommand($"Close", (command) => { return; }));
             await message.ShowAsync();
         }

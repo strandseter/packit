@@ -27,7 +27,13 @@ namespace Packit.App.DataAccess
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             string json = JsonConvert.SerializeObject(entity);
-            HttpResponseMessage result = await httpClient.PostAsync(baseUri, new StringContent(json, Encoding.UTF8, "application/json"));
+
+            HttpResponseMessage result;
+
+            using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
+            {
+                result = await httpClient.PostAsync(baseUri, content);
+            }
 
             if (!result.IsSuccessStatusCode) return false;
 
@@ -68,7 +74,13 @@ namespace Packit.App.DataAccess
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             string json = JsonConvert.SerializeObject(entity);
-            HttpResponseMessage result = await httpClient.PutAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
+
+            HttpResponseMessage result;
+
+            using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
+            {
+                result = await httpClient.PutAsync(uri, content);
+            }
 
             return result.IsSuccessStatusCode;
         }

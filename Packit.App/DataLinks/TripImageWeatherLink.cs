@@ -45,5 +45,7 @@ namespace Packit.App.DataLinks
         }
 
         public TripImageWeatherLink(Trip trip) => Trip = trip;
+
+        public override string ToString() => trip.Title;
     }
 }

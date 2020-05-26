@@ -31,7 +31,6 @@ namespace Packit.Database.Api.GenericRepository
             await SaveChangesAsync();
 
             return CreatedAtAction(message, new { id = entity?.GetId() }, entity);
-            //return BadRequest();
         }
 
         public async Task<IActionResult> DeleteAsync(int id, int userId)
@@ -49,7 +48,6 @@ namespace Packit.Database.Api.GenericRepository
             await SaveChangesAsync();
 
             return Ok(entity);
-            //return BadRequest();
         }
 
         public IQueryable<T> GetAll(int userId)
@@ -68,7 +66,6 @@ namespace Packit.Database.Api.GenericRepository
                 return NotFound();
 
             return Ok(entity);
-            //return BadRequest();
         }
 
         public async Task<IActionResult> UpdateAsync(int id, T entity, int userId)
@@ -97,7 +94,6 @@ namespace Packit.Database.Api.GenericRepository
             }
 
             return NoContent();
-            //return BadRequest();
         }
 
         protected async Task<bool> EntityExistsAsync(int id) => await Context.Set<T>().AnyAsync(e => e.GetId() == id);

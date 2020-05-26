@@ -10,7 +10,7 @@ namespace Packit.App.DataLinks
     public class ItemImageLink : Observable
     {
         private BitmapImage image;
-        private Model.Item item;
+        private Item item;
 
         public BitmapImage Image
         {
@@ -18,10 +18,12 @@ namespace Packit.App.DataLinks
             set => Set(ref image, value);
         }
 
-        public Model.Item Item
+        public Item Item
         {
             get => item;
             set => Set(ref item, value);
         }
+
+        public override string ToString() => Item.Title;
     }
 }

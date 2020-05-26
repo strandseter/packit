@@ -55,6 +55,7 @@
                 DesiredWidth="300"
                 SelectionMode="Multiple"
                 IsItemClickEnabled="True"
+                Visibility="{x:Bind ViewModel.ItemsIsFiltered, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"
                 DataContext="{x:Bind ViewModel}"
                 ItemTemplate="{StaticResource ItemGridTemplate}"
                 ItemsSource="{x:Bind ViewModel.ItemImageLinks}">

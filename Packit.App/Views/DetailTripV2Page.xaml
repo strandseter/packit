@@ -174,20 +174,14 @@
                                                            Style="{StaticResource TitleTextBlockStyle}"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Center"/>
-                                                <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.ShareBackpackCommand}"
-                                                        CommandParameter="{x:Bind}"
-                                                        Margin="10,10,5,10">
-                                                    <SymbolIcon Symbol="Share"/>
-                                                </Button>
-
                                             </StackPanel>
 
-                                                <StackPanel Margin="0,10,0,0"
+                                            <StackPanel Margin="0,10,0,0"
                                                         Orientation="Horizontal"
                                                         VerticalAlignment="Center"
                                                         HorizontalAlignment="Center">
 
-                                                    <Button Content="Options">
+                                                <Button Content="Options">
                                                     <Button.Flyout>
                                                         <MenuFlyout>
                                                             <MenuFlyoutItem Text="Add items"
@@ -196,6 +190,14 @@
                                                                             Margin="0,0,10,0">
                                                                 <MenuFlyoutItem.Icon>
                                                                     <FontIcon Glyph="&#xE710;"/>
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+                                                            <MenuFlyoutSeparator/>
+                                                            <MenuFlyoutItem Text="Share backpack"
+                                                                            Command="{Binding ElementName=lvBackpacks, Path=DataContext.ShareBackpackCommand}"
+                                                                            CommandParameter="{x:Bind}">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE72D;"/>
                                                                 </MenuFlyoutItem.Icon>
                                                             </MenuFlyoutItem>
                                                             <MenuFlyoutSeparator/>
@@ -219,8 +221,7 @@
 
                                             </StackPanel>
 
-
-                                    </StackPanel>
+                                        </StackPanel>
 
                                 </StackPanel>
 

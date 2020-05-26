@@ -25,5 +25,7 @@ namespace Packit.App.DataLinks
             Backpack = backpack;
             ItemImageLinks = new ObservableCollection<ItemImageLink>();
         }
+
+        public override string ToString() => Backpack.Title;
     }
 }

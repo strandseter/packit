@@ -21,6 +21,7 @@ namespace Packit.App.Services
         Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle, Exception exception);
         Task ShowCouldNotSaveChangesAsync(string notUpdatingTitle);
         Task ShowCouldNotDeleteAsync(string itemName);
+        Task ShowCouldNotAddAsync<T>(IList<T> selectedEntities, string mainItemName);
         Task ShowUnknownErrorAsync(string exeptionMessage);
         Task ShowUnknownErrorAsync(string exeptionMessage, Action onBackExecute);
         Task ShowInternetConnectionErrorAsync();
