@@ -153,7 +153,10 @@ namespace Packit.App.ViewModels
         private async Task RemoveBackpack(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
             if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
+            {
                 Backpacks.Remove(backpackWithItemsWithImages);
+                TripImageWeatherLink.Trip.Backpacks.RemoveAll(x => x.BackpackId == backpackWithItemsWithImages.Backpack.BackpackId);
+            }
             else
                 await PopUpService.ShowCouldNotDeleteAsync(backpackWithItemsWithImages.Backpack.Title);
         }

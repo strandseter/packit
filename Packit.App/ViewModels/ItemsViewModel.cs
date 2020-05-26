@@ -98,7 +98,7 @@ namespace Packit.App.ViewModels
                 await PopUpService.ShowCouldNotDeleteAsync(itemImageLink.Item.Title);
         }
 
-        protected virtual async Task LoadItemsAsync()
+        protected async Task LoadItemsAsync()
         {
             var items = await itemsDataAccess.GetAllAsync();
 

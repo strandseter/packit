@@ -14,14 +14,14 @@ namespace Packit.App.Services
 {
     public class PopUpService : IPopUpService
     {
-        public async Task ShowDeleteDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string itemName)
+        public async Task ShowDeleteDialogAsync<T>(Func<T, Task> onYesExecuteAsync, T onYesParam, string itemName)
         {
             var message = new MessageDialog($"Are you sure you want to delete {itemName}?", "Delete Item");
             message.Commands.Add(new UICommand("Yes", async (command) =>
             {
                 try
                 {
-                    await onYesExecute(onYesParam);
+                    await onYesExecuteAsync(onYesParam);
                 }
                 catch (NetworkConnectionException)
                 {
@@ -37,14 +37,14 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public async Task ShowDeleteDialogAsync(Func<Task> onYesExecute, string itemName)
+        public async Task ShowDeleteDialogAsync(Func<Task> onYesExecuteAsync, string itemName)
         {
             var message = new MessageDialog($"Are you sure you want to delete {itemName}?", "Delete Item");
             message.Commands.Add(new UICommand("Yes", async (command) =>
             {
                 try
                 {
-                    await onYesExecute();
+                    await onYesExecuteAsync();
                 }
                 catch (NetworkConnectionException)
                 {
@@ -60,14 +60,14 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public async Task ShowRemoveDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string subItemName, string mainItemName)
+        public async Task ShowRemoveDialogAsync<T>(Func<T, Task> onYesExecuteAsync, T onYesParam, string subItemName, string mainItemName)
         {
             var message = new MessageDialog($"Are you sure you want to delete {subItemName} from {mainItemName}?", "Delete Item");
             message.Commands.Add(new UICommand("Yes", async (command) =>
             {
                 try
                 {
-                    await onYesExecute(onYesParam);
+                    await onYesExecuteAsync(onYesParam);
                 }
                 catch (NetworkConnectionException)
                 {
@@ -83,14 +83,14 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public async Task ShowRemoveDialogAsync(Func<Task> onYesExecute, string subItemName, string mainItemName)
+        public async Task ShowRemoveDialogAsync(Func<Task> onYesExecuteAsync, string subItemName, string mainItemName)
         {
             var message = new MessageDialog($"Are you sure you want to delete {subItemName} from {mainItemName}?", "Delete Item");
             message.Commands.Add(new UICommand("Yes", async (command) =>
             {
                 try
                 {
-                    await onYesExecute();
+                    await onYesExecuteAsync();
                 }
                 catch (NetworkConnectionException)
                 {

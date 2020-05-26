@@ -17,34 +17,36 @@
             <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
+    <ScrollViewer>
 
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
+        <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
+
+            <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="10*"/>
-            </Grid.RowDefinitions>
-            <Image Grid.Row="0" Source="ms-appx:///Assets/LargeTile.scale-400.png" Height="300" Margin="0,-86,0,506" Grid.RowSpan="2" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Source="ms-appx:///Assets/LargeTile.scale-400.png" Height="300" Margin="0,-86,0,506" Grid.RowSpan="2" />
 
-            <StackPanel Grid.Row="1" Margin="0,30,0,0" MaxWidth="700">
+                <StackPanel Grid.Row="1" Margin="0,30,0,0" MaxWidth="700">
 
-                <TextBlock Text="My next trip" Style="{StaticResource SubheaderTextBlockStyle}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="My next trip" Style="{StaticResource SubheaderTextBlockStyle}" HorizontalAlignment="Center"/>
 
-                <Grid>
-                    <TextBlock Text="You have no future trips"
+                    <Grid>
+                        <TextBlock Text="You have no future trips"
                            Opacity="0.7"
                            HorizontalAlignment="Center"
                            Style="{StaticResource TitleTextBlockStyle}"
                            Visibility="{x:Bind ViewModel.HasNextTrip, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"/>
-                    <TextBlock Text="{x:Bind ViewModel.NextTrip.Title, Mode=OneWay}"
+                        <TextBlock Text="{x:Bind ViewModel.NextTrip.Title, Mode=OneWay}"
                                HorizontalAlignment="Center"
                                Style="{StaticResource TitleTextBlockStyle}"
                                Visibility="{x:Bind ViewModel.HasNextTrip, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"/>
-                </Grid>
+                    </Grid>
 
-                <ListView Name="lvBackpacks"
+                    <ListView Name="lvBackpacks"
                       ItemsSource="{x:Bind ViewModel.BackspackWithItemsWithImages, Mode=OneWay}"
                       HorizontalAlignment="Stretch"
                       Background="Black"
@@ -53,105 +55,107 @@
                       SelectionMode="None"
                       DataContext="{x:Bind ViewModel}">
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="datalinks:BackpackWithItemsWithImages">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="datalinks:BackpackWithItemsWithImages">
 
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind Backpack.Title, Mode=OneWay}"
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Bind Backpack.Title, Mode=OneWay}"
                                                Style="{StaticResource TitleTextBlockStyle}"
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
 
-                                <controls:AdaptiveGridView x:Name="gvItems"
+                                    <controls:AdaptiveGridView x:Name="gvItems"
                                                        DataContext="{x:Bind}"
                                                        ItemsSource="{x:Bind ItemImageLinks, Mode=OneWay}"
                                                        OneRowModeEnabled="False"
                                                        SelectionMode="None"
                                                        DesiredWidth="150">
 
-                                    <controls:AdaptiveGridView.ItemTemplate>
-                                        <DataTemplate x:DataType="datalinks:ItemImageLink">
-                                            <StackPanel Orientation="Vertical"
+                                        <controls:AdaptiveGridView.ItemTemplate>
+                                            <DataTemplate x:DataType="datalinks:ItemImageLink">
+                                                <StackPanel Orientation="Vertical"
                                                     Height="auto"
                                                     HorizontalAlignment="Stretch"
                                                     Padding="5,1,5,1" 
                                                     Background="LightGray" Opacity=".80">
-                                                <Grid>
-                                                    <Image Source="{x:Bind Image, Mode=OneWay}"/>
+                                                    <Grid>
+                                                        <Image Source="{x:Bind Image, Mode=OneWay}"/>
 
-                                                    <StackPanel>
-                                                        <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
+                                                        <StackPanel>
+                                                            <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
                                                        FontSize="20"
                                                        Foreground="Black"/>
 
-                                                        <TextBlock FontSize="15"
+                                                            <TextBlock FontSize="15"
                                                        Text="{x:Bind Item.Description, Mode=OneWay}"
                                                        Style="{ThemeResource CaptionTextBlockStyle}" 
                                                        Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
 
-                                                        <StackPanel>
-                                                            <StackPanel.Resources>
-                                                                <wrappers:ItemBackpackBoolWrapper x:Key="ItemBackpackBoolWrapper"
+                                                            <StackPanel>
+                                                                <StackPanel.Resources>
+                                                                    <wrappers:ItemBackpackBoolWrapper x:Key="ItemBackpackBoolWrapper"
                                                                                       Item="{x:Bind Item}"
                                                                                       BackpackWithItemsWithImages="{Binding ElementName=gvItems, Path=DataContext}"
                                                                                       IsChecked="{Binding ElementName=ItemCheckBox, Path=IsChecked}"/>
-                                                            </StackPanel.Resources>
+                                                                </StackPanel.Resources>
 
-                                                            <CheckBox x:Name="ItemCheckBox"
+                                                                <CheckBox x:Name="ItemCheckBox"
                                                           IsChecked="{x:Bind Item.Check.IsChecked, Mode=TwoWay}"
                                                           Command="{Binding ElementName=lvBackpacks, Path=DataContext.ItemCheckedCommand}"
                                                           CommandParameter="{StaticResource ItemBackpackBoolWrapper}"/>
+                                                            </StackPanel>
                                                         </StackPanel>
-                                                    </StackPanel>
-                                                </Grid>
+                                                    </Grid>
 
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </controls:AdaptiveGridView.ItemTemplate>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </controls:AdaptiveGridView.ItemTemplate>
 
-                                    <GridView.ItemContainerStyle>
-                                        <Style TargetType="GridViewItem">
-                                            <Setter Property="Margin" Value="5, 5, 5, 5"/>
-                                            <Setter Property="MaxWidth" Value="250"/>
-                                        </Style>
-                                    </GridView.ItemContainerStyle>
+                                        <GridView.ItemContainerStyle>
+                                            <Style TargetType="GridViewItem">
+                                                <Setter Property="Margin" Value="5, 5, 5, 5"/>
+                                                <Setter Property="MaxWidth" Value="250"/>
+                                            </Style>
+                                        </GridView.ItemContainerStyle>
 
-                                    <GridView.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
                                                            Orientation="Horizontal"
                                                            MaximumRowsOrColumns="5"/>
-                                        </ItemsPanelTemplate>
-                                    </GridView.ItemsPanel>
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
 
-                                </controls:AdaptiveGridView>
+                                    </controls:AdaptiveGridView>
 
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
 
-                <Grid>
-                    <Button Content="Trip details"
+                    <Grid>
+                        <Button Content="Trip details"
                             HorizontalAlignment="Stretch"
                             MaxWidth="200"
                             Visibility="{x:Bind ViewModel.HasNextTrip, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"
                             Command="{x:Bind ViewModel.TripDetailsCommand}">
-                    </Button>
-                    <Button Content="New trip"
+                        </Button>
+                        <Button Content="New trip"
                             HorizontalAlignment="Stretch"
                             MaxWidth="200"
                             Visibility="{x:Bind ViewModel.HasNextTrip, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"
                             Command="{x:Bind ViewModel.NewTripCommand}">
-                    </Button>
-                </Grid>
-                
-            </StackPanel>
-            
-        </Grid>
+                        </Button>
+                    </Grid>
+
+                </StackPanel>
+
+            </Grid>
     </Grid>
+    </ScrollViewer>
+
 </Page>

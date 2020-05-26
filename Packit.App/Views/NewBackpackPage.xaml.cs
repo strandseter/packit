@@ -5,6 +5,7 @@ using Packit.Model;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Extensions.DependencyInjection;
+using Packit.App.DataLinks;
 
 namespace Packit.App.Views
 {
@@ -27,6 +28,11 @@ namespace Packit.App.Views
             if (e.Parameter.GetType() == typeof(Trip))
             {
                 ViewModel.Initialize(e?.Parameter as Trip);
+            }
+
+            if (e.Parameter.GetType() == typeof(TripImageWeatherLink))
+            {
+                ViewModel.Initialize(e?.Parameter as TripImageWeatherLink);
             }
         }
     }

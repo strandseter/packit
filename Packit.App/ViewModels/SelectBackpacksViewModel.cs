@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Packit.App.DataAccess;
 using Packit.App.DataLinks;
 using Packit.App.Factories;
@@ -17,15 +18,18 @@ namespace Packit.App.ViewModels
 {
     public class SelectBackpacksViewModel : BackpacksViewModel
     {
+        private ICommand loadedCommand;
         private readonly IRelationDataAccess<Trip, Backpack> backpackRelationDataAccess = new RelationDataAccessFactory<Trip, Backpack>().Create();
         private readonly IBasicDataAccess<Trip> tripssDataAccess = new BasicDataAccessFactory<Trip>().Create();
-        private readonly IBasicDataAccess<Backpack> backpacksDataAccess = new BasicDataAccessFactory<Backpack>().Create();
         private bool isSuccess = true;
+        private bool backpacksIsFiltered;
 
-        public ObservableCollection<BackpackWithItemsWithImages> SelectedBackpacks { get; set; } 
-
+        public ObservableCollection<BackpackWithItemsWithImages> SelectedBackpacks { get; set; }
+        public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
         public ICommand DoneSelectingBackpacksCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+
+        public bool BackpacksIsFiltered { get => backpacksIsFiltered; set => Set(ref backpacksIsFiltered, value); }
 
         public SelectBackpacksViewModel(IPopUpService popUpService)
             :base(popUpService)
@@ -60,6 +64,19 @@ namespace Packit.App.ViewModels
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
         }
 
+        private async Task LoadDataAsync()
+        {
+            await LoadBackpacksAsync();
+            await LoadItemImagesAsync();
+            await Task.Run(async () =>
+            {
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                {
+                    FilterBackpacks();
+                });
+            });
+        }
+
         private async Task AddBackpackToNewtrip(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
             if (!await backpackRelationDataAccess.AddEntityToEntityAsync(NewTrip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
@@ -78,35 +95,36 @@ namespace Packit.App.ViewModels
             SelectedTripImageWeatherLink.Trip = updatedTrip;
         }
 
-        protected override async Task LoadBackpacksAsync()
+        private void FilterBackpacks()
         {
-            var backpacksWithItems = await backpacksDataAccess.GetAllWithChildEntitiesAsync();
-
-            foreach (var backpack in backpacksWithItems)
+            if (SelectedTripImageWeatherLink == null)
             {
-                var backpackWithItemsWithImages = new BackpackWithItemsWithImages(backpack);
-
-                BackpackWithItemsWithImagess.Add(backpackWithItemsWithImages);
-
-                foreach (var itemBackpack in backpack.Items)
-                {
-                    itemBackpack.Item.Checks.Clear();
-                    backpackWithItemsWithImages.ItemImageLinks.Add(new ItemImageLink() { Item = itemBackpack.Item });
-                }
-
-                if (SelectedBackpacks == null)
-                    continue;
-
-                foreach (var b in SelectedBackpacks)
-                    if (b.Backpack.BackpackId == backpack.BackpackId)
-                        BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
+                BackpacksIsFiltered = true;
+                return;
             }
+
+            foreach (var backpackWithItemsWithImages in BackpackWithItemsWithImagess.ToList())
+            {
+                foreach (var backbackTrip in SelectedTripImageWeatherLink.Trip.Backpacks)
+                {
+                    if (backpackWithItemsWithImages.Backpack.BackpackId == backbackTrip.BackpackId)
+                    {
+                        BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
+                    }
+                }
+            }
+            BackpacksIsFiltered = true;
         }
 
         internal void Initialize(BackpackWithItemsWithImagesTripWrapper  backpackWithItemsWithImagesTripWrapper)
         {
             SelectedTripImageWeatherLink = backpackWithItemsWithImagesTripWrapper.TripImageWeatherLink;
             SelectedBackpacks = backpackWithItemsWithImagesTripWrapper.BackpackWithItemsWithImages;
+        }
+
+        internal void Initialize(TripImageWeatherLink tripImageWeatherLink)
+        {
+            SelectedTripImageWeatherLink = tripImageWeatherLink;
         }
 
         internal void Initialize(Trip trip) => NewTrip = trip;

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using Packit.App.DataLinks;
 using Packit.App.ViewModels;
 using Packit.App.Wrappers;
 using Packit.Model;
@@ -21,10 +22,19 @@ namespace Packit.App.Views
             base.OnNavigatedTo(e);
 
             if (e.Parameter.GetType() == typeof(BackpackWithItemsWithImagesTripWrapper))
+            {
                 ViewModel.Initialize(e?.Parameter as BackpackWithItemsWithImagesTripWrapper);
+            }
+
+            if (e.Parameter.GetType() == typeof(TripImageWeatherLink))
+            {
+                ViewModel.Initialize(e?.Parameter as TripImageWeatherLink);
+            }
 
             if (e.Parameter.GetType() == typeof(Trip))
+            {
                 ViewModel.Initialize(e.Parameter as Trip);
+            }
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using Packit.App.DataLinks;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -11,10 +8,10 @@ namespace Packit.App.Services
 {
     public interface IPopUpService
     {
-        Task ShowDeleteDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string itemName);
-        Task ShowDeleteDialogAsync(Func<Task> onYesExecute, string itemName);
-        Task ShowRemoveDialogAsync<T>(Func<T, Task> onYesExecute, T onYesParam, string subItemName, string mainItemName);
-        Task ShowRemoveDialogAsync(Func<Task> onYesExecute, string subItemName, string mainItemName);
+        Task ShowDeleteDialogAsync<T>(Func<T, Task> onYesExecuteAsync, T onYesParam, string itemName);
+        Task ShowDeleteDialogAsync(Func<Task> onYesExecuteAsync, string itemName);
+        Task ShowRemoveDialogAsync<T>(Func<T, Task> onYesExecuteAsync, T onYesParam, string subItemName, string mainItemName);
+        Task ShowRemoveDialogAsync(Func<Task> onYesExecuteAsync, string subItemName, string mainItemName);
         Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, Exception exception) where T : Page;
         Task ShowCouldNotLoadAsync(Func<bool> onGoBackExecute, string notLoadingTitle);
         Task ShowCouldNotLoadAsync(Action onBackExecute, string notLoadingTitle);

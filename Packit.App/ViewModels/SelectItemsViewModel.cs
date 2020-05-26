@@ -21,7 +21,6 @@ namespace Packit.App.ViewModels
     {
         private ICommand loadedCommand;
         private readonly IBasicDataAccess<Trip> tripssDataAccess = new BasicDataAccessFactory<Trip>().Create();
-        //private readonly IBasicDataAccess<Item> itemsDataAccess = new BasicDataAccessFactory<Item>().Create();
         private readonly IRelationDataAccess<Backpack, Item> backpackDataAccess = new RelationDataAccessFactory<Backpack, Item>().Create();
         private bool isSuccess = true;
         private bool itemsIsFiltered;
@@ -31,6 +30,7 @@ namespace Packit.App.ViewModels
         public Trip NewTrip { get; set; }
         public Backpack SelectedBackpack { get; set; }
         public BackpackWithItemsWithImages SelectedBackpackWithItemsWithImages { get; set; }
+        public TripImageWeatherLink SelectedTripImageWeatherLink { get; set; }
         public Backpack NewBackpack { get; set; }
         public ICommand DoneSelectingItemsCommand { get; set; }
         public ICommand CancelCommand { get; set; }
@@ -109,9 +109,25 @@ namespace Packit.App.ViewModels
                     await AddItemsToNewBackpack((ItemImageLink)obj);
 
                 if (isSuccess)
-                    NavigationService.Navigate(typeof(SelectBackpacksPage), NewTrip);
+                    NavigationService.Navigate(typeof(TripsMainPage));
                 else
                     await PopUpService.ShowCouldNotAddAsync(selectedItems, NewBackpack.Title);
+
+                return;
+            }
+
+            if (SelectedTrip != null && NewBackpack != null)
+            {
+                foreach (var obj in selectedItems)
+                    await AddItemsToNewBackpack((ItemImageLink)obj);
+
+                if (isSuccess)
+                {
+                    await UpdateSelectedTrip();
+                    NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                }
+                else
+                    await PopUpService.ShowCouldNotAddAsync(selectedItems, SelectedBackpackWithItemsWithImages.Backpack.Title);
 
                 return;
             }
@@ -137,7 +153,6 @@ namespace Packit.App.ViewModels
                 else
                     await PopUpService.ShowCouldNotAddAsync(selectedItems, SelectedBackpack.Title);
             }
-
 
             if (SelectedBackpackWithItemsWithImages != null && SelectedTrip != null)
             {
@@ -182,6 +197,12 @@ namespace Packit.App.ViewModels
         internal void Initialize(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
             SelectedBackpackWithItemsWithImages = backpackWithItemsWithImages;
+        }
+
+        internal void Initialize(TripImageWeatherLinkWithBackpackWrapper tripImageWeatherLinkWithBackpackWrapper)
+        {
+            SelectedTrip = tripImageWeatherLinkWithBackpackWrapper.TripImageWeatherLink;
+            NewBackpack = tripImageWeatherLinkWithBackpackWrapper.Backpack;
         }
 
         internal void Initialize(Backpack backpack)

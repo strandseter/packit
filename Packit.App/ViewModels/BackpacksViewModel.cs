@@ -74,7 +74,7 @@ namespace Packit.App.ViewModels
                await UpdateEditedBackpack(param);
             }, PopUpService);
 
-            ShareBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
+            ShareBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(param =>
             {
                 var test = param;
             });
@@ -130,7 +130,7 @@ namespace Packit.App.ViewModels
             }
         }
 
-        private async Task LoadItemImagesAsync()
+        protected async Task LoadItemImagesAsync()
         {
             foreach (var bwiwi in BackpackWithItemsWithImagess)
             {
@@ -145,12 +145,11 @@ namespace Packit.App.ViewModels
             {
                 NavigationService.Navigate(typeof(NewBackpackPage), NewTrip);
             }
-
             if (SelectedTripImageWeatherLink != null)
             {
-                NavigationService.Navigate(typeof(NewBackpackPage), SelectedTripImageWeatherLink.Trip);
+                NavigationService.Navigate(typeof(NewBackpackPage), SelectedTripImageWeatherLink);
             }
-            else
+            if (NewTrip == null && SelectedTripImageWeatherLink == null)
             {
                 NavigationService.Navigate(typeof(NewBackpackPage));
             }

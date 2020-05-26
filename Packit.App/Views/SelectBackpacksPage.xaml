@@ -44,6 +44,7 @@
                           HorizontalAlignment="Stretch"
                           SelectionMode="Multiple"
                           IsItemClickEnabled="True"
+                          Visibility="{x:Bind ViewModel.BackpacksIsFiltered, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"
                           DataContext="{x:Bind ViewModel}">
 
                 <ListView.ItemTemplate>
@@ -202,7 +203,7 @@
                         Margin="5,0,5,5" >
                     <StackPanel>
                         <SymbolIcon Symbol="Add"/>
-                        <TextBlock>New backpack</TextBlock>
+                        <TextBlock>Add new backpack</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
