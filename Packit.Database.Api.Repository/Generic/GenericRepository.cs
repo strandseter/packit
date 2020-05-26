@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Generic
 {
-    public class Repository<T> : ControllerBase, IRepository<T> where T : class, IDatabase
+    public class GenericRepository<T> : ControllerBase, IRepository<T> where T : class, IDatabase
     {
         protected PackitContext Context { get; }
 
-        public Repository(PackitContext context)
+        public GenericRepository(PackitContext context)
         {
             Context = context;
         }

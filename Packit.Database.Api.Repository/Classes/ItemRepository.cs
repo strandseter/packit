@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Classes
 {
-    public class ItemRepository : Repository<Item>, IItemRepository
+    public class ItemRepository : GenericRepository<Item>, IItemRepository
     {
         public ItemRepository(PackitContext context)
             :base(context)

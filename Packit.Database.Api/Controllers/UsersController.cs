@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,32 +29,6 @@ namespace Packit.Database.Api.Controllers
 
             if (user == null)
                 return NotFound();
-
-            return Ok(user);
-        }
-
-        // GET: api/Users
-        [HttpGet]
-        public IEnumerable<User> GetUsers()
-        {
-            return Context.Users;
-        }
-
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await Context.Users.FindAsync(id).ConfigureAwait(false);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
 
             return Ok(user);
         }
@@ -108,26 +79,6 @@ namespace Packit.Database.Api.Controllers
             await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return CreatedAtAction("GetUser", new { id = user?.UserId }, user);
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var user = await Context.Users.FindAsync(id).ConfigureAwait(false);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            Context.Users.Remove(user);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            return Ok(user);
         }
 
         private bool UserExists(int id)

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Packit.Database.Api.Repository.Generic
 {
-    public class ManyToManyRepository<T1, T2, T3> : Repository<T1>, IManyToManyRepository<T1> where T1 : class, IDatabase 
+    public class ManyToManyRepository<T1, T2, T3> : GenericRepository<T1>, IManyToManyRepository<T1> where T1 : class, IDatabase 
                                                                                               where T2 : class, IDatabase 
                                                                                               where T3 : class, IManyToMany
     {

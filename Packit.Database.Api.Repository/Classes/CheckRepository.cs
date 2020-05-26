@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Packit.Database.Api.Repository.Classes
 {
-    public class CheckRepository : Repository<Check>, ICheckRepository
+    public class CheckRepository : GenericRepository<Check>, ICheckRepository
     {
         public CheckRepository(PackitContext context)
             : base(context)
