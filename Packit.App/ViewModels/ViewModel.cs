@@ -26,6 +26,12 @@ namespace Packit.App.ViewModels
             return $"{name}.jpg";
         }
 
-        protected bool StringIsEqual(string firstString, string secondString) => firstString.Equals(secondString, StringComparison.CurrentCulture);
+        protected bool StringIsEqual(string firstString, string secondString)
+        {
+            if (firstString == null)
+                throw new ArgumentNullException(nameof(firstString));
+
+            return firstString.Equals(secondString, StringComparison.CurrentCulture);
+        }
     }
 }

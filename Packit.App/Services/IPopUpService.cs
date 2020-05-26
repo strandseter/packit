@@ -20,7 +20,6 @@ namespace Packit.App.Services
         Task ShowCouldNotDeleteAsync(string itemName);
         Task ShowCouldNotAddAsync<T>(IList<T> selectedEntities, string mainItemName);
         Task ShowUnknownErrorAsync(string exeptionMessage);
-        Task ShowUnknownErrorAsync(string exeptionMessage, Action onBackExecute);
         Task ShowInternetConnectionErrorAsync();
         Task ShowCouldNotSaveAsync(string notUpdatingTitle);
         Task ShowCouldNotLogIn();

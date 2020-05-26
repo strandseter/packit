@@ -19,6 +19,7 @@ using Packit.Model.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using Packit.Exceptions;
+using System.Globalization;
 
 namespace Packit.App.ViewModels
 {
@@ -62,6 +63,7 @@ namespace Packit.App.ViewModels
         public ICommand DeleteItemCommand { get; set; }
         public ICommand ItemCheckedCommand { get; set; }
 
+        public DateTimeOffset MinDate { get; set; } = DateTime.Now;
         public TripImageWeatherLink TripImageWeatherLink { get; set; }
         public ObservableCollection<BackpackWithItemsWithImages> Backpacks { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
 
@@ -210,7 +212,9 @@ namespace Packit.App.ViewModels
 
         private async Task UpdateTripAsync()
         {
-            if (StringIsEqual(TripImageWeatherLink.Trip.Title, tripClone.Title) && StringIsEqual(TripImageWeatherLink.Trip.Destination, tripClone.Destination))
+            if (StringIsEqual(TripImageWeatherLink.Trip.Title, tripClone.Title)
+                && StringIsEqual(TripImageWeatherLink.Trip.Destination, tripClone.Destination)
+                && StringIsEqual(TripImageWeatherLink.Trip.DepatureDate.Date.ToString(CultureInfo.InvariantCulture), tripClone.DepatureDate.Date.ToString(CultureInfo.InvariantCulture)))
                 return;
 
             TripImageWeatherLink.Trip.Backpacks.Clear();

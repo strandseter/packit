@@ -106,13 +106,13 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public async Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRetryExecute, Exception exception) where T : Page
+        public async Task ShowCouldNotLoadAsync<T>(Func<Type, object, NavigationTransitionInfo, bool> onRefreshExecute, Exception exception) where T : Page
         {
             if (exception == null)
                 throw new ArgumentNullException(nameof(exception));
 
             var message = new MessageDialog($"Could not connect, check your connection and try again ({exception.Message}).", "No connection");
-            message.Commands.Add(new UICommand("Refresh", (command) => onRetryExecute(typeof(T), DateTime.Now.Ticks, null)));
+            message.Commands.Add(new UICommand("Refresh", (command) => onRefreshExecute(typeof(T), DateTime.Now.Ticks, null)));
             message.Commands.Add(new UICommand("Close", (command) => { return; }));
             await message.ShowAsync();
         }

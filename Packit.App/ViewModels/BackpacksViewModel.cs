@@ -88,8 +88,10 @@ namespace Packit.App.ViewModels
 
         private async Task UpdateEditedBackpack(Backpack backpack)
         {
-            if (StringIsEqual(backpack.Title, backpackClone.Title) && StringIsEqual(backpack.Description, backpack.Description))
+            if (StringIsEqual(backpack.Title, backpackClone.Title) && StringIsEqual(backpack.Description, backpackClone.Description))
                 return;
+
+            backpack.Items.Clear();
 
             if (!await backpacksDataAccess.UpdateAsync(backpack))
             {

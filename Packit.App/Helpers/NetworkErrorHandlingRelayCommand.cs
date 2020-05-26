@@ -61,6 +61,7 @@ namespace Packit.App.Helpers
             {
                 await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, ex);
             }
+            //TODO: Maybe remove before handing in the exam?
             catch (Exception ex)
             {
                 await popUpService.ShowUnknownErrorAsync(ex.Message);
@@ -110,9 +111,14 @@ namespace Packit.App.Helpers
             {
                 await popUpService.ShowCouldNotLoadAsync<T2>(NavigationService.Navigate, ex);
             }
-            catch (JsonReaderException ex)
+            catch (JsonReaderException)
             {
                 await popUpService.ShowInternetConnectionErrorAsync();
+            }
+            //TODO: Maybe remove before handing in the exam?
+            catch (Exception ex)
+            {
+                await popUpService.ShowUnknownErrorAsync(ex.Message);
             }
         }
     }

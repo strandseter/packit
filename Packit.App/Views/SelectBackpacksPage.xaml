@@ -79,11 +79,10 @@
                                                         HorizontalAlignment="Center"
                                                         Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
-                                        <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
+                                            <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
                                                         VerticalAlignment="Center"
                                                         HorizontalAlignment="Center"
                                                         Margin="5,0,5,0"/>
-
                                         </StackPanel>
 
                                     </Grid>
@@ -147,11 +146,6 @@
                                                                     CommandParameter="{StaticResource ItemImageBackpackWrapper}"
                                                                     Margin="0,0,5,0">
                                                         <SymbolIcon Symbol="Remove"/>
-                                                    </Button>
-
-                                                    <Button Command="{Binding ElementName=lvBackpacks, Path=DataContext.DeleteItemCommand}"
-                                                                    CommandParameter="{StaticResource ItemImageBackpackWrapper}">
-                                                        <SymbolIcon Symbol="Delete"/>
                                                     </Button>
 
                                                 </StackPanel>
@@ -243,8 +237,6 @@
                     </StackPanel>
                 </Button>
             </Grid>
-
-
 
         </Grid>
     </Grid>

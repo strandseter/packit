@@ -23,6 +23,7 @@
     <Page.Resources>
         <converters:BooleanToTextConverter x:Key="TrueTotextConverter" TrueString="Done" FalseString="Edit trip"/>
         <converters:BooleanToTextConverter x:Key="FalseTotextConverter" IsReversed="True" TrueString="Done" FalseString="Edit trip"/>
+        <converters:DateFormatConverter x:Key="DateFormatConverter"/>
     </Page.Resources>
 
     <ScrollViewer>
@@ -168,10 +169,13 @@
 
                                     <StackPanel Orientation="Horizontal">
 
-                                            <StackPanel 
-                                                        Orientation="Horizontal">
+                                            <StackPanel Orientation="Vertical">
                                                 <TextBlock Text="{x:Bind Backpack.Title, Mode=OneWay}"
                                                            Style="{StaticResource TitleTextBlockStyle}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"/>
+                                                <TextBlock Text="{x:Bind Backpack.Description, Mode=OneWay}"
+                                                           Style="{StaticResource BaseTextBlockStyle}"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Center"/>
                                             </StackPanel>
@@ -290,7 +294,6 @@
                                                     </StackPanel>
                                                 </Grid>
                                             
-                                                
                                         </DataTemplate>
                                     </controls:AdaptiveGridView.ItemTemplate>
 
@@ -342,7 +345,15 @@
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center" Margin="0,0,0,10">
                         <TextBlock Text="Date" FontSize="15" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.DepatureDate}" FontSize="25" HorizontalAlignment="Center"/>
+                        <Grid>
+                            <TextBlock Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.DepatureDate, Mode=OneWay, Converter={StaticResource DateFormatConverter}}"
+                                       FontSize="25" HorizontalAlignment="Center"
+                                       Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
+                            <CalendarDatePicker FontSize="30"
+                                                Date="{x:Bind ViewModel.TripImageWeatherLink.Trip.DepatureDate, Mode=TwoWay}"
+                                                MinDate="{x:Bind ViewModel.MinDate, Mode=OneWay}"
+                                                Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
+                        </Grid>
                     </StackPanel>
                 </StackPanel>
 

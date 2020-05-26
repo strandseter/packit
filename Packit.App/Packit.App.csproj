@@ -150,6 +150,7 @@
     <Compile Include="Convertes\BooleanToInvisibilityConverter.cs" />
     <Compile Include="Convertes\BooleanToTextConverter.cs" />
     <Compile Include="Convertes\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Convertes\DateFormatConverter.cs" />
     <Compile Include="Convertes\ListViewBaseToSelectedItemsConverter.cs" />
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
     <Compile Include="DataAccess\Http\CustomTripDataAccessHttp.cs" />
