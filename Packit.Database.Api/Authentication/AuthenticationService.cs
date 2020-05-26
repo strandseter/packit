@@ -5,6 +5,7 @@ using Packit.DataAccess;
 using Packit.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -37,8 +38,8 @@ namespace Packit.Database.Api.Authentication
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserId.ToString()),
-                    new Claim("id", user.UserId.ToString())
+                    new Claim(ClaimTypes.Name, user.UserId.ToString(CultureInfo.InvariantCulture)),
+                    new Claim("id", user.UserId.ToString(CultureInfo.InvariantCulture))
                 }),
                     Expires = DateTime.UtcNow.AddDays(300),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

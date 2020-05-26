@@ -1,4 +1,18 @@
-﻿@using Microsoft.AspNetCore.Http.Features
+﻿// ***********************************************************************
+// Assembly         : Packit.Database.Api
+// Author           : ander
+// Created          : 02-20-2020
+//
+// Last Modified By : ander
+// Last Modified On : 05-26-2020
+// ***********************************************************************
+// <copyright file="_CookieConsentPartial.cshtml" company="Packit.Database.Api">
+    //     Copyright (c) . All rights reserved.
+    //
+</copyright>
+// <summary></summary>
+// ***********************************************************************
+@using Microsoft.AspNetCore.Http.Features
 
 @{
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
@@ -32,7 +46,12 @@
     </nav>
     <script>
         (function () {
+            /// <summary>
+            /// </summary>
             document.querySelector("#cookieConsent button[data-cookie-string]").addEventListener("click", function (el) {
+                /// <summary>
+                /// </summary>
+                /// <param name="el">The el.</param>
                 document.cookie = el.target.dataset.cookieString;
                 document.querySelector("#cookieConsent").classList.add("hidden");
             }, false);

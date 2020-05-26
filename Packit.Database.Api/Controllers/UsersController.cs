@@ -1,10 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿// ***********************************************************************
+// Assembly         : Packit.Database.Api
+// Author           : ander
+// Created          : 05-15-2020
+//
+// Last Modified By : ander
+// Last Modified On : 05-26-2020
+// ***********************************************************************
+// <copyright file="UsersController.cs" company="Packit.Database.Api">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
 using Packit.Database.Api.Controllers.Abstractions;
@@ -12,15 +22,31 @@ using Packit.Model;
 
 namespace Packit.Database.Api.Controllers
 {
+    /// <summary>
+    /// Class UsersController.
+    /// Implements the <see cref="Packit.Database.Api.Controllers.Abstractions.PackitApiController" />
+    /// </summary>
+    /// <seealso cref="Packit.Database.Api.Controllers.Abstractions.PackitApiController" />
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : PackitApiController
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UsersController"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="authenticationService">The authentication service.</param>
+        /// <param name="httpContextAccessor">The HTTP context accessor.</param>
         public UsersController(PackitContext context, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
             : base(context, authenticationService, httpContextAccessor) 
         {
         }
 
+        /// <summary>
+        /// Authenticates the specified user input.
+        /// </summary>
+        /// <param name="userInput">The user input.</param>
+        /// <returns>IActionResult.</returns>
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]User userInput)
@@ -33,40 +59,11 @@ namespace Packit.Database.Api.Controllers
             return Ok(user);
         }
 
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != user?.UserId)
-            {
-                return BadRequest();
-            }
-
-            Context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await Context.SaveChangesAsync().ConfigureAwait(false);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return NoContent();
-        }
-
+        /// <summary>
+        /// Posts the user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>IActionResult.</returns>
         [AllowAnonymous]
         // POST: api/Users
         [HttpPost]
@@ -79,11 +76,6 @@ namespace Packit.Database.Api.Controllers
             await Context.SaveChangesAsync().ConfigureAwait(false);
 
             return CreatedAtAction("GetUser", new { id = user?.UserId }, user);
-        }
-
-        private bool UserExists(int id)
-        {
-            return Context.Users.Any(e => e.UserId == id);
         }
     }
 }
