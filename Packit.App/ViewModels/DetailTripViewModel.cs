@@ -188,7 +188,7 @@ namespace Packit.App.ViewModels
         private async Task DeleteTripAsync()
         {
             if (await tripDataAccess.DeleteAsync(TripImageWeatherLink.Trip))
-                NavigationService.GoBack();
+                NavigationService.Navigate(typeof(TripsMainPage));
             else
                 await PopUpService.ShowCouldNotDeleteAsync(TripImageWeatherLink.Trip.Title);
         }
