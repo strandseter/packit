@@ -21,7 +21,9 @@ namespace Packit.Model
         }
 
         public string ImageStringName { get; set; }
-        public int UserId { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "<Pending>")]
+        public int UserId { get; set; } //I know this is problem. But I did not have time to fix it. Se mye description document.
 
         public BaseInformation() { }
 

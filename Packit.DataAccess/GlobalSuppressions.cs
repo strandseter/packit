@@ -4,3 +4,4 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.DataAccess.PackitContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Documentation", "CA1200:Avoid using cref tags with a prefix", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.DataAccess.PackitContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)")]

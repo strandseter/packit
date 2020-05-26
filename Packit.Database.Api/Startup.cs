@@ -1,4 +1,17 @@
-﻿using System.Text;
+﻿// ***********************************************************************
+// Assembly         : Packit.Database.Api
+// Author           : ander
+// Created          : 03-16-2020
+//
+// Last Modified By : ander
+// Last Modified On : 05-26-2020
+// ***********************************************************************
+// <copyright file="Startup.cs" company="Packit.Database.Api">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,15 +28,30 @@ using Packit.Database.Api.Repository.Interfaces;
 
 namespace Packit.Database.Api
 {
+    /// <summary>
+    /// Class Startup.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets the configuration.
+        /// </summary>
+        /// <value>The configuration.</value>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Configures the services.
+        /// </summary>
+        /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureAuthentication(services);
@@ -39,6 +67,11 @@ namespace Packit.Database.Api
             ConfigureDatabaseConnection(services);
         }
 
+        /// <summary>
+        /// Configures the specified application.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        /// <param name="env">The env.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseCors(u => u
@@ -69,6 +102,10 @@ namespace Packit.Database.Api
 
         }
 
+        /// <summary>
+        /// Configures the authentication.
+        /// </summary>
+        /// <param name="services">The services.</param>
         private void ConfigureAuthentication(IServiceCollection services)
         {
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -95,6 +132,10 @@ namespace Packit.Database.Api
             });
         }
 
+        /// <summary>
+        /// Configures the injections.
+        /// </summary>
+        /// <param name="services">The services.</param>
         private void ConfigureInjections(IServiceCollection services)
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -105,6 +146,10 @@ namespace Packit.Database.Api
             services.AddScoped<ICheckRepository, CheckRepository>();
         }
 
+        /// <summary>
+        /// Configures the database connection.
+        /// </summary>
+        /// <param name="services">The services.</param>
         private void ConfigureDatabaseConnection(IServiceCollection services)
         {
             //Not good, but I was told that this is not a security course
