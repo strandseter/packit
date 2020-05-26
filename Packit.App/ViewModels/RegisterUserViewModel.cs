@@ -118,7 +118,7 @@ namespace Packit.App.ViewModels
                 else
                     registerErrorMessage = "Failed to register in, please try again";
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
                 await PopUpService.ShowInternetConnectionErrorAsync();
             }

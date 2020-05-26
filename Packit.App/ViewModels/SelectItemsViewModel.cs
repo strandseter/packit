@@ -124,7 +124,7 @@ namespace Packit.App.ViewModels
                 if (isSuccess)
                 {
                     await UpdateSelectedTrip();
-                    NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                    NavigationService.Navigate(typeof(DetailTripPage), SelectedTrip);
                 }
                 else
                     await PopUpService.ShowCouldNotAddAsync(selectedItems, SelectedBackpackWithItemsWithImages.Backpack.Title);
@@ -162,7 +162,7 @@ namespace Packit.App.ViewModels
                 if (isSuccess)
                 {
                     await UpdateSelectedTrip();
-                    NavigationService.Navigate(typeof(DetailTripV2Page), SelectedTrip);
+                    NavigationService.Navigate(typeof(DetailTripPage), SelectedTrip);
                 }
                 else
                     await PopUpService.ShowCouldNotAddAsync(selectedItems, SelectedBackpackWithItemsWithImages.Backpack.Title);

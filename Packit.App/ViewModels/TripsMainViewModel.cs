@@ -28,7 +28,7 @@ namespace Packit.App.ViewModels
         {
             TripDetailCommand = new RelayCommand<TripImageWeatherLink>(param =>
             {
-                NavigationService.Navigate(typeof(DetailTripV2Page), param);
+                NavigationService.Navigate(typeof(DetailTripPage), param);
             });
 
             AddTripCommand = new RelayCommand(() => NavigationService.Navigate(typeof(NewTripPage)));

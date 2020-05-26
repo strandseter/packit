@@ -61,6 +61,10 @@ namespace Packit.App.Helpers
             {
                 await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, ex);
             }
+            catch (Exception ex)
+            {
+                await popUpService.ShowUnknownErrorAsync(ex.Message);
+            }
         }
     }
 

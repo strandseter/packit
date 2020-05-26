@@ -6,11 +6,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Packit.App.Views
 {
-    public sealed partial class DetailTripV2Page : Page
+    public sealed partial class DetailTripPage : Page
     {
         public DetailTripViewModel ViewModel { get; } = (App.Current as App).ServiceProvider.GetService<DetailTripViewModel>();
 
-        public DetailTripV2Page() => InitializeComponent();
+        public DetailTripPage() => InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

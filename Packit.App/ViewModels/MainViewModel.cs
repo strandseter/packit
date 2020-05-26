@@ -44,7 +44,7 @@ namespace Packit.App.ViewModels
 
             TripDetailsCommand = new RelayCommand(() =>
             {
-                NavigationService.Navigate(typeof(DetailTripV2Page), new TripImageWeatherLink(NextTrip) { Image = TripImage });
+                NavigationService.Navigate(typeof(DetailTripPage), new TripImageWeatherLink(NextTrip) { Image = TripImage });
             });
 
             NewTripCommand = new RelayCommand(() =>

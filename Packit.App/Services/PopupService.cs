@@ -181,16 +181,6 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public async Task ShowUnknownErrorAsync(string exeptionMessage, Action onBackExecute)
-        {
-            var popup = new PopupMenu();
-            var message = new MessageDialog("An unknown error occured", exeptionMessage);
-            message.Commands.Add(new UICommand("Ok", (command) => { return; }));
-            message.Commands.Add(new UICommand("Go back", (command) => onBackExecute()));
-            message.Commands.Add(new UICommand("Force close", (command) => CoreApplication.Exit()));
-            await message.ShowAsync();
-        }
-
         public async Task ShowInternetConnectionErrorAsync()
         {
             var popup = new PopupMenu();

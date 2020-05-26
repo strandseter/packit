@@ -116,7 +116,7 @@ namespace Packit.App.ViewModels
                     param.Backpack.IsShared = false;
             });
 
-            EditTripCommand = new NetworkErrorHandlingRelayCommand<DetailTripV2Page>(async () =>
+            EditTripCommand = new NetworkErrorHandlingRelayCommand<DetailTripPage>(async () =>
             {
                 if (!IsVisible)
                     CloneTrip();
