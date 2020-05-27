@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Packit.DataAccess\Packit.DataAccess.csproj" />
-    <ProjectReference Include="..\Packit.Database.Migrations\Packit.Database.Migrations.csproj" />
-    <ProjectReference Include="..\Packit.Model\Packit.Model.csproj" />
   </ItemGroup>
 
 </Project>

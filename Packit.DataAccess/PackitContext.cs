@@ -111,7 +111,7 @@ namespace Packit.DataAccess
                 IntegratedSecurity = false
             };
 
-            optionsBuilder.UseSqlServer(builderLocal.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
+            optionsBuilder.UseSqlServer(builderDonau.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
         }
 
         /// <summary>
