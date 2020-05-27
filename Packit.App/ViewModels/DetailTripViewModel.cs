@@ -356,7 +356,10 @@ namespace Packit.App.ViewModels
             try
             {
                 if (!await tripDataAccess.UpdateAsync(TripImageWeatherLink.Trip))
+                {
                     TripImageWeatherLink.Trip = tripClone;
+                    await PopUpService.ShowCouldNotSaveAsync(tripClone.Title);
+                }
             }
             catch (HttpRequestException)
             {
@@ -447,10 +450,26 @@ namespace Packit.App.ViewModels
         /// </summary>
         private async Task DeleteTripAsync()
         {
-            if (await tripDataAccess.DeleteAsync(TripImageWeatherLink.Trip))
+            if (!string.IsNullOrEmpty(TripImageWeatherLink.Trip.ImageStringName))
+                await DeleteTripAndImageRequestAsync(TripImageWeatherLink.Trip);
+            else
+                await DeleteTripRequestAsync(TripImageWeatherLink.Trip);
+        }
+
+        private async Task DeleteTripAndImageRequestAsync(Trip trip)
+        {
+            if (await tripDataAccess.DeleteAsync(trip) && await imagesDataAccess.DeleteImageAsync(trip.ImageStringName))
                 NavigationService.Navigate(typeof(TripsMainPage));
             else
-                await PopUpService.ShowCouldNotDeleteAsync(TripImageWeatherLink.Trip.Title);
+                await PopUpService.ShowCouldNotDeleteAsync(trip.Title);
+        }
+
+        private async Task DeleteTripRequestAsync(Trip trip)
+        {
+            if (await tripDataAccess.DeleteAsync(trip))
+                NavigationService.Navigate(typeof(TripsMainPage));
+            else
+                await PopUpService.ShowCouldNotDeleteAsync(trip.Title);
         }
         #endregion
 
