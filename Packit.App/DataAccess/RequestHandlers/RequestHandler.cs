@@ -23,7 +23,8 @@ namespace Packit.App.DataAccess.RequestHandlers
     /// Implements the <see cref="System.IDisposable" />
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public sealed class RequestHandler : IDisposable
+    //I found out right before handing in the project that there is a better way to do this..
+    public sealed class HttpRequestHandler : IDisposable
     {
         /// <summary>
         /// The time out milliseconds

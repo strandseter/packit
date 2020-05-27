@@ -23,7 +23,7 @@ namespace Packit.App
             InitializeComponent();
 
             // Deferred execution until used. Check https://msdn.microsoft.com/library/dd642331(v=vs.110).aspx for further info on Lazy<T> class.
-            _activationService = new Lazy<ActivationService>(CreateActivationService);
+            _activationService = new Lazy<ActivationService>(CreateActivationServiceDebug);
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
@@ -55,24 +55,12 @@ namespace Packit.App
             return serviceCollection.BuildServiceProvider();
         }
 
-        protected override async void OnActivated(IActivatedEventArgs args)
-        {
-            await ActivationService.ActivateAsync(args);
-        }
+        protected override async void OnActivated(IActivatedEventArgs args) => await ActivationService.ActivateAsync(args);
 
-        private ActivationService CreateActivationService()
-        {
-            return new ActivationService(this, typeof(Views.MainPage), new Lazy<UIElement>(CreateShell));
-        }
+        private ActivationService CreateActivationServiceDebug() => new ActivationService(this, typeof(Views.MainPage), new Lazy<UIElement>(CreateShell));
 
-        private ActivationService CreateActivationService2()
-        {
-            return new ActivationService(this, typeof(Views.LoginPage), new Lazy<UIElement>(CreateShell));
-        }
+        private ActivationService CreateActivationServiceLogin() => new ActivationService(this, typeof(Views.LoginPage), new Lazy<UIElement>(CreateShell));
 
-        private UIElement CreateShell()
-        {
-            return new Views.ShellPage();
-        }
+        private UIElement CreateShell() => new Views.ShellPage();
     }
 }

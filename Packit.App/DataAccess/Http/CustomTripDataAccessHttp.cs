@@ -37,11 +37,16 @@ namespace Packit.App.DataAccess.Http
         /// <summary>
         /// The request handler
         /// </summary>
-        private readonly RequestHandler requestHandler = new RequestHandler();
+        private readonly HttpRequestHandler requestHandler = new HttpRequestHandler();
         /// <summary>
         /// The base URI
         /// </summary>
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/trips");
+
+        public CustomTripDataAccessHttp()
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
+        }
 
         /// <summary>
         /// Gets the next trip.
@@ -54,7 +59,6 @@ namespace Packit.App.DataAccess.Http
                 throw new NetworkConnectionException();
 
             var uri = new Uri($"{baseUri}/next");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             string json = await requestHandler.HandleGetRequestAsync(httpClient.GetAsync, uri);
             var nextTrip = JsonConvert.DeserializeObject<Trip>(json);

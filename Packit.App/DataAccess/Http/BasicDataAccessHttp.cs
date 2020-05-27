@@ -40,11 +40,16 @@ namespace Packit.App.DataAccess
         /// <summary>
         /// The request handler
         /// </summary>
-        private readonly RequestHandler requestHandler = new RequestHandler();
+        private readonly HttpRequestHandler requestHandler = new HttpRequestHandler();
         /// <summary>
         /// The base URI
         /// </summary>
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T).Name}s");
+
+        public BasicDataAccessHttp()
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
+        }
 
         /// <summary>
         /// add as an asynchronous operation.
@@ -61,8 +66,6 @@ namespace Packit.App.DataAccess
 
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
-
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             string json = JsonConvert.SerializeObject(entity);
 
@@ -100,7 +103,6 @@ namespace Packit.App.DataAccess
                 throw new ArgumentNullException(nameof(entity));
 
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             return await requestHandler.HandleDeleteRequestAsync(httpClient.DeleteAsync, uri);
         }
@@ -122,7 +124,6 @@ namespace Packit.App.DataAccess
                 throw new ArgumentNullException(nameof(entity));
 
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             string json = JsonConvert.SerializeObject(entity);
 
@@ -147,8 +148,6 @@ namespace Packit.App.DataAccess
             if (!InternetConnectionService.IsConnected())
                 throw new NetworkConnectionException();
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
-
             string json = await HandleGetRequestAsync(httpClient.GetAsync, baseUri);
             T[] entities = JsonConvert.DeserializeObject<T[]>(json);
 
@@ -167,7 +166,6 @@ namespace Packit.App.DataAccess
                 throw new NetworkConnectionException();
 
             var uri = new Uri($"{baseUri}/all");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             string json = await HandleGetRequestAsync(httpClient.GetAsync, uri);
             T[] entities = JsonConvert.DeserializeObject<T[]>(json);
@@ -188,7 +186,6 @@ namespace Packit.App.DataAccess
                 throw new NetworkConnectionException();
 
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             string json = await HandleGetRequestAsync(httpClient.GetAsync, uri);
             T outEntity = JsonConvert.DeserializeObject<T>(json);
@@ -209,7 +206,6 @@ namespace Packit.App.DataAccess
                 throw new NetworkConnectionException();
 
             var uri = new Uri($"{baseUri}/{entity.GetId()}/all");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             var json = await HandleGetRequestAsync(httpClient.GetAsync, uri);
 

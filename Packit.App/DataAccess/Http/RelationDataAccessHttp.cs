@@ -39,8 +39,16 @@ namespace Packit.App.DataAccess
         /// The base URI
         /// </summary>
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T1).Name}s");
+        /// <summary>
+        /// The time out milliseconds
+        /// </summary>
         private const int timeOutMilliseconds = 8000;
+        //I Should have made a request handler for these methods too.
 
+        public RelationDataAccessHttp()
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
+        }
 
         /// <summary>
         /// add entity to entity as an asynchronous operation.
@@ -55,7 +63,6 @@ namespace Packit.App.DataAccess
                 throw new NetworkConnectionException();
 
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/create");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             HttpResponseMessage result;
 
@@ -81,7 +88,6 @@ namespace Packit.App.DataAccess
                 throw new NetworkConnectionException();
 
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/delete");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             HttpResponseMessage result;
 
@@ -107,7 +113,6 @@ namespace Packit.App.DataAccess
                 throw new NetworkConnectionException();
 
             var uri = new Uri($"{baseUri}/{id}/{param}");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
             HttpResponseMessage result;
 

@@ -12,10 +12,12 @@
 // <summary></summary>
 // ***********************************************************************
 using Newtonsoft.Json;
+using Packit.App.DataAccess.RequestHandlers;
 using Packit.Model;
 using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess.Http
@@ -29,6 +31,10 @@ namespace Packit.App.DataAccess.Http
         /// The HTTP client
         /// </summary>
         private readonly HttpClient httpClient = new HttpClient();
+        /// <summary>
+        /// The time out milliseconds
+        /// </summary>
+        private const int timeOutMilliseconds = 8000;
         /// <summary>
         /// The base URI
         /// </summary>
@@ -51,7 +57,11 @@ namespace Packit.App.DataAccess.Http
 
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-               result = await httpClient.PostAsync(baseUri, content);
+                using (var cts = new CancellationTokenSource())
+                {
+                    cts.CancelAfter(timeOutMilliseconds);
+                    result = await httpClient.PostAsync(baseUri, content, cts.Token);
+                }
             }
 
             if (!result.IsSuccessStatusCode)
@@ -71,7 +81,7 @@ namespace Packit.App.DataAccess.Http
         /// Authenticates the user.
         /// </summary>
         /// <param name="user">The user.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if user is authenticated, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">user</exception>
         public async Task<bool> AuthenticateUser(User user)
         {
@@ -89,7 +99,11 @@ namespace Packit.App.DataAccess.Http
 
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                result = await httpClient.PostAsync(uri, content);
+                using (var cts = new CancellationTokenSource())
+                {
+                    cts.CancelAfter(timeOutMilliseconds);
+                    result = await httpClient.PostAsync(uri, content, cts.Token);
+                }
             }
 
             if (!result.IsSuccessStatusCode)
