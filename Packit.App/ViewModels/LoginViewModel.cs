@@ -116,7 +116,10 @@ namespace Packit.App.ViewModels
                 {
                     await PopUpService.ShowInternetConnectionErrorAsync();
                 }
-
+                catch (OperationCanceledException)
+                {
+                    await PopUpService.ShowConnectionTimedOutAsync();
+                }
                 catch (Exception ex)
                 {
                     await PopUpService.ShowUnknownErrorAsync(ex.Message);
