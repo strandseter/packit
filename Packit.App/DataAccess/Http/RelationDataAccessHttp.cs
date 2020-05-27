@@ -54,7 +54,12 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/create");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.PutAsync(uri, null);
+            using ()
+            {
+
+            }
+
+                HttpResponseMessage result = await httpClient.PutAsync(uri, null);
 
             return result.IsSuccessStatusCode;
         }

@@ -138,6 +138,7 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     CornerRadius="0"
+                    IsEnabled="{x:Bind ViewModel.SaveIsEnabled, Mode=OneWay}"
                     CommandParameter="{x:Bind ViewModel.TitleIsValid, Mode=OneWay}"
                     Command="{x:Bind ViewModel.SaveCommand}">
                 <StackPanel>

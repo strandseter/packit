@@ -59,6 +59,7 @@
             <Button Grid.Column="0"
                     CommandParameter="{x:Bind ViewModel.TitleIsValid, Mode=OneWay}"
                     Command="{x:Bind ViewModel.NextCommand}"
+                    IsEnabled="{x:Bind ViewModel.SaveIsEnabled, Mode=OneWay}"
                     Margin="0,0,0,5">
                 <StackPanel>
                     <SymbolIcon Symbol="Next"/>

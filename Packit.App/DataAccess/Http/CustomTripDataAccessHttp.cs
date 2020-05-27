@@ -12,6 +12,7 @@
 // <summary></summary>
 // ***********************************************************************
 using Newtonsoft.Json;
+using Packit.App.DataAccess.RequestHandlers;
 using Packit.App.Services;
 using Packit.Exceptions;
 using Packit.Model;
@@ -34,6 +35,10 @@ namespace Packit.App.DataAccess.Http
         /// </summary>
         private readonly HttpClient httpClient = new HttpClient();
         /// <summary>
+        /// The request handler
+        /// </summary>
+        private readonly RequestHandler requestHandler = new RequestHandler();
+        /// <summary>
         /// The base URI
         /// </summary>
         private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/trips");
@@ -51,8 +56,7 @@ namespace Packit.App.DataAccess.Http
             var uri = new Uri($"{baseUri}/next");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.GetAsync(uri);
-            string json = await result.Content.ReadAsStringAsync();
+            string json = await requestHandler.HandleGetRequestAsync(httpClient.GetAsync, uri);
             var nextTrip = JsonConvert.DeserializeObject<Trip>(json);
 
             if (nextTrip == null)

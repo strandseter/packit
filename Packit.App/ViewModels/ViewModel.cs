@@ -15,6 +15,7 @@ using Packit.App.Services;
 using Packit.Model.NotifyPropertyChanged;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Packit.App.ViewModels
 {
@@ -25,6 +26,16 @@ namespace Packit.App.ViewModels
     /// <seealso cref="Packit.Model.NotifyPropertyChanged.Observable" />
     public abstract class ViewModel : Observable
     {
+        private bool saveIsEnabled = true;
+
+        /// <summary>Gets or sets a value indicating whether [save is enabled].</summary>
+        /// <value>
+        ///   <c>true</c> if [save is enabled]; otherwise, <c>false</c>.</value>
+        public bool SaveIsEnabled
+        {
+            get => saveIsEnabled;
+            set => Set(ref saveIsEnabled, value);
+        }
         /// <summary>
         /// Gets or sets the pop up service.
         /// </summary>
@@ -38,6 +49,13 @@ namespace Packit.App.ViewModels
         public ViewModel(IPopUpService popUpService)
         {
             PopUpService = popUpService;
+        }
+
+        protected async Task DisableSaveCommand()
+        {
+            SaveIsEnabled = false;
+            await Task.Delay(8000);
+            SaveIsEnabled = true;
         }
 
         /// <summary>

@@ -12,18 +12,14 @@
 // <summary></summary>
 // ***********************************************************************
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
-using Packit.App.DataLinks;
 using Packit.App.Factories;
 using Packit.App.Helpers;
 using Packit.App.Services;
 using Packit.App.Views;
 using Packit.Model;
-using Packit.Model.NotifyPropertyChanged;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -127,7 +123,7 @@ namespace Packit.App.ViewModels
 
             NextCommand = new NetworkErrorHandlingRelayCommand<bool, TripsMainPage>(async param =>
             {
-                await AddTripAsync();
+               await Task.WhenAll(AddTripAsync(), DisableSaveCommand());
             }, PopUpService, param => param);
         }
         #endregion
