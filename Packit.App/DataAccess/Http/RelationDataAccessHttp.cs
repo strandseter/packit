@@ -17,6 +17,7 @@ using Packit.Exceptions;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
@@ -28,16 +29,18 @@ namespace Packit.App.DataAccess
     /// <typeparam name="T1">The type of the t1.</typeparam>
     /// <typeparam name="T2">The type of the t2.</typeparam>
     /// <seealso cref="Packit.App.DataAccess.IRelationDataAccess{T1, T2}" />
-    public class RelationDataAccessHttp<T1, T2> : IRelationDataAccess<T1, T2>
+    public sealed class RelationDataAccessHttp<T1, T2> : IRelationDataAccess<T1, T2>
     {
         /// <summary>
         /// The HTTP client
         /// </summary>
-        readonly HttpClient httpClient = new HttpClient();
+        private readonly HttpClient httpClient = new HttpClient();
         /// <summary>
         /// The base URI
         /// </summary>
-        static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T1).Name}s");
+        private static readonly Uri baseUri = new Uri($"http://localhost:52286/api/{typeof(T1).Name}s");
+        private const int timeOutMilliseconds = 8000;
+
 
         /// <summary>
         /// add entity to entity as an asynchronous operation.
@@ -54,12 +57,13 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/create");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            using ()
+            HttpResponseMessage result;
+
+            using (var cts = new CancellationTokenSource())
             {
-
+                cts.CancelAfter(timeOutMilliseconds);
+                result = await httpClient.PutAsync(uri, null, cts.Token);
             }
-
-                HttpResponseMessage result = await httpClient.PutAsync(uri, null);
 
             return result.IsSuccessStatusCode;
         }
@@ -79,7 +83,13 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{leftId}/{typeof(T2).Name}s/{rightId}/delete");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.DeleteAsync(uri);
+            HttpResponseMessage result;
+
+            using (var cts = new CancellationTokenSource())
+            {
+                cts.CancelAfter(timeOutMilliseconds);
+                result = await httpClient.DeleteAsync(uri, cts.Token);
+            }
 
             return result.IsSuccessStatusCode;
         }
@@ -99,7 +109,14 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{id}/{param}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.GetAsync(uri);
+            HttpResponseMessage result;
+
+            using (var cts = new CancellationTokenSource())
+            {
+                cts.CancelAfter(timeOutMilliseconds);
+                result = await httpClient.GetAsync(uri);
+            }
+
             string json = await result.Content.ReadAsStringAsync();
             T2[] entities = JsonConvert.DeserializeObject<T2[]>(json);
 
