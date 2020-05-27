@@ -20,6 +20,9 @@ namespace Packit.App.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (e == null)
+                throw new ArgumentNullException(nameof(e));
+
             base.OnNavigatedTo(e);
 
             if (e.Parameter == null)

@@ -5,8 +5,8 @@ using Packit.App.Services;
 
 namespace Packit.App.Factories
 {
-    public class CustomTripDataAccessFactory
+    public static class CustomTripDataAccessFactory
     {
-        public ICustomTripDataAccess Create() => InternetConnectionService.IsConnectedMock() ? new CustomTripDataAccessHttp() : (ICustomTripDataAccess)new CustomTripDataAccessLocal();
+        public static ICustomTripDataAccess Create() => InternetConnectionService.IsConnectedMock() ? new CustomTripDataAccessHttp() : (ICustomTripDataAccess)new CustomTripDataAccessLocal();
     }
 }

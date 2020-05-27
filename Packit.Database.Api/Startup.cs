@@ -72,7 +72,7 @@ namespace Packit.Database.Api
         /// </summary>
         /// <param name="app">The application.</param>
         /// <param name="env">The env.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseCors(u => u
                 .AllowAnyOrigin()
@@ -136,7 +136,7 @@ namespace Packit.Database.Api
         /// Configures the injections.
         /// </summary>
         /// <param name="services">The services.</param>
-        private void ConfigureInjections(IServiceCollection services)
+        private static void ConfigureInjections(IServiceCollection services)
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

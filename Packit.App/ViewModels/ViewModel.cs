@@ -62,7 +62,7 @@ namespace Packit.App.ViewModels
         /// <param name="secondString">The second string.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">firstString</exception>
-        protected bool StringIsEqual(string firstString, string secondString)
+        protected static bool StringIsEqual(string firstString, string secondString)
         {
             if (firstString == null)
                 throw new ArgumentNullException(nameof(firstString));

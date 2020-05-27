@@ -111,7 +111,7 @@ namespace Packit.DataAccess
                 IntegratedSecurity = false
             };
 
-            optionsBuilder.UseSqlServer(builderDonau.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
+            optionsBuilder.UseSqlServer(builderLocal.ConnectionString.ToString(), x => x.MigrationsAssembly("Packit.Database.Migrations"));
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Packit.DataAccess
         /// Confifures the one to many item checks.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private void ConfifureOneToManyItemChecks(ModelBuilder modelBuilder)
+        private static void ConfifureOneToManyItemChecks(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Item>()
                 .HasMany(i => i.Checks)
@@ -155,7 +155,7 @@ namespace Packit.DataAccess
         /// Configures the many to many item backpack.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
+        private static void ConfigureManyToManyItemBackpack(ModelBuilder modelBuilder) 
         {
             modelBuilder.Entity<ItemBackpack>()
                 .HasKey(ib => new { ib.ItemId, ib.BackpackId });
@@ -175,7 +175,7 @@ namespace Packit.DataAccess
         /// Configures the many to many backpack trip.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private void ConfigureManyToManyBackpackTrip(ModelBuilder modelBuilder)
+        private static void ConfigureManyToManyBackpackTrip(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BackpackTrip>()
                 .HasKey(bt => new { bt.BackpackId, bt.TripId });

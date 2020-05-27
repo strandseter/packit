@@ -1,16 +1,13 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Packit.App.DataAccess;
-using Packit.App.Factories;
 using Packit.App.Services;
 using Packit.App.ViewModels;
-using Packit.Model;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 
 namespace Packit.App
 {
-    public sealed partial class App : Application
+    public sealed partial class App : Application //No time to fix the naming conflict. But I am fully aware that this is an issue.
     {
         private Lazy<ActivationService> _activationService;
 
@@ -26,7 +23,7 @@ namespace Packit.App
             InitializeComponent();
 
             // Deferred execution until used. Check https://msdn.microsoft.com/library/dd642331(v=vs.110).aspx for further info on Lazy<T> class.
-            _activationService = new Lazy<ActivationService>(CreateActivationService2);
+            _activationService = new Lazy<ActivationService>(CreateActivationService);
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
@@ -39,7 +36,7 @@ namespace Packit.App
             }
         }
 
-        private IServiceProvider RegisterServices()
+        private static IServiceProvider RegisterServices()
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<ItemsViewModel>();

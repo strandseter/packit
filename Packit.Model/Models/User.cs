@@ -1,7 +1,7 @@
-﻿
-using Packit.Model.NotifyPropertyChanged;
+﻿using Packit.Model.NotifyPropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Packit.Model
@@ -16,26 +16,38 @@ namespace Packit.Model
 
         public int UserId { get; set; }
 
+        [Required]
+        [StringLength(30)]
         public string FirstName 
         { 
             get => firstName;
             set => Set(ref firstName, value);
         }
+
+        [Required]
+        [StringLength(30)]
         public string LastName 
         { 
             get => lastName; 
             set => Set(ref lastName, value); 
         }
+
+        [Required]
         public DateTimeOffset DateOfBirth 
         { 
             get => dateOfBirth; 
             set => Set(ref dateOfBirth, value); 
         }
+
+        [Required]
+        [StringLength(50)]
         public string Email 
         { 
             get => email; 
             set => Set(ref email, value); 
         }
+
+        [Required]
         public string HashedPassword 
         { 
             get => hashedPassword; 

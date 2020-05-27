@@ -3,6 +3,8 @@
 // Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
 
+using System.Diagnostics.CodeAnalysis;
+
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.ViewModels.ItemsViewModel.LoadItemsAsync~System.Threading.Tasks.Task")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.DataAccess.ItemImageLinks.GetItemsAsync~System.Threading.Tasks.Task{Packit.Model.Item[]}")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Views.ItemsPage.ItemsPage_LoadedAsync(System.Object,Windows.UI.Xaml.RoutedEventArgs)")]
@@ -72,3 +74,13 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Helpers.NetworkErrorHandlingRelayCommand`2.Execute(System.Object)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.ViewModels.LoginViewModel.#ctor(Packit.App.Services.IPopUpService)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>", Scope = "member", Target = "~P:Packit.App.DataLinks.BackpackWithItems.Items")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.App.OnLaunched(Windows.ApplicationModel.Activation.LaunchActivatedEventArgs)")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Behaviors.NavigationViewHeaderBehavior.GetHeaderMode(Windows.UI.Xaml.Controls.Page)~Packit.App.Behaviors.NavigationViewHeaderMode")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Services.ActivationService.StartupAsync~System.Threading.Tasks.Task")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Services.ActivationService.GetActivationHandlers~System.Collections.Generic.IEnumerable{Packit.App.Activation.ActivationHandler}")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Services.ActivationService.IsInteractive(System.Object)~System.Boolean")]
+[assembly: SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>", Scope = "member", Target = "~P:Packit.App.ThirdPartyApiModels.Openweathermap.WeatherReport.Weathers")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.ViewModels.ShellViewModel.IsMenuItemForPageType(Microsoft.UI.Xaml.Controls.NavigationViewItem,System.Type)~System.Boolean")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.ViewModels.DetailTripViewModel.Initialize")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Services.ActivationService.InitializeAsync~System.Threading.Tasks.Task")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Behaviors.NavigationViewHeaderBehavior.SetHeaderMode(Windows.UI.Xaml.Controls.Page,Packit.App.Behaviors.NavigationViewHeaderMode)")]

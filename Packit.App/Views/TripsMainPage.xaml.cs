@@ -13,10 +13,5 @@ namespace Packit.App.Views
         {
             InitializeComponent();
         }
-
-        public void EntityListClick(object sender, RoutedEventArgs e)
-        {
-            
-        }
     }
 }

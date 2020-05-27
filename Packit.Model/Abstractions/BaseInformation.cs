@@ -1,5 +1,6 @@
 ﻿using Packit.Model.Models;
 using Packit.Model.NotifyPropertyChanged;
+using System.ComponentModel.DataAnnotations;
 
 namespace Packit.Model
 {
@@ -8,12 +9,14 @@ namespace Packit.Model
         private string title;
         private string description;
 
+        [Required]
+        [StringLength(20)]
         public string Title
         {
             get => title;
             set => Set(ref title, value);
         }
-
+        [StringLength(30)]
         public string Description
         {
             get => description;
@@ -23,7 +26,7 @@ namespace Packit.Model
         public string ImageStringName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "<Pending>")]
-        public int UserId { get; set; } //I know this is problem. But I did not have time to fix it. Se mye description document.
+        public int UserId { get; set; } //I know the naming is problem. But I did not have time to fix it. Se mye description document.
 
         public BaseInformation() { }
 

@@ -124,20 +124,26 @@ namespace Packit.App.DataAccess
         /// </summary>
         /// <param name="file">The file.</param>
         /// <returns>System.Byte[].</returns>
-        private async Task<byte[]> FileToBytesAsync(StorageFile file)
+        private static async Task<byte[]> FileToBytesAsync(StorageFile file)
         {
-            byte[] fileBytes;
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
 
-            using (var stream = await file?.OpenReadAsync())
+            return await Task.Run(async () =>
             {
-                fileBytes = new byte[stream.Size];
-                using (var reader = new DataReader(stream))
-                {
-                    await reader.LoadAsync((uint)stream.Size);
-                    reader.ReadBytes(fileBytes);
-                }
-            }
-            return fileBytes;
+                 byte[] fileBytes;
+
+                 using (var stream = await file.OpenReadAsync())
+                 {
+                     fileBytes = new byte[stream.Size];
+                     using (var reader = new DataReader(stream))
+                     {
+                         await reader.LoadAsync((uint)stream.Size);
+                         reader.ReadBytes(fileBytes);
+                     }
+                 }
+                 return fileBytes;
+            });
         }
     }
 }

@@ -27,13 +27,8 @@ namespace Packit.Model
         }
 
         public override int GetId() => ItemId;
-
         public override void SetId(int value) => ItemId = value;
-
         public override string ToString() => $"{Title} {ItemId}";
-
-        public int GetUserId() => UserId;
-
         public void GetObjectData(SerializationInfo info, StreamingContext context) => throw new NotImplementedException();
     }
 }

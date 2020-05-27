@@ -3,6 +3,8 @@
 // Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
 
+using System.Diagnostics.CodeAnalysis;
+
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.Database.Api.GenericRepository.GenericRepository`1.Create(`0,System.String)~System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.Database.Api.GenericRepository.GenericRepository`1.Delete(System.Int32,System.Nullable{System.Int32})~System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.Database.Api.GenericRepository.GenericRepository`1.GetById(System.Int32,System.Nullable{System.Int32})~System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}")]
@@ -53,3 +55,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.Database.Api.Controllers.BackpacksController.PostBackpack(Packit.Model.Backpack)~System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.Database.Api.Controllers.BackpacksController.PutItemToBackpack(System.Int32,System.Int32)~System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.Database.Api.Controllers.ChecksController.DeleteCheck(System.Int32)~System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.Database.Api.Startup.ConfigureDatabaseConnection(Microsoft.Extensions.DependencyInjection.IServiceCollection)")]
