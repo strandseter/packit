@@ -12,10 +12,6 @@
 // <summary></summary>
 // ***********************************************************************
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
@@ -80,6 +76,7 @@ namespace Packit.App.ViewModels
             get => titleIsValid;
             set => Set(ref titleIsValid, value);
         }
+
         /// <summary>
         /// Gets or sets the item image link.
         /// </summary>
@@ -99,7 +96,8 @@ namespace Packit.App.ViewModels
 
             SaveCommand = new NetworkErrorHandlingRelayCommand<bool, ItemsPage>(async param =>
             {
-               await AddItemAsync();
+                await Task.WhenAll(AddItemAsync(), DisableSaveCommand());
+               
             }, PopUpService, param => param);
 
             ImageDeviceCommand = new RelayCommand(async () =>
