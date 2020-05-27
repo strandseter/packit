@@ -198,25 +198,27 @@ namespace Packit.App.ViewModels
         {
             LoginCommand = new RelayCommand(() => NavigationService.Navigate(typeof(LoginPage)));
 
-            RegisterCommand = new RelayCommand(async () =>
-            {
-                RegsiterErrorMessage = "";
-
-                UserInputStringtFields.Clear();
-                UserInputStringtFields.Add(FirstNameIsValid);
-                UserInputStringtFields.Add(LastNameIsValid);
-                UserInputStringtFields.Add(EmailIsValid);
-
-                if (!CheckUserInput())
-                {
-                    RegsiterErrorMessage = "Failed to register, please try again";
-                    return;
-                }
-
-                await RegisterUser();
-            });
+            RegisterCommand = new RelayCommand(async () => await ValidateUserInputAsync());
         }
         #endregion
+
+        private async Task ValidateUserInputAsync()
+        {
+            RegsiterErrorMessage = "";
+
+            UserInputStringtFields.Clear();
+            UserInputStringtFields.Add(FirstNameIsValid);
+            UserInputStringtFields.Add(LastNameIsValid);
+            UserInputStringtFields.Add(EmailIsValid);
+
+            if (!CheckUserInput())
+            {
+                RegsiterErrorMessage = "Failed to register, please try again";
+                return;
+            }
+
+            await RegisterUser();
+        }
 
         /// <summary>
         /// Checks the user input.
@@ -257,7 +259,7 @@ namespace Packit.App.ViewModels
                 if (await userDataAccess.AddUserAsync(NewUser))
                     NavigationService.Navigate(typeof(MainPage));
                 else
-                    registerErrorMessage = "Failed to register in, please try again";
+                    RegsiterErrorMessage = "Failed to register in, please try again";
             }
             catch (HttpRequestException)
             {
@@ -267,7 +269,6 @@ namespace Packit.App.ViewModels
             {
                 await PopUpService.ShowUnknownErrorAsync(ex.Message);
             }
-            
         }
     }
 }

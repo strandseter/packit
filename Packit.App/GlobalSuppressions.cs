@@ -84,3 +84,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.ViewModels.DetailTripViewModel.Initialize")]
 [assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Services.ActivationService.InitializeAsync~System.Threading.Tasks.Task")]
 [assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Behaviors.NavigationViewHeaderBehavior.SetHeaderMode(Windows.UI.Xaml.Controls.Page,Packit.App.Behaviors.NavigationViewHeaderMode)")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:Packit.App.Factories.CustomTripDataAccessFactory.Create~Packit.App.DataAccess.ICustomTripDataAccess")]

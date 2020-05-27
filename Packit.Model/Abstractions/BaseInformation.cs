@@ -26,7 +26,7 @@ namespace Packit.Model
         public string ImageStringName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "<Pending>")]
-        public int UserId { get; set; } //I know the naming is problem. But I did not have time to fix it. Se mye description document.
+        public int UserId { get; set; } //I know the naming is a problem. But I did not have time to fix it. Se mye description document.
 
         public BaseInformation() { }
 

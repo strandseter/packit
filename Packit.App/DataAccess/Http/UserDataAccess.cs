@@ -78,6 +78,9 @@ namespace Packit.App.DataAccess.Http
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
+            user.FirstName = ".";
+            user.LastName = ".";
+
             var uri = new Uri($"{baseUri}/authenticate");
 
             string json = JsonConvert.SerializeObject(user);

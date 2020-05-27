@@ -11,10 +11,12 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Packit.DataAccess;
 using Packit.Database.Api.Authentication;
 using Packit.Database.Api.Controllers.Abstractions;
@@ -43,7 +45,7 @@ namespace Packit.Database.Api.Controllers
         }
 
         /// <summary>
-        /// Authenticates the specified user input.
+        /// Authenticates the specified user information.
         /// </summary>
         /// <param name="userInput">The user input.</param>
         /// <returns>IActionResult.</returns>
@@ -51,7 +53,19 @@ namespace Packit.Database.Api.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]User userInput)
         {
-            var user = AuthenticationService.Authenticate(userInput?.Email, userInput?.HashedPassword);
+            if (userInput == null)
+                return BadRequest();
+
+            User user;
+
+            try
+            {
+                user = AuthenticationService.Authenticate(userInput?.Email, userInput?.HashedPassword);
+            }
+            catch (InvalidOperationException ex) 
+            {
+                return BadRequest(ex);
+            }
 
             if (user == null)
                 return NotFound();
@@ -65,17 +79,23 @@ namespace Packit.Database.Api.Controllers
         /// <param name="user">The user.</param>
         /// <returns>IActionResult.</returns>
         [AllowAnonymous]
-        // POST: api/Users
+        // POST: api/users
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
+            if (user == null)
+                return BadRequest();
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            if (await Context.Users.AnyAsync(u => u.Email == user.Email))
+                return BadRequest("Email already used");
+            
             Context.Users.Add(user);
             await Context.SaveChangesAsync().ConfigureAwait(false);
 
-            return CreatedAtAction("GetUser", new { id = user?.UserId }, user);
+            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
     }
 }

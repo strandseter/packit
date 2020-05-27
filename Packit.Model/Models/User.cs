@@ -40,7 +40,8 @@ namespace Packit.Model
         }
 
         [Required]
-        [StringLength(50)]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email 
         { 
             get => email; 

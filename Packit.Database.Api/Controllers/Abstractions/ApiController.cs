@@ -65,6 +65,8 @@ namespace Packit.Database.Api.Controllers.Abstractions
         /// <returns>System.Int32.</returns>
         protected int CurrentUserId()
         {
+            //I stopped working on the authetntication when Øyvind said that it was not necessary for this course.
+            //That is why the "token/userId" handling is not "good practice", but I am fully aware of that.
             var idClaim = int.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals("id", StringComparison.InvariantCultureIgnoreCase)).Value);
 
             return idClaim;
