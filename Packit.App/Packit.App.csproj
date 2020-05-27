@@ -157,6 +157,7 @@
     <Compile Include="DataAccess\ICustomTripDataAccess.cs" />
     <Compile Include="DataAccess\Http\UserDataAccess.cs" />
     <Compile Include="DataAccess\Local\CustomTripDataAccessLocal.cs" />
+    <Compile Include="DataAccess\RequestHandlers\RequestHandler.cs" />
     <Compile Include="DataLinks\BackpackWithItems.cs" />
     <Compile Include="DataLinks\BackpackWithItemsWithImages.cs" />
     <Compile Include="DataLinks\TripImageWeatherLink.cs" />

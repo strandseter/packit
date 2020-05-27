@@ -21,6 +21,7 @@ namespace Packit.App.Services
         Task ShowCouldNotAddAsync<T>(IList<T> selectedEntities, string mainItemName);
         Task ShowUnknownErrorAsync(string exeptionMessage);
         Task ShowInternetConnectionErrorAsync();
+        Task ShowConnectionTimedOutAsync();
         Task ShowCouldNotSaveAsync(string notUpdatingTitle);
         Task ShowCouldNotLogIn();
     }

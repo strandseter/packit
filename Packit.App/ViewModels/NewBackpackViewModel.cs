@@ -123,6 +123,8 @@ namespace Packit.App.ViewModels
                 if (NewTrip == null && SelectedTripImageWeatherLink == null)
                     NavigationService.Navigate(typeof(SelectItemsPage), NewBackpack);
             }
+            else
+                await PopUpService.ShowCouldNotSaveAsync(NewBackpack.Title);
         }
         #endregion
 

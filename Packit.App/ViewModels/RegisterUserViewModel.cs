@@ -223,7 +223,7 @@ namespace Packit.App.ViewModels
         /// <summary>
         /// Checks the user input.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if user input is valid, <c>false</c> otherwise.</returns>
         private bool CheckUserInput()
         {
             foreach (var userInputisValid in UserInputStringtFields)
@@ -259,7 +259,7 @@ namespace Packit.App.ViewModels
                 if (await userDataAccess.AddUserAsync(NewUser))
                     NavigationService.Navigate(typeof(MainPage));
                 else
-                    RegsiterErrorMessage = "Failed to register in, please try again";
+                    RegsiterErrorMessage = "Failed to register, please try again";
             }
             catch (HttpRequestException)
             {

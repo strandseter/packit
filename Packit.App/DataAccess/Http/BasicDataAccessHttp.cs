@@ -12,6 +12,7 @@
 // <summary></summary>
 // ***********************************************************************
 using Newtonsoft.Json;
+using Packit.App.DataAccess.RequestHandlers;
 using Packit.App.Services;
 using Packit.Exceptions;
 using Packit.Model.Models;
@@ -19,6 +20,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Packit.App.DataAccess
@@ -35,6 +37,10 @@ namespace Packit.App.DataAccess
         /// The HTTP client
         /// </summary>
         private readonly HttpClient httpClient = new HttpClient();
+        /// <summary>
+        /// The request handler
+        /// </summary>
+        private readonly RequestHandler requestHandler = new RequestHandler();
         /// <summary>
         /// The base URI
         /// </summary>
@@ -64,7 +70,8 @@ namespace Packit.App.DataAccess
 
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                result = await httpClient.PostAsync(baseUri, content);
+                //result = await httpClient.PostAsync(baseUri, content);
+                result = await requestHandler.HandlePostPutRequestAsync(httpClient.PostAsync, baseUri, content);
             }
 
             if (!result.IsSuccessStatusCode) return false;
@@ -95,9 +102,7 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.DeleteAsync(uri);
-
-            return result.IsSuccessStatusCode;
+            return await requestHandler.HandleDeleteRequestAsync(httpClient.DeleteAsync, uri);
         }
 
         /// <summary>
@@ -125,7 +130,7 @@ namespace Packit.App.DataAccess
 
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                result = await httpClient.PutAsync(uri, content);
+                result = await requestHandler.HandlePostPutRequestAsync(httpClient.PutAsync, uri, content);
             }
 
             return result.IsSuccessStatusCode;
@@ -144,8 +149,7 @@ namespace Packit.App.DataAccess
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.GetAsync(baseUri);
-            string json = await result.Content.ReadAsStringAsync();
+            string json = await HandleGetRequestAsync(httpClient.GetAsync, baseUri);
             T[] entities = JsonConvert.DeserializeObject<T[]>(json);
 
             return entities;
@@ -165,8 +169,7 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/all");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.GetAsync(uri);
-            string json = await result.Content.ReadAsStringAsync();
+            string json = await HandleGetRequestAsync(httpClient.GetAsync, uri);
             T[] entities = JsonConvert.DeserializeObject<T[]>(json);
 
             return entities;
@@ -187,8 +190,7 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{entity.GetId()}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.GetAsync(uri);
-            string json = await result.Content.ReadAsStringAsync();
+            string json = await HandleGetRequestAsync(httpClient.GetAsync, uri);
             T outEntity = JsonConvert.DeserializeObject<T>(json);
 
             return outEntity;
@@ -209,11 +211,21 @@ namespace Packit.App.DataAccess
             var uri = new Uri($"{baseUri}/{entity.GetId()}/all");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);
 
-            HttpResponseMessage result = await httpClient.GetAsync(uri);
-            string json = await result.Content.ReadAsStringAsync();
+            var json = await HandleGetRequestAsync(httpClient.GetAsync, uri);
+
             T outEntity = JsonConvert.DeserializeObject<T>(json);
 
             return outEntity;
+        }
+
+        private static async Task<string> HandleGetRequestAsync(Func<Uri, CancellationToken, Task<HttpResponseMessage>> executeGet, Uri uri)
+        {
+            using (var cts = new CancellationTokenSource())
+            {
+                cts.CancelAfter(8000);
+                var result =  await executeGet(uri, cts.Token);
+                return await result.Content.ReadAsStringAsync();
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using Packit.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -31,6 +32,10 @@ namespace Packit.App.Services
                 {
                     await ShowCouldNotDeleteAsync(itemName);
                 }
+                catch (OperationCanceledException)
+                {
+                    await ShowConnectionTimedOutAsync();
+                }
             }));
 
             message.Commands.Add(new UICommand("No", (command) => { return; }));
@@ -53,6 +58,10 @@ namespace Packit.App.Services
                 catch (HttpRequestException)
                 {
                     await ShowCouldNotDeleteAsync(itemName);
+                }
+                catch (OperationCanceledException)
+                {
+                    await ShowConnectionTimedOutAsync();
                 }
             }));
 
@@ -77,6 +86,10 @@ namespace Packit.App.Services
                 {
                     await ShowCouldNotDeleteAsync(subItemName);
                 }
+                catch (OperationCanceledException)
+                {
+                    await ShowConnectionTimedOutAsync();
+                }
             }));
 
             message.Commands.Add(new UICommand("No", (command) => { return; }));
@@ -100,9 +113,20 @@ namespace Packit.App.Services
                 {
                     await ShowCouldNotDeleteAsync(subItemName);
                 }
+                catch (OperationCanceledException)
+                {
+                    await ShowConnectionTimedOutAsync();
+                }
             }));
 
             message.Commands.Add(new UICommand("No", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
+        public async Task ShowConnectionTimedOutAsync()
+        {
+            var message = new MessageDialog("Connection to the server timed out", "Timed out");
+            message.Commands.Add(new UICommand("Ok", (command) => { return; }));
             await message.ShowAsync();
         }
 

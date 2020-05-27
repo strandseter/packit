@@ -36,7 +36,7 @@ namespace Packit.App.Helpers
         /// <summary>
         /// The execute
         /// </summary>
-        private readonly Func<Task> execute;
+        private readonly Func<Task> executeAsync;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NetworkErrorHandlingRelayCommand{T}"/> class.
@@ -68,7 +68,7 @@ namespace Packit.App.Helpers
         /// <param name="popUpService">The pop up service.</param>
         public NetworkErrorHandlingRelayCommand(Func<Task> execute, IPopUpService popUpService)
         {
-            this.execute = execute;
+            this.executeAsync = execute;
             this.popUpService = popUpService;
         }
 
@@ -81,7 +81,7 @@ namespace Packit.App.Helpers
         public NetworkErrorHandlingRelayCommand(Func<Task> execute, IPopUpService popUpService, Func<bool> canExecute)
             : base(canExecute)
         {
-            this.execute = execute;
+            this.executeAsync = execute;
             this.popUpService = popUpService;
         }
 
@@ -98,7 +98,7 @@ namespace Packit.App.Helpers
             //This structure is made to be expandable and easy to edit in the future. NetworkConnectionException would not have been an exception to catch if I had the time to implement offline/local database.
             try
             {
-                await execute();
+                await executeAsync();
             }
             catch (NetworkConnectionException ex)
             {
@@ -107,6 +107,10 @@ namespace Packit.App.Helpers
             catch (HttpRequestException ex)
             {
                 await popUpService.ShowCouldNotLoadAsync<T>(NavigationService.Navigate, ex);
+            }
+            catch (OperationCanceledException)
+            {
+                await popUpService.ShowConnectionTimedOutAsync();
             }
             catch (JsonReaderException ex)
             {
@@ -136,7 +140,7 @@ namespace Packit.App.Helpers
         /// <summary>
         /// The execute
         /// </summary>
-        private readonly Func<T1, Task> execute;
+        private readonly Func<T1, Task> executeAsync;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NetworkErrorHandlingRelayCommand{T1, T2}"/> class.
@@ -156,7 +160,7 @@ namespace Packit.App.Helpers
         /// <param name="popUpService">The pop up service.</param>
         public NetworkErrorHandlingRelayCommand(Func<T1, Task> execute, IPopUpService popUpService)
         {
-            this.execute = execute;
+            this.executeAsync = execute;
             this.popUpService = popUpService;
         }
 
@@ -169,7 +173,7 @@ namespace Packit.App.Helpers
         public NetworkErrorHandlingRelayCommand(Func<T1, Task> execute, IPopUpService popUpService, Func<T1, bool> canExecute )
             : base(canExecute)
         {
-            this.execute = execute;
+            this.executeAsync = execute;
             this.popUpService = popUpService;
         }
 
@@ -185,7 +189,7 @@ namespace Packit.App.Helpers
         {
             try
             {
-                await execute((T1)parameter);
+                await executeAsync((T1)parameter);
             }
             catch (NetworkConnectionException ex)
             {
@@ -198,6 +202,10 @@ namespace Packit.App.Helpers
             catch (JsonReaderException)
             {
                 await popUpService.ShowInternetConnectionErrorAsync();
+            }
+            catch (OperationCanceledException)
+            {
+                await popUpService.ShowConnectionTimedOutAsync();
             }
             //TODO: Maybe remove before handing in the exam?
             catch (Exception ex)
