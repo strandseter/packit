@@ -54,7 +54,6 @@ namespace Packit.App.ViewModels
             if (await backpackDataAccess.UpdateAsync(backpackWithItems.Backpack))
             {
                 UserBackpacksWithItems.Remove(backpackWithItems);
-                AllBackpacksWithItems.Remove(backpackWithItems);
             }
             else
                 await PopUpService.ShowCouldNotSaveAsync(backpackWithItems.Backpack.Title);
@@ -75,7 +74,6 @@ namespace Packit.App.ViewModels
 
             if (!await backpackDataAccess.AddAsync(newBackpack))
                 isSuccess = false;
-
 
             foreach (var item in backpackWithItems.Items)
             {
@@ -99,7 +97,7 @@ namespace Packit.App.ViewModels
             }
 
             if (isSuccess)
-                await PopUpService.ShowWasAddedAsync(backpackWithItems.Backpack.Title);
+                await PopUpService.ShowWasAddedAsync(backpackWithItems.Backpack.Title, "added");
             else
                 await PopUpService.ShowCouldNotSaveAsync(backpackWithItems.Backpack.Title);
         }

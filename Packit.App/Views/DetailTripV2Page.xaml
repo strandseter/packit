@@ -202,14 +202,6 @@
                                                                 </MenuFlyoutItem.Icon>
                                                             </MenuFlyoutItem>
                                                             <MenuFlyoutSeparator/>
-                                                            <MenuFlyoutItem Text="Share backpack"
-                                                                            Command="{Binding ElementName=lvBackpacks, Path=DataContext.ShareBackpackCommand}"
-                                                                            CommandParameter="{x:Bind}">
-                                                                <MenuFlyoutItem.Icon>
-                                                                    <FontIcon Glyph="&#xE72D;"/>
-                                                                </MenuFlyoutItem.Icon>
-                                                            </MenuFlyoutItem>
-                                                            <MenuFlyoutSeparator/>
                                                             <MenuFlyoutItem Text="Remove backpack"
                                                                             Command="{Binding ElementName=lvBackpacks, Path=DataContext.RemoveBackpackCommand}"
                                                                             CommandParameter="{x:Bind}">

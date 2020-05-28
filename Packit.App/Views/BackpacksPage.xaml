@@ -48,7 +48,6 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="datalinks:BackpackWithItemsWithImages">
-
                         <Grid>
 
                             <Grid.RowDefinitions>

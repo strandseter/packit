@@ -211,9 +211,9 @@ namespace Packit.App.Services
             await message.ShowAsync();
         }
 
-        public async Task ShowWasAddedAsync(string whatWasAddedTitle)
+        public async Task ShowWasAddedAsync(string whatWasAddedTitle, string action)
         {
-            var message = new MessageDialog($"{whatWasAddedTitle} successfully added!");
+            var message = new MessageDialog($"{whatWasAddedTitle} successfully {action}!");
             message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
             await message.ShowAsync();
         }

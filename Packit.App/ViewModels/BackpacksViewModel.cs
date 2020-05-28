@@ -177,10 +177,10 @@ namespace Packit.App.ViewModels
                await UpdateEditedBackpack(param);
             }, PopUpService);
 
-            ShareBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(param =>
+            ShareBackpackCommand = new NetworkErrorHandlingRelayCommand<BackpackWithItemsWithImages, BackpacksPage>(async param =>
             {
-                var test = param;
-            });
+                await ShareBackpack(param);
+            }, PopUpService);
         }
         #endregion
 
@@ -200,6 +200,9 @@ namespace Packit.App.ViewModels
         /// <param name="backpack">The backpack.</param>
         private async Task UpdateEditedBackpack(Backpack backpack)
         {
+            if (backpack == null)
+                throw new ArgumentNullException(nameof(backpack));
+
             if (StringIsEqual(backpack.Title, backpackClone.Title) && StringIsEqual(backpack.Description, backpackClone.Description))
                 return;
 
@@ -218,6 +221,20 @@ namespace Packit.App.ViewModels
                 await PopUpService.ShowCouldNotSaveChangesAsync(backpackClone.Title);
             }
         }
+
+        /// <summary>Shares the backpack.</summary>
+        /// <param name="backpackWithItemsWithImages">The backpack with items with images.</param>
+        /// <exception cref="ArgumentNullException">backpackWithItemsWithImages</exception>
+        private async Task ShareBackpack(BackpackWithItemsWithImages backpackWithItemsWithImages)
+        {
+            if (backpackWithItemsWithImages == null)
+                throw new ArgumentNullException(nameof(backpackWithItemsWithImages));
+
+            backpackWithItemsWithImages.Backpack.IsShared = true;
+
+            if (!await backpacksDataAccess.UpdateAsync(backpackWithItemsWithImages.Backpack))
+                backpackWithItemsWithImages.Backpack.IsShared = false;
+        }
         #endregion
 
         #region private delete methods
@@ -227,6 +244,9 @@ namespace Packit.App.ViewModels
         /// <param name="itemImageBackpackWrapper">The item image backpack wrapper.</param>
         private async Task RemoveItemAsync(ItemImageBackpackWrapper itemImageBackpackWrapper)
         {
+            if (itemImageBackpackWrapper == null)
+                throw new ArgumentNullException(nameof(itemImageBackpackWrapper));
+
             if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(itemImageBackpackWrapper.BackpackWithItemsWithImages.Backpack.BackpackId, itemImageBackpackWrapper.ItemImageLink.Item.ItemId))
                 itemImageBackpackWrapper.BackpackWithItemsWithImages.ItemImageLinks.Remove(itemImageBackpackWrapper.ItemImageLink);
             else
@@ -239,6 +259,9 @@ namespace Packit.App.ViewModels
         /// <param name="backpackWithItemsWithImages">The backpack with items with images.</param>
         private async Task DeleteBackpackAsync(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
+            if (backpackWithItemsWithImages == null)
+                throw new ArgumentNullException(nameof(backpackWithItemsWithImages));
+
             if (await backpacksDataAccess.DeleteAsync(backpackWithItemsWithImages.Backpack))
                 BackpackWithItemsWithImagess.Remove(backpackWithItemsWithImages);
             else

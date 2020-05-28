@@ -173,11 +173,6 @@ namespace Packit.App.ViewModels
         /// <value>The delete backpack command.</value>
         public ICommand DeleteBackpackCommand { get; set; }
         /// <summary>
-        /// Gets or sets the share backpack command.
-        /// </summary>
-        /// <value>The share backpack command.</value>
-        public ICommand ShareBackpackCommand { get; set; }
-        /// <summary>
         /// Gets or sets the add item to backpack command.
         /// </summary>
         /// <value>The add item to backpack command.</value>
@@ -261,14 +256,6 @@ namespace Packit.App.ViewModels
             {
                 await CheckItemAsync(param);
             }, PopUpService);
-
-            ShareBackpackCommand = new RelayCommand<BackpackWithItemsWithImages>(async param =>
-            {
-                param.Backpack.IsShared = true;
-
-                if (!await backpackDataAccess.UpdateAsync(param.Backpack))
-                    param.Backpack.IsShared = false;
-            });
 
             EditTripCommand = new NetworkErrorHandlingRelayCommand<DetailTripPage>(async () =>
             {
