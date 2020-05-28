@@ -73,7 +73,6 @@ namespace Packit.App.DataAccess
 
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                //result = await httpClient.PostAsync(baseUri, content);
                 result = await requestHandler.HandlePostPutRequestAsync(httpClient.PostAsync, baseUri, content);
             }
 

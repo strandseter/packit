@@ -47,7 +47,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5,0,0,0" Text="All items" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <TextBlock Margin="5,0,0,0" Text="Select items" Style="{StaticResource HeaderTextBlockStyle}"/>
                     <TextBlock Margin="10,25,0,0" Text="Invalid input" Visibility="{x:Bind ViewModel.TitleIsValid, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"/>
                 </StackPanel>
 
