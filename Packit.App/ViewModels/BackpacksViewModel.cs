@@ -234,6 +234,8 @@ namespace Packit.App.ViewModels
 
             if (!await backpacksDataAccess.UpdateAsync(backpackWithItemsWithImages.Backpack))
                 backpackWithItemsWithImages.Backpack.IsShared = false;
+            else
+                await PopUpService.ShowWasSuccessAsync(backpackWithItemsWithImages.Backpack.Title, "shared");
         }
         #endregion
 

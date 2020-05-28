@@ -97,7 +97,7 @@ namespace Packit.App.ViewModels
             }
 
             if (isSuccess)
-                await PopUpService.ShowWasAddedAsync(backpackWithItems.Backpack.Title, "added");
+                await PopUpService.ShowWasSuccessAsync(backpackWithItems.Backpack.Title, "added");
             else
                 await PopUpService.ShowCouldNotSaveAsync(backpackWithItems.Backpack.Title);
         }
