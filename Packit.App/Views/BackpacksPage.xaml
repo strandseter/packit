@@ -37,7 +37,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="5,0,0,0" Text="All backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
-                <TextBlock Text="Invalid input" Margin="20,25,0,0" Visibility="{x:Bind ViewModel.TitleIsValid, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"/>
+                <TextBlock Text="Invalid input" Margin="20,25,0,0" Visibility="{x:Bind ViewModel.TitleIsValid, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"/>
             </StackPanel>
 
             <ListView Grid.Row="1" Name="lvBackpacks"
@@ -97,7 +97,7 @@
                                                         </ic:EventTriggerBehavior>
                                                     </i:Interaction.Behaviors>
                                                 </TextBox>
-                                                <TextBox Text="{x:Bind Backpack.Description, Mode=TwoWay}">
+                                                <TextBox Text="{x:Bind Backpack.Description, Mode=TwoWay}" MaxLength="30">
                                                     <i:Interaction.Behaviors>
                                                         <ic:EventTriggerBehavior EventName="GotFocus">
                                                             <ic:InvokeCommandAction CommandParameter="{x:Bind Backpack}" Command="{Binding ElementName=lvBackpacks, Path=DataContext.BackpackToEditCommand}" />

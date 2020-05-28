@@ -60,7 +60,6 @@ namespace Packit.App.ViewModels
         /// </summary>
         /// <value>The loaded command.</value>
         public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<ItemsPage>(async () => await LoadDataAsync(), PopUpService));
-        public string ItemInputErrorMessage { get; set; } = "Invalid input";
         /// <summary>
         /// Gets or sets the edit command.
         /// </summary>
