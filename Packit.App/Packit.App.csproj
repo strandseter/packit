@@ -192,6 +192,7 @@
     <Compile Include="ThirdPartyApiModels\Openweathermap\Wind.cs" />
     <Compile Include="CurrentUserStorage.cs" />
     <Compile Include="ViewModels\BackpacksViewModel.cs" />
+    <Compile Include="ViewModels\BrowseBackpacksViewModel.cs" />
     <Compile Include="ViewModels\DetailTripViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -207,6 +208,9 @@
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="Views\BackpacksPage.xaml.cs">
       <DependentUpon>BackpacksPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BrowseBackpacksPage.xaml.cs">
+      <DependentUpon>BrowseBackpacksPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DetailTripV2Page.xaml.cs">
       <DependentUpon>DetailTripV2Page.xaml</DependentUpon>
@@ -291,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BackpacksPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\BrowseBackpacksPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

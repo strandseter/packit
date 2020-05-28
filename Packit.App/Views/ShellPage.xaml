@@ -68,6 +68,7 @@
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
+            <winui:NavigationViewItem x:Uid="Shell_BrowseBackpacks" Icon="Document" helpers:NavHelper.NavigateTo="views:BrowseBackpacksPage" />
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
 

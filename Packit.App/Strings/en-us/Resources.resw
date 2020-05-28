@@ -238,4 +238,8 @@
     <value>Splash</value>
     <comment>Navigation view item name for Splash</comment>
   </data>
+  <data name="Shell_BrowseBackpacks.Content" xml:space="preserve">
+    <value>BrowseBackpacks</value>
+    <comment>Navigation view item name for BrowseBackpacks</comment>
+  </data>
 </root>
