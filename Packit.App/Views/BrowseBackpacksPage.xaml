@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:ic="using:Microsoft.Xaml.Interactions.Core" xmlns:datalinks="using:Packit.App.DataLinks"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -19,23 +19,41 @@
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="6*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            
-            <ListView Grid.Column="0">
-                
-            </ListView>
 
-            <ListView Grid.Column="1">
-                
-            </ListView>
+            <TextBlock Grid.Row="1" Text="Browse backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Backpacks shared by other users" Style="{StaticResource TitleTextBlockStyle}"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="My shared backpacks" Style="{StaticResource TitleTextBlockStyle}"/>
+
+            <Grid Grid.Column="0" Grid.Row="3">
+                <ListView ItemsSource="{x:Bind ViewModel.AllBackpacksWithItems}" HorizontalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="datalinks:BackpackWithItems">
+                            <TextBlock Text="{x:Bind Backpack.Title}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="3">
+                <ListView ItemsSource="{x:Bind ViewModel.UserBackpacksWithItems}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="datalinks:BackpackWithItems">
+                            <TextBlock Text="{x:Bind Backpack.Title}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
