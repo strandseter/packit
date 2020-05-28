@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:datalinks="using:Packit.App.DataLinks"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:wrappers="using:Packit.App.Wrappers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -36,8 +37,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Margin="5,0,0,0" Text="Select backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
-
+             <TextBlock Margin="5,0,0,0" Text="Select backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
 
             <ListView Grid.Row="1" Name="lvBackpacks"
                           ItemsSource="{x:Bind ViewModel.BackpackWithItemsWithImagess, Mode=OneWay}"
@@ -80,9 +80,9 @@
                                                         Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
                                             <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center"
-                                                        Margin="5,0,5,0"/>
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Center"
+                                                     Margin="5,0,5,0"/>
                                         </StackPanel>
 
                                     </Grid>
@@ -121,8 +121,9 @@
                                                                    Foreground="Black"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                                                     <TextBox Text="{x:Bind Item.Title, Mode=TwoWay}"
-                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
-                                                                 Margin="0,0,0,5"/>
+                                                             MaxLength="20"
+                                                             Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
+                                                             Margin="0,0,0,5"/>
                                                 </Grid>
 
                                                 <Grid>
@@ -132,8 +133,9 @@
                                                                    Foreground="{ThemeResource SystemBaseMediumHighColor}"
                                                                    Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                                                     <TextBox Text="{x:Bind Item.Description, Mode=TwoWay}"
-                                                                 Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
-                                                                 Margin="0,0,0,5"/>
+                                                             MaxLength="30"
+                                                             Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"
+                                                             Margin="0,0,0,5"/>
                                                 </Grid>
 
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">

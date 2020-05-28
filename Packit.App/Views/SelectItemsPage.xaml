@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:convertes="using:Packit.App.Convertes"
     Style="{StaticResource PageStyle}"
@@ -45,8 +46,10 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Margin="5,0,0,0" Text="Select items" Style="{StaticResource HeaderTextBlockStyle}"/>
-
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5,0,0,0" Text="All items" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <TextBlock Margin="10,25,0,0" Text="Invalid input" Visibility="{x:Bind ViewModel.TitleIsValid, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"/>
+                </StackPanel>
 
                 <controls:AdaptiveGridView
                 Grid.Row="1"
