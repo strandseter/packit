@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Packit.App.Services;
 using Packit.App.ViewModels;
+using Packit.App.Views;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 
@@ -51,6 +52,7 @@ namespace Packit.App
             serviceCollection.AddTransient<MainViewModel>();
             serviceCollection.AddTransient<LoginViewModel>();
             serviceCollection.AddTransient<RegisterUserViewModel>();
+            serviceCollection.AddTransient<BrowseBackpacksViewModel>();
             serviceCollection.AddSingleton<IPopUpService, PopUpService>();
             return serviceCollection.BuildServiceProvider();
         }

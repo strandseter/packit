@@ -4,7 +4,7 @@
 // Created          : 05-15-2020
 //
 // Last Modified By : ander
-// Last Modified On : 05-26-2020
+// Last Modified On : 05-28-2020
 // ***********************************************************************
 // <copyright file="IBackpackRepository.cs" company="Packit.Database.Api.Repository">
 //     Copyright (c) . All rights reserved.
@@ -30,15 +30,23 @@ namespace Packit.Database.Api.Repository.Interfaces
         //Declare type specific methods here.
 
         /// <summary>
-        /// Gets the shared backpacks.
+        /// Gets all shared backpacks asynchronous.
         /// </summary>
-        /// <returns>IQueryable&lt;Backpack&gt;.</returns>
-        IQueryable<Backpack> GetSharedBackpacks();
+        /// <returns>Task&lt;IActionResult&gt;.</returns>
+        Task<IActionResult> GetAllSharedBackpacksAsync();
+
+        /// <summary>
+        /// get all shared backpacks by user as an asynchronous operation.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>IActionResult.</returns>
+        Task<IActionResult> GetAllSharedBackpacksByUserAsync(int userId);
+
         /// <summary>
         /// Gets all backpacks with items.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;IActionResult&gt;.</returns>
-        Task<IActionResult> GetAllBackpacksWithItems(int userId);
+        Task<IActionResult> GetAllBackpacksWithItemsAsync(int userId);
     }
 }

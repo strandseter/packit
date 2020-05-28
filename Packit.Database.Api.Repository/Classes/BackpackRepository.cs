@@ -17,6 +17,7 @@ using Packit.DataAccess;
 using Packit.Database.Api.Repository.Generic;
 using Packit.Database.Api.Repository.Interfaces;
 using Packit.Model;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,12 +44,39 @@ namespace Packit.Database.Api.Repository.Classes
         //Implement type specific methods here.
 
         /// <summary>
-        /// Gets the shared backpacks.
+        /// Gets the shared backpacks with items.
         /// </summary>
         /// <returns>IQueryable&lt;Backpack&gt;.</returns>
-        public IQueryable<Backpack> GetSharedBackpacks()
+        public async Task<IActionResult> GetAllSharedBackpacksAsync()
         {
-            return Context.Backpacks.Where(b => b.IsShared);
+            var res = await Context.Backpacks
+                .Where(b => b.IsShared)
+                .Include(b => b.Items)
+                    .ThenInclude(ib => ib.Item)
+                .ToListAsync();
+
+            if (res == null)
+                return NotFound();
+
+            return Ok(res);
+        }
+
+        /// <summary>get all shared backpacks by user as an asynchronous operation.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>IActionResult.</returns>
+        public async Task<IActionResult> GetAllSharedBackpacksByUserAsync(int userId)
+        {
+            var res = await Context.Backpacks
+                .Where(b => b.UserId == userId)
+                .Where(b => b.IsShared)
+                .Include(b => b.Items)
+                    .ThenInclude(ib => ib.Item)
+                .ToListAsync();
+
+            if (res == null)
+                return NotFound();
+
+            return Ok(res);
         }
 
         /// <summary>
@@ -56,7 +84,7 @@ namespace Packit.Database.Api.Repository.Classes
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;IActionResult&gt;.</returns>
-        public async Task<IActionResult> GetAllBackpacksWithItems(int userId)
+        public async Task<IActionResult> GetAllBackpacksWithItemsAsync(int userId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

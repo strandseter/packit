@@ -6,7 +6,7 @@
 // Last Modified By : ander
 // Last Modified On : 05-25-2020
 // ***********************************************************************
-// <copyright file="ImagesDataAccess.cs" company="">
+// <copyright file="ImagesDataAccessHttp.cs" company="">
 //     Copyright ©  2020
 // </copyright>
 // <summary></summary>
@@ -24,9 +24,9 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace Packit.App.DataAccess
 {
     /// <summary>
-    /// Class ImagesDataAccess.
+    /// Class ImagesDataAccessHttp.
     /// </summary>
-    public class ImagesDataAccess
+    public class ImagesDataAccessHttp
     {
         /// <summary>
         /// The HTTP client

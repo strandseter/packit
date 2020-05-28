@@ -153,7 +153,9 @@
     <Compile Include="Convertes\DateFormatConverter.cs" />
     <Compile Include="Convertes\ListViewBaseToSelectedItemsConverter.cs" />
     <Compile Include="DataAccess\Http\BasicDataAccessHttp.cs" />
+    <Compile Include="DataAccess\Http\CustomBackpackDataAccessHttp.cs" />
     <Compile Include="DataAccess\Http\CustomTripDataAccessHttp.cs" />
+    <Compile Include="DataAccess\ICustomBackpackDataAccess.cs" />
     <Compile Include="DataAccess\ICustomTripDataAccess.cs" />
     <Compile Include="DataAccess\Http\UserDataAccess.cs" />
     <Compile Include="DataAccess\Local\CustomTripDataAccessLocal.cs" />
@@ -174,7 +176,7 @@
     <Compile Include="DataAccess\Http\WeatherDataAccess.cs" />
     <Compile Include="DataAccess\IRelationDataAccess.cs" />
     <Compile Include="DataAccess\IBasicDataAccess.cs" />
-    <Compile Include="DataAccess\Http\ImagesDataAccess.cs" />
+    <Compile Include="DataAccess\Http\ImagesDataAccessHttp.cs" />
     <Compile Include="DataAccess\Local\BasicDataAccessLocal.cs" />
     <Compile Include="DataAccess\Http\RelationDataAccessHttp.cs" />
     <Compile Include="DataAccess\Local\RelationDataAccessLocal.cs" />

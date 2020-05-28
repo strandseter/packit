@@ -71,7 +71,7 @@ namespace Packit.Database.Api.Controllers
         /// <returns>IEnumerable&lt;Backpack&gt;.</returns>
         [HttpGet]
         [Route("shared")]
-        public IEnumerable<Backpack> GetSharedBackpacks() => repository.GetSharedBackpacks();
+        public async Task<IActionResult> GetSharedBackpacks() => await repository.GetAllSharedBackpacksAsync();
 
         // GET: api/backpacks/5/items
         /// <summary>
@@ -90,7 +90,14 @@ namespace Packit.Database.Api.Controllers
         /// <returns>IActionResult.</returns>
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetBackpackWithItems() => await repository.GetAllBackpacksWithItems(CurrentUserId());
+        public async Task<IActionResult> GetBackpackWithItems() => await repository.GetAllBackpacksWithItemsAsync(CurrentUserId());
+
+        // GET: api/backpacks/shared/user
+        /// <summary>Gets the shared backpacks by user.</summary>
+        /// <returns>IActionResult.</returns>
+        [HttpGet]
+        [Route("shared/user")]
+        public async Task<IActionResult> GetSharedBackpackssByUser() => await repository.GetAllSharedBackpacksByUserAsync(CurrentUserId());
 
         // PUT: api/backpacks/5
         /// <summary>

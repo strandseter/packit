@@ -46,7 +46,7 @@ namespace Packit.App.ViewModels
         /// <summary>
         /// The images data access
         /// </summary>
-        private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
+        private readonly ImagesDataAccessHttp imagesDataAccess = new ImagesDataAccessHttp();
         /// <summary>
         /// The is visible
         /// </summary>

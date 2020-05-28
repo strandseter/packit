@@ -48,19 +48,17 @@
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
-            <winui:NavigationViewItem x:Uid="Shell_Scanner" helpers:NavHelper.NavigateTo="views:MainPage">
-                <winui:NavigationViewItem.Icon>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEE6F;"/>
-                </winui:NavigationViewItem.Icon>
-            </winui:NavigationViewItem>
-            
-            <winui:NavigationViewItem x:Uid="Shell_Browse" helpers:NavHelper.NavigateTo="views:MainPage">
+            <winui:NavigationViewItem x:Uid="Shell_Browse" helpers:NavHelper.NavigateTo="views:BrowseBackpacksPage">
                 <winui:NavigationViewItem.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE774;"/>
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
-            <winui:NavigationViewItem x:Uid="Shell_Profile" Icon="Contact" helpers:NavHelper.NavigateTo="views:MainPage" VerticalAlignment="Bottom"/>
+            <winui:NavigationViewItem x:Uid="Shell_Scanner" helpers:NavHelper.NavigateTo="views:MainPage">
+                <winui:NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEE6F;"/>
+                </winui:NavigationViewItem.Icon>
+            </winui:NavigationViewItem>
 
             <winui:NavigationViewItem x:Uid="Shell_LogOut" helpers:NavHelper.NavigateTo="views:LoginPage" VerticalAlignment="Bottom">
                 <winui:NavigationViewItem.Icon>
@@ -68,7 +66,6 @@
                 </winui:NavigationViewItem.Icon>
             </winui:NavigationViewItem>
 
-            <winui:NavigationViewItem x:Uid="Shell_BrowseBackpacks" Icon="Document" helpers:NavHelper.NavigateTo="views:BrowseBackpacksPage" />
         </winui:NavigationView.MenuItems>
         <i:Interaction.Behaviors>
 
