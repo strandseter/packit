@@ -118,7 +118,7 @@ namespace Packit.App.ViewModels
         public MainViewModel(IPopUpService popUpService)
             :base(popUpService)
         {
-            ItemCheckedCommand = new RelayCommand<ItemBackpackBoolWrapper>(async param => await CheckItemAsync(param));
+            ItemCheckedCommand = new NetworkErrorHandlingRelayCommand<ItemBackpackBoolWrapper, MainPage>(async param => await CheckItemAsync(param), PopUpService);
 
             TripDetailsCommand = new RelayCommand(() =>
             {

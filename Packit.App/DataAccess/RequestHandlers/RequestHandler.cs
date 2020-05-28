@@ -29,7 +29,7 @@ namespace Packit.App.DataAccess.RequestHandlers
         /// <summary>
         /// The time out milliseconds
         /// </summary>
-        private const int timeOutMilliseconds = 8000;
+        private const int timeOutMilliseconds = 10000;
         /// <summary>
         /// The CTS
         /// </summary>

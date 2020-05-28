@@ -33,15 +33,15 @@ namespace Packit.Model.NotifyPropertyChanged
         /// Sets the specified storage.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="storage">The storage.</param>
+        /// <param name="current">The storage.</param>
         /// <param name="value">The value.</param>
         /// <param name="propertyName">Name of the property.</param>
-        protected void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
+        protected void Set<T>(ref T current, T value, [CallerMemberName]string propertyName = null)
         {
-            if (Equals(storage, value))
+            if (Equals(current, value))
                 return;
 
-            storage = value;
+            current = value;
             OnPropertyChanged(propertyName);
         }
 

@@ -88,6 +88,14 @@ namespace Packit.App.ViewModels
         /// The weather report is loaded
         /// </summary>
         private bool weatherReportIsLoaded;
+        /// <summary>
+        /// The title is valid
+        /// </summary>
+        private bool titleIsValid;
+        /// <summary>
+        /// The destinationis valid
+        /// </summary>
+        private bool destinationisValid;
         #endregion
 
         #region public properties
@@ -109,6 +117,24 @@ namespace Packit.App.ViewModels
         {
             get => weatherReportIsLoaded;
             set => Set(ref weatherReportIsLoaded, value);
+        }
+
+        /// <summary>Gets or sets a value indicating whether [title is valid].</summary>
+        /// <value>
+        ///   <c>true</c> if [title is valid]; otherwise, <c>false</c>.</value>
+        public bool TitleIsValid
+        {
+            get => titleIsValid;
+            set => Set(ref titleIsValid, value);
+        }
+
+        /// <summary>Gets or sets a value indicating whether [destionation is valid].</summary>
+        /// <value>
+        ///   <c>true</c> if [destionation is valid]; otherwise, <c>false</c>.</value>
+        public bool DestionationIsValid
+        {
+            get => destinationisValid;
+            set => Set(ref destinationisValid, value);
         }
 
         /// <summary>
@@ -269,7 +295,7 @@ namespace Packit.App.ViewModels
             await LoadItemImagesAsync();
         }
         /// <summary>
-        /// Loads the items in backpacks.
+        /// Loads the items in backpacks. And which item is checked,
         /// </summary>
         private void LoadItemsInBackpacks()
         {
@@ -355,6 +381,12 @@ namespace Packit.App.ViewModels
 
             try
             {
+                if (!TitleIsValid || !DestionationIsValid)
+                {
+                    TripImageWeatherLink.Trip = tripClone;
+                    return;
+                }
+
                 if (!await tripDataAccess.UpdateAsync(TripImageWeatherLink.Trip))
                 {
                     TripImageWeatherLink.Trip = tripClone;
@@ -367,6 +399,11 @@ namespace Packit.App.ViewModels
                 throw;
             }
             catch (NetworkConnectionException)
+            {
+                TripImageWeatherLink.Trip = tripClone;
+                throw;
+            }
+            catch (OperationCanceledException)
             {
                 TripImageWeatherLink.Trip = tripClone;
                 throw;
@@ -392,6 +429,9 @@ namespace Packit.App.ViewModels
         /// <param name="backpackWithItemsWithImages">The backpack with items with images.</param>
         private async Task DeleteBackpack(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
+            if (backpackWithItemsWithImages == null)
+                throw new ArgumentNullException(nameof(backpackWithItemsWithImages));
+
             if (await backpackDataAccess.DeleteAsync(backpackWithItemsWithImages.Backpack))
                 Backpacks.Remove(backpackWithItemsWithImages);
             else
@@ -404,6 +444,9 @@ namespace Packit.App.ViewModels
         /// <param name="backpackWithItemsWithImages">The backpack with items with images.</param>
         private async Task RemoveBackpack(BackpackWithItemsWithImages backpackWithItemsWithImages)
         {
+            if (backpackWithItemsWithImages == null)
+                throw new ArgumentNullException(nameof(backpackWithItemsWithImages));
+
             if (await tripBackpackDataAccess.DeleteEntityFromEntityAsync(TripImageWeatherLink.Trip.TripId, backpackWithItemsWithImages.Backpack.BackpackId))
             {
                 Backpacks.Remove(backpackWithItemsWithImages);
@@ -419,6 +462,9 @@ namespace Packit.App.ViewModels
         /// <param name="itemImageBackpackWrapper">The item image backpack wrapper.</param>
         private async Task DeleteItem(ItemImageBackpackWrapper itemImageBackpackWrapper)
         {
+            if (itemImageBackpackWrapper == null)
+                throw new ArgumentNullException(nameof(itemImageBackpackWrapper));
+
             if (await itemDataAccess.DeleteAsync(itemImageBackpackWrapper.ItemImageLink.Item))
                 itemImageBackpackWrapper.BackpackWithItemsWithImages.ItemImageLinks.Remove(itemImageBackpackWrapper.ItemImageLink);
             else
@@ -431,6 +477,9 @@ namespace Packit.App.ViewModels
         /// <param name="itemImageBackpackWrapper">The item image backpack wrapper.</param>
         private async Task RemoveItemFromBackpack(ItemImageBackpackWrapper itemImageBackpackWrapper)
         {
+            if (itemImageBackpackWrapper == null)
+                throw new ArgumentNullException(nameof(itemImageBackpackWrapper));
+
             if (await backpackItemDataAccess.DeleteEntityFromEntityAsync(itemImageBackpackWrapper.BackpackWithItemsWithImages.Backpack.BackpackId, itemImageBackpackWrapper.ItemImageLink.Item.ItemId))
             {
                 itemImageBackpackWrapper.BackpackWithItemsWithImages.ItemImageLinks.Remove(itemImageBackpackWrapper.ItemImageLink);
@@ -458,6 +507,9 @@ namespace Packit.App.ViewModels
 
         private async Task DeleteTripAndImageRequestAsync(Trip trip)
         {
+            if (trip == null)
+                throw new ArgumentNullException(nameof(trip));
+
             if (await tripDataAccess.DeleteAsync(trip) && await imagesDataAccess.DeleteImageAsync(trip.ImageStringName))
                 NavigationService.Navigate(typeof(TripsMainPage));
             else
@@ -466,6 +518,9 @@ namespace Packit.App.ViewModels
 
         private async Task DeleteTripRequestAsync(Trip trip)
         {
+            if (trip == null)
+                throw new ArgumentNullException(nameof(trip));
+
             if (await tripDataAccess.DeleteAsync(trip))
                 NavigationService.Navigate(typeof(TripsMainPage));
             else
@@ -479,6 +534,9 @@ namespace Packit.App.ViewModels
         /// <param name="param">The parameter.</param>
         private async Task CheckItemAsync(ItemBackpackBoolWrapper param)
         {
+            if (param == null)
+                throw new ArgumentNullException(nameof(param));
+
             var itemcheker = new ItemChecker
                 (
                     param.Item,
@@ -503,7 +561,6 @@ namespace Packit.App.ViewModels
         /// </summary>
         public void Initialize() => NavigationService.GoBack();
         #endregion
-
         /// <summary>
         /// Clones the trip.
         /// </summary>

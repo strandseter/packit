@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:model="using:Packit.Model"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:datalinks="using:Packit.App.DataLinks"
     xmlns:wrappers="using:Packit.App.Wrappers"
@@ -95,6 +95,8 @@
                             <TextBox Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Title, Mode=TwoWay}"
                                      FontSize="46"
                                      Opacity="0.8"
+                                     extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
+                                     extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.TitleIsValid, Mode=TwoWay}"
                                      MaxLength="20"
                                      HorizontalAlignment="Center"
                                      Visibility="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"/>
@@ -149,7 +151,10 @@
                                 </MenuFlyout>
                             </Button.Flyout>
                         </Button>
-                        
+
+                        <TextBlock Margin="10,5,0,0" Text="Invalid title input" Visibility="{x:Bind ViewModel.TitleIsValid, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"/>
+                        <TextBlock Margin="10,5,0,0" Text="Invalid destionation input" Visibility="{x:Bind ViewModel.DestionationIsValid, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"/>
+
                     </StackPanel>
                     
                     <ListView Name="lvBackpacks"
@@ -339,6 +344,8 @@
                                        Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                             <TextBox Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Destination, Mode=TwoWay}"
                                      FontSize="25"
+                                     extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
+                                     extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.DestionationIsValid, Mode=TwoWay}"
                                      MaxLength="20"
                                      HorizontalAlignment="Center"
                                      Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>

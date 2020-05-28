@@ -33,8 +33,6 @@
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock FontSize="15" Text="{x:Bind Trip.Description}" Style="{ThemeResource CaptionTextBlockStyle}" 
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
-                        <TextBlock FontSize="15" Text="{x:Bind Trip.Backpacks.Count, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" 
-                           Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
                         <TextBlock FontSize="15" Style="{ThemeResource CaptionTextBlockStyle}" 
                            Foreground="{ThemeResource SystemBaseMediumHighColor}"/>
                     </StackPanel>

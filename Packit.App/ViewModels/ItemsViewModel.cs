@@ -85,11 +85,14 @@ namespace Packit.App.ViewModels
         /// </summary>
         /// <value>The item done editing command.</value>
         public ICommand ItemDoneEditingCommand { get; set; }
+        /// <summary>Gets or sets a value indicating whether [title is valid].</summary>
+        /// <value>
+        ///   <c>true</c> if [title is valid]; otherwise, <c>false</c>.</value>
+        public bool TitleIsValid { get => titleIsValid; set => Set(ref titleIsValid, value); }
         /// <summary>
         /// Gets the item image links.
         /// </summary>
         /// <value>The item image links.</value>
-        public bool TitleIsValid { get => titleIsValid; set => Set(ref titleIsValid, value); }
         public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
         #endregion
 
@@ -161,7 +164,13 @@ namespace Packit.App.ViewModels
             if (StringIsEqual(item.Description, itemClone.Description) && StringIsEqual(item.Title, itemClone.Title))
                 return;
 
-            if (!await itemsDataAccess.UpdateAsync(item) || !TitleIsValid)
+            if (!TitleIsValid)
+            {
+                item.Title = itemClone.Title;
+                return;
+            }
+
+            if (!await itemsDataAccess.UpdateAsync(item))
             {
                 item.Title = itemClone.Title;
                 item.Description = itemClone.Description;

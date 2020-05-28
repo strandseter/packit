@@ -203,9 +203,15 @@ namespace Packit.App.ViewModels
             if (StringIsEqual(backpack.Title, backpackClone.Title) && StringIsEqual(backpack.Description, backpackClone.Description))
                 return;
 
+            if (!TitleIsValid)
+            {
+                backpack.Title = backpackClone.Title;
+                return;
+            }
+
             backpack.Items.Clear();
 
-            if (!await backpacksDataAccess.UpdateAsync(backpack) || !TitleIsValid)
+            if (!await backpacksDataAccess.UpdateAsync(backpack))
             {
                 backpack.Title = backpackClone.Title;
                 backpack.Description = backpackClone.Description;

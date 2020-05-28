@@ -42,9 +42,12 @@ namespace Packit.App.DataAccess
         /// <summary>
         /// The time out milliseconds
         /// </summary>
-        private const int timeOutMilliseconds = 8000;
+        private const int timeOutMilliseconds = 10000;
         //I Should have made a request handler for these methods too.
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Packit.App.DataAccess.RelationDataAccessHttp`2" /> class.
+        /// </summary>
         public RelationDataAccessHttp()
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUserStorage.User.JwtToken);

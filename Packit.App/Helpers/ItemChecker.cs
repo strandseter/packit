@@ -16,6 +16,7 @@ using Packit.App.Services;
 using Packit.Exceptions;
 using Packit.Model;
 using Packit.Model.Models;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -124,6 +125,19 @@ namespace Packit.App.Helpers
 
             }
             catch (NetworkConnectionException)
+            {
+                if (isChecked)
+                {
+                    item.Check.IsChecked = false;
+                    throw;
+                }
+                else
+                {
+                    item.Check.IsChecked = true;
+                    throw;
+                }
+            }
+            catch (OperationCanceledException)
             {
                 if (isChecked)
                 {
