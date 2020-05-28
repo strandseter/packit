@@ -217,7 +217,7 @@ namespace Packit.App.ViewModels
                 return;
             }
 
-            await RegisterUser();
+            await Task.WhenAll(RegisterUser(), DisableCommand());
         }
 
         /// <summary>
@@ -263,14 +263,17 @@ namespace Packit.App.ViewModels
             }
             catch (HttpRequestException)
             {
+                RegsiterErrorMessage = "Failed to register, please try again";
                 await PopUpService.ShowInternetConnectionErrorAsync();
             }
             catch (OperationCanceledException)
             {
+                RegsiterErrorMessage = "Failed to register, please try again";
                 await PopUpService.ShowConnectionTimedOutAsync();
             }
             catch (Exception ex)
             {
+                RegsiterErrorMessage = "Failed to register, please try again";
                 await PopUpService.ShowUnknownErrorAsync(ex.Message);
             }
         }

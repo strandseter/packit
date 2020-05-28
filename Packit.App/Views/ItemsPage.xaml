@@ -42,7 +42,10 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Margin="5,0,0,0" Text="All items" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="5,0,0,0" Text="All items" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <TextBlock Margin="10,25,0,0" Text="Invalid input" Visibility="{x:Bind ViewModel.TitleIsValid, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}"/>
+            </StackPanel>
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>

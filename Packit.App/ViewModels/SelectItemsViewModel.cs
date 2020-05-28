@@ -65,7 +65,7 @@ namespace Packit.App.ViewModels
         /// Gets the loaded command.
         /// </summary>
         /// <value>The loaded command.</value>
-        public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
+        public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<BackpacksPage>(async () => await LoadDataAsync(), PopUpService));
         /// <summary>
         /// Gets or sets the selected trip.
         /// </summary>
@@ -121,7 +121,10 @@ namespace Packit.App.ViewModels
         public SelectItemsViewModel(IPopUpService popUpService)
             : base(popUpService)
         {
-            DoneSelectingItemsCommand = new NetworkErrorHandlingRelayCommand<IList<object>, ItemsPage>(async param => await SaveChangesAndNavigate(param.ToList()), PopUpService);
+            DoneSelectingItemsCommand = new NetworkErrorHandlingRelayCommand<IList<object>, ItemsPage>(async param =>
+            {
+                await Task.WhenAll(SaveChangesAndNavigate(param.ToList()), DisableCommand());
+            }, PopUpService);
 
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
         }

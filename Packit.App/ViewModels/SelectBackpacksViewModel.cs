@@ -69,7 +69,7 @@ namespace Packit.App.ViewModels
         /// Gets the loaded command.
         /// </summary>
         /// <value>The loaded command.</value>
-        public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new RelayCommand(async () => await LoadDataAsync()));
+        public override ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<ItemsPage>(async () => await LoadDataAsync(), PopUpService));
         /// <summary>
         /// Gets or sets the done selecting backpacks command.
         /// </summary>
@@ -100,26 +100,7 @@ namespace Packit.App.ViewModels
                 //This is a workaround. It is not possible to bind readonly "SelectedItems" in multiselect grid/list-view.
                 List<object> selectedItems = param.ToList();
 
-                if (SelectedTripImageWeatherLink != null)
-                {
-                    foreach (var obj in selectedItems)
-                        await AddBackpackToExistingTrip((BackpackWithItemsWithImages)obj);
-
-                    if (isSuccess)
-                    {
-                        await UpdateSelectedTrip();
-                        NavigationService.Navigate(typeof(DetailTripPage), SelectedTripImageWeatherLink);
-                    }
-                }
-
-                if (NewTrip != null)
-                {
-                    foreach (var obj in selectedItems)
-                        await AddBackpackToNewtrip((BackpackWithItemsWithImages)obj);
-
-                    if (isSuccess)
-                        NavigationService.Navigate(typeof(TripsMainPage));
-                }
+                await Task.WhenAll(SaveAndNavigate(selectedItems), DisableCommand());
             }, PopUpService);
 
             CancelCommand = new RelayCommand(() => NavigationService.GoBack());
@@ -176,7 +157,7 @@ namespace Packit.App.ViewModels
         }
 
         /// <summary>
-        /// Filters the backpacks.
+        /// Filters the backpacks. Removes backpacks already existing in a given trip.
         /// </summary>
         private void FilterBackpacks()
         {
@@ -199,9 +180,35 @@ namespace Packit.App.ViewModels
             BackpacksIsFiltered = true;
         }
 
+        /// <summary>Saves the and navigate.</summary>
+        /// <param name="selectedItems">The selected items.</param>
+        private async Task SaveAndNavigate(IList<object> selectedItems)
+        {
+            if (SelectedTripImageWeatherLink != null)
+            {
+                foreach (var obj in selectedItems)
+                    await AddBackpackToExistingTrip((BackpackWithItemsWithImages)obj);
+
+                if (isSuccess)
+                {
+                    await UpdateSelectedTrip();
+                    NavigationService.Navigate(typeof(DetailTripPage), SelectedTripImageWeatherLink);
+                }
+            }
+
+            if (NewTrip != null)
+            {
+                foreach (var obj in selectedItems)
+                    await AddBackpackToNewtrip((BackpackWithItemsWithImages)obj);
+
+                if (isSuccess)
+                    NavigationService.Navigate(typeof(TripsMainPage));
+            }
+        }
+
         #region initialize viewmodel methods
         /// <summary>
-        /// Initializes the specified backpack with items with images trip wrapper.
+        /// Initializes the backpack viewmodel with items with images and backpacks.
         /// </summary>
         /// <param name="backpackWithItemsWithImagesTripWrapper">The backpack with items with images trip wrapper.</param>
         internal void Initialize(BackpackWithItemsWithImagesTripWrapper  backpackWithItemsWithImagesTripWrapper)
@@ -220,7 +227,7 @@ namespace Packit.App.ViewModels
         }
 
         /// <summary>
-        /// Initializes the specified trip.
+        /// Initializes with a new Trip.
         /// </summary>
         /// <param name="trip">The trip.</param>
         internal void Initialize(Trip trip) => NewTrip = trip;

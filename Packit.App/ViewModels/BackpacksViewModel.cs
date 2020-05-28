@@ -13,7 +13,6 @@
 // ***********************************************************************
 using System;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess;
@@ -52,6 +51,7 @@ namespace Packit.App.ViewModels
         /// The is visible
         /// </summary>
         private bool isVisible;
+        private bool titleIsValid;
         /// <summary>
         /// The backpack clone
         /// </summary>
@@ -124,13 +124,15 @@ namespace Packit.App.ViewModels
         /// </summary>
         /// <value>The share backpack command.</value>
         public ICommand ShareBackpackCommand { get; set; }
+        public bool TitleIsValid { get => titleIsValid; set => Set(ref titleIsValid, value); }
+
         /// <summary>
-        /// Gets the backpack with items with imagess.
+        /// Gets the backpack with items and all its images.
         /// </summary>
         /// <value>The backpack with items with imagess.</value>
         public ObservableCollection<BackpackWithItemsWithImages> BackpackWithItemsWithImagess { get; } = new ObservableCollection<BackpackWithItemsWithImages>();
         /// <summary>
-        /// Creates new trip.
+        /// A new Trip which backpacks is selected for.
         /// </summary>
         /// <value>The new trip.</value>
         public Trip NewTrip { get; set; }
@@ -203,7 +205,7 @@ namespace Packit.App.ViewModels
 
             backpack.Items.Clear();
 
-            if (!await backpacksDataAccess.UpdateAsync(backpack))
+            if (!await backpacksDataAccess.UpdateAsync(backpack) || !TitleIsValid)
             {
                 backpack.Title = backpackClone.Title;
                 backpack.Description = backpackClone.Description;

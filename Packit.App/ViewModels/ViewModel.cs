@@ -26,15 +26,15 @@ namespace Packit.App.ViewModels
     /// <seealso cref="Packit.Model.NotifyPropertyChanged.Observable" />
     public abstract class ViewModel : Observable
     {
-        private bool saveIsEnabled = true;
+        private bool commandIsEnabled = true;
 
         /// <summary>Gets or sets a value indicating whether [save is enabled].</summary>
         /// <value>
         ///   <c>true</c> if [save is enabled]; otherwise, <c>false</c>.</value>
-        public bool SaveIsEnabled
+        public bool CommandIsEnabled
         {
-            get => saveIsEnabled;
-            set => Set(ref saveIsEnabled, value);
+            get => commandIsEnabled;
+            set => Set(ref commandIsEnabled, value);
         }
         /// <summary>
         /// Gets or sets the pop up service.
@@ -51,11 +51,14 @@ namespace Packit.App.ViewModels
             PopUpService = popUpService;
         }
 
-        protected async Task DisableSaveCommand()
+        /// <summary>
+        /// Disables the command.
+        /// </summary>
+        protected async Task DisableCommand()
         {
-            SaveIsEnabled = false;
+            CommandIsEnabled = false;
             await Task.Delay(8000);
-            SaveIsEnabled = true;
+            CommandIsEnabled = true;
         }
 
         /// <summary>

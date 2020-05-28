@@ -97,7 +97,7 @@ namespace Packit.App.ViewModels
 
             NextCommand = new NetworkErrorHandlingRelayCommand<bool, BackpacksPage>(async param =>
             {
-               await Task.WhenAll(SaveAndNavigate(), DisableSaveCommand());
+               await Task.WhenAll(SaveAndNavigate(), DisableCommand());
             }, PopUpService, param => param);
         }
         #endregion

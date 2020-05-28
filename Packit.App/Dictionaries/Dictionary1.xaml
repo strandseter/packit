@@ -4,6 +4,7 @@
     xmlns:link="using:Packit.App.DataLinks"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     x:Class="Packit.App.Dictionaries.DataTemplatesDictionary">
 
     <DataTemplate x:Key="ItemGridTemplate" x:DataType="link:ItemImageLink">
@@ -20,6 +21,9 @@
                     <TextBlock Text="{x:Bind Item.Title, Mode=OneWay}"
                                Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                     <TextBox Text="{x:Bind Item.Title, Mode=TwoWay}"
+                             MaxLength="30"
+                             extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
+                             extensions:TextBoxRegex.IsValid="{Binding ElementName=gvItems, Path=DataContext.TitleIsValid, Mode=TwoWay}"
                              Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}" >
 
                         <Interactivity:Interaction.Behaviors>
@@ -41,6 +45,7 @@
                                    Foreground="{ThemeResource SystemBaseMediumHighColor}"
                                    Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                         <TextBox Text="{x:Bind Item.Description, Mode=TwoWay}"
+                                 MaxLength="30"
                                  Visibility="{Binding ElementName=gvItems, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}">
 
                             <Interactivity:Interaction.Behaviors>

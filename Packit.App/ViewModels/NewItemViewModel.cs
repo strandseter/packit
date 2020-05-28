@@ -96,7 +96,7 @@ namespace Packit.App.ViewModels
 
             SaveCommand = new NetworkErrorHandlingRelayCommand<bool, ItemsPage>(async param =>
             {
-                await Task.WhenAll(AddItemAsync(), DisableSaveCommand());
+                await Task.WhenAll(AddItemAsync(), DisableCommand());
                
             }, PopUpService, param => param);
 

@@ -123,7 +123,7 @@ namespace Packit.App.ViewModels
 
             NextCommand = new NetworkErrorHandlingRelayCommand<bool, TripsMainPage>(async param =>
             {
-               await Task.WhenAll(AddTripAsync(), DisableSaveCommand());
+               await Task.WhenAll(AddTripAsync(), DisableCommand());
             }, PopUpService, param => param);
         }
         #endregion

@@ -33,6 +33,7 @@ namespace Packit.App.ViewModels
         /// The images data access
         /// </summary>
         private readonly ImagesDataAccess imagesDataAccess = new ImagesDataAccess();
+        private bool titleIsValid;
         /// <summary>
         /// The is visible
         /// </summary>
@@ -59,6 +60,7 @@ namespace Packit.App.ViewModels
         /// </summary>
         /// <value>The loaded command.</value>
         public virtual ICommand LoadedCommand => loadedCommand ?? (loadedCommand = new NetworkErrorHandlingRelayCommand<ItemsPage>(async () => await LoadDataAsync(), PopUpService));
+        public string ItemInputErrorMessage { get; set; } = "Invalid input";
         /// <summary>
         /// Gets or sets the edit command.
         /// </summary>
@@ -88,6 +90,7 @@ namespace Packit.App.ViewModels
         /// Gets the item image links.
         /// </summary>
         /// <value>The item image links.</value>
+        public bool TitleIsValid { get => titleIsValid; set => Set(ref titleIsValid, value); }
         public ObservableCollection<ItemImageLink> ItemImageLinks { get; } = new ObservableCollection<ItemImageLink>();
         #endregion
 
@@ -159,7 +162,7 @@ namespace Packit.App.ViewModels
             if (StringIsEqual(item.Description, itemClone.Description) && StringIsEqual(item.Title, itemClone.Title))
                 return;
 
-            if (!await itemsDataAccess.UpdateAsync(item))
+            if (!await itemsDataAccess.UpdateAsync(item) || !TitleIsValid)
             {
                 item.Title = itemClone.Title;
                 item.Description = itemClone.Description;

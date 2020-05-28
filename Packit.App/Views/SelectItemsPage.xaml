@@ -85,19 +85,29 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Command="{x:Bind ViewModel.AddCommand}" Margin="5,0,0,5" >
+                    <Button Grid.Column="0"
+                            Command="{x:Bind ViewModel.AddCommand}"
+                            Margin="5,0,0,5" >
                         <StackPanel>
                             <SymbolIcon Symbol="Add"/>
                             <TextBlock>New item</TextBlock>
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="1" Command="{x:Bind ViewModel.EditCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,0,5" >
+                    <Button Grid.Column="1"
+                            Command="{x:Bind ViewModel.EditCommand}"
+                            CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}"
+                            IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"
+                            Margin="0,0,0,5" >
                         <StackPanel>
                             <SymbolIcon Symbol="Edit"/>
                             <TextBlock Text="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueTotextConverter}}"/>
                         </StackPanel>
                     </Button>
-                    <Button Grid.Column="2" Command="{x:Bind ViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}" Margin="0,0,5,5" >
+                    <Button Grid.Column="2"
+                            Command="{x:Bind ViewModel.DeleteCommand}"
+                            CommandParameter="{Binding ElementName=gvItems, Path=SelectedItem}"
+                            IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"
+                            Margin="0,0,5,5" >
                         <StackPanel>
                             <SymbolIcon Symbol="Delete"/>
                             <TextBlock>Delete item</TextBlock>
@@ -117,6 +127,7 @@
                     <Button Grid.Column="0"
                             Command="{x:Bind ViewModel.DoneSelectingItemsCommand}"
                             CommandParameter="{Binding ElementName=gvItems, Converter={StaticResource lvToListConverter}}"
+                            IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"
                             Margin="0,0,0,5">
                         <StackPanel>
                             <SymbolIcon Symbol="Accept"/>
@@ -127,6 +138,7 @@
                     <Button Grid.Column="1"
                             Command="{x:Bind ViewModel.CancelCommand}"
                             CommandParameter="{Binding ElementName=gvItems, Converter={StaticResource lvToListConverter}}"
+                            IsEnabled="{x:Bind ViewModel.CommandIsEnabled}"
                             Margin="0,0,5,5">
                         <StackPanel>
                             <SymbolIcon Symbol="Cancel"/>

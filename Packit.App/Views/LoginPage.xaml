@@ -38,8 +38,9 @@
                              Password="{x:Bind ViewModel.Password, Mode=TwoWay}"/>
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Log in"
-                        Margin="0,10,0,0"
-                        Command="{x:Bind ViewModel.LoginCommand}"/>
+                            Margin="0,10,0,0"
+                            IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"
+                            Command="{x:Bind ViewModel.LoginCommand}"/>
                     <TextBlock Text="{x:Bind ViewModel.LoginErrorMessage, Mode=OneWay}" Margin="130,10,0,0"/>
                 </StackPanel>
                 

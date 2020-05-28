@@ -13,6 +13,7 @@
 // ***********************************************************************
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Packit.App.DataAccess.Http;
 using Packit.App.Helpers;
@@ -97,35 +98,43 @@ namespace Packit.App.ViewModels
 
             LoginCommand = new RelayCommand(async () =>
             {
-                LoginErrorMessage = "";
-
-                if (!EmailIsValid)
-                {
-                    LoginErrorMessage = "Failed to Log in, please try again";
-                    return;
-                }
-
-                try
-                {
-                    if (await userDataAccess.AuthenticateUser(new User { Email = Email, HashedPassword = Password }))
-                        NavigationService.Navigate(typeof(MainPage));
-                    else
-                        LoginErrorMessage = "Failed to Log in, please try again";
-                }
-                catch (HttpRequestException)
-                {
-                    await PopUpService.ShowInternetConnectionErrorAsync();
-                }
-                catch (OperationCanceledException)
-                {
-                    await PopUpService.ShowConnectionTimedOutAsync();
-                }
-                catch (Exception ex)
-                {
-                    await PopUpService.ShowUnknownErrorAsync(ex.Message);
-                }
+                await Task.WhenAll(LogInAsync(), DisableCommand());
             });
         }
         #endregion
+
+        private async Task LogInAsync()
+        {
+            LoginErrorMessage = "";
+
+            if (!EmailIsValid)
+            {
+                LoginErrorMessage = "Failed to Log in, please try again";
+                return;
+            }
+
+            try
+            {
+                if (await userDataAccess.AuthenticateUser(new User { Email = Email, HashedPassword = Password }))
+                    NavigationService.Navigate(typeof(MainPage));
+                else
+                    LoginErrorMessage = "Failed to Log in, please try again";
+            }
+            catch (HttpRequestException)
+            {
+                LoginErrorMessage = "Failed to Log in, please try again";
+                await PopUpService.ShowInternetConnectionErrorAsync();
+            }
+            catch (OperationCanceledException)
+            {
+                LoginErrorMessage = "Failed to Log in, please try again";
+                await PopUpService.ShowConnectionTimedOutAsync();
+            }
+            catch (Exception ex)
+            {
+                LoginErrorMessage = "Failed to Log in, please try again";
+                await PopUpService.ShowUnknownErrorAsync(ex.Message);
+            }
+        }
     }
 }

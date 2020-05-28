@@ -90,9 +90,10 @@
 
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Register"
-                            Margin="0,5,0,0"
-                            Command="{x:Bind ViewModel.RegisterCommand}"/>
-                        <TextBlock Text="{x:Bind ViewModel.RegsiterErrorMessage, Mode=OneWay}" Margin="35,10,0,0"/>
+                                Margin="0,5,0,0"
+                                IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"                            
+                                Command="{x:Bind ViewModel.RegisterCommand}"/>
+                        <TextBlock Text="{x:Bind ViewModel.RegsiterErrorMessage, Mode=OneWay}" Margin="20,10,0,0"/>
                     </StackPanel>
                     
                     <Button Background="Transparent"

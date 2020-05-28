@@ -95,7 +95,7 @@
                             <TextBox Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Title, Mode=TwoWay}"
                                      FontSize="46"
                                      Opacity="0.8"
-                                     MaxLength="15"
+                                     MaxLength="20"
                                      HorizontalAlignment="Center"
                                      Visibility="{x:Bind ViewModel.IsVisible, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"/>
                         </Grid>
@@ -339,6 +339,7 @@
                                        Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource FalseToVisibleConverter}}"/>
                             <TextBox Text="{x:Bind ViewModel.TripImageWeatherLink.Trip.Destination, Mode=TwoWay}"
                                      FontSize="25"
+                                     MaxLength="20"
                                      HorizontalAlignment="Center"
                                      Visibility="{Binding ElementName=lvBackpacks, Path=DataContext.IsVisible, Converter={StaticResource TrueToVisibleConverter}}"/>
                         </Grid>

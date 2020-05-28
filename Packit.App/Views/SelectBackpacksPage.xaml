@@ -219,9 +219,10 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
-                            Command="{x:Bind ViewModel.DoneSelectingBackpacksCommand}"
-                            CommandParameter="{Binding ElementName=lvBackpacks, Converter={StaticResource lvToListConverter}}"
-                            Margin="0,0,0,5">
+                        Command="{x:Bind ViewModel.DoneSelectingBackpacksCommand}"
+                        CommandParameter="{Binding ElementName=lvBackpacks, Converter={StaticResource lvToListConverter}}"
+                        IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"
+                        Margin="0,0,0,5">
                     <StackPanel>
                         <SymbolIcon Symbol="Accept"/>
                         <TextBlock>Done selecting</TextBlock>
@@ -229,8 +230,9 @@
                 </Button>
 
                 <Button Grid.Column="1"
-                            Command="{x:Bind ViewModel.CancelCommand}"
-                            Margin="0,0,5,5">
+                        Command="{x:Bind ViewModel.CancelCommand}"
+                        IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"    
+                        Margin="0,0,5,5">
                     <StackPanel>
                         <SymbolIcon Symbol="Cancel"/>
                         <TextBlock>Cancel</TextBlock>

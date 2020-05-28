@@ -8,6 +8,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:wrappers="using:Packit.App.Wrappers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:converters="using:Packit.App.Convertes"
     Style="{StaticResource PageStyle}"
@@ -34,7 +35,10 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Margin="5,0,0,0" Text="All backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="5,0,0,0" Text="All backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <TextBlock Text="Invalid input" Margin="20,25,0,0" Visibility="{x:Bind ViewModel.TitleIsValid, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}"/>
+            </StackPanel>
 
             <ListView Grid.Row="1" Name="lvBackpacks"
                           ItemsSource="{x:Bind ViewModel.BackpackWithItemsWithImagess, Mode=OneWay}"
@@ -79,7 +83,10 @@
 
                                             <StackPanel >
                                                 <TextBox Text="{x:Bind Backpack.Title, Mode=TwoWay}"
-                                                         Margin="0,0,0,5">
+                                                         Margin="0,0,0,5"
+                                                         MaxLength="20"
+                                                         extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
+                                                         extensions:TextBoxRegex.IsValid="{Binding ElementName=lvBackpacks, Path=DataContext.TitleIsValid, Mode=TwoWay}">
                                                     <i:Interaction.Behaviors>
                                                         <ic:EventTriggerBehavior EventName="GotFocus">
                                                             <ic:InvokeCommandAction CommandParameter="{x:Bind Backpack}" Command="{Binding ElementName=lvBackpacks, Path=DataContext.BackpackToEditCommand}" />

@@ -36,17 +36,20 @@
                      extensions:TextBoxRegex.Regex="[0-9a-zæøåA-ZÆØÅ]{1,}"
                      extensions:TextBoxRegex.IsValid="{x:Bind ViewModel.TitleIsValid, Mode=TwoWay}"
                      Header="Title"
+                     MaxLength="20"
                      FontSize="30"
                      Margin="0,5,0,0"
                      Text="{x:Bind ViewModel.Trip.Title, Mode=TwoWay}"/>
             <TextBlock Text="{Binding (extensions:TextBoxRegex.IsValid), ElementName=titleTextbox, Converter={StaticResource BooleanToTextConverter}}" />
             <TextBox Header="Description"
-                         FontSize="30" Margin="0,5,0,5"
-                         Height="200"
-                         TextWrapping="Wrap"
-                         Text="{x:Bind ViewModel.Trip.Description, Mode=TwoWay}"/>
+                     FontSize="30" Margin="0,5,0,5"
+                     Height="200"
+                     TextWrapping="Wrap"
+                     MaxLength="30"
+                     Text="{x:Bind ViewModel.Trip.Description, Mode=TwoWay}"/>
             <TextBox Header="Destionation city"
                      FontSize="30"
+                     MaxLength="20"
                      Margin="0,5,0,5"
                      Text="{x:Bind ViewModel.Trip.Destination, Mode=TwoWay}"/>
             <CalendarDatePicker Header="Depature date"
@@ -107,7 +110,7 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     CornerRadius="0"
-                    IsEnabled="{x:Bind ViewModel.SaveIsEnabled, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.CommandIsEnabled, Mode=OneWay}"
                     CommandParameter="{x:Bind ViewModel.TitleIsValid, Mode=OneWay}"
                     Command="{x:Bind ViewModel.NextCommand}">
                 <StackPanel>
