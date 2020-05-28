@@ -40,7 +40,7 @@ namespace Packit.App.ViewModels
 
             StopSharingCommand = new NetworkErrorHandlingRelayCommand<BackpackWithItems, BrowseBackpacksPage>(async param =>
             {
-                
+                await Task.WhenAll(StopSharing(param), DisableCommand());
             }, PopUpService, param => param != null);
         }
 
@@ -48,6 +48,8 @@ namespace Packit.App.ViewModels
         {
             if (backpackWithItems == null)
                 throw new ArgumentNullException(nameof(backpackWithItems));
+
+            backpackWithItems.Backpack.IsShared = false;
 
             if (await backpackDataAccess.UpdateAsync(backpackWithItems.Backpack))
             {
