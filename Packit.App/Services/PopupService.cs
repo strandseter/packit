@@ -198,7 +198,6 @@ namespace Packit.App.Services
 
         public async Task ShowUnknownErrorAsync(string exeptionMessage)
         {
-            var popup = new PopupMenu();
             var message = new MessageDialog("An unknown error occured", exeptionMessage);
             message.Commands.Add(new UICommand("Ok", (command) => { return; }));
             message.Commands.Add(new UICommand("Force close", (command) => CoreApplication.Exit()));
@@ -207,9 +206,15 @@ namespace Packit.App.Services
 
         public async Task ShowInternetConnectionErrorAsync()
         {
-            var popup = new PopupMenu();
             var message = new MessageDialog($"Please check your connection and try again", "A connection error occured");
             message.Commands.Add(new UICommand("Ok", (command) => { return; }));
+            await message.ShowAsync();
+        }
+
+        public async Task ShowWasAddedAsync(string whatWasAddedTitle)
+        {
+            var message = new MessageDialog($"{whatWasAddedTitle} successfully added!");
+            message.Commands.Add(new UICommand($"Ok", (command) => { return; }));
             await message.ShowAsync();
         }
 

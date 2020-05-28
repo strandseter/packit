@@ -23,6 +23,7 @@ namespace Packit.App.Services
         Task ShowInternetConnectionErrorAsync();
         Task ShowConnectionTimedOutAsync();
         Task ShowCouldNotSaveAsync(string notUpdatingTitle);
+        Task ShowWasAddedAsync(string whatWasAddedTitle);
         Task ShowCouldNotLogIn();
     }
 }
