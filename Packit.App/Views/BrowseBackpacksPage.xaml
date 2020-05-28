@@ -32,8 +32,8 @@
 
             <TextBlock Grid.Row="0" Text="Browse backpacks" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Backpacks shared by other users" Style="{StaticResource TitleTextBlockStyle}"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="My shared backpacks" Style="{StaticResource TitleTextBlockStyle}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Shared backpacks" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,10" TextDecorations="Underline"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Text="My shared backpacks" TextDecorations="Underline" Style="{StaticResource TitleTextBlockStyle}"/>
 
                 <ListView Grid.Column="0" Grid.Row="2"
                           ItemsSource="{x:Bind ViewModel.AllBackpacksWithItems}"
@@ -48,7 +48,10 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Text="{x:Bind Backpack.Title}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                            <StackPanel Grid.Row="0" >
+                                <TextBlock Text="{x:Bind Backpack.Title}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Items" TextDecorations="Underline" Style="{StaticResource BaseTextBlockStyle}"/>
+                            </StackPanel>
 
                             <ListView Grid.Row="1"
                                       ItemsSource="{x:Bind Items}"
@@ -56,7 +59,7 @@
                                       SelectionMode="None">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Item">
-                                        <TextBlock Text="{x:Bind Title}" Style="{StaticResource BodyTextBlockStyle}"/>
+                                        <TextBlock Text="{x:Bind Title}" Style="{StaticResource CaptionTextBlockStyle}"/>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
@@ -78,7 +81,10 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Text="{x:Bind Backpack.Title}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                            <StackPanel Grid.Row="0" >
+                                <TextBlock Text="{x:Bind Backpack.Title}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Items" TextDecorations="Underline" Style="{StaticResource BaseTextBlockStyle}"/>
+                            </StackPanel>
 
                             <ListView Grid.Row="1"
                                       ItemsSource="{x:Bind Items}"
@@ -86,7 +92,7 @@
                                       SelectionMode="None">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Item">
-                                        <TextBlock Text="{x:Bind Title}" Style="{StaticResource BodyTextBlockStyle}"/>
+                                        <TextBlock Text="{x:Bind Title}" Style="{StaticResource CaptionTextBlockStyle}"/>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>

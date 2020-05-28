@@ -232,6 +232,8 @@ namespace Packit.App.ViewModels
 
             backpackWithItemsWithImages.Backpack.IsShared = true;
 
+            backpackWithItemsWithImages.Backpack.Items.Clear();
+
             if (!await backpacksDataAccess.UpdateAsync(backpackWithItemsWithImages.Backpack))
                 backpackWithItemsWithImages.Backpack.IsShared = false;
             else
