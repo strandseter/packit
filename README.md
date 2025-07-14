@@ -49,7 +49,6 @@ As per the .NET course requirements at Østfold University College, this project
 - **Generic Repository Pattern**: Manual implementation instead of using third-party ORM abstractions
 - **Data Access Layer**: Custom HTTP clients and local storage management
 - **MVVM Framework**: Custom implementation of ViewModels, RelayCommand, and data binding
-- **Dependency Injection**: Manual dependency management with Microsoft.Extensions.DependencyInjection
 - **Factory Patterns**: Custom factory classes for data access strategies
 - **Authentication Service**: Manual JWT token handling and user management
 
