@@ -116,7 +116,7 @@ This project received an **A grade** for demonstrating:
 ## 📝 Course Context
 
 **Institution**: Østfold University College  
-**Course**: [.NET](https://www.hiof.no/studier/emner/historiske-emner/it/2020/var/itf11012.html)
 **Year**: 2020  
+**Grade**: A
 **Constraint**: Minimal external package usage to demonstrate fundamental understanding  
-**Achievement**: Grade A
+**Course**: [.NET](https://www.hiof.no/studier/emner/historiske-emner/it/2020/var/itf11012.html)
