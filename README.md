@@ -2,7 +2,7 @@
 
 **Grade Achieved: A**
 
-Packit is a comprehensive trip planning and backpack management application developed as an exam project for the .NET course at Østfold University College. This project demonstrates modern software architecture principles with minimal external dependencies, following academic requirements to implement core functionality from scratch.
+Packit is a trip planning and backpack management application developed as an exam project for the .NET course at Østfold University College. This project demonstrates modern software architecture principles with minimal external dependencies, following academic requirements to implement core functionality from scratch.
 
 ## 🎯 Project Overview
 
